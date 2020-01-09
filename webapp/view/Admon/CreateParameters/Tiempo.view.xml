@@ -1,0 +1,59 @@
+<mvc:View
+	controllerName="sap.ui.demo.walkthrough.controller.Admon.CreateParameters.Tiempo"
+	xmlns:html="http://www.w3.org/1999/xhtml" 
+	xmlns:mvc="sap.ui.core.mvc" 
+	displayBlock="true"
+	xmlns="sap.ui.table" 
+	xmlns:form="sap.ui.layout.form"
+	xmlns:m="sap.m" 
+	xmlns:u="sap.ui.unified" 
+	xmlns:c="sap.ui.core"
+    height="100%">
+	<m:App>
+		<m:pages>
+			<m:Page
+			showHeader="false"
+			enableScrolling="false"
+			class="sapUiContentPadding">
+			<m:content>
+				<form:SimpleForm
+					width="auto"
+					class="sapUiResponsiveMargin"
+					layout="ResponsiveGridLayout"
+					editable="true"
+					labelSpanL="3"
+					labelSpanM="3"
+					emptySpanL="4"
+					emptySpanM="4"
+					columnsL="2"
+					columnsM="2"
+					title="Crear periodo" >
+					<form:content>
+						<m:Label text="Año" />
+						<m:MaskInput id="txtDate" mask="9999" placeholderSymbol="_" placeholder="Agregar año"/> 
+						<m:Button icon="sap-icon://show" tooltip="Vista previa" press="CreateDate"/>
+						<m:Button icon="sap-icon://save" tooltip="Guardar" press="ValidateSave"/>
+					</form:content>
+				</form:SimpleForm>
+				<m:Panel expandable="true" headerText="Vista previa" width="auto" class="sapUiResponsiveMargin">
+					<m:content>
+						<Table id="tblDate"
+						rows="{/Date}"
+						selectionMode="Single"
+						visibleRowCount="12">
+							<columns>
+								<Column width="100%">
+									<m:Label text="Año" />
+									<template>
+										<m:Text text="{Name}" wrapping="false" />
+									</template>
+								</Column>
+							</columns>
+						</Table>
+					</m:content>
+				</m:Panel>
+			</m:content>
+			</m:Page>
+		</m:pages>
+		</m:App>
+</mvc:View>

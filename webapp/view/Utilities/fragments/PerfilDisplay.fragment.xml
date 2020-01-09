@@ -1,0 +1,53 @@
+<core:FragmentDefinition 
+	xmlns="sap.m"
+	xmlns:f="sap.ui.layout.form" 
+	xmlns:core="sap.ui.core" 
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:html="http://www.w3.org/1999/xhtml" 
+	xmlns:l="sap.ui.layout">
+
+	<Dialog title="Crear Perfil" >
+		<VBox class="sapUiSmallMargin">
+		<f:SimpleForm 
+		    layout="ColumnLayout"
+			columnsM="2"
+			columnsL="2"
+			columnsXL="3">
+			<f:content>
+				<Label  text="Perfil"/>
+				<Input  name="txtPerfil"/>
+				<Label text="Modulo"/>
+				<Select name="lstModulo">
+					<items>
+						<core:Item text="Modulo 1" key="0"/>
+						<core:Item text="Modulo 2" key="1"/>
+						<core:Item text="Modulo 3" key="2"/>
+					</items>
+				</Select>
+				<Label text="SubModulo"/>
+				<Select name="lstSubModulo">
+					<items>
+						<core:Item text="SubModulo 1" key="0"/>
+						<core:Item text="SubModulo 2" key="1"/>
+						<core:Item text="SubModulo 3" key="2"/>
+					</items>
+				</Select>
+				<Label text="Opción"/>
+				<Select name="lstOpción">
+					<items>
+						<core:Item text="Opción 1" key="0"/>
+						<core:Item text="Opción 2" key="1"/>
+						<core:Item text="Opción 3" key="2"/>
+					</items>
+				</Select>
+			</f:content>
+		</f:SimpleForm>
+	</VBox>
+	<beginButton>
+         <Button icon="sap-icon://save"  text="save" tooltip="save" press="SavePerfil"/>
+    </beginButton>
+	<endButton>
+         <Button icon="sap-icon://decline" text="cancel" tooltip="cancel"  press="closeDialog"/>
+    </endButton>
+	</Dialog>
+</core:FragmentDefinition>

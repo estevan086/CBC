@@ -1,0 +1,118 @@
+<mvc:View
+	controllerName="sap.ui.demo.walkthrough.controller.Admon.Users.Team"
+	xmlns:html="http://www.w3.org/1999/xhtml" 
+	xmlns:mvc="sap.ui.core.mvc" 
+	displayBlock="true"
+	xmlns="sap.ui.table" 
+	xmlns:m="sap.m" 
+	xmlns:u="sap.ui.unified" 
+	xmlns:c="sap.ui.core"
+    height="100%"
+    xmlns:f="sap.ui.layout.form" >
+	<m:App>
+		<m:pages>
+			<m:Page
+			showHeader="false"
+			enableScrolling="false"
+			class="sapUiContentPadding">
+			<m:content>
+			<f:SimpleForm 
+		    layout="ColumnLayout"
+			columnsM="2"
+			columnsL="2"
+			columnsXL="3">
+			<f:content>
+					
+						<m:Label text="Team"/>
+						
+								<m:Input  name="namefl"/>
+						
+						<m:Label text="Perfil"/>
+							
+								<m:Select name="Type">
+									<m:items>
+										<c:Item text="Perfil 1" key="0"/>
+										<c:Item text="Perfil 2" key="1"/>
+										<c:Item text="Perfil 3" key="2"/>
+									</m:items>
+								</m:Select>
+						
+					<m:Label text="Usuarios"/>
+						
+								<m:Select name="Type">
+									<m:items>
+										<c:Item text="Usuario 1" key="0"/>
+										<c:Item text="Usuario 2" key="1"/>
+										<c:Item text="Usuario 3" key="2"/>
+									</m:items>
+								</m:Select>
+						<m:Label text=""/>	
+						<m:Button icon="sap-icon://save"  text="save" tooltip="save"/>
+			</f:content>
+		</f:SimpleForm>
+			<Table id="table1"
+				rows="{/ProductCollection}"
+				selectionMode="None"
+				visibleRowCount="10">
+					<toolbar>
+					<m:OverflowToolbar>
+						<m:content>
+							<m:Title id="title" text="Team"/>
+							<m:ToolbarSpacer/>
+							<m:Button
+								icon="sap-icon://add"
+								tooltip="add item"
+								press="frmLogisticPress"/>
+							<m:Button
+								icon="sap-icon://sort"
+								tooltip="Sort Categories"
+								press="sortCategories"/>
+							<m:Button
+								icon="sap-icon://decline"
+								tooltip="Clear all sortings"
+								press="clearAllSortings"/>
+							<m:SearchField
+								placeholder="Filter"
+								value="{ui>/globalFilter}"
+								search="filterGlobally"
+								width="15rem"/>
+						</m:content>
+					</m:OverflowToolbar>
+				</toolbar>
+				<columns>
+					<Column width="25%">
+						<m:Label text="Perfil" />
+						<template>
+							<m:Text text="{Name}" wrapping="false" />
+						</template>
+					</Column>
+					<Column
+						id="categories"
+						width="25%"
+						showSortMenuEntry="false"
+						sortProperty="Category">
+						<m:Label text="Team" />
+						<template>
+							<m:Text text="{Category}" wrapping="false" />
+						</template>
+					</Column>
+					<Column
+						id="quantity"
+						width="25%"
+						hAlign="End"
+						sortProperty="Quantity">
+						<m:Label text="Usuario" />
+						<template>
+							<m:Label text="{
+								path: 'Quantity',
+								type: 'sap.ui.model.type.Integer'
+							}" />
+						</template>
+					</Column>
+				</columns>
+			</Table>
+			</m:content>
+		</m:Page>
+		</m:pages>
+		</m:App>
+</mvc:View>

@@ -1,0 +1,52 @@
+{
+ "Result": [{
+  "first": "Demo First",
+  "FI": "R",
+  "second": "Demo Second",
+  "third": "Demo Third",
+  "fourth": "Demo Fourth",
+  "fifth": "Demo Fifth",
+  "sixth": "Demo Sixth",
+  "Price": 1010,
+  "CurrencyCode": "INR"
+ }, {
+  "first": "Demo First 1",
+  "FI": "R",
+  "second": "Demo Second 1",
+  "third": "Demo Third 1",
+  "fourth": "Demo Fourth 1",
+  "fifth": "Demo Fifth 1",
+  "sixth": "Demo Sixth 1",
+  "Price": 1010,
+  "CurrencyCode": "INR"
+ }, {
+  "first": "Demo First 2",
+  "second": "Demo Second 2",
+  "third": "Demo Third 2",
+  "fourth": "Demo Fourth 2",
+  "fifth": "Demo Fifth 2",
+  "sixth": "Demo Sixth 2",
+  "Price": 10188,
+  "CurrencyCode": "INR",
+  "FI": ""
+ }, {
+  "first": "Demo First 3",
+  "second": "Demo Second 3",
+  "third": "Demo Third 3",
+  "fourth": "Demo Fourth 3",
+  "fifth": "Demo Fifth 3",
+  "sixth": "Demo Sixth 3",
+  "Price": 1016,
+  "FI": "R"
+ }, {
+  "first": "Demo First 4",
+  "second": "Demo Second 4",
+  "third": "Demo Third 4",
+  "fourth": "Demo Fourth 4",
+  "fifth": "Demo Fifth 4",
+  "sixth": "Demo Sixth 4",
+  "Price": 10567,
+  "CurrencyCode": "INR",
+  "FI": ""
+ }]
+}

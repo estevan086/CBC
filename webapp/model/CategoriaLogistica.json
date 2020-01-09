@@ -1,0 +1,36 @@
+{
+	"CategoríasLogísticas": [
+        {
+            "Nombre": "Aprovisionamiento",
+            "Category": "Costos Logísticos generados en el Aprovisionamiento (Compras)"
+        },
+        {
+            "Nombre": "Almacenamiento",
+            "Category": "Costos Logísticos generados en el Almacenamiento"
+        },
+        {
+            "Nombre": "Gestión de stocks",
+            "Category": "Costos Logísticos generados en la Gestión de stocks"
+        },
+        {
+            "Nombre": "Transporte Interno",
+            "Category": "Costos Logísticos generados en el Transporte Interno"
+        },
+        {
+            "Nombre": "Procesamiento de Ordenes de Trabajo",
+            "Category": "Costos Logísticos generados en el Procesamiento de Ordenes de Trabajo"
+        },
+        {
+            "Nombre": "Distribución de Productos Terminados",
+            "Category": "Costos Logísticos generados en la Distribución de Productos Terminados"
+        },
+        {
+            "Nombre": "Ventas y Servicios al Cliente.",
+            "Category": "Costos Logísticos generados en las Ventas y Servicios al Cliente."
+        },
+        {
+            "Nombre": "No Calidad",
+            "Category": "Costos Logísticos generados por la No Calidad"
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+<c:FragmentDefinition 
+	xmlns:m="sap.m"
+	xmlns:f="sap.ui.layout.form" 
+	xmlns:c="sap.ui.core" 
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:html="http://www.w3.org/1999/xhtml" 
+	xmlns:l="sap.ui.layout">
+
+	<m:Dialog title="Crear commoditie" >
+		<m:VBox class="sapUiSmallMargin">
+			<f:SimpleForm 
+			    layout="ColumnLayout"
+				columnsM="2"
+				columnsL="2"
+				columnsXL="2">
+						<f:content>
+							<m:Label text="ID"/>
+							<m:Input  name="txtID"/>
+							<m:Label text="Nombre"/>
+							<m:Input  name="txtName"/>
+						</f:content>
+					</f:SimpleForm>
+		</m:VBox>
+	<m:beginButton>
+         <m:Button icon="sap-icon://save"  text="save" tooltip="save" press="closeDialog"/>
+    </m:beginButton>
+	<m:endButton>
+         <m:Button icon="sap-icon://decline" text="cancel" tooltip="cancel"  press="closeDialog"/>
+    </m:endButton>
+	</m:Dialog>
+</c:FragmentDefinition>

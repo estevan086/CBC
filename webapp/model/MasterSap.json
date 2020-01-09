@@ -1,0 +1,100 @@
+{
+    "MasterSap": [
+        {
+            "Pais": "Guatemala",
+            "Sociedad-Centro": "CABCORP GUATEMALA",
+            "Moneda": "Quetzal",
+            "Unidad Medida": "Porcentaje"
+        },
+        {
+            "Pais": "Guatemala",
+            "Sociedad-Centro": "CONSOLIDADORA GUATEMALA",
+            "Moneda": "Quetzal",
+            "Unidad Medida": "Tanto por mil"
+        },
+        {
+            "Pais": "Guatemala",
+            "Sociedad-Centro": "CONS. METROPOLITANA",
+            "Moneda": "Quetzal",
+            "Unidad Medida": "Lim."
+        },
+        {
+            "Pais": "Guatemala",
+            "Sociedad-Centro": "CONS. NORORIENTE",
+            "Moneda": "Quetzal",
+            "Unidad Medida": "Días"
+        },
+        {
+            "Pais": "Guatemala",
+            "Sociedad-Centro": "CONS. SUROCCIDENTE",
+            "Moneda": "Quetzal",
+            "Unidad Medida": "Milímetro cuadrado/Segundo"
+        },
+        {
+            "Pais": "Guatemala",
+            "Sociedad-Centro": "ICARICAM, S.A.",
+            "Moneda": "Quetzal",
+            "Unidad Medida": "Centímetro/Segundo"
+        },
+        {
+            "Pais": "Guatemala",
+            "Sociedad-Centro": "ICARICAM FINANCIERA",
+            "Moneda": "Quetzal",
+            "Unidad Medida": "Metro/Minuto"
+        },
+        {
+            "Pais": "Guatemala",
+            "Sociedad-Centro": "ABSCOM",
+            "Moneda": "Quetzal",
+            "Unidad Medida": "Microlitro"
+        },
+        {
+            "Pais": "Guatemala",
+            "Sociedad-Centro": "PERSONIC",
+            "Moneda": "Quetzal",
+            "Unidad Medida": "Microfaradio"
+        },
+        {
+            "Pais": "Guatemala",
+            "Sociedad-Centro": "CONSOLIDADORA ABSCOM",
+            "Moneda": "Quetzal",
+            "Unidad Medida": "Picofaradio"
+        },
+        {
+            "Pais": "Guatemala",
+            "Sociedad-Centro": "GRUPO CLC",
+            "Moneda": "Quetzal",
+            "Unidad Medida": "Amperio"
+        },
+        {
+            "Pais": "Guatemala",
+            "Sociedad-Centro": "CLC CONSOLIDADORA",
+            "Moneda": "Quetzal",
+            "Unidad Medida": "Gigaohmio"
+        },
+        {
+            "Pais": "Guatemala",
+            "Sociedad-Centro": "AESA",
+            "Moneda": "Quetzal",
+            "Unidad Medida": "Gramo/Metro cúbico"
+        },
+        {
+            "Pais": "Guatemala",
+            "Sociedad-Centro": "AESA CONSOLIDADORA",
+            "Moneda": "Quetzal",
+            "Unidad Medida": "Acre"
+        },
+        {
+            "Pais": " Guatemala",
+            "Sociedad-Centro": "SECCA",
+            "Moneda": "Quetzal",
+            "Unidad Medida": "ATP"
+        },
+        {
+            "Pais": " Guatemala",
+            "Sociedad-Centro": "CONSOLIDADORA GUATEMALA",
+            "Moneda": "Quetzal",
+            "Unidad Medida": "Kilogramo/Decímetro cúbico"
+        }
+    ]
+}

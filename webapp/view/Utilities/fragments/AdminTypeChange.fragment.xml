@@ -1,0 +1,106 @@
+<core:FragmentDefinition 
+	xmlns="sap.m"
+	xmlns:f="sap.ui.layout.form" 
+	xmlns:core="sap.ui.core" 
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:html="http://www.w3.org/1999/xhtml" 
+	xmlns:l="sap.ui.layout">
+
+	<Dialog title="Crear Tasa de Cambio" >
+		<VBox class="sapUiSmallMargin">
+		<f:SimpleForm 
+		    layout="ColumnLayout"
+			columnsM="2"
+			columnsL="3"
+			columnsXL="4">
+			<f:content>
+					<Label text="Tipo"/>
+					<Select name="Tipo">
+						<items>
+							<core:Item text="Real" key="0"/>
+							<core:Item text="Plan" key="1"/>
+						</items>
+					</Select>
+					<Label text="Pais"/>
+					
+					<Select name="Pais">
+						<items>
+							<core:Item text="Pais 1" key="0"/>
+							<core:Item text="Pais 2" key="1"/>
+							<core:Item text="Pais 3" key="2"/>
+						</items>
+					</Select>
+					
+					<Label text="Año"/>
+					
+					<Select name="Año">
+						<items>
+							<core:Item text="2019" key="0"/>
+							<core:Item text="2020" key="1"/>
+							<core:Item text="2021" key="2"/>
+						</items>
+					</Select>
+					
+					<Label text="Mes"/>
+					<Select name="Mes">
+						<items>
+							<core:Item text="1" key="0"/>
+							<core:Item text="2" key="1"/>
+							<core:Item text="3" key="2"/>
+							<core:Item text="4" key="3"/>
+							<core:Item text="5" key="4"/>
+							<core:Item text="6" key="5"/>
+							<core:Item text="7" key="6"/>
+							<core:Item text="8" key="7"/>
+							<core:Item text="9" key="8"/>
+							<core:Item text="10" key="9"/>
+							<core:Item text="11" key="10"/>
+							<core:Item text="12" key="11"/>
+						</items>
+					</Select>
+					
+					<Label text="Moneda Local"/>
+					<Select name="MonedaLocal">
+						<items>
+							<core:Item text="COP" key="0"/>
+							<core:Item text="ARS" key="1"/>
+							<core:Item text="BRL" key="2"/>
+							<core:Item text="BZD" key="3"/>
+							<core:Item text="CLP" key="4"/>
+							<core:Item text="GTQ" key="5"/>
+							<core:Item text="HNL" key="6"/>
+							<core:Item text="JMD" key="7"/>
+							<core:Item text="NIO" key="8"/>
+							<core:Item text="PYG" key="9"/>
+							<core:Item text="SVC" key="10"/>
+							<core:Item text="USD" key="11"/>
+						</items>
+					</Select>
+					<Label text="Valor"/>
+					<Input name="txtValor"/>
+					
+					<Label text="Moneda Convercion"/>
+					<Select name="MonedaConvercion">
+						<items>
+							<core:Item text="USD" key="0"/>
+							<core:Item text="COP" key="1"/>
+							<core:Item text="UYU" key="2"/>
+						</items>
+					</Select>
+					
+					<Label text="Valor Convercion"/>
+					
+					<Input  name="txtValorConvercion"/>
+							
+				
+			</f:content>
+		</f:SimpleForm>
+	</VBox>
+	<beginButton>
+         <Button icon="sap-icon://save"  text="save" tooltip="save" press="closeDialog"/>
+    </beginButton>
+	<endButton>
+         <Button icon="sap-icon://decline" text="cancel" tooltip="cancel"  press="closeDialog"/>
+    </endButton>
+	</Dialog>
+</core:FragmentDefinition>

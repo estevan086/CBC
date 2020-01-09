@@ -1,0 +1,70 @@
+<core:FragmentDefinition 
+	xmlns="sap.m"
+	xmlns:f="sap.ui.layout.form" 
+	xmlns:core="sap.ui.core" 
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:html="http://www.w3.org/1999/xhtml" 
+	xmlns:l="sap.ui.layout">
+
+	<Dialog title="Crear Team" >
+		<VBox class="sapUiSmallMargin">
+		<f:Form editable="true">
+			<f:layout>
+				<f:ResponsiveGridLayout
+					labelSpanXL="3"
+					labelSpanL="3"
+					labelSpanM="3"
+					labelSpanS="12"
+					adjustLabelSpan="false"
+					emptySpanXL="4"
+					emptySpanL="4"
+					emptySpanM="4"
+					emptySpanS="0"
+					columnsXL="1"
+					columnsL="1"
+					columnsM="1"
+					singleContainerFullSize="false" />
+			</f:layout>
+			<f:formContainers>
+				<f:FormContainer>
+					<f:formElements>
+						<f:FormElement label="Team">
+							<f:fields>
+								<Input  name="namefl"/>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement label="Perfil">
+							<f:fields>
+								<Select name="Type">
+									<items>
+										<core:Item text="Perfil 1" key="0"/>
+										<core:Item text="Perfil 2" key="1"/>
+										<core:Item text="Perfil 3" key="2"/>
+									</items>
+								</Select>
+							</f:fields>
+						</f:FormElement>
+					<f:FormElement label="Usuarios">
+							<f:fields>
+								<Select name="Type">
+									<items>
+										<core:Item text="Usuario 1" key="0"/>
+										<core:Item text="Usuario 2" key="1"/>
+										<core:Item text="Usuario 3" key="2"/>
+									</items>
+								</Select>
+							</f:fields>
+						</f:FormElement>
+					</f:formElements>
+				</f:FormContainer>
+			</f:formContainers>
+		</f:Form>
+	</VBox>
+	<beginButton>
+         <Button icon="sap-icon://save"  text="save" tooltip="save" press="closeDialog"/>
+    </beginButton>
+	<endButton>
+         <Button icon="sap-icon://decline" text="cancel" tooltip="cancel"  press="closeDialog"/>
+    </endButton>
+	</Dialog>
+</core:FragmentDefinition>

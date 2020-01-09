@@ -1,0 +1,41 @@
+<mvc:View
+	controllerName="sap.ui.demo.walkthrough.controller.Escenarios.MatrizEsc"
+	height="100%"
+	xmlns:l="sap.ui.layout"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core"
+	xmlns="sap.m">
+		<Toolbar class="sapNocolor">
+			<Title text="Matriz de Escenarios" level="H2"/>
+			<ToolbarSpacer/>
+			<Title text="" level="H2"/>
+			<ToolbarSpacer/>
+			<Button icon="sap-icon://message-information" press=".onOpenDialog" ariaLabelledBy="editButtonLabel"/>
+		</Toolbar>
+		<IconTabBar
+		id="idIconTabBarSeparatorNoIcon"
+		expanded="false"
+		class="sapUiResponsiveContentPadding">
+		<items>
+			<IconTabFilter
+				icon="sap-icon://add"
+				iconColor="Neutral"
+				text="Crear">
+				<mvc:XMLView viewName="sap.ui.demo.walkthrough.view.Escenarios.MatrizEsc.AddEsc"/>
+			</IconTabFilter>
+			<IconTabFilter
+				icon="sap-icon://table-chart"
+				iconColor="Neutral" text="Matriz">
+			</IconTabFilter>
+			<IconTabFilter
+				icon="sap-icon://survey"
+				iconColor="Neutral" text="Validación">
+			</IconTabFilter>
+			<IconTabFilter
+				icon="sap-icon://complete"
+				iconColor="Neutral" text="Finalizar">
+			</IconTabFilter>
+		</items>
+	</IconTabBar>
+	
+</mvc:View>

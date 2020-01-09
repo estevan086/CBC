@@ -1,0 +1,105 @@
+<mvc:View
+	controllerName="sap.ui.demo.walkthrough.controller.DataDefault.Materiales.GridMateriales"
+	xmlns:html="http://www.w3.org/1999/xhtml" 
+	xmlns:mvc="sap.ui.core.mvc" 
+	displayBlock="true"
+	xmlns="sap.ui.table" 
+	xmlns:m="sap.m" 
+	xmlns:u="sap.ui.unified" 
+	xmlns:c="sap.ui.core"
+    height="100%">
+	<m:App>
+		<m:pages>
+			<m:Page
+			showHeader="false"
+			enableScrolling="false"
+			class="sapUiContentPadding">
+			<m:content>
+			<Table id="table1"
+				rows="{/materiales}"
+				selectionMode="MultiToggle"
+				visibleRowCount="10">
+					<toolbar>
+					<m:OverflowToolbar>
+						<m:content>
+							<m:Title id="title" text="Materiales" />
+							<m:ToolbarSpacer/>
+							<m:Button
+								icon="sap-icon://add"
+								tooltip="add item"
+								press="frmLogisticPress"/>
+							<m:Button
+								icon="sap-icon://sort"
+								tooltip="Sort Categories"
+								press="sortCategories"/>
+							<m:Button
+								icon="sap-icon://decline"
+								tooltip="Clear all sortings"
+								press="clearAllSortings"/>
+							<m:SearchField
+								placeholder="Filter"
+								value="{ui>/globalFilter}"
+								search="filterGlobally"
+								width="15rem"/>
+						</m:content>
+					</m:OverflowToolbar>
+				</toolbar>
+				<columns>
+					<Column width="11rem">
+						<m:Label text="ID Material" />
+						<template>
+							<m:Text text="{MDEF_IDMATERIAL}" wrapping="false" />
+						</template>
+					</Column>
+					<Column
+						id="categories"
+						width="11rem"
+						showSortMenuEntry="false"
+						sortProperty="MDEF_MATERIAL">
+						<m:Label text="Material" />
+						<template>
+							<m:Text text="{MDEF_MATERIAL}" wrapping="false" />
+						</template>
+					</Column>
+					<Column
+						id="quantity"
+						width="6rem"
+						hAlign="End"
+						sortProperty="MDEF_SOCIEDAD">
+						<m:Label text="Sociedad - Centro" />
+						<template>
+							<m:Label text="{MDEF_SOCIEDAD}" />
+						</template>
+					</Column>
+					<Column width="6rem" hAlign="End">
+						<m:Label text="Centro" />
+						<template>
+							<m:Label text="{MDEF_CENTRO}" />
+						</template>
+					</Column>
+					<Column width="6rem" hAlign="End">
+						<m:Label text="UMD" />
+						<template>
+							<m:Label text="{MDEF_UMD}" />
+						</template>
+					</Column>
+					<Column width="15rem">
+						<m:Label text="MDEF_COSTOMATERIAL" />
+						<template>
+							<m:Label text="{MDEF_COSTOMATERIAL}" />
+						</template>
+					</Column>
+					<Column width="15rem">
+						<m:Label text="MDEF_COSTOTRANSFERENCIA" />
+						<template>
+							<m:Label text="{MDEF_COSTOTRANSFERENCIA}" />
+						</template>
+					</Column>
+				
+				</columns>
+			</Table>
+			</m:content>
+		</m:Page>
+		</m:pages>
+		</m:App>
+</mvc:View>

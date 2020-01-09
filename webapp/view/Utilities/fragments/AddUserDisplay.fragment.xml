@@ -1,0 +1,53 @@
+<core:FragmentDefinition 
+	xmlns="sap.m"
+	xmlns:f="sap.ui.layout.form" 
+	xmlns:core="sap.ui.core" 
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:html="http://www.w3.org/1999/xhtml" 
+	xmlns:l="sap.ui.layout">
+
+	<Dialog title="Asignar usuario" >
+		<VBox class="sapUiSmallMargin">
+		<f:SimpleForm 
+		    layout="ColumnLayout"
+			columnsM="2"
+			columnsL="2"
+			columnsXL="3">
+			<f:content>
+					<Label text="Team"/>
+					<Select name="Team">
+						<items>
+							<core:Item text="Team 1" key="0"/>
+							<core:Item text="Team 2" key="1"/>
+							<core:Item text="Team 3" key="2"/>
+						</items>
+					</Select>
+					<Label text="usuario"/>
+					<Select name="nameUser">
+						<items>
+							<core:Item text="usuario 1" key="0"/>
+							<core:Item text="usuario 2" key="1"/>
+							<core:Item text="usuario 3" key="2"/>
+						</items>
+					</Select>
+					<Label text="Sociedad - Centro"/>
+					<Select name="Type">
+						<items>
+							<core:Item text="Sociedad - Centro 1" key="0"/>
+							<core:Item text="Sociedad - Centro 2" key="1"/>
+							<core:Item text="Sociedad - Centro 3" key="2"/>
+						</items>
+					</Select>
+					<Label text="Colaborativo"/>
+					<CheckBox text="" selected="true" />
+			</f:content>
+		</f:SimpleForm>
+	</VBox>
+	<beginButton>
+         <Button icon="sap-icon://save"  text="save" tooltip="save" press="closeDialog"/>
+    </beginButton>
+	<endButton>
+         <Button icon="sap-icon://decline" text="cancel" tooltip="cancel"  press="closeDialog"/>
+    </endButton>
+	</Dialog>
+</core:FragmentDefinition>

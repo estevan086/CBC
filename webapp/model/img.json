@@ -1,0 +1,10 @@
+{
+	"products": {
+	
+	},
+	"images": [
+		"http://localhost:54213/webapp/css/images/cbcImgLogo.jpg",
+		"http://localhost:54213/webapp/css/images/ImgCbc2.PNG",
+		"http://localhost:54213/webapp/css/images/ImgCbc3.PNG"
+	]
+}

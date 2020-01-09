@@ -1,0 +1,64 @@
+{
+	"TASACAMBIO": [
+        {
+            "TIPO": "PLAN",
+            "PAIS": "GUATEMALA",
+            "AÑO": "2019",
+            "MES": "1",
+            "VALOR": "7.71",
+            "MONEDA LOCAL": "GTQ",
+            "=": "=",
+            "MONEDA CONVERSIÓN": "USD"
+        },
+        {
+            "TIPO": "PLAN",
+            "PAIS": "GUATEMALA",
+            "AÑO": "2019",
+            "MES": "2",
+            "VALOR": "7.7",
+            "MONEDA LOCAL": "GTQ",
+            "=": "=",
+            "MONEDA CONVERSIÓN": "USD"
+        },
+        {
+            "TIPO": "PLAN",
+            "PAIS": "GUATEMALA",
+            "AÑO": "2019",
+            "MES": "3",
+            "VALOR": "7.8",
+            "MONEDA LOCAL": "GTQ",
+            "=": "=",
+            "MONEDA CONVERSIÓN": "USD"
+        },
+        {
+            "TIPO": "PLAN",
+            "PAIS": "GUATEMALA",
+            "AÑO": "2019",
+            "MES": "4",
+            "VALOR": "1",
+            "MONEDA LOCAL": "GTQ",
+            "=": "=",
+            "MONEDA CONVERSIÓN": "USD"
+        },
+        {
+            "TIPO": "PLAN",
+            "PAIS": "JAMAICA",
+            "AÑO": "2019",
+            "MES": "1",
+            "VALOR": "7.69",
+            "MONEDA LOCAL": "JMD",
+            "=": "=",
+            "MONEDA CONVERSIÓN": "USD"
+        },
+        {
+            "TIPO": "PLAN",
+            "PAIS": "JAMAICA",
+            "AÑO": "2019",
+            "MES": "2",
+            "VALOR": "140.6",
+            "MONEDA LOCAL": "JMD",
+            "=": "=",
+            "MONEDA CONVERSIÓN": "USD"
+        }
+    ]
+}

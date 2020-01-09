@@ -1,0 +1,121 @@
+<mvc:View
+	controllerName="sap.ui.demo.walkthrough.controller.Admon.Users.Perfil"
+	xmlns:html="http://www.w3.org/1999/xhtml" 
+	xmlns:mvc="sap.ui.core.mvc" 
+	displayBlock="true"
+	xmlns="sap.ui.table" 
+	xmlns:m="sap.m" 
+	xmlns:u="sap.ui.unified" 
+	xmlns:c="sap.ui.core"
+    height="100%"
+    xmlns:f="sap.ui.layout.form" >
+	<m:App>
+		<m:pages>
+			<m:Page
+			showHeader="false"
+			enableScrolling="false"
+			class="sapUiContentPadding">
+			<m:content>
+				<f:SimpleForm 
+		    layout="ColumnLayout"
+			columnsM="2"
+			columnsL="2"
+			columnsXL="3">
+			<f:content>
+				<m:Label  text="Perfil"/>
+				<m:Input  name="txtPerfil"/>
+				<m:Label text="Modulo"/>
+				<m:Select name="lstModulo">
+					<m:items>
+						<c:Item text="Modulo 1" key="0"/>
+						<c:Item text="Modulo 2" key="1"/>
+						<c:Item text="Modulo 3" key="2"/>
+					</m:items>
+				</m:Select>
+				<m:Label text="SubModulo"/>
+				<m:Select name="lstSubModulo">
+					<m:items>
+						<c:Item text="SubModulo 1" key="0"/>
+						<c:Item text="SubModulo 2" key="1"/>
+						<c:Item text="SubModulo 3" key="2"/>
+					</m:items>
+				</m:Select>
+				<m:Label text="Opción"/>
+				<m:Select name="lstOpción">
+					<m:items>
+						<c:Item text="Opción 1" key="0"/>
+						<c:Item text="Opción 2" key="1"/>
+						<c:Item text="Opción 3" key="2"/>
+					</m:items>
+				</m:Select>
+				<m:Button icon="sap-icon://save"  text="save" tooltip="save"/>
+			</f:content>
+		</f:SimpleForm>
+			<Table id="table1"
+				rows="{/DataPerfil}"
+				selectionMode="None"
+				visibleRowCount="10">
+					<toolbar>
+					<m:OverflowToolbar>
+						<m:content>
+							<m:Title id="title" text="Perfiles"/>
+							<m:ToolbarSpacer/>
+							<m:Button
+								icon="sap-icon://add"
+								tooltip="add item"
+								press="frmLogisticPress"/>
+							<m:Button
+								icon="sap-icon://sort"
+								tooltip="Sort Categories"
+								press="sortCategories"/>
+							<m:Button
+								icon="sap-icon://decline"
+								tooltip="Clear all sortings"
+								press="clearAllSortings"/>
+							<m:SearchField
+								placeholder="Filter"
+								value="{ui>/globalFilter}"
+								search="filterGlobally"
+								width="15rem"/>
+						</m:content>
+					</m:OverflowToolbar>
+				</toolbar>
+				<columns>
+					<Column width="20%">
+						<m:Label text="Perfil" />
+						<template>
+							<m:Text text="{perfil}" wrapping="false" />
+						</template>
+					</Column>
+					<Column
+						id="categories"
+						width="20%"
+						showSortMenuEntry="false"
+						sortProperty="Category">
+						<m:Label text="Modulo" />
+						<template>
+							<m:Text text="{modulo}" wrapping="false" />
+						</template>
+					</Column>
+					<Column
+						id="quantity"
+						width="20%"
+						sortProperty="Quantity">
+						<m:Label text="SubModulo" />
+						<template>
+							<m:Label text="{submodulo}" />
+						</template>
+					</Column>
+					<Column width="20%">
+						<m:Label text="Opción" />
+						<template>
+							<m:Label text="{opcion}" />
+						</template>
+					</Column>
+				</columns>
+			</Table>
+			</m:content>
+		</m:Page>
+		</m:pages>
+		</m:App>
+</mvc:View>

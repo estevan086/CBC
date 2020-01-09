@@ -1,0 +1,93 @@
+<core:FragmentDefinition 
+	xmlns="sap.m"
+	xmlns:f="sap.ui.layout.form" 
+	xmlns:core="sap.ui.core" 
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:html="http://www.w3.org/1999/xhtml" 
+	xmlns:l="sap.ui.layout">
+
+	<Dialog title="Crear Version" >
+		<VBox class="sapUiSmallMargin">
+		<f:SimpleForm 
+		    layout="ColumnLayout"
+			columnsM="2"
+			columnsL="3"
+			columnsXL="4">
+			<f:content>
+					<Label text="Pais"/>
+					<Select name="ddlPais">
+						<items>
+							<core:Item text="Pais 1" key="0"/>
+							<core:Item text="Pais 2" key="1"/>
+							<core:Item text="Pais 3" key="2"/>
+						</items>
+					</Select>
+					
+					<Label text="Sociedad-Centro"/>
+					
+					<Select name="ddlSociedadCentro">
+						<items>
+							<core:Item text="Sociedad-Centro 1" key="0"/>
+							<core:Item text="Sociedad-Centro 2" key="1"/>
+							<core:Item text="Sociedad-Centro 3" key="2"/>
+						</items>
+					</Select>
+					
+					<Label text="Periodo A Crear"/>
+					
+					<Select name="ddlPeriodo">
+						<items>
+							<core:Item text="Periodo 1" key="0"/>
+							<core:Item text="Periodo 2" key="1"/>
+							<core:Item text="Periodo 3" key="2"/>
+						</items>
+					</Select>
+					
+					<Label text="Nombre Archivo"/>
+					
+					<Input  name="txtNameFile"/>
+					
+					<Label text="Descripción Versión"/>
+					
+					<TextArea name="txtDetail"/>
+					
+					
+					<Label text="Modulo"/>
+					
+					<Select name="ddlModulo">
+						<items>
+							<core:Item text="Modulo 1" key="0"/>
+							<core:Item text="Modulo 2" key="1"/>
+							<core:Item text="Modulo 3" key="2"/>
+						</items>
+					</Select>
+					
+					<Label text="Origen"/>
+					
+					<Select name="ddlOrigen">
+						<items>
+							<core:Item text="Origen 1" key="0"/>
+							<core:Item text="Origen 2" key="1"/>
+							<core:Item text="Origen 3" key="2"/>
+						</items>
+					</Select>
+					
+					<Label text="Id Versión"/>
+					
+					<Input  name="txtVersion"/>
+					
+					<Label text=""/>
+					<Button icon="sap-icon://copy"  text="Copiar Periodo" tooltip="Copy" />
+
+					
+			</f:content>
+		</f:SimpleForm>
+	</VBox>
+	<beginButton>
+         <Button icon="sap-icon://save"  text="save" tooltip="save" press="closeDialog"/>
+    </beginButton>
+	<endButton>
+         <Button icon="sap-icon://decline" text="cancel" tooltip="cancel"  press="closeDialog"/>
+    </endButton>
+	</Dialog>
+</core:FragmentDefinition>

@@ -1,0 +1,109 @@
+<mvc:View
+	controllerName="sap.ui.demo.walkthrough.controller.DataDefault.TypeChange.GridTypeChange"
+	xmlns:html="http://www.w3.org/1999/xhtml" 
+	xmlns:mvc="sap.ui.core.mvc" 
+	displayBlock="true"
+	xmlns="sap.ui.table" 
+	xmlns:m="sap.m" 
+	xmlns:u="sap.ui.unified" 
+	xmlns:c="sap.ui.core"
+    height="100%">
+	 <m:App>
+	   <m:pages>
+		<m:Page
+			showHeader="false"
+			enableScrolling="false"
+			class="sapUiContentPadding">
+			<m:content>
+				<Table id="tblTasaCambio"
+					rows="{/TASACAMBIO}"
+					selectionMode="MultiToggle"
+					visibleRowCount="12">
+						<toolbar>
+						<m:OverflowToolbar>
+							<m:content>
+								<m:Title id="title" text="Tipos de Cambio" />
+								<m:ToolbarSpacer/>
+									<m:Button
+								icon="sap-icon://add"
+								tooltip="add item"
+								press="frmLogisticPress"/>
+								<m:Button
+									icon="sap-icon://sort"
+									tooltip="Sort Categories"
+									press="sortCategories"/>
+								<m:Button
+									icon="sap-icon://decline"
+									tooltip="Clear all sortings"
+									press="clearAllSortings"/>
+								<m:SearchField
+									placeholder="Filter"
+									value="{ui>/globalFilter}"
+									search="filterGlobally"
+									width="15rem"/>
+							</m:content>
+						</m:OverflowToolbar>
+					</toolbar>
+					<columns>
+						<Column width="11rem">
+							<m:Label text="Tipo" />
+							<template>
+								<m:Text text="{TIPO}" wrapping="false" />	
+							</template>
+						</Column>
+						<Column
+							id="categories"
+							width="11rem"
+							showSortMenuEntry="false"
+							sortProperty="PAIS">
+							<m:Label text="Pais" />
+							<template>
+								<m:Text text="{PAIS}" wrapping="false" />
+							</template>
+						</Column>
+						<Column
+							id="quantity"
+							width="6rem"
+							sortProperty="Quantity">
+							<m:Label text="Año" />
+							<template>
+								<m:Label text="{AÑO}" />
+							</template>
+						</Column>
+						<Column width="6rem">
+							<m:Label text="Mes" />
+							<template>
+								<m:Text text="{MES}" wrapping="false" />
+							</template>
+						</Column>
+						<Column width="11rem">
+							<m:Label text="Valor" />
+							<template>
+								<m:Label text="{VALOR}" />
+							</template>
+						</Column>
+						<Column width="6rem">
+							<m:Label text="Moneda Local" />	 	
+							<template>
+								<m:Label text="{MONEDA LOCAL}" />
+							</template>
+						</Column>
+							<Column width="6rem">
+							<m:Label text="Moneda Conversión" />
+							<template>
+								<m:Label text="{MONEDA CONVERSIÓN}"/>
+							</template>
+						</Column>
+						<Column width="11rem">
+							<m:Label text="Valor/Conversión" />
+							<template>
+								<m:Label text="{=}" />
+							</template>
+						</Column>
+					</columns>
+				</Table>
+			</m:content>
+		</m:Page>
+	  </m:pages>
+	 </m:App>
+</mvc:View>

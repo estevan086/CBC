@@ -1,0 +1,57 @@
+<core:FragmentDefinition 
+	xmlns="sap.m"
+	xmlns:f="sap.ui.layout.form" 
+	xmlns:core="sap.ui.core" 
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:html="http://www.w3.org/1999/xhtml" 
+	xmlns:l="sap.ui.layout">
+
+	<Dialog title="Crear Material" >
+		<VBox class="sapUiSmallMargin">
+		<f:SimpleForm 
+		    layout="ColumnLayout"
+			columnsM="2"
+			columnsL="3"
+			columnsXL="4">
+			<f:content>
+				<Label text="Material" />
+				<Input name="txtMaterial" value="{}" />
+				<Label text="Sociedad" />
+				<Select name="dllSociedad">
+					<items>
+						<core:Item text="Sociedad 1" key="0"/>
+						<core:Item text="Sociedad 2" key="1"/>
+						<core:Item text="Sociedad 3" key="2"/>
+					</items>
+				</Select>
+				<Label text="Centro" />
+				<Select name="dllCentro">
+					<items>
+						<core:Item text="Centro 1" key="0"/>
+						<core:Item text="Centro 2" key="1"/>
+						<core:Item text="Centro 3" key="2"/>
+					</items>
+				</Select>
+				<Label text="UMD" />
+				<Select name="ddlUMD">
+					<items>
+						<core:Item text="UMD 1" key="0"/>
+						<core:Item text="UMD 2" key="1"/>
+						<core:Item text="UMD 3" key="2"/>
+					</items>
+				</Select>
+				<Label text="Costo Material" />
+				<Input value="{}" name="txtCostoMaterial" />
+				<Label text="Costo Transferencia" />
+				<Input value="{}" name="txtCostoTransferencia" />
+			</f:content>
+		</f:SimpleForm>
+	</VBox>
+	<beginButton>
+         <Button icon="sap-icon://save"  text="save" tooltip="save" press="closeDialog"/>
+    </beginButton>
+	<endButton>
+         <Button icon="sap-icon://decline" text="cancel" tooltip="cancel"  press="closeDialog"/>
+    </endButton>
+	</Dialog>
+</core:FragmentDefinition>

@@ -1,0 +1,148 @@
+{
+    "COMMODITIES": [
+        {
+            "CDEF_IDCOMMODITIES": "COM_0001",
+            "CDEF_COMMODITIE": "ALUMINIO",
+            "CDEF_SOCIEDAD": "A001_EL CARMEN, S. A.",
+            "CDEF_MONEDA": "USD",
+            "CDEF_UMD": "TON",
+            "CDEF_PRECIO": "1000",
+            "CDEF_OTROCOSTO": "100",
+            "CDEF_FORMULA": "(CDEF_PRECIO+CDEF_OTROS COSTOS)/1000)*MDEF_PESOMATERIAL",
+            "CDEF_PERIODO": "2018",
+            "CDEF_MES": "1"
+        },
+        {
+            "CDEF_IDCOMMODITIES": "COM_0001",
+            "CDEF_COMMODITIE": "ALUMINIO",
+            "CDEF_SOCIEDAD": "A001_EL CARMEN, S. A.",
+            "CDEF_MONEDA": "USD",
+            "CDEF_UMD": "TON",
+            "CDEF_PRECIO": "1000",
+            "CDEF_OTROCOSTO": "100",
+            "CDEF_FORMULA": "(CDEF_PRECIO+CDEF_OTROS COSTOS)/1000)*MDEF_PESOMATERIAL",
+            "CDEF_PERIODO": "2018",
+            "CDEF_MES": "2"
+        },
+        {
+            "CDEF_IDCOMMODITIES": "COM_0001",
+            "CDEF_COMMODITIE": "ALUMINIO",
+            "CDEF_SOCIEDAD": "A001_EL CARMEN, S. A.",
+            "CDEF_MONEDA": "USD",
+            "CDEF_UMD": "TON",
+            "CDEF_PRECIO": "1000",
+            "CDEF_OTROCOSTO": "100",
+            "CDEF_FORMULA": "(CDEF_PRECIO+CDEF_OTROS COSTOS)/1000)*MDEF_PESOMATERIAL",
+            "CDEF_PERIODO": "2018",
+            "CDEF_MES": "3"
+        },
+        {
+            "CDEF_IDCOMMODITIES": "COM_0001",
+            "CDEF_COMMODITIE": "ALUMINIO",
+            "CDEF_SOCIEDAD": "A001_EL CARMEN, S. A.",
+            "CDEF_MONEDA": "USD",
+            "CDEF_UMD": "TON",
+            "CDEF_PRECIO": "1000",
+            "CDEF_OTROCOSTO": "100",
+            "CDEF_FORMULA": "(CDEF_PRECIO+CDEF_OTROS COSTOS)/1000)*MDEF_PESOMATERIAL",
+            "CDEF_PERIODO": "2018",
+            "CDEF_MES": "4"
+        },
+        {
+            "CDEF_IDCOMMODITIES": "COM_0001",
+            "CDEF_COMMODITIE": "ALUMINIO",
+            "CDEF_SOCIEDAD": "A001_EL CARMEN, S. A.",
+            "CDEF_MONEDA": "USD",
+            "CDEF_UMD": "TON",
+            "CDEF_PRECIO": "1001",
+            "CDEF_OTROCOSTO": "100",
+            "CDEF_FORMULA": "(CDEF_PRECIO+CDEF_OTROS COSTOS)/1000)*MDEF_PESOMATERIAL",
+            "CDEF_PERIODO": "2018",
+            "CDEF_MES": "5"
+        },
+        {
+            "CDEF_IDCOMMODITIES": "COM_0001",
+            "CDEF_COMMODITIE": "ALUMINIO",
+            "CDEF_SOCIEDAD": "A001_EL CARMEN, S. A.",
+            "CDEF_MONEDA": "USD",
+            "CDEF_UMD": "TON",
+            "CDEF_PRECIO": "1001",
+            "CDEF_OTROCOSTO": "100",
+            "CDEF_FORMULA": "(CDEF_PRECIO+CDEF_OTROS COSTOS)/1000)*MDEF_PESOMATERIAL",
+            "CDEF_PERIODO": "2018",
+            "CDEF_MES": "6"
+        },
+        {
+            "CDEF_IDCOMMODITIES": "COM_0001",
+            "CDEF_COMMODITIE": "ALUMINIO",
+            "CDEF_SOCIEDAD": "A001_EL CARMEN, S. A.",
+            "CDEF_MONEDA": "USD",
+            "CDEF_UMD": "TON",
+            "CDEF_PRECIO": "1005",
+            "CDEF_OTROCOSTO": "100",
+            "CDEF_FORMULA": "(CDEF_PRECIO+CDEF_OTROS COSTOS)/1000)*MDEF_PESOMATERIAL",
+            "CDEF_PERIODO": "2018",
+            "CDEF_MES": "7"
+        },
+        {
+            "CDEF_IDCOMMODITIES": "COM_0001",
+            "CDEF_COMMODITIE": "ALUMINIO",
+            "CDEF_SOCIEDAD": "A001_EL CARMEN, S. A.",
+            "CDEF_MONEDA": "USD",
+            "CDEF_UMD": "TON",
+            "CDEF_PRECIO": "1010",
+            "CDEF_OTROCOSTO": "100",
+            "CDEF_FORMULA": "(CDEF_PRECIO+CDEF_OTROS COSTOS)/1000)*MDEF_PESOMATERIAL",
+            "CDEF_PERIODO": "2018",
+            "CDEF_MES": "8"
+        },
+        {
+            "CDEF_IDCOMMODITIES": "COM_0001",
+            "CDEF_COMMODITIE": "ALUMINIO",
+            "CDEF_SOCIEDAD": "A001_EL CARMEN, S. A.",
+            "CDEF_MONEDA": "USD",
+            "CDEF_UMD": "TON",
+            "CDEF_PRECIO": "1010",
+            "CDEF_OTROCOSTO": "100",
+            "CDEF_FORMULA": "(CDEF_PRECIO+CDEF_OTROS COSTOS)/1000)*MDEF_PESOMATERIAL",
+            "CDEF_PERIODO": "2018",
+            "CDEF_MES": "9"
+        },
+        {
+            "CDEF_IDCOMMODITIES": "COM_0001",
+            "CDEF_COMMODITIE": "ALUMINIO",
+            "CDEF_SOCIEDAD": "A001_EL CARMEN, S. A.",
+            "CDEF_MONEDA": "USD",
+            "CDEF_UMD": "TON",
+            "CDEF_PRECIO": "1010",
+            "CDEF_OTROCOSTO": "100",
+            "CDEF_FORMULA": "(CDEF_PRECIO+CDEF_OTROS COSTOS)/1000)*MDEF_PESOMATERIAL",
+            "CDEF_PERIODO": "2018",
+            "CDEF_MES": "10"
+        },
+        {
+            "CDEF_IDCOMMODITIES": "COM_0001",
+            "CDEF_COMMODITIE": "ALUMINIO",
+            "CDEF_SOCIEDAD": "A001_EL CARMEN, S. A.",
+            "CDEF_MONEDA": "USD",
+            "CDEF_UMD": "TON",
+            "CDEF_PRECIO": "1010",
+            "CDEF_OTROCOSTO": "100",
+            "CDEF_FORMULA": "(CDEF_PRECIO+CDEF_OTROS COSTOS)/1000)*MDEF_PESOMATERIAL",
+            "CDEF_PERIODO": "2018",
+            "CDEF_MES": "11"
+        },
+        {
+            "CDEF_IDCOMMODITIES": "COM_0001",
+            "CDEF_COMMODITIE": "ALUMINIO",
+            "CDEF_SOCIEDAD": "A001_EL CARMEN, S. A.",
+            "CDEF_MONEDA": "USD",
+            "CDEF_UMD": "TON",
+            "CDEF_PRECIO": "1010",
+            "CDEF_OTROCOSTO": "100",
+            "CDEF_FORMULA": "(CDEF_PRECIO+CDEF_OTROS COSTOS)/1000)*MDEF_PESOMATERIAL",
+            "CDEF_PERIODO": "2018",
+            "CDEF_MES": "12"
+        }
+    ]
+}

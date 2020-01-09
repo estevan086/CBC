@@ -1,0 +1,125 @@
+<mvc:View
+	controllerName="sap.ui.demo.walkthrough.controller.DataDefault.LogisticCost.GridLogisticCost"
+	xmlns:html="http://www.w3.org/1999/xhtml" 
+	xmlns:mvc="sap.ui.core.mvc" 
+	displayBlock="true"
+	xmlns="sap.ui.table" 
+	xmlns:m="sap.m" 
+	xmlns:u="sap.ui.unified" 
+	xmlns:c="sap.ui.core"
+    height="100%">
+	<m:App>
+		<m:pages>
+			<m:Page
+			showHeader="false"
+			enableScrolling="false"
+			class="sapUiContentPadding">
+			<m:content>
+			<Table id="table1"
+				rows="{/ProductCollection}"
+				selectionMode="None"
+				visibleRowCount="10">
+				<toolbar>
+					<m:OverflowToolbar>
+						<m:content>
+							<m:Title id="title" text="Costos Logisticos" />
+							<m:ToolbarSpacer/>
+							<m:Button
+								icon="sap-icon://add"
+								tooltip="add item"
+								press="frmLogisticPress"/>
+							<m:Button
+								icon="sap-icon://sort"
+								tooltip="Sort Categories"
+								press="sortCategories"/>
+							<m:Button
+								icon="sap-icon://decline"
+								tooltip="Clear all sortings"
+								press="clearAllSortings"/>
+							<m:SearchField
+								placeholder="Filter"
+								value="{ui>/globalFilter}"
+								search="filterGlobally"
+								width="15rem"/>
+						</m:content>
+					</m:OverflowToolbar>
+				</toolbar>
+				<columns>
+					<Column >
+						<m:Label text="ID Material" />
+						<template>
+							<m:Text text="{Name}" wrapping="false" />								
+						</template>
+					</Column>
+					<Column
+						id="categories"
+						showSortMenuEntry="false"
+						sortProperty="Category">
+						<m:Label text="Material" />
+						<template>
+							<m:Text text="{Category}" wrapping="false" />
+						</template>
+					</Column>
+					<Column
+						id="quantity"
+						sortProperty="Quantity">
+						<m:Label text="Centro" />
+						<template>
+							<m:Label text="{
+								path: 'Quantity',
+								type: 'sap.ui.model.type.Integer'
+							}" />
+						</template>
+					</Column>
+					<Column >
+						<m:Label text="ID Icoterm" />
+						<template>
+							<m:Label text="{Quantity}" />
+						</template>
+					</Column>
+					<Column>
+						<m:Label text="Und. Medida" />
+						<template>
+							<m:ObjectStatus text="{Status}" state="{
+								path: 'Available',
+								formatter: '.formatAvailableToObjectState'
+							}"/>
+						</template>
+					</Column>
+					<Column >
+						<m:Label text="Cant. Estandar" />
+						<template>
+							<u:Currency value="{Price}" currency="{CurrencyCode}"/>
+						</template>
+					</Column>
+					<Column >
+						<m:Label text="Moneda" />
+						<template>
+							<u:Currency value="{Price}" currency="{CurrencyCode}"/>
+						</template>
+					</Column>
+					<Column >
+						<m:Label text="Costo 1" />
+						<template>
+							<u:Currency value="{Price}" currency="{CurrencyCode}"/>
+						</template>
+					</Column>
+					<Column>
+						<m:Label text="Costo 2	" />
+						<template>
+							<u:Currency value="{Price}" currency="{CurrencyCode}"/>
+						</template>
+					</Column>
+					<Column>
+						<m:Label text="Total Costo" />
+						<template>
+							<u:Currency value="{Price}" currency="{CurrencyCode}"/>
+						</template>
+					</Column>
+				</columns>
+			</Table>
+			</m:content>
+		</m:Page>
+		</m:pages>
+		</m:App>
+</mvc:View>

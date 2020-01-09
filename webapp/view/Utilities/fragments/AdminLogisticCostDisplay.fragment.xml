@@ -1,0 +1,96 @@
+<core:FragmentDefinition 
+	xmlns="sap.m"
+	xmlns:f="sap.ui.layout.form" 
+	xmlns:core="sap.ui.core" 
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:html="http://www.w3.org/1999/xhtml" 
+	xmlns:l="sap.ui.layout">
+
+	<Dialog title="Crear costo logistico" >
+		<VBox class="sapUiSmallMargin">
+		<f:Form editable="true">
+			<f:layout>
+				<f:ResponsiveGridLayout
+					labelSpanXL="3"
+					labelSpanL="3"
+					labelSpanM="3"
+					labelSpanS="12"
+					adjustLabelSpan="false"
+					emptySpanXL="4"
+					emptySpanL="4"
+					emptySpanM="4"
+					emptySpanS="0"
+					columnsXL="1"
+					columnsL="1"
+					columnsM="1"
+					singleContainerFullSize="false" />
+			</f:layout>
+			<f:formContainers>
+				<f:FormContainer>
+					<f:formElements>
+						<f:FormElement label="Pais">
+							<f:fields>
+								<Select name="ddlPais">
+									<items>
+										<core:Item text="Pais 1" key="0"/>
+										<core:Item text="Pais 2" key="1"/>
+										<core:Item text="Pais 3" key="2"/>
+									</items>
+								</Select>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement label="Centro">
+							<f:fields>
+								<Select name="ddlCentro">
+									<items>
+										<core:Item text="Centro 1" key="0"/>
+										<core:Item text="Centro 2" key="1"/>
+										<core:Item text="Centro 3" key="2"/>
+									</items>
+								</Select>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement label="Nombre de Archivo">
+							<f:fields>
+								<Input  name="txtNAmeFile"/>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement label="Descripcion">
+							<f:fields>
+								<TextArea name="txtDetail"/>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement label="Año">
+							<f:fields>
+								<Select name="Año">
+									<items>
+										<core:Item text="2019" key="0"/>
+										<core:Item text="2020" key="1"/>
+										<core:Item text="2021" key="2"/>
+									</items>
+								</Select>
+							</f:fields>
+						</f:FormElement>
+							<f:FormElement label="Origen">
+							<f:fields>
+								<Input  name="txtOrigen"/>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement label="ID Version">
+							<f:fields>
+								<Input  name="txtVersion"/>
+							</f:fields>
+						</f:FormElement>
+					</f:formElements>
+				</f:FormContainer>
+			</f:formContainers>
+		</f:Form>
+	</VBox>
+	<beginButton>
+         <Button icon="sap-icon://save"  text="save" tooltip="save" press="closeDialog"/>
+    </beginButton>
+	<endButton>
+         <Button icon="sap-icon://decline" text="cancel" tooltip="cancel"  press="closeDialog"/>
+    </endButton>
+	</Dialog>
+</core:FragmentDefinition>

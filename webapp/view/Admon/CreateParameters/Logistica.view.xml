@@ -1,0 +1,70 @@
+<mvc:View
+	controllerName="sap.ui.demo.walkthrough.controller.Admon.CreateParameters.Logistica"
+	xmlns:html="http://www.w3.org/1999/xhtml" 
+	xmlns:mvc="sap.ui.core.mvc" 
+	displayBlock="true"
+	xmlns="sap.ui.table" 
+	xmlns:m="sap.m" 
+	xmlns:u="sap.ui.unified" 
+	xmlns:c="sap.ui.core"
+    height="100%">
+	<m:App>
+		<m:pages>
+			<m:Page
+			showHeader="false"
+			enableScrolling="false"
+			class="sapUiContentPadding">
+			<m:content>
+			<Table id="table1"
+				rows="{/CategoríasLogísticas}"
+				selectionMode="None"
+				visibleRowCount="10">
+					<toolbar>
+					<m:OverflowToolbar>
+						<m:content>
+							<m:Title id="title" text="Categoría Logística" />
+							<m:ToolbarSpacer/>
+							<m:Button
+								icon="sap-icon://add"
+								tooltip="add item"
+								press="frmLogisticPress"/>
+							<m:Button
+								icon="sap-icon://sort"
+								tooltip="Sort Categories"
+								press="sortCategories"/>
+							<m:Button
+								icon="sap-icon://decline"
+								tooltip="Clear all sortings"
+								press="clearAllSortings"/>
+							<m:SearchField
+								placeholder="Filter"
+								value="{ui>/globalFilter}"
+								search="filterGlobally"
+								width="15rem"/>
+						</m:content>
+					</m:OverflowToolbar>
+				</toolbar>
+				<columns>
+					<Column width="11rem">
+						<m:Label text="Nombre" />
+						<template>
+							<m:Text text="{Nombre}" wrapping="false" />
+						</template>
+					</Column>
+					<Column
+						id="categories"
+						width="30%"
+						showSortMenuEntry="false"
+						sortProperty="Category">
+						<m:Label text="Categorías Logísticas" />
+						<template>
+							<m:Text text="{Category}" wrapping="false" />
+						</template>
+					</Column>
+				</columns>
+			</Table>
+			</m:content>
+		</m:Page>
+		</m:pages>
+		</m:App>
+</mvc:View>

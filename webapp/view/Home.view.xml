@@ -1,0 +1,27 @@
+<mvc:View  controllerName="sap.ui.demo.walkthrough.controller.Home"
+	xmlns:l="sap.ui.layout" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" 	xmlns:f="sap.ui.layout.form">
+
+	<Panel id="containerLayout"
+		   width="95%">
+		<l:VerticalLayout id="containerLayoutw" width="100%" >
+		<l:BlockLayout id="BlockLayout" background="{/selectedBackground}">
+			<l:BlockLayoutRow>
+				<l:BlockLayoutCell title="Simulador de Costos y Compras"
+						width="3">
+					<Text text="Esta aplicación permitirá definir costos asociados a los materiales, 
+							precios de commodities que impactaran materiales que los contengan, 
+							costos logísticos y precios de materiales que podrán ser sensibilizados."/>
+				</l:BlockLayoutCell>
+			</l:BlockLayoutRow>
+		</l:BlockLayout>
+	</l:VerticalLayout>
+	<Panel id="carouselContainer" height="500px">
+		<Carousel class="sapUiContentPadding" loop="true" id="carouselSample" >
+		</Carousel>
+	</Panel>
+	</Panel>
+
+	
+
+</mvc:View>
+

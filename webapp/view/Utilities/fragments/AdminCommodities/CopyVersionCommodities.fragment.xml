@@ -1,0 +1,38 @@
+<c:FragmentDefinition 
+	xmlns:m="sap.m"
+	xmlns:f="sap.ui.layout.form" 
+	xmlns:c="sap.ui.core" 
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:html="http://www.w3.org/1999/xhtml" 
+	xmlns:l="sap.ui.layout">
+
+	<m:Dialog title="Copiar version commoditie" >
+		<m:VBox class="sapUiSmallMargin">
+			<f:SimpleForm 
+			    layout="ColumnLayout"
+				columnsM="2"
+				columnsL="2"
+				columnsXL="2">
+						<f:content>
+							<m:Label text="Nombre a Copiar"/>
+								<m:ComboBox
+								id="cbxVersion"
+								showSecondaryValues= "true">
+								<c:ListItem text="VersionDefault2020" key="0"  additionalText = "2020"/>
+								<c:ListItem text="VersionDefault2021" key="1"  additionalText = "2020"/>
+								<c:ListItem text="VersionDefault2022" key="2"  additionalText = "2022"/>
+								<c:ListItem text="VersionDefault2023" key="3"  additionalText = "2023"/>
+								<c:ListItem text="VersionDefault2024" key="4"  additionalText = "2024"/>
+								<c:ListItem text="VersionDefault2025" key="5"  additionalText = "2025"/>
+							</m:ComboBox>
+						</f:content>
+					</f:SimpleForm>
+		</m:VBox>
+	<m:beginButton>
+         <m:Button icon="sap-icon://copy"  text="Copiar version" tooltip="copy" press="preCopyVersion"/>
+    </m:beginButton>
+	<m:endButton>
+         <m:Button icon="sap-icon://decline" text="cancel" tooltip="cancel"  press="closeDialog"/>
+    </m:endButton>
+	</m:Dialog>
+</c:FragmentDefinition>

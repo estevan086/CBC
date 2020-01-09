@@ -1,0 +1,47 @@
+<c:FragmentDefinition 
+	xmlns:m="sap.m"
+	xmlns:f="sap.ui.layout.form" 
+	xmlns:c="sap.ui.core" 
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:html="http://www.w3.org/1999/xhtml" 
+	xmlns:l="sap.ui.layout">
+
+	<m:Dialog title="Editar Detalle commoditie" >
+		<m:VBox class="sapUiSmallMargin">
+			<f:SimpleForm 
+			    layout="ColumnLayout"
+				columnsM="2"
+				columnsL="2"
+				columnsXL="2">
+						<f:content>
+							<m:Label text="Moneda"/>
+							<m:Select name="ddlMoneda">
+								<m:items>
+									<c:Item text="USD" key="0"/>
+									<c:Item text="COP" key="1"/>
+									<c:Item text="Q" key="2"/>
+								</m:items>
+							</m:Select>
+							<m:Label text="UMD"/>
+							<m:Select name="ddlUMD">
+								<m:items>
+									<c:Item text="Kg" key="0"/>
+									<c:Item text="gr" key="1"/>
+									<c:Item text="TON" key="2"/>
+								</m:items>
+							</m:Select>
+							<m:Label text="Precio"/>
+							<m:Input  name="txtPrecio"/>
+							<m:Label text="Otros Costos"/>
+							<m:Input  name="txtPrecio2"/>
+						</f:content>
+					</f:SimpleForm>
+		</m:VBox>
+	<m:beginButton>
+         <m:Button icon="sap-icon://save"  text="save" tooltip="save" press="closeDialog"/>
+    </m:beginButton>
+	<m:endButton>
+         <m:Button icon="sap-icon://decline" text="cancel" tooltip="cancel"  press="closeDialog"/>
+    </m:endButton>
+	</m:Dialog>
+</c:FragmentDefinition>

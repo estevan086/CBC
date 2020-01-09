@@ -1,0 +1,48 @@
+{
+	"ICOTERM": [
+        {
+            "ID": "ICT_0001",
+            "ICOTERM": "EWX"
+        },
+        {
+            "ID": "ICT_0002",
+            "ICOTERM": "FCA"
+        },
+        {
+            "ID": "ICT_0003",
+            "ICOTERM": "CPT"
+        },
+        {
+            "ID": "ICT_0004",
+            "ICOTERM": "CIP"
+        },
+        {
+            "ID": "ICT_0005",
+            "ICOTERM": "DAT"
+        },
+        {
+            "ID": "ICT_0006",
+            "ICOTERM": "DAP"
+        },
+        {
+            "ID": "ICT_0007",
+            "ICOTERM": "DDP"
+        },
+        {
+            "ID": "ICT_0008",
+            "ICOTERM": "FAS"
+        },
+        {
+            "ID": "ICT_0009",
+            "ICOTERM": "FOB"
+        },
+        {
+            "ID": "ICT_0010",
+            "ICOTERM": "CFR"
+        },
+        {
+            "ID": "ICT_0011",
+            "ICOTERM": "CIF"
+        }
+    ]
+}
