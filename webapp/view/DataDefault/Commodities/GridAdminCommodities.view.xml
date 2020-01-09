@@ -18,7 +18,7 @@
 										<c:ListItem text="VersionDefault2024" key="4" additionalText="2024"/>
 										<c:ListItem text="VersionDefault2025" key="5" additionalText="2025"/>
 									</m:ComboBox>
-									<m:Label text="Año"/>
+									<m:Label text="Año"/> 
 									<m:Select name="ddlAño">
 										<m:items>
 											<c:Item text="2020" key="0"/>
