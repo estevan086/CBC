@@ -9,7 +9,6 @@
 	<m:Dialog title="Crear commoditie" >
 		<m:VBox class="sapUiSmallMargin">
 			<f:SimpleForm 
-			    layout="ColumnLayout"
 				columnsM="2"
 				columnsL="2"
 				columnsXL="2">

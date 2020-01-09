@@ -9,7 +9,6 @@
 	<Dialog title="Crear Version" >
 		<VBox class="sapUiSmallMargin">
 		<f:SimpleForm 
-		    layout="ColumnLayout"
 			columnsM="2"
 			columnsL="3"
 			columnsXL="4">

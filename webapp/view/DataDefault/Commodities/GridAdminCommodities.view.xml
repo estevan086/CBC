@@ -7,7 +7,7 @@
 				<m:content>
 					<m:Panel expandable="true" headerText="Version" width="auto" height="auto" class="sapUiResponsiveMargin">
 						<m:content>
-							<f:SimpleForm layout="ColumnLayout" columnsM="2" columnsL="3" columnsXL="3">
+							<f:SimpleForm  columnsM="2" columnsL="3" columnsXL="3">
 								<f:content>
 									<m:Label text="Nombre de Version"/>
 									<m:ComboBox id="cbxVersion" showSecondaryValues="true" selectionChange="setValuesVersion">
@@ -35,7 +35,7 @@
 									<m:TextArea name="txtDetail"/>
 								</f:content>
 							</f:SimpleForm>
-							<f:SimpleForm layout="ColumnLayout" columnsM="2" columnsL="3" columnsXL="3">
+							<f:SimpleForm  columnsM="2" columnsL="3" columnsXL="3">
 								<f:content>
 									<m:Label text=""/>
 									<tnt:InfoLabel text="Version Publica"/>

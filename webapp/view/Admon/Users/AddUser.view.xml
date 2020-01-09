@@ -17,7 +17,6 @@
 			class="sapUiContentPadding">
 			<m:content>
 				<f:SimpleForm 
-		    layout="ColumnLayout"
 			columnsM="2"
 			columnsL="2"
 			columnsXL="3">

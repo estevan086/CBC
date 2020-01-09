@@ -9,7 +9,6 @@
 	<Dialog title="Crear Perfil" >
 		<VBox class="sapUiSmallMargin">
 		<f:SimpleForm 
-		    layout="ColumnLayout"
 			columnsM="2"
 			columnsL="2"
 			columnsXL="3">
