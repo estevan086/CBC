@@ -20,6 +20,11 @@ sap.ui.define([
 	return Controller.extend("sap.ui.demo.walkthrough.controller.DataDefault.Commodities.GridAdminCommodities", {
 
 		onInit : function() {
+			
+			this.getView().byId("cbxVersion").setSelectedKey("0");
+			this.getView().byId("txtNameVersion").setValue(this.byId("cbxVersion").getValue().toString().substr(0,(this.byId("cbxVersion").getValue().toString().length -4)));
+			this.byId("PanelVersionHeader").setHeaderText(this.byId("cbxVersion").getValue());
+			this.getView().byId("ddlfecha").setSelectedKey(this.byId("cbxVersion").getSelectedKey());
 			// set explored app's demo model on this sample
 			var json = this.initSampleDataModel();
 			// Setting json to current view....
@@ -166,7 +171,16 @@ sap.ui.define([
 		setValuesVersion : function(oEvent)
 		{
 				var ValDate = this.byId("cbxVersion").getValue();
-				this.getView().byId("txtNameVersion").setValue(ValDate);
+				this.getView().byId("txtNameVersion").setValue(this.byId("cbxVersion").getValue().toString().substr(0,(this.byId("cbxVersion").getValue().toString().length -4)));
+				this.byId("PanelVersionHeader").setHeaderText(ValDate);
+				this.getView().byId("ddlfecha").setSelectedKey(this.byId("cbxVersion").getSelectedKey());
+		},
+		
+		setValuesFecha : function(oEvent)
+		{
+				this.getView().byId("cbxVersion").setSelectedKey(this.byId("ddlfecha").getSelectedKey());
+				this.getView().byId("txtNameVersion").setValue(this.byId("cbxVersion").getValue().toString().substr(0,(this.byId("cbxVersion").getValue().toString().length -4)));
+				this.byId("PanelVersionHeader").setHeaderText(this.byId("cbxVersion").getValue());
 		}
 		
 		

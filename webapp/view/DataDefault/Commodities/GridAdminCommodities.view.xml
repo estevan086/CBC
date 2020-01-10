@@ -5,7 +5,7 @@
 		<m:pages>
 			<m:Page showHeader="false" enableScrolling="false" class="sapUiContentPadding">
 				<m:content>
-					<m:Panel expandable="true" headerText="VersionDefault2020" width="auto" height="auto" class="sapUiResponsiveMargin">
+					<m:Panel id="PanelVersionHeader" expandable="true" headerText="VersionDefault2020" width="auto" height="auto" class="sapUiResponsiveMargin">
 						<m:content>
 							<f:SimpleForm layout="ColumnLayout" columnsM="1" columnsL="2" columnsXL="2">
 								<f:content>
@@ -19,16 +19,16 @@
 										<c:ListItem text="VersionDefault2025" key="5" additionalText="2025"/>
 									</m:ComboBox>
 									<m:Label text="Año"/>
-									<m:Select name="ddlAño">
+									<m:ComboBox id="ddlfecha" selectionChange="setValuesFecha">
 										<m:items>
-											<c:Item text="2020" key="0"/>
-											<c:Item text="2021" key="1"/>
-											<c:Item text="2022" key="2"/>
-											<c:Item text="2023" key="3"/>
-											<c:Item text="2024" key="4"/>
-											<c:Item text="2025" key="5"/>
+											<c:ListItem text="2020" key="0"/>
+											<c:ListItem text="2021" key="1"/>
+											<c:ListItem text="2022" key="2"/>
+											<c:ListItem text="2023" key="3"/>
+											<c:ListItem text="2024" key="4"/>
+											<c:ListItem text="2025" key="5"/>
 										</m:items>
-									</m:Select>
+									</m:ComboBox>
 									<m:Label text="Nombre de version"/>
 									<m:Input id="txtNameVersion"/>
 									<m:Label text="Descripcion"/>
@@ -39,7 +39,7 @@
 					</m:Panel>
 					<m:FlexBox height="auto" alignItems="Start" justifyContent="Start">
 						<m:items>
-							<tnt:InfoLabel text="Version Publica"/>
+							<tnt:InfoLabel id="lblInfoStatusVersion" text="Version Publica"/>
 							<m:Button icon="sap-icon://copy" text="Copiar" tooltip="Copiar version de commoditie" press="showFormCopyVersionCommoditie"/>
 							<m:Button icon="sap-icon://save" text="Guardar" tooltip="Guardar version de commoditie"/>
 							<m:Button icon="sap-icon://upload-to-cloud" text="Publicar" tooltip="Publicar version de commoditie"/>
