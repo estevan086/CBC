@@ -21,12 +21,12 @@ sap.ui.define([
 
 		onInit : function() {
 			var oInput1 = this.byId("InputNameVersion");
-	        oInput1.attachBrowserEvent("mouseout", function(){
+	        oInput1.attachBrowserEvent("onblur", function(){
 				this.setEditable(false);
 			});
 			
 			var oInput2 = this.byId("txtDetailVersion");
-	        oInput2.attachBrowserEvent("mouseout", function(){
+	        oInput2.attachBrowserEvent("blur", function(){
 				this.setEditable(false);
 			});
 						
@@ -108,6 +108,15 @@ sap.ui.define([
 			this.LogisticaDisplay = sap.ui.xmlfragment("sap.ui.demo.walkthrough.view.Utilities.fragments.AdminCommodities.EditCommodities", this);
 			this.LogisticaDisplay.open();
 			//this.getOwnerComponent().OpnFrmLogitica();
+		},
+		
+		saveVersionCommodities: function(oEvent) {
+			this.byId("InputNameVersion").setEditable(false);
+			this.byId("txtDetailVersion").setEditable(false);
+		},
+		
+		PublicVersionCommodities: function(oEvent) {
+			this.getView().byId("lblInfoStatusVersion").setValue("Version Publica");
 		},
 		
 		closeDialog: function() {

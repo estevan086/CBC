@@ -1,0 +1,70 @@
+<core:FragmentDefinition 
+	xmlns="sap.suite.ui.commons"
+	xmlns:m="sap.m"
+	xmlns:f="sap.ui.layout.form" 
+	xmlns:core="sap.ui.core" 
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:html="http://www.w3.org/1999/xhtml" 
+	xmlns:l="sap.ui.layout"
+	height="100%">
+
+	<m:Dialog title="Agregar Centro" >
+	<m:VBox class="sapUiSmallMargin">
+		<CalculationBuilder
+					allowStringConstants="true"
+					id="builder"
+					layoutType="{settings>/layoutType}"
+					expression="{/expression}"
+					readOnly="{settings>/readOnly}"
+					allowComparisonOperators="{settings>/allowComparison}"
+					allowLogicalOperators="{settings>/allowLogical}"
+					validateFunction="validateFunction"
+					afterValidation="afterValidation"
+					title="{/title}"
+					variables="{/variables}">
+				<variables>
+					<CalculationBuilderVariable
+							key="{key}"
+							group="{group}"
+							label="{label}"
+							items="{path:'items', templateShareable:true}">
+						<items>
+							<CalculationBuilderItem
+									key="{key}">
+							</CalculationBuilderItem>
+						</items>
+					</CalculationBuilderVariable>
+				</variables>
+				<operators>
+					<core:Item key="Contains" text="Contains" />
+				</operators>
+				<groups>
+					<CalculationBuilderGroup setSelection="setSelection"
+							title="References" key="references" icon="sap-icon://account" description="Internal item references">
+						<customView >
+							 	<m:Tree
+									id="Tree"
+									select="handleChange"
+									mode="SingleSelectMaster"
+		 							items="{/references}"
+									includeItemInSelection="true">
+										<m:StandardTreeItem	title="{text}" icon="{ref}">
+											<m:customData>
+												<core:CustomData key="{key}" value="{key}"/>
+											</m:customData>
+										</m:StandardTreeItem>
+								</m:Tree>
+						</customView>
+					</CalculationBuilderGroup>
+				</groups>
+			</CalculationBuilder>
+	</m:VBox>
+	<m:beginButton>
+         <m:Button icon="sap-icon://save"  text="save" tooltip="save" press="closeDialog"/>
+    </m:beginButton>
+	<m:endButton>
+         <m:Button icon="sap-icon://decline" text="cancel" tooltip="cancel"  press="closeDialog"/>
+    </m:endButton>
+	</m:Dialog>
+</core:FragmentDefinition>
+
