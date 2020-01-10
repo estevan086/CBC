@@ -1,145 +1,132 @@
 <mvc:View
 	controllerName="sap.ui.demo.walkthrough.controller.Commodities.GridCommodities"
-	xmlns:html="http://www.w3.org/1999/xhtml" 
-	xmlns:mvc="sap.ui.core.mvc" 
-	displayBlock="true"
-	xmlns="sap.ui.table" 
-	xmlns:m="sap.m" 
-	xmlns:u="sap.ui.unified" 
-	xmlns:c="sap.ui.core"
-    height="100%">
+	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:mvc="sap.ui.core.mvc" displayBlock="true" xmlns="sap.ui.table" xmlns:m="sap.m"
+	xmlns:u="sap.ui.unified" xmlns:c="sap.ui.core" xmlns:f="sap.ui.layout.form" xmlns:tnt="sap.tnt" height="100%">
 	<m:App>
 		<m:pages>
-			<m:Page
-			showHeader="false"
-			enableScrolling="false"
-			class="sapUiContentPadding">
-			<m:content>
-			<Table id="tblCommodities"
-				rows="{/ProductCollection}"
-				selectionMode="None"
-				visibleRowCount="10">
-					<toolbar>
-					<m:OverflowToolbar>
+			<m:Page showHeader="false" enableScrolling="false" class="sapUiContentPadding">
+				<m:content>
+					<m:Panel id="PanelVersionHeader" expandable="true" headerText="VersionDefault2020" width="auto" height="auto" class="sapUiResponsiveMargin">
 						<m:content>
-							<m:Title id="title" text="Commodities" />
-							<m:ToolbarSpacer/>
-							<m:Button
-								icon="sap-icon://add"
-								tooltip="add item"
-								press="frmLogisticPress"/>
-							<m:Button
-								icon="sap-icon://sort"
-								tooltip="Sort Categories"
-								press="sortCategories"/>
-							<m:Button
-								icon="sap-icon://decline"
-								tooltip="Clear all sortings"
-								press="clearAllSortings"/>
-							<m:SearchField
-								placeholder="Filter"
-								value="{ui>/globalFilter}"
-								search="filterGlobally"
-								width="15rem"/>
+							<f:SimpleForm layout="ColumnLayout" columnsM="1" columnsL="2" columnsXL="2">
+								<f:content>
+									<m:Label text="Nombre de Version"/>
+									<m:ComboBox id="cbxVersion" showSecondaryValues="true" selectionChange="setValuesVersion">
+										<c:ListItem text="VersionDefault2020" key="0" additionalText="2020"/>
+										<c:ListItem text="VersionDefault2021" key="1" additionalText="2020"/>
+										<c:ListItem text="VersionDefault2022" key="2" additionalText="2022"/>
+										<c:ListItem text="VersionDefault2023" key="3" additionalText="2023"/>
+										<c:ListItem text="VersionDefault2024" key="4" additionalText="2024"/>
+										<c:ListItem text="VersionDefault2025" key="5" additionalText="2025"/>
+									</m:ComboBox>
+									<m:Label text="Año"/>
+									<m:ComboBox id="ddlfecha" selectionChange="setValuesFecha">
+										<m:items>
+											<c:ListItem text="2020" key="0"/>
+											<c:ListItem text="2021" key="1"/>
+											<c:ListItem text="2022" key="2"/>
+											<c:ListItem text="2023" key="3"/>
+											<c:ListItem text="2024" key="4"/>
+											<c:ListItem text="2025" key="5"/>
+										</m:items>
+									</m:ComboBox>
+									<m:Label text="Nombre de version"/>
+									<m:Input id="txtNameVersion"/>
+									<m:Label text="Descripcion"/>
+									<m:TextArea name="txtDetail"/>
+								</f:content>
+							</f:SimpleForm>
 						</m:content>
-					</m:OverflowToolbar>
-				</toolbar>
-				<columns>
-					<Column width="11rem">
-						<m:Label text="ID Commoditie" />										
-						<template>
-							<m:Text text="{Name}" wrapping="false" />
-						</template>
-					</Column>
-					<Column
-						id="categoriese"
-						showSortMenuEntry="false"
-						sortProperty="Category">
-						<m:Label text="Sociedad" />
-						<template>
-							<m:Text text="{Category}" wrapping="false" />
-						</template>
-					</Column>
-					<Column
-						id="quantityt"
-						sortProperty="Quantity">
-						<m:Label text="Centro" />
-						<template>
-							<m:Label text="{
-								path: 'Quantity',
-								type: 'sap.ui.model.type.Integer'
-							}" />
-						</template>
-					</Column>
-					<Column>
-						<m:Label text="Moneda" />
-						<template>
-							<m:Label text="{Quantity}" />
-						</template>
-					</Column>
-					<Column>
-						<m:Label text="UMD" />
-						<template>
-							<m:ObjectStatus text="{Status}" state="{
-								path: 'Available',
-								formatter: '.formatAvailableToObjectState'
-							}"/>
-						</template>
-					</Column>
-					<Column>
-						<m:Label text="Precio" />
-						<template>
-							<u:Currency value="{Price}" currency="{CurrencyCode}"/>
-						</template>
-					</Column>
-					<Column
-						id="quantityw"
-						sortProperty="Quantity">
-						<m:Label text="Otros Costos" />
-						<template>
-							<m:Label text="{
-								path: 'Quantity',
-								type: 'sap.ui.model.type.Integer'
-							}" />
-						</template>
-					</Column>
-					<Column
-						id="quantityq"
-						sortProperty="Quantity">
-						<m:Label text="Formula" />
-						<template>
-							<m:Label text="{
-								path: 'Quantity',
-								type: 'sap.ui.model.type.Integer'
-							}" />
-						</template>
-					</Column>
-					<Column
-						id="quantityyy"
-						sortProperty="Quantity">
-						<m:Label text="Año" />
-						<template>
-							<m:Label text="{
-								path: 'Quantity',
-								type: 'sap.ui.model.type.Integer'
-							}" />
-						</template>
-					</Column>
-					<Column
-						id="quantityy"
-						sortProperty="Quantity">
-						<m:Label text="Mes" />
-						<template>
-							<m:Label text="{
-								path: 'Quantity',
-								type: 'sap.ui.model.type.Integer'
-							}" />
-						</template>
-					</Column>
-				</columns>
-			</Table>
-			</m:content>
-		</m:Page>
+					</m:Panel>
+					<m:FlexBox height="auto" alignItems="Start" justifyContent="Start">
+						<m:items>
+							<tnt:InfoLabel id="lblInfoStatusVersion" text="Version Publica"/>
+							<m:Button icon="sap-icon://copy" text="Copiar" tooltip="Copiar version de commoditie" press="showFormCopyVersionCommoditie"/>
+							<m:Button icon="sap-icon://save" text="Guardar" tooltip="Guardar version de commoditie"/>
+							<m:Button icon="sap-icon://upload-to-cloud" text="Publicar" tooltip="Publicar version de commoditie"/>
+						</m:items>
+					</m:FlexBox>
+					<Table id="tblCommodities" rows="{/COMMODITIES}" selectionMode="None" visibleRowCount="10">
+						<toolbar>
+							<m:OverflowToolbar>
+								<m:content>
+									<m:Title id="title" text="Commodities"/>
+									<m:ToolbarSpacer/>
+									<m:Button icon="sap-icon://download" text="Exportar" tooltip="Exportar version de commoditie"/>
+									<m:Button icon="sap-icon://upload" text="Importar" tooltip="Importar version de commoditie"/>
+									<m:Button icon="sap-icon://add" text="Crear Commodities" tooltip="Crear Commodities" press="showFormAddCommoditie"/>
+									<m:Button icon="sap-icon://edit" text="Editar Commodities" tooltip="Editar Commodities" press="showFormEditCommoditie"/>
+									<m:Button icon="sap-icon://sort" tooltip="Sort Categories" press="sortCategories"/>
+									<m:Button icon="sap-icon://decline" tooltip="Clear all sortings" press="clearAllSortings"/>
+									<m:SearchField placeholder="Filter" value="{ui>/globalFilter}" search="filterGlobally" width="15rem"/>
+								</m:content>
+							</m:OverflowToolbar>
+						</toolbar>
+						<columns>
+							<Column>
+								<m:Label text="ICDEF_IDCOMMODITIES"/>
+								<template>
+									<m:Text text="{CDEF_IDCOMMODITIES}" wrapping="false"/>
+								</template>
+							</Column>
+							<Column>
+								<m:Label text="CDEF_COMMODITIE"/>
+								<template>
+									<m:Text text="{CDEF_COMMODITIE}" wrapping="false"/>
+								</template>
+							</Column>
+							<Column>
+								<m:Label text="CDEF_SOCIEDAD"/>
+								<template>
+									<m:Text text="{CDEF_SOCIEDAD}" wrapping="false"/>
+								</template>
+							</Column>
+							<Column>
+								<m:Label text="CDEF_MONEDA"/>
+								<template>
+									<m:Text text="{CDEF_MONEDA}" wrapping="false"/>
+								</template>
+							</Column>
+							<Column>
+								<m:Label text="CDEF_UMD"/>
+								<template>
+									<m:Text text="{CDEF_UMD}" wrapping="false"/>
+								</template>
+							</Column>
+							<Column>
+								<m:Label text="CDEF_PRECIO"/>
+								<template>
+									<m:Text text="{CDEF_PRECIO}" wrapping="false"/>
+								</template>
+							</Column>
+							<Column>
+								<m:Label text="CDEF_OTROCOSTO"/>
+								<template>
+									<m:Text text="{CDEF_OTROCOSTO}" wrapping="false"/>
+								</template>
+							</Column>
+							<Column>
+								<m:Label text="CDEF_FORMULA"/>
+								<template>
+									<m:Text text="{CDEF_FORMULA}" wrapping="false"/>
+								</template>
+							</Column>
+							<Column>
+								<m:Label text="CDEF_PERIODO"/>
+								<template>
+									<m:Text text="{CDEF_PERIODO}" wrapping="false"/>
+								</template>
+							</Column>
+							<Column>
+								<m:Label text="CDEF_MES"/>
+								<template>
+									<m:Text text="{CDEF_MES}" wrapping="false"/>
+								</template>
+							</Column>
+						</columns>
+					</Table>
+				</m:content>
+			</m:Page>
 		</m:pages>
-		</m:App>
+	</m:App>
 </mvc:View>

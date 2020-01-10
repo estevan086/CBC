@@ -12,22 +12,5 @@
 			<ToolbarSpacer/>
 			<Button icon="sap-icon://message-information" press=".onOpenDialog" ariaLabelledBy="editButtonLabel"/>
 		</Toolbar>
-		<IconTabBar
-		id="idIconTabBarSeparatorNoIcon"
-		expanded="true"
-		class="sapUiResponsiveContentPadding">
-		<items>
-			<IconTabFilter
-				icon="sap-icon://product"
-				iconColor="Neutral"
-				text="Commodities">
-				<mvc:XMLView viewName="sap.ui.demo.walkthrough.view.Commodities.GridCommodities"/>
-			</IconTabFilter>
-			<IconTabFilter
-				icon=""
-				iconColor="Neutral" text="">
-			</IconTabFilter>
-		</items>
-	</IconTabBar>
-	
+		<mvc:XMLView viewName="sap.ui.demo.walkthrough.view.Commodities.GridCommodities"/>
 </mvc:View>

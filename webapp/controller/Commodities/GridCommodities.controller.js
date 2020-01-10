@@ -11,14 +11,20 @@ sap.ui.define([
 	"sap/m/Dialog",
 	"sap/m/List",
 	"sap/m/StandardListItem",
-	"sap/m/ButtonType"
+	"sap/m/ButtonType",
+	'sap/m/MessageBox'
 	
-], function(Controller, JSONModel, MessageToast, DateFormat, library, Filter, FilterOperator, Button, Dialog, List, StandardListItem,  ButtonType) {
+], function(Controller, JSONModel, MessageToast, DateFormat, library, Filter, FilterOperator, Button, Dialog, List, StandardListItem,  ButtonType, MessageBox) {
 	"use strict";
-	
+	var YO = this;
 	return Controller.extend("sap.ui.demo.walkthrough.controller.Commodities.GridCommodities", {
-
+		
 		onInit : function() {
+			
+			this.getView().byId("cbxVersion").setSelectedKey("0");
+			this.getView().byId("txtNameVersion").setValue(this.byId("cbxVersion").getValue().toString().substr(0,(this.byId("cbxVersion").getValue().toString().length -4)));
+			this.byId("PanelVersionHeader").setHeaderText(this.byId("cbxVersion").getValue());
+			this.getView().byId("ddlfecha").setSelectedKey(this.byId("cbxVersion").getSelectedKey());
 			// set explored app's demo model on this sample
 			var json = this.initSampleDataModel();
 			// Setting json to current view....
@@ -26,7 +32,7 @@ sap.ui.define([
 			this.getView().setModel(json);
 			
 			var fnPress = this.handleActionPress.bind(this);
-			var fnfrPress = this.showForm.bind(this);
+			var fnEditDetail = this.showFormEditDetail.bind(this);
 
 			this.modes = [
 				{
@@ -34,8 +40,8 @@ sap.ui.define([
 					text: "Navigation & Delete",
 					handler: function(){
 						var oTemplate = new sap.ui.table.RowAction({items: [
-							new sap.ui.table.RowActionItem({icon: "sap-icon://edit", text: "Edit", press:  fnfrPress}),
-							new sap.ui.table.RowActionItem({type: "Delete", press: fnPress})
+							new sap.ui.table.RowActionItem({icon: "sap-icon://edit", text: "Edit", press:  fnEditDetail}),
+							new sap.ui.table.RowActionItem({icon: "sap-icon://simulate", text: "Edit Formula", press: fnPress})
 						]});
 						return [2, oTemplate];
 					}
@@ -75,8 +81,26 @@ sap.ui.define([
 				this.getView().getModel().getProperty("ProductId", oRow.getBindingContext()));
 		},
 		
-		showForm: function(oEvent) {
-			this.LogisticaDisplay = sap.ui.xmlfragment("sap.ui.demo.walkthrough.view.Utilities.fragments.CommoditiesrDisplay", this);
+		showFormEditDetail: function(oEvent) {
+			this.LogisticaDisplay = sap.ui.xmlfragment("sap.ui.demo.walkthrough.view.Utilities.fragments.AdminCommodities.EditDetailCommodities", this);
+			this.LogisticaDisplay.open();
+			//this.getOwnerComponent().OpnFrmLogitica();
+		},
+		
+		showFormCopyVersionCommoditie: function(oEvent) {
+			this.LogisticaDisplay = sap.ui.xmlfragment("sap.ui.demo.walkthrough.view.Utilities.fragments.AdminCommodities.CopyVersionCommodities", this);
+			this.LogisticaDisplay.open();
+			//this.getOwnerComponent().OpnFrmLogitica();
+		},
+		
+		showFormAddCommoditie: function(oEvent) {
+			this.LogisticaDisplay = sap.ui.xmlfragment("sap.ui.demo.walkthrough.view.Utilities.fragments.AdminCommodities.AddCommodities", this);
+			this.LogisticaDisplay.open();
+			//this.getOwnerComponent().OpnFrmLogitica();
+		},
+		
+		showFormEditCommoditie: function(oEvent) {
+			this.LogisticaDisplay = sap.ui.xmlfragment("sap.ui.demo.walkthrough.view.Utilities.fragments.AdminCommodities.EditCommodities", this);
 			this.LogisticaDisplay.open();
 			//this.getOwnerComponent().OpnFrmLogitica();
 		},
@@ -85,28 +109,43 @@ sap.ui.define([
 			this.LogisticaDisplay.close();
 		},
 		
+		preCopyVersion: function(oEvent) {
+			YO = this;
+			var bCompact = !!this.getView().$().closest(".sapUiSizeCompact").length;
+			MessageBox.warning(
+				"esta seguro de copiar esta version?",
+				{
+					actions: [MessageBox.Action.OK, MessageBox.Action.CANCEL],
+					styleClass: bCompact ? "sapUiSizeCompact" : "",
+					onClose: function(sAction) {
+						YO.LogisticaDisplay.close();
+					}
+				}
+			);
+		},
+		
 		initSampleDataModel : function() {
 			var oModel = new JSONModel();
 			//var oDateFormat = DateFormat.getDateInstance({source: {pattern: "timestamp"}, pattern: "dd/MM/yyyy"});
 
-			jQuery.ajax("model/products.json", {
+			jQuery.ajax("model/CommoditiesTest.json", {
 				dataType: "json",
 				success: function(oData) {
 					var aTemp1 = [];
 					var aTemp2 = [];
 					var aSuppliersData = [];
 					var aCategoryData = [];
-					for (var i = 0; i < oData.ProductCollection.length; i++) {
-						var oProduct = oData.ProductCollection[i];
-						if (oProduct.SupplierName && jQuery.inArray(oProduct.SupplierName, aTemp1) < 0) {
-							aTemp1.push(oProduct.SupplierName);
-							aSuppliersData.push({Name: oProduct.SupplierName});
+					for (var i = 0; i < oData.COMMODITIES.length; i++) {
+						var oProduct = oData.COMMODITIES[i];
+						if (oProduct.CDEF_IDCOMMODITIES && jQuery.inArray(oProduct.CDEF_IDCOMMODITIES, aTemp1) < 0) {
+							aTemp1.push(oProduct.CDEF_IDCOMMODITIES);
+							aSuppliersData.push({Name: oProduct.CDEF_IDCOMMODITIES});
 						}
-						if (oProduct.Category && jQuery.inArray(oProduct.Category, aTemp2) < 0) {
-							aTemp2.push(oProduct.Category);
-							aCategoryData.push({Name: oProduct.Category});
+						if (oProduct.CDEF_COMMODITIE && jQuery.inArray(oProduct.CDEF_COMMODITIE, aTemp2) < 0) {
+							aTemp2.push(oProduct.CDEF_COMMODITIE);
+							aCategoryData.push({Name: oProduct.CDEF_COMMODITIE});
 						}
-						oProduct.DeliveryDate = (new Date()).getTime() - (i % 10 * 4 * 24 * 60 * 60 * 1000);
+						//oProduct.DeliveryDate = (new Date()).getTime() - (i % 10 * 4 * 24 * 60 * 60 * 1000);
 						//var d = new Date(oProduct.DeliveryDate);
 						//d = formatTime(d);
 						//oProduct.DeliveryDateStr = oDateFormat.format(new Date(oProduct.DeliveryDate));
@@ -125,7 +164,25 @@ sap.ui.define([
 			});
 
 			return oModel;
+		},
+		
+		//EVENTO vERSION
+		
+		setValuesVersion : function(oEvent)
+		{
+				var ValDate = this.byId("cbxVersion").getValue();
+				this.getView().byId("txtNameVersion").setValue(this.byId("cbxVersion").getValue().toString().substr(0,(this.byId("cbxVersion").getValue().toString().length -4)));
+				this.byId("PanelVersionHeader").setHeaderText(ValDate);
+				this.getView().byId("ddlfecha").setSelectedKey(this.byId("cbxVersion").getSelectedKey());
+		},
+		
+		setValuesFecha : function(oEvent)
+		{
+				this.getView().byId("cbxVersion").setSelectedKey(this.byId("ddlfecha").getSelectedKey());
+				this.getView().byId("txtNameVersion").setValue(this.byId("cbxVersion").getValue().toString().substr(0,(this.byId("cbxVersion").getValue().toString().length -4)));
+				this.byId("PanelVersionHeader").setHeaderText(this.byId("cbxVersion").getValue());
 		}
+		
 		
 	});
 

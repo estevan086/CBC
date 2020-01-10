@@ -20,11 +20,16 @@ sap.ui.define([
 	return Controller.extend("sap.ui.demo.walkthrough.controller.DataDefault.Commodities.GridAdminCommodities", {
 
 		onInit : function() {
+			var oInput1 = this.byId("InputNameVersion");
+	        oInput1.attachBrowserEvent("mouseout", function(){
+				this.setEditable(false);
+			});
 			
-			this.getView().byId("cbxVersion").setSelectedKey("0");
-			this.getView().byId("txtNameVersion").setValue(this.byId("cbxVersion").getValue().toString().substr(0,(this.byId("cbxVersion").getValue().toString().length -4)));
-			this.byId("PanelVersionHeader").setHeaderText(this.byId("cbxVersion").getValue());
-			this.getView().byId("ddlfecha").setSelectedKey(this.byId("cbxVersion").getSelectedKey());
+			var oInput2 = this.byId("txtDetailVersion");
+	        oInput2.attachBrowserEvent("mouseout", function(){
+				this.setEditable(false);
+			});
+						
 			// set explored app's demo model on this sample
 			var json = this.initSampleDataModel();
 			// Setting json to current view....
@@ -118,7 +123,7 @@ sap.ui.define([
 					actions: [MessageBox.Action.OK, MessageBox.Action.CANCEL],
 					styleClass: bCompact ? "sapUiSizeCompact" : "",
 					onClose: function(sAction) {
-						YO.LogisticaDisplay.close();
+						YO.LogisticaDisplay.destroy();
 					}
 				}
 			);
@@ -168,19 +173,12 @@ sap.ui.define([
 		
 		//EVENTO vERSION
 		
-		setValuesVersion : function(oEvent)
-		{
-				var ValDate = this.byId("cbxVersion").getValue();
-				this.getView().byId("txtNameVersion").setValue(this.byId("cbxVersion").getValue().toString().substr(0,(this.byId("cbxVersion").getValue().toString().length -4)));
-				this.byId("PanelVersionHeader").setHeaderText(ValDate);
-				this.getView().byId("ddlfecha").setSelectedKey(this.byId("cbxVersion").getSelectedKey());
+		EditNameVersion: function(){
+			this.byId("InputNameVersion").setEditable(true);
 		},
 		
-		setValuesFecha : function(oEvent)
-		{
-				this.getView().byId("cbxVersion").setSelectedKey(this.byId("ddlfecha").getSelectedKey());
-				this.getView().byId("txtNameVersion").setValue(this.byId("cbxVersion").getValue().toString().substr(0,(this.byId("cbxVersion").getValue().toString().length -4)));
-				this.byId("PanelVersionHeader").setHeaderText(this.byId("cbxVersion").getValue());
+		EditDetailVersion: function(){
+			this.byId("txtDetailVersion").setEditable(true);
 		}
 		
 		
