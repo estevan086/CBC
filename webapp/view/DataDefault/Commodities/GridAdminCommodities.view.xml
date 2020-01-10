@@ -7,7 +7,7 @@
 				<m:content>
 					<m:Panel id="PanelVersionHeader" expandable="true" headerText="VersionDefault2020" width="auto" height="auto" class="sapUiResponsiveMargin">
 						<m:content>
-							<f:SimpleForm layout="ColumnLayout" columnsM="1" columnsL="2" columnsXL="2">
+							<f:SimpleForm  columnsM="1" columnsL="2" columnsXL="2">
 								<f:content>
 									<m:Label text="Nombre de Version"/>
 									<m:ComboBox id="cbxVersion" showSecondaryValues="true" selectionChange="setValuesVersion">
