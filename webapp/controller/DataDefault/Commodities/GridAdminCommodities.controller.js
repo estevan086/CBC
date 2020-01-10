@@ -22,12 +22,12 @@ sap.ui.define([
 
 		onInit : function() {
 			var oInput1 = this.byId("InputNameVersion");
-	        oInput1.attachBrowserEvent("mouseout", function(){
+	        oInput1.attachBrowserEvent("onblur", function(){
 				this.setEditable(false);
 			});
 			
 			var oInput2 = this.byId("txtDetailVersion");
-	        oInput2.attachBrowserEvent("mouseout", function(){
+	        oInput2.attachBrowserEvent("blur", function(){
 				this.setEditable(false);
 			});
 						

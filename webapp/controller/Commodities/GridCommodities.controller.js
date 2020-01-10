@@ -12,26 +12,27 @@ sap.ui.define([
 	"sap/m/List",
 	"sap/m/StandardListItem",
 	"sap/m/ButtonType",
-	'sap/m/MessageBox'
+	'sap/m/MessageBox',
+	'sap/ui/core/Fragment'
 	
-], function(Controller, JSONModel, MessageToast, DateFormat, library, Filter, FilterOperator, Button, Dialog, List, StandardListItem,  ButtonType, MessageBox) {
+], function(Controller, JSONModel, MessageToast, DateFormat, library, Filter, FilterOperator, Button, Dialog, List, StandardListItem,  ButtonType, MessageBox, Fragment) {
 	"use strict";
 	var YO = this;
 	return Controller.extend("sap.ui.demo.walkthrough.controller.Commodities.GridCommodities", {
 		
 		onInit : function() {
 			
-			this.getView().byId("cbxVersion").setSelectedKey("0");
-			this.getView().byId("txtNameVersion").setValue(this.byId("cbxVersion").getValue().toString().substr(0,(this.byId("cbxVersion").getValue().toString().length -4)));
-			this.byId("PanelVersionHeader").setHeaderText(this.byId("cbxVersion").getValue());
-			this.getView().byId("ddlfecha").setSelectedKey(this.byId("cbxVersion").getSelectedKey());
+			//this.getView().byId("cbxVersion").setSelectedKey("0");
+			//this.getView().byId("txtNameVersion").setValue(this.byId("cbxVersion").getValue().toString().substr(0,(this.byId("cbxVersion").getValue().toString().length -4)));
+			//this.byId("PanelVersionHeader").setHeaderText(this.byId("cbxVersion").getValue());
+			//this.getView().byId("ddlfecha").setSelectedKey(this.byId("cbxVersion").getSelectedKey());
 			// set explored app's demo model on this sample
 			var json = this.initSampleDataModel();
 			// Setting json to current view....
 				//var json = new sap.ui.model.json.JSONModel("model/products.json");
 			this.getView().setModel(json);
 			
-			var fnPress = this.handleActionPress.bind(this);
+			var fnFormuladora = this.showCalculator.bind(this);
 			var fnEditDetail = this.showFormEditDetail.bind(this);
 
 			this.modes = [
@@ -41,7 +42,7 @@ sap.ui.define([
 					handler: function(){
 						var oTemplate = new sap.ui.table.RowAction({items: [
 							new sap.ui.table.RowActionItem({icon: "sap-icon://edit", text: "Edit", press:  fnEditDetail}),
-							new sap.ui.table.RowActionItem({icon: "sap-icon://simulate", text: "Edit Formula", press: fnPress})
+							new sap.ui.table.RowActionItem({icon: "sap-icon://simulate", text: "Edit Formula", press: fnFormuladora})
 						]});
 						return [2, oTemplate];
 					}
@@ -49,7 +50,8 @@ sap.ui.define([
 			];
 			this.getView().setModel(new JSONModel({items: this.modes}), "modes");
 			this.switchState("NavigationDelete");
-			
+			var that = this;
+			YO = this;
 		},
 
 		switchState : function(sKey) {
@@ -103,6 +105,42 @@ sap.ui.define([
 			this.LogisticaDisplay = sap.ui.xmlfragment("sap.ui.demo.walkthrough.view.Utilities.fragments.AdminCommodities.EditCommodities", this);
 			this.LogisticaDisplay.open();
 			//this.getOwnerComponent().OpnFrmLogitica();
+		},
+		
+		showCalculator: function(oEvent){
+			//this.LogisticaDisplay = sap.ui.xmlfragment("sap.ui.demo.walkthrough.view.Utilities.fragments.Calculadora", this);
+			//this.LogisticaDisplay.open();
+			//var testA = that.getView();
+			//var testB = YO.getView();
+			var sInputValue = "";
+
+			// create value help dialog
+			if (!YO._Calculadora) {
+				Fragment.load({
+					id: "Calculadora",
+					name: "sap.ui.demo.walkthrough.view.Utilities.fragments.Calculadora",
+					controller: YO
+				}).then(function (oCalculadora) {
+					YO._Calculadora = oCalculadora;
+					YO.getView().addDependent(YO._Calculadora);
+					YO._openValueHelpDialog(sInputValue);
+				}.bind(YO));
+			} else {
+				YO._openValueHelpDialog(sInputValue);
+			}
+			
+		},
+		
+		_openValueHelpDialog: function (sInputValue) {
+			// create a filter for the binding
+			this._Calculadora.getBinding("items").filter([new Filter(
+				"CENTRO",
+				FilterOperator.Contains,
+				sInputValue
+			)]);
+
+			// open value help dialog filtered by the input value
+			this._Calculadora.open(sInputValue);
 		},
 		
 		closeDialog: function() {
@@ -181,8 +219,45 @@ sap.ui.define([
 				this.getView().byId("cbxVersion").setSelectedKey(this.byId("ddlfecha").getSelectedKey());
 				this.getView().byId("txtNameVersion").setValue(this.byId("cbxVersion").getValue().toString().substr(0,(this.byId("cbxVersion").getValue().toString().length -4)));
 				this.byId("PanelVersionHeader").setHeaderText(this.byId("cbxVersion").getValue());
-		}
+		},
 		
+		
+		//EVENTOS CALCULADORA
+		
+		layoutTypeChanged: function (oEvent) {
+			var sKey = oEvent.getSource().getProperty("selectedKey");
+			this._oBuilder.setShowInputToolbar(sKey === "TextualOnly");
+		},
+		handleChange: function (oEvent) {
+			var oItem = oEvent.getSource().getSelectedItem(),
+				oData = oItem.getCustomData(),
+				sKey = oData[0].getKey();
+
+			this.getView().byId("builder").updateOrCreateItem(sKey);
+		},
+		setSelection: function (oEvent) {
+			var oList = this.getView().byId("Tree"),
+				sKey = oEvent.getParameter("key");
+
+			if (!sKey) {
+				var oSelectedItemInVariablesList = oList.getSelectedItem();
+				if (oSelectedItemInVariablesList) {
+					oList.setSelectedItem(oSelectedItemInVariablesList, false);
+				}
+			} else {
+				var aItems = oList.getItems();
+				for (var k = 0; k < aItems.length; k++) {
+					var oItem = aItems[k],
+						sItemKey = aItems[k].getCustomData()[0].getValue();
+
+					if (sKey === sItemKey) {
+						oList.setSelectedItem(oItem, true);
+						return;
+					}
+				}
+			}
+
+		}
 		
 	});
 
