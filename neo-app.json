@@ -20,6 +20,15 @@
         "version": "1.52.13"
       },
       "description": "SAPUI5 Test Resources"
+    },
+    {
+      "path": "/sap/opu/odata",
+      "target": {
+        "type": "destination",
+        "name": "gw_cbc_frontend_2",
+        "entryPath": "/sap/opu/odata"
+      },
+      "description": "gw_cbc_frontend_2"
     }
   ],
   "sendWelcomeFileRedirect": true

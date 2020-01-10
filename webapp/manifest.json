@@ -1,7 +1,7 @@
 {
-	"_version": "1.71.0",
+	"_version": "1.17.0",
 	"sap.app": {
-		"_version": "1.71.0",
+		"_version": "1.17.0",
 		"id": "sap.ui.demo.walkthrough",
 		"type": "application",
 		"i18n": "i18n/i18n.properties",
@@ -9,10 +9,23 @@
 		"description": "{{appDescription}}",
 		"applicationVersion": {
 			"version": "1.0.0"
+		},
+		"dataSources": {
+			"Z_SIMULADOR_SRV": {
+				"uri": "/sap/opu/odata/sap/Z_SIMULADOR_SRV/",
+				"type": "OData",
+				"settings": {
+					"localUri": "localService/metadata.xml"
+				}
+			}
+		},
+		"sourceTemplate": {
+			"id": "servicecatalog.connectivityComponentForManifest",
+			"version": "0.0.0"
 		}
 	},
 	"sap.ui": {
-		"_version": "1.71.0",
+		"_version": "1.17.0",
 		"technology": "UI5",
 		"deviceTypes": {
 			"desktop": true,
@@ -21,7 +34,7 @@
 		}
 	},
 	"sap.ui5": {
-		"_version": "1.71.0",
+		"_version": "1.17.0",
 		"rootView": {
 			"viewName": "sap.ui.demo.walkthrough.view.App",
 			"type": "XML",
@@ -29,7 +42,7 @@
 			"id": "app"
 		},
 		"dependencies": {
-			"minUI5Version": "1.60",
+			"minUI5Version": "1.71.10",
 			"libs": {
 				"sap.ui.core": {},
 				"sap.m": {},
@@ -46,12 +59,24 @@
 			"invoice": {
 				"type": "sap.ui.model.json.JSONModel",
 				"uri": "Invoices.json"
+			},
+			"ModelSimulador": {
+				"type": "sap.ui.model.odata.v2.ODataModel",
+				"settings": {
+					"defaultOperationMode": "Server",
+					"defaultBindingMode": "OneWay",
+					"defaultCountMode": "Request"
+				},
+				"dataSource": "Z_SIMULADOR_SRV",
+				"preload": true
 			}
 		},
 		"resources": {
-			"css": [{
-				"uri": "css/style.css"
-			}]
+			"css": [
+				{
+					"uri": "css/style.css"
+				}
+			]
 		}
 	}
 }
