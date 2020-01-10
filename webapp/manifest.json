@@ -1,7 +1,6 @@
 {
 	"_version": "1.17.0",
 	"sap.app": {
-		"_version": "1.17.0",
 		"id": "sap.ui.demo.walkthrough",
 		"type": "application",
 		"i18n": "i18n/i18n.properties",
@@ -25,7 +24,6 @@
 		}
 	},
 	"sap.ui": {
-		"_version": "1.17.0",
 		"technology": "UI5",
 		"deviceTypes": {
 			"desktop": true,
@@ -34,7 +32,6 @@
 		}
 	},
 	"sap.ui5": {
-		"_version": "1.17.0",
 		"rootView": {
 			"viewName": "sap.ui.demo.walkthrough.view.App",
 			"type": "XML",
@@ -72,11 +69,14 @@
 			}
 		},
 		"resources": {
-			"css": [
-				{
-					"uri": "css/style.css"
-				}
-			]
-		}
+			"css": [{
+				"uri": "css/style.css"
+			}]
+		},
+		"contentDensities": {
+			"compact": true,
+			"cozy": true
+		},
+		"flexEnabled": true
 	}
 }
