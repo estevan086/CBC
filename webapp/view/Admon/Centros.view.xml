@@ -9,9 +9,9 @@
 	xmlns:c="sap.ui.core"
 	xmlns:l="sap.ui.layout"
     height="100%">
-	<m:Toolbar class="sapNocolor">
-			<m:Title text="Administracion de Centros" level="H2"/>
-			<m:ToolbarSpacer/>
+	<m:Toolbar id="toolbar1" class="sapNocolor">
+			<m:Title id="title1" text="Administracion de Centros" level="H2"/>
+			<m:ToolbarSpacer id="toolbarspacer1"/>
 			<m:Title text="" level="H2"/>
 			<m:ToolbarSpacer/>
 			<m:Button icon="sap-icon://message-information" press=".onOpenDialog" ariaLabelledBy="editButtonLabel"/>

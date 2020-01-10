@@ -77,6 +77,6 @@
 			"compact": true,
 			"cozy": true
 		},
-		"flexEnabled": true
+		"flexEnabled": false
 	}
 }

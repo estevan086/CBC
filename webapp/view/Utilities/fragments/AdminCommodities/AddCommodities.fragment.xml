@@ -1,4 +1,4 @@
-<c:FragmentDefinition 
+<c:FragmentDefinition id="fragmentAddCommoditie"
 	xmlns:m="sap.m"
 	xmlns:f="sap.ui.layout.form" 
 	xmlns:c="sap.ui.core" 
@@ -6,25 +6,25 @@
 	xmlns:html="http://www.w3.org/1999/xhtml" 
 	xmlns:l="sap.ui.layout">
 
-	<m:Dialog title="Crear commoditie" >
-		<m:VBox class="sapUiSmallMargin">
-			<f:SimpleForm 
+	<m:Dialog id="dialogAdd" title="Crear commoditie" >
+		<m:VBox id="vbox1" class="sapUiSmallMargin">
+			<f:SimpleForm id="simpleform1"
 				columnsM="2"
 				columnsL="2"
 				columnsXL="2">
 						<f:content>
-							<m:Label text="ID"/>
-							<m:Input  name="txtID"/>
-							<m:Label text="Nombre"/>
-							<m:Input  name="txtName"/>
+							<m:Label id="label1" text="ID"/>
+							<m:Input id="inputId"  name="txtID"/>
+							<m:Label id="label2" text="Nombre"/>
+							<m:Input id="inputDesc" name="txtName"/>
 						</f:content>
 					</f:SimpleForm>
 		</m:VBox>
 	<m:beginButton>
-         <m:Button icon="sap-icon://save"  text="save" tooltip="save" press="closeDialog"/>
+         <m:Button id="btnsave" icon="sap-icon://save"  text="save" tooltip="save" press="AddCommoditie"/>
     </m:beginButton>
 	<m:endButton>
-         <m:Button icon="sap-icon://decline" text="cancel" tooltip="cancel"  press="closeDialog"/>
+         <m:Button id="btncancel" icon="sap-icon://decline" text="cancel" tooltip="cancel"  press="fnCloseFragment"/>
     </m:endButton>
 	</m:Dialog>
 </c:FragmentDefinition>

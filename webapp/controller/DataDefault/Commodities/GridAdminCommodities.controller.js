@@ -1,8 +1,9 @@
 jQuery.sap.require("sap.ui.demo.walkthrough.Formatter");
 sap.ui.define([
-	"sap/ui/core/mvc/Controller",
+	"sap/ui/demo/walkthrough/controller/BaseController",
 	"sap/ui/model/json/JSONModel",
 	"sap/m/MessageToast",
+	"sap/ui/core/Fragment",
 	"sap/ui/core/format/DateFormat",
 	"sap/ui/table/library",
 	"sap/ui/model/Filter",
@@ -14,9 +15,9 @@ sap.ui.define([
 	"sap/m/ButtonType",
 	'sap/m/MessageBox'
 	
-], function(Controller, JSONModel, MessageToast, DateFormat, library, Filter, FilterOperator, Button, Dialog, List, StandardListItem,  ButtonType, MessageBox) {
+], function(Controller, JSONModel, MessageToast, Fragment, DateFormat, library, Filter, FilterOperator, Button, Dialog, List, StandardListItem,  ButtonType, MessageBox) {
 	"use strict";
-	var YO = this;
+	var that = this;
 	return Controller.extend("sap.ui.demo.walkthrough.controller.DataDefault.Commodities.GridAdminCommodities", {
 
 		onInit : function() {
@@ -99,9 +100,11 @@ sap.ui.define([
 		},
 		
 		showFormAddCommoditie: function(oEvent) {
-			this.LogisticaDisplay = sap.ui.xmlfragment("sap.ui.demo.walkthrough.view.Utilities.fragments.AdminCommodities.AddCommodities", this);
-			this.LogisticaDisplay.open();
-			//this.getOwnerComponent().OpnFrmLogitica();
+			//Abre Fragment para insertar registro de ID Commoditie
+			this.fnOpenDialog("sap.ui.demo.walkthrough.view.Utilities.fragments.AdminCommodities.AddCommodities");
+			
+			
+			
 		},
 		
 		showFormEditCommoditie: function(oEvent) {
@@ -110,12 +113,43 @@ sap.ui.define([
 			//this.getOwnerComponent().OpnFrmLogitica();
 		},
 		
-		closeDialog: function() {
-			this.LogisticaDisplay.close();
+		AddCommoditie: function(oEvent) {
+			
+			var sServiceUrl = this.getView().getModel("ModelSimulador").sServiceUrl,
+				oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true),
+			    oEntidad = {};
+			
+			var	oIdCommoditie = sap.ui.getCore().getElementById("inputId").getValue();
+			var	oDescCommoditie = sap.ui.getCore().getElementById("inputDesc").getValue();
+			
+			oEntidad.IdCommoditie = oIdCommoditie;
+			oEntidad.Descripcion = oDescCommoditie;
+
+			var oCreate = this.fnCreateEntity(oModelService, "/headerCommoditiesSet", oEntidad);
+
+			this.fnCloseFragment();
+
+			that = this;
+			if (oCreate.tipo === "S") {
+				if (oCreate.datos.Msj !== "" && oCreate.datos.Msj !== undefined) {
+					sap.m.MessageToast.show(oCreate.datos.Msj);
+				} else {
+					sap.m.MessageToast.show("ID Commoditie creada exitosamente.");
+				}
+
+			} else {
+				sap.m.MessageBox.error(oCreate.msjs, null, "Mensaje del sistema", "OK", null);
+			}
+			
+			
+		},
+		
+		closeDialog: function(oEvent) {
+			this.fnCloseFragment();
 		},
 		
 		preCopyVersion: function(oEvent) {
-			YO = this;
+			that = this;
 			var bCompact = !!this.getView().$().closest(".sapUiSizeCompact").length;
 			MessageBox.warning(
 				"esta seguro de copiar esta version?",
@@ -123,7 +157,7 @@ sap.ui.define([
 					actions: [MessageBox.Action.OK, MessageBox.Action.CANCEL],
 					styleClass: bCompact ? "sapUiSizeCompact" : "",
 					onClose: function(sAction) {
-						YO.LogisticaDisplay.destroy();
+						that.LogisticaDisplay.destroy();
 					}
 				}
 			);
