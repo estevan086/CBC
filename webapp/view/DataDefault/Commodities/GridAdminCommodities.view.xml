@@ -5,9 +5,9 @@
 		<m:pages>
 			<m:Page showHeader="false" enableScrolling="false" class="sapUiContentPadding">
 				<m:content>
-					<m:Panel expandable="true" headerText="Version" width="auto" height="auto" class="sapUiResponsiveMargin">
+					<m:Panel expandable="true" headerText="VersionDefault2020" width="auto" height="auto" class="sapUiResponsiveMargin">
 						<m:content>
-							<f:SimpleForm  columnsM="2" columnsL="3" columnsXL="3">
+							<f:SimpleForm layout="ColumnLayout" columnsM="1" columnsL="2" columnsXL="2">
 								<f:content>
 									<m:Label text="Nombre de Version"/>
 									<m:ComboBox id="cbxVersion" showSecondaryValues="true" selectionChange="setValuesVersion">
@@ -18,7 +18,7 @@
 										<c:ListItem text="VersionDefault2024" key="4" additionalText="2024"/>
 										<c:ListItem text="VersionDefault2025" key="5" additionalText="2025"/>
 									</m:ComboBox>
-									<m:Label text="Año"/> 
+									<m:Label text="Año"/>
 									<m:Select name="ddlAño">
 										<m:items>
 											<c:Item text="2020" key="0"/>
@@ -35,26 +35,24 @@
 									<m:TextArea name="txtDetail"/>
 								</f:content>
 							</f:SimpleForm>
-							<f:SimpleForm  columnsM="2" columnsL="3" columnsXL="3">
-								<f:content>
-									<m:Label text=""/>
-									<tnt:InfoLabel text="Version Publica"/>
-									<m:Button icon="sap-icon://download" text="Exportar" tooltip="Exportar version de commoditie"/>
-									<m:Button icon="sap-icon://upload" text="Importar" tooltip="Importar version de commoditie"/>
-									<m:Label text=""/>
-									<m:Button icon="sap-icon://copy" text="Copiar" tooltip="Copiar version de commoditie" press="showFormCopyVersionCommoditie"/>
-									<m:Button icon="sap-icon://save" text="Guardar" tooltip="Guardar version de commoditie"/>
-									<m:Button icon="sap-icon://upload-to-cloud" text="Publicar" tooltip="Publicar version de commoditie"/>
-								</f:content>
-							</f:SimpleForm>
 						</m:content>
 					</m:Panel>
+					<m:FlexBox height="auto" alignItems="Start" justifyContent="Start">
+						<m:items>
+							<tnt:InfoLabel text="Version Publica"/>
+							<m:Button icon="sap-icon://copy" text="Copiar" tooltip="Copiar version de commoditie" press="showFormCopyVersionCommoditie"/>
+							<m:Button icon="sap-icon://save" text="Guardar" tooltip="Guardar version de commoditie"/>
+							<m:Button icon="sap-icon://upload-to-cloud" text="Publicar" tooltip="Publicar version de commoditie"/>
+						</m:items>
+					</m:FlexBox>
 					<Table id="tblCommodities" rows="{/COMMODITIES}" selectionMode="None" visibleRowCount="10">
 						<toolbar>
 							<m:OverflowToolbar>
 								<m:content>
 									<m:Title id="title" text="Commodities"/>
 									<m:ToolbarSpacer/>
+									<m:Button icon="sap-icon://download" text="Exportar" tooltip="Exportar version de commoditie"/>
+									<m:Button icon="sap-icon://upload" text="Importar" tooltip="Importar version de commoditie"/>
 									<m:Button icon="sap-icon://add" text="Crear Commodities" tooltip="Crear Commodities" press="showFormAddCommoditie"/>
 									<m:Button icon="sap-icon://edit" text="Editar Commodities" tooltip="Editar Commodities" press="showFormEditCommoditie"/>
 									<m:Button icon="sap-icon://sort" tooltip="Sort Categories" press="sortCategories"/>
