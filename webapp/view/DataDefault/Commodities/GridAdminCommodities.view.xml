@@ -32,14 +32,14 @@
 								enabled="true"
 								editable="false"
 							/>
-							<m:Button icon="sap-icon://edit" text="Editar Commodities" tooltip="Editar Commodities" press="EditNameVersion"/>
+							<m:Button icon="sap-icon://edit" text="Editar Nombre" tooltip="Editar Commodities" press="EditNameVersion"/>
 							<m:Label text="Descripcion de version"/>
 							<m:TextArea id="txtDetailVersion"
 								placeholder="Descripcion de version"
 								enabled="true"
 								editable="false"
 							/>
-							<m:Button icon="sap-icon://edit" text="Editar Commodities" tooltip="Editar Commodities" press="EditDetailVersion"/>
+							<m:Button icon="sap-icon://edit" text="Editar Descripcion" tooltip="Editar Commodities" press="EditDetailVersion"/>
 						</f:content>
 					</f:SimpleForm>
 					<m:FlexBox height="auto" alignItems="Start" justifyContent="Start">
