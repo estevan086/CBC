@@ -14,51 +14,60 @@ sap.ui.define([
 	"sap/m/StandardListItem",
 	"sap/m/ButtonType",
 	'sap/m/MessageBox'
-	
-], function(Controller, JSONModel, MessageToast, Fragment, DateFormat, library, Filter, FilterOperator, Button, Dialog, List, StandardListItem,  ButtonType, MessageBox) {
+
+], function (Controller, JSONModel, MessageToast, Fragment, DateFormat, library, Filter, FilterOperator, Button, Dialog, List,
+	StandardListItem, ButtonType, MessageBox) {
 	"use strict";
 	var that = this;
 	return Controller.extend("sap.ui.demo.walkthrough.controller.DataDefault.Commodities.GridAdminCommodities", {
 
-		onInit : function() {
+		onInit: function () {
 			var oInput1 = this.byId("InputNameVersion");
-	        oInput1.attachBrowserEvent("onblur", function(){
+			oInput1.attachBrowserEvent("onblur", function () {
 				this.setEditable(false);
 			});
-			
+
 			var oInput2 = this.byId("txtDetailVersion");
-	        oInput2.attachBrowserEvent("blur", function(){
+			oInput2.attachBrowserEvent("blur", function () {
 				this.setEditable(false);
 			});
-						
+
 			// set explored app's demo model on this sample
-			var json = this.initSampleDataModel();
-			// Setting json to current view....
-				//var json = new sap.ui.model.json.JSONModel("model/products.json");
-			this.getView().setModel(json);
-			
+			// var json = this.initSampleDataModel();
+			// this.getView().setModel(json);
+
 			var fnPress = this.handleActionPress.bind(this);
 			var fnEditDetail = this.showFormEditDetail.bind(this);
 
-			this.modes = [
-				{
-					key: "NavigationDelete",
-					text: "Navigation & Delete",
-					handler: function(){
-						var oTemplate = new sap.ui.table.RowAction({items: [
-							new sap.ui.table.RowActionItem({icon: "sap-icon://edit", text: "Edit", press:  fnEditDetail}),
-							new sap.ui.table.RowActionItem({icon: "sap-icon://simulate", text: "Edit Formula", press: fnPress})
-						]});
-						return [2, oTemplate];
-					}
+			this.modes = [{
+				key: "NavigationDelete",
+				text: "Navigation & Delete",
+				handler: function () {
+					var oTemplate = new sap.ui.table.RowAction({
+						items: [
+							new sap.ui.table.RowActionItem({
+								icon: "sap-icon://edit",
+								text: "Edit",
+								press: fnEditDetail
+							}),
+							new sap.ui.table.RowActionItem({
+								icon: "sap-icon://simulate",
+								text: "Edit Formula",
+								press: fnPress
+							})
+						]
+					});
+					return [2, oTemplate];
 				}
-			];
-			this.getView().setModel(new JSONModel({items: this.modes}), "modes");
+			}];
+			this.getView().setModel(new JSONModel({
+				items: this.modes
+			}), "modes");
 			this.switchState("NavigationDelete");
-			
+
 		},
 
-		switchState : function(sKey) {
+		switchState: function (sKey) {
 			var oTable = this.byId("tblCommodities");
 			var iCount = 0;
 			var oTemplate = oTable.getRowActionTemplate();
@@ -79,49 +88,50 @@ sap.ui.define([
 			oTable.setRowActionTemplate(oTemplate);
 			oTable.setRowActionCount(iCount);
 		},
-		
-		handleActionPress : function(oEvent) {
+
+		handleActionPress: function (oEvent) {
 			var oRow = oEvent.getParameter("row");
 			var oItem = oEvent.getParameter("item");
 			MessageToast.show("Item " + (oItem.getText() || oItem.getType()) + " pressed for product with id " +
 				this.getView().getModel().getProperty("ProductId", oRow.getBindingContext()));
 		},
-		
-		showFormEditDetail: function(oEvent) {
-			this.LogisticaDisplay = sap.ui.xmlfragment("sap.ui.demo.walkthrough.view.Utilities.fragments.AdminCommodities.EditDetailCommodities", this);
+
+		showFormEditDetail: function (oEvent) {
+			this.LogisticaDisplay = sap.ui.xmlfragment(
+				"sap.ui.demo.walkthrough.view.Utilities.fragments.AdminCommodities.EditDetailCommodities", this);
 			this.LogisticaDisplay.open();
 			//this.getOwnerComponent().OpnFrmLogitica();
 		},
-		
-		showFormCopyVersionCommoditie: function(oEvent) {
-			this.LogisticaDisplay = sap.ui.xmlfragment("sap.ui.demo.walkthrough.view.Utilities.fragments.AdminCommodities.CopyVersionCommodities", this);
+
+		showFormCopyVersionCommoditie: function (oEvent) {
+			this.LogisticaDisplay = sap.ui.xmlfragment(
+				"sap.ui.demo.walkthrough.view.Utilities.fragments.AdminCommodities.CopyVersionCommodities", this);
 			this.LogisticaDisplay.open();
 			//this.getOwnerComponent().OpnFrmLogitica();
 		},
-		
-		showFormAddCommoditie: function(oEvent) {
+
+		showFormAddCommoditie: function (oEvent) {
 			//Abre Fragment para insertar registro de ID Commoditie
 			this.fnOpenDialog("sap.ui.demo.walkthrough.view.Utilities.fragments.AdminCommodities.AddCommodities");
-			
-			
-			
+
 		},
-		
-		showFormEditCommoditie: function(oEvent) {
-			this.LogisticaDisplay = sap.ui.xmlfragment("sap.ui.demo.walkthrough.view.Utilities.fragments.AdminCommodities.EditCommodities", this);
+
+		showFormEditCommoditie: function (oEvent) {
+			this.LogisticaDisplay = sap.ui.xmlfragment("sap.ui.demo.walkthrough.view.Utilities.fragments.AdminCommodities.EditCommodities",
+				this);
 			this.LogisticaDisplay.open();
 			//this.getOwnerComponent().OpnFrmLogitica();
 		},
-		
-		AddCommoditie: function(oEvent) {
-			
+
+		AddCommoditie: function (oEvent) {
+
 			var sServiceUrl = this.getView().getModel("ModelSimulador").sServiceUrl,
 				oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true),
-			    oEntidad = {};
-			
-			var	oIdCommoditie = sap.ui.getCore().getElementById("inputId").getValue();
-			var	oDescCommoditie = sap.ui.getCore().getElementById("inputDesc").getValue();
-			
+				oEntidad = {};
+
+			var oIdCommoditie = sap.ui.getCore().getElementById("inputId").getValue();
+			var oDescCommoditie = sap.ui.getCore().getElementById("inputDesc").getValue();
+
 			oEntidad.IdCommoditie = oIdCommoditie;
 			oEntidad.Descripcion = oDescCommoditie;
 
@@ -135,87 +145,143 @@ sap.ui.define([
 					sap.m.MessageToast.show(oCreate.datos.Msj);
 				} else {
 					sap.m.MessageToast.show("ID Commoditie creada exitosamente.");
+
+					this.AddAllPeriodsforCommoditie(oEntidad);
+
 				}
 
 			} else {
 				sap.m.MessageBox.error(oCreate.msjs, null, "Mensaje del sistema", "OK", null);
 			}
-			
-			
+
 		},
-		
-		closeDialog: function(oEvent) {
+
+		closeDialog: function (oEvent) {
 			this.fnCloseFragment();
 		},
-		
-		preCopyVersion: function(oEvent) {
+
+		preCopyVersion: function (oEvent) {
 			that = this;
 			var bCompact = !!this.getView().$().closest(".sapUiSizeCompact").length;
 			MessageBox.warning(
-				"esta seguro de copiar esta version?",
-				{
+				"esta seguro de copiar esta version?", {
 					actions: [MessageBox.Action.OK, MessageBox.Action.CANCEL],
 					styleClass: bCompact ? "sapUiSizeCompact" : "",
-					onClose: function(sAction) {
+					onClose: function (sAction) {
 						that.LogisticaDisplay.destroy();
 					}
 				}
 			);
 		},
-		
-		initSampleDataModel : function() {
+
+		initSampleDataModel: function () {
 			var oModel = new JSONModel();
 			//var oDateFormat = DateFormat.getDateInstance({source: {pattern: "timestamp"}, pattern: "dd/MM/yyyy"});
 
 			jQuery.ajax("model/CommoditiesTest.json", {
 				dataType: "json",
-				success: function(oData) {
-					var aTemp1 = [];
-					var aTemp2 = [];
-					var aSuppliersData = [];
-					var aCategoryData = [];
-					for (var i = 0; i < oData.COMMODITIES.length; i++) {
-						var oProduct = oData.COMMODITIES[i];
-						if (oProduct.CDEF_IDCOMMODITIES && jQuery.inArray(oProduct.CDEF_IDCOMMODITIES, aTemp1) < 0) {
-							aTemp1.push(oProduct.CDEF_IDCOMMODITIES);
-							aSuppliersData.push({Name: oProduct.CDEF_IDCOMMODITIES});
-						}
-						if (oProduct.CDEF_COMMODITIE && jQuery.inArray(oProduct.CDEF_COMMODITIE, aTemp2) < 0) {
-							aTemp2.push(oProduct.CDEF_COMMODITIE);
-							aCategoryData.push({Name: oProduct.CDEF_COMMODITIE});
-						}
-						//oProduct.DeliveryDate = (new Date()).getTime() - (i % 10 * 4 * 24 * 60 * 60 * 1000);
-						//var d = new Date(oProduct.DeliveryDate);
-						//d = formatTime(d);
-						//oProduct.DeliveryDateStr = oDateFormat.format(new Date(oProduct.DeliveryDate));
-						oProduct.Heavy = oProduct.WeightMeasure > 1000 ? "true" : "false";
-						oProduct.Available = oProduct.Status === "Available" ? true : false;
-					}
-
-					oData.Suppliers = aSuppliersData;
-					oData.Categories = aCategoryData;
+				success: function (oData) {
 
 					oModel.setData(oData);
 				},
-				error: function() {
+				error: function () {
 					jQuery.sap.log.error("failed to load json");
 				}
 			});
 
 			return oModel;
 		},
-		
+
+		AddAllPeriodsforCommoditie: function (oEntidad) {
+			var oModel = new JSONModel();
+			
+			
+			//var ValDate = this.byId("txtDate").getValue();\
+			
+			var today = new Date();
+			var year = today.getFullYear()	;		
+			
+			var oData = '{ "COMMODITIES" : [';
+			
+			for (var i = 1; i <= 12; i++) {
+			  var ii = i < 10 ? '0' + i.toString() : i.toString();	
+			  
+			  oData += '{ ';
+			  
+			  oData += ' "CDEF_IDCOMMODITIES":"'+ oEntidad.IdCommoditie +'", ';
+			  oData += ' "CDEF_COMMODITIE":"'+ oEntidad.Descripcion +'", ';
+			  oData += ' "CDEF_PERIODO":"'+ year +'", ';
+			  oData += ' "CDEF_MES":"'+  ii +'" ';
+			  
+			  if (i === 12){
+			  	oData += ' }';
+			  }
+			  else {
+			  	 oData += ' },';
+			  }
+			 
+			  
+			}
+			
+			oData = oData +  ']}';
+			var obj = $.parseJSON(oData);
+			
+			
+			// var ODataPeriodos = { "COMMODITIES": [ 
+			// 		{
+			//             "CDEF_IDCOMMODITIES": "",
+			//             "CDEF_COMMODITIE": "",
+			//             "CDEF_SOCIEDAD": "",
+			//             "CDEF_MONEDA": "",
+			//             "CDEF_UMD": "",
+			//             "CDEF_PRECIO": "",
+			//             "CDEF_OTROCOSTO": "",
+			//             "CDEF_FORMULA": "",
+			//             "CDEF_PERIODO": "2020",
+			//             "CDEF_MES": "1"
+			//         }
+			// 	] };
+				
+			// for (var j = 0; j < 12; j++) {
+				
+			// 	ODataPeriodos[j].CDEF_IDCOMMODITIES =  oEntidad.IdCommoditie;
+			// 	ODataPeriodos[j].CDEF_COMMODITIE    =  oEntidad.DesCommoditie;
+				
+			// 	// //var oProduct = oData.COMMODITIES[i];
+			// 	// if (oProduct.CDEF_IDCOMMODITIES && jQuery.inArray(oProduct.CDEF_IDCOMMODITIES, aTemp1) < 0) {
+			// 	// 	aTemp1.push(oProduct.CDEF_IDCOMMODITIES);
+			// 	// 	aSuppliersData.push({
+			// 	// 		Name: oProduct.CDEF_IDCOMMODITIES
+			// 	// 	});
+			// 	// }
+			// 	// if (oProduct.CDEF_COMMODITIE && jQuery.inArray(oProduct.CDEF_COMMODITIE, aTemp2) < 0) {
+			// 	// 	aTemp2.push(oProduct.CDEF_COMMODITIE);
+			// 	// 	aCategoryData.push({
+			// 	// 		Name: oProduct.CDEF_COMMODITIE
+			// 	// 	});
+			// 	// }
+	
+			// }
+           
+            //var obj = $.parseJSON(OData);
+	    	var json = new sap.ui.model.json.JSONModel(obj);
+			this.getView().setModel(json);
+
+			oModel.setData(oData);
+
+			return oModel;
+		},
+
 		//EVENTO vERSION
-		
-		EditNameVersion: function(){
+
+		EditNameVersion: function () {
 			this.byId("InputNameVersion").setEditable(true);
 		},
-		
-		EditDetailVersion: function(){
+
+		EditDetailVersion: function () {
 			this.byId("txtDetailVersion").setEditable(true);
 		}
-		
-		
+
 	});
 
 });
