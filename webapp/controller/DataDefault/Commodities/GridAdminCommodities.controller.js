@@ -22,15 +22,16 @@ sap.ui.define([
 	return Controller.extend("sap.ui.demo.walkthrough.controller.DataDefault.Commodities.GridAdminCommodities", {
 
 		onInit: function () {
-			var oInput1 = this.byId("InputNameVersion");
-			oInput1.attachBrowserEvent("onblur", function () {
-				this.setEditable(false);
-			});
+			
+		//  	var oInput1 = this.byId("InputNameVersion");
+		//	oInput1.attachBrowserEvent("onblur", function () {
+		//		this.setEditable(false);
+		//	});
 
-			var oInput2 = this.byId("txtDetailVersion");
-			oInput2.attachBrowserEvent("blur", function () {
-				this.setEditable(false);
-			});
+		//	var oInput2 = this.byId("txtDetailVersion");
+		//	oInput2.attachBrowserEvent("blur", function () {
+		//		this.setEditable(false);
+		//	});
 
 			// set explored app's demo model on this sample
 			// var json = this.initSampleDataModel();
@@ -117,10 +118,11 @@ sap.ui.define([
 		},
 
 		showFormEditCommoditie: function (oEvent) {
-			this.LogisticaDisplay = sap.ui.xmlfragment("sap.ui.demo.walkthrough.view.Utilities.fragments.AdminCommodities.EditCommodities",
-				this);
-			this.LogisticaDisplay.open();
+			//this.LogisticaDisplay = sap.ui.xmlfragment("sap.ui.demo.walkthrough.view.Utilities.fragments.AdminCommodities.EditCommodities",
+			//	this);
+			//this.LogisticaDisplay.open();
 			//this.getOwnerComponent().OpnFrmLogitica();
+			this.getOwnerComponent().getRouter().navTo("page2");
 		},
 
 		AddCommoditie: function (oEvent) {
@@ -275,11 +277,13 @@ sap.ui.define([
 		//EVENTO vERSION
 
 		EditNameVersion: function () {
-			this.byId("InputNameVersion").setEditable(true);
+			//this.byId("InputNameVersion").setEditable(true);
+			this.getOwnerComponent().getRouter().navTo("page2");
 		},
 
 		EditDetailVersion: function () {
-			this.byId("txtDetailVersion").setEditable(true);
+			//this.byId("txtDetailVersion").setEditable(true);
+			
 		}
 
 	});

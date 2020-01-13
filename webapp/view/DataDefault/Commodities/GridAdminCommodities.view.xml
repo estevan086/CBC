@@ -5,46 +5,8 @@
 		<m:pages>
 			<m:Page showHeader="false" enableScrolling="false" class="sapUiContentPadding">
 				<m:content>
-					
-					<f:SimpleForm id="SimpleFormDisplay480_Trial"
-						editable="false"
-						layout="ResponsiveGridLayout"
-						labelSpanXL="4"
-						labelSpanL="4"
-						labelSpanM="4"
-						labelSpanS="12"
-						adjustLabelSpan="false"
-						emptySpanXL="0"
-						emptySpanL="0"
-						emptySpanM="0"
-						emptySpanS="0"
-						columnsXL="3"
-						columnsL="2"
-						columnsM="2"
-						singleContainerFullSize="false" >
-						<f:content>
-							<m:Label text="Nombre de version"/>
-							<m:Input
-								id="InputNameVersion"
-								class="sapUiSmallMarginBottom"
-								type="Text"
-								placeholder="Nombre de version"
-								enabled="true"
-								editable="false"
-							/>
-							<m:Button icon="sap-icon://edit" text="Editar Nombre" tooltip="Editar Commodities" press="EditNameVersion"/>
-							<m:Label text="Descripcion de version"/>
-							<m:TextArea id="txtDetailVersion"
-								placeholder="Descripcion de version"
-								enabled="true"
-								editable="false"
-							/>
-							<m:Button icon="sap-icon://edit" text="Editar Descripcion" tooltip="Editar Commodities" press="EditDetailVersion"/>
-						</f:content>
-					</f:SimpleForm>
 					<m:FlexBox height="auto" alignItems="Start" justifyContent="Start">
 						<m:items>
-							<tnt:InfoLabel id="lblInfoStatusVersion" text="Version en Proceso"/>
 							<m:Button icon="sap-icon://copy" text="Copiar" tooltip="Copiar version de commoditie" press="showFormCopyVersionCommoditie"/>
 							<m:Button icon="sap-icon://save" text="Guardar" tooltip="Guardar version de commoditie" press="saveVersionCommodities"/>
 							<m:Button icon="sap-icon://upload-to-cloud" text="Publicar" tooltip="Publicar version de commoditie" press="PublicVersionCommodities"/>
@@ -56,13 +18,10 @@
 								<m:content>
 									<m:Title id="title" text="Commodities"/>
 									<m:ToolbarSpacer/>
-									<m:Button icon="sap-icon://download" text="Exportar" tooltip="Exportar version de commoditie"/>
-									<m:Button icon="sap-icon://upload" text="Importar" tooltip="Importar version de commoditie"/>
-									<m:Button icon="sap-icon://add" text="Crear Commodities" tooltip="Crear Commodities" press="showFormAddCommoditie"/>
-									<m:Button icon="sap-icon://edit" text="Editar Commodities" tooltip="Editar Commodities" press="showFormEditCommoditie"/>
-									<m:Button icon="sap-icon://sort" tooltip="Sort Categories" press="sortCategories"/>
-									<m:Button icon="sap-icon://decline" tooltip="Clear all sortings" press="clearAllSortings"/>
-									<m:SearchField placeholder="Filter" value="{ui>/globalFilter}" search="filterGlobally" width="15rem"/>
+									<m:Button icon="sap-icon://sys-next-page" text="Exportar" tooltip="Exportar version de commoditie"/>
+									<m:Button icon="sap-icon://sys-prev-page" text="Importar" tooltip="Importar version de commoditie"/>
+									<m:Button icon="sap-icon://factory" text="Administrar Commodities" tooltip="Crear Commodities" press="showFormAddCommoditie"/>
+									<m:Button icon="sap-icon://edit" text="Editar Version Default" tooltip="Version Default" press="showFormEditCommoditie"/>
 								</m:content>
 							</m:OverflowToolbar>
 						</toolbar>
