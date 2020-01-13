@@ -42,7 +42,7 @@ sap.ui.define([
 					handler: function(){
 						var oTemplate = new sap.ui.table.RowAction({items: [
 							new sap.ui.table.RowActionItem({icon: "sap-icon://edit", text: "Edit", press:  fnEditDetail}),
-							new sap.ui.table.RowActionItem({icon: "sap-icon://simulate", text: "Edit Formula", press: fnFormuladora})
+							new sap.ui.table.RowActionItem({icon: "sap-icon://simulate", text: "Edit Formula", press: fnFormuladora, id:"btnFormuladora"})
 						]});
 						return [2, oTemplate];
 					}
@@ -112,35 +112,45 @@ sap.ui.define([
 			//this.LogisticaDisplay.open();
 			//var testA = that.getView();
 			//var testB = YO.getView();
-			var sInputValue = "";
+			var sInputValue = oEvent.getSource().getId();
 
 			// create value help dialog
-			if (!YO._Calculadora) {
+			if (!this._valueHelpDialog) {
 				Fragment.load({
-					id: "Calculadora",
+					id: "valueHelpDialog",
 					name: "sap.ui.demo.walkthrough.view.Utilities.fragments.Calculadora",
-					controller: YO
-				}).then(function (oCalculadora) {
-					YO._Calculadora = oCalculadora;
-					YO.getView().addDependent(YO._Calculadora);
-					YO._openValueHelpDialog(sInputValue);
-				}.bind(YO));
+					controller: this
+				}).then(function (oValueHelpDialog) {
+					this._valueHelpDialog = oValueHelpDialog;
+					this.getView().addDependent(this._valueHelpDialog);
+					this._openValueHelpDialog(sInputValue);
+				}.bind(this));
 			} else {
-				YO._openValueHelpDialog(sInputValue);
+				this._openValueHelpDialog(sInputValue);
 			}
 			
 		},
 		
 		_openValueHelpDialog: function (sInputValue) {
 			// create a filter for the binding
-			this._Calculadora.getBinding("items").filter([new Filter(
-				"CENTRO",
+			this._valueHelpDialog.getBinding("items").filter([new Filter(
+				"references",
 				FilterOperator.Contains,
 				sInputValue
 			)]);
 
 			// open value help dialog filtered by the input value
-			this._Calculadora.open(sInputValue);
+			this._valueHelpDialog.open(sInputValue);
+		},
+
+		_handleValueHelpSearch: function (evt) {
+			var sValue = evt.getParameter("value");
+			var oFilter = new Filter(
+				"references",
+				FilterOperator.Contains,
+				sValue
+			);
+			evt.getSource().getBinding("items").filter([oFilter]);
 		},
 		
 		closeDialog: function() {

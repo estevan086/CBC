@@ -14,7 +14,7 @@
 					allowStringConstants="true"
 					id="builder"
 					layoutType="{settings>/layoutType}"
-					expression="{/expression}"
+					expression=""
 					readOnly="{settings>/readOnly}"
 					allowComparisonOperators="{settings>/allowComparison}"
 					allowLogicalOperators="{settings>/allowLogical}"
