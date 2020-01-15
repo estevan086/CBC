@@ -1,4 +1,4 @@
-<mvc:View height="100%" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:f="sap.f" xmlns:tnt="sap.tnt"
+<mvc:View id="sbwsa1" height="100%" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:f="sap.f" xmlns:tnt="sap.tnt"
 	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
 	controllerName="sap.ui.demo.walkthrough.controller.ShellBarWithSplitApp">
 	<tnt:ToolPage id="toolPage">
@@ -32,7 +32,7 @@
 			</tnt:SideNavigation>
 		</tnt:sideContent>
 		<tnt:mainContents>
-			<NavContainer id="pageContainer" initialPage="page2">
+			<NavContainer id="NavContainer" initialPage="page2">
 				<pages>
 					<ScrollContainer id="rtHome" horizontal="false" vertical="true" height="100%">
 						<mvc:XMLView viewName="sap.ui.demo.walkthrough.view.Home"/>
@@ -66,7 +66,7 @@
 						<mvc:XMLView viewName="sap.ui.demo.walkthrough.view.DataDefault.Commodities.AdminCommodities"/>
 					</ScrollContainer>
 					<ScrollContainer id="rtChIDCommodities" horizontal="false" vertical="true" height="100%">
-						<mvc:XMLView viewName="sap.ui.demo.walkthrough.view.DataDefault.Commodities.View2"/>
+						<mvc:XMLView viewName="sap.ui.demo.walkthrough.view.DataDefault.Commodities.AdminIDCommodities"/>
 					</ScrollContainer>
 					<ScrollContainer id="rtChMateriales" horizontal="false" vertical="true" height="100%">
 						<mvc:XMLView viewName="sap.ui.demo.walkthrough.view.DataDefault.Materiales.AdminMateriales"/>

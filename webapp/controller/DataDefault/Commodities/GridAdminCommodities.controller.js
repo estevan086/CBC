@@ -22,54 +22,118 @@ sap.ui.define([
 	return Controller.extend("sap.ui.demo.walkthrough.controller.DataDefault.Commodities.GridAdminCommodities", {
 
 		onInit: function () {
-			
-		//  	var oInput1 = this.byId("InputNameVersion");
-		//	oInput1.attachBrowserEvent("onblur", function () {
-		//		this.setEditable(false);
-		//	});
 
-		//	var oInput2 = this.byId("txtDetailVersion");
-		//	oInput2.attachBrowserEvent("blur", function () {
-		//		this.setEditable(false);
-		//	});
+			//  	var oInput1 = this.byId("InputNameVersion");
+			//	oInput1.attachBrowserEvent("onblur", function () {
+			//		this.setEditable(false);
+			//	});
+
+			//	var oInput2 = this.byId("txtDetailVersion");
+			//	oInput2.attachBrowserEvent("blur", function () {
+			//		this.setEditable(false);
+			//	});
 
 			// set explored app's demo model on this sample
 			var json = this.initSampleDataModel();
 			this.getView().setModel(json);
 
-			var fnPress = this.handleActionPress.bind(this);
-			var fnEditDetail = this.showFormEditDetail.bind(this);
+			// var itemTemplate = new sap.ui.core.ListItem();      //  creating a ListItem object                  
+			// itemTemplate .bindProperty("text", "text");   //  bind for the "text" property a certain path from the model
+			
+			// var comboBox = new sap.ui.commons.ComboBox({});    // create the ComboBox
+			// comboBox .bindItems({ 
+			//   path: "/items", 
+			//   template: itemTemplate, 
+			//   templateShareable:true
+			//   });  
+			
+			
+			// var model = new sap.ui.model.json.JSONModel({items:[
+			//   {text:"Item 1"},
+			//   {text:"Item 2"},
+			//   {text:"Item 3"},
+			//   {text:"Item 4"},
+			//   {text:"Item 5"}
+			// ]});
+			// comboBox.setModel(model);
+			// comboBox.placeAt("body");
+			
+			// var clone = comboBox.clone();
+			// clone.placeAt("body");
 
-			this.modes = [{
-				key: "NavigationDelete",
-				text: "Navigation & Delete",
-				handler: function () {
-					var oTemplate = new sap.ui.table.RowAction({
-						items: [
-							new sap.ui.table.RowActionItem({
-								icon: "sap-icon://edit",
-								text: "Edit",
-								press: fnEditDetail
-							}),
-							new sap.ui.table.RowActionItem({
-								icon: "sap-icon://simulate",
-								text: "Edit Formula",
-								press: fnPress
-							})
-						]
-					});
-					return [2, oTemplate];
-				}
+
+
+			var dataObject = [{
+				Product: "Power Projector 4713",
+				Weight: "1467",
+				Supplier: ""
+			}, {
+				Product: "Gladiator MX",
+				Weight: "321",
+				Supplier: ""
+			}, {
+				Product: "Hurricane GX",
+				Weight: "588",
+				Supplier: ""
+			}, {
+				Product: "Webcam",
+				Weight: "700",
+				Supplier: ""
+			}, {
+				Product: "Monitor Locking Cable",
+				Weight: "40",
+				Supplier: ""
+			}, {
+				Product: "Laptop Case",
+				Weight: "1289",
+				Supplier: ""
 			}];
-			this.getView().setModel(new JSONModel({
-				items: this.modes
-			}), "modes");
-			this.switchState("NavigationDelete");
+			var supplierObject = [{
+				Supplier: "Titanium"
+			}, {
+				Supplier: "Technocom"
+			}, {
+				Supplier: "Red Point Stores"
+			}];
+			// var oModel = new sap.ui.model.json.JSONModel();
+			// oModel.setData(dataObject);
+			// sap.ui.getCore().setModel(oModel);
+			
+			// sap.ui.getCore().getModel().setProperty("/Supplier", supplierObject);
+
+			// var fnPress = this.handleActionPress.bind(this);
+			// var fnEditDetail = this.showFormEditDetail.bind(this);
+
+			// this.modes = [{
+			// 	key: "NavigationDelete",
+			// 	text: "Navigation & Delete",
+			// 	handler: function () {
+			// 		var oTemplate = new sap.ui.table.RowAction({
+			// 			items: [
+			// 				new sap.ui.table.RowActionItem({
+			// 					icon: "sap-icon://edit",
+			// 					text: "Edit",
+			// 					press: fnEditDetail
+			// 				}),
+			// 				new sap.ui.table.RowActionItem({
+			// 					icon: "sap-icon://simulate",
+			// 					text: "Edit Formula",
+			// 					press: fnPress
+			// 				})
+			// 			]
+			// 		});
+			// 		return [2, oTemplate];
+			// 	}
+			// }];
+			// this.getView().setModel(new JSONModel({
+			// 	items: this.modes
+			// }), "modes");
+			// this.switchState("NavigationDelete");
 
 		},
 
 		switchState: function (sKey) {
-			var oTable = this.byId("tblCommodities");
+			var oTable = this.byId("tblCommoditiesui");
 			var iCount = 0;
 			var oTemplate = oTable.getRowActionTemplate();
 			if (oTemplate) {
@@ -197,34 +261,31 @@ sap.ui.define([
 		AddAllPeriodsforCommoditie: function (oEntidad) {
 			var oModel = new JSONModel();
 			var today = new Date();
-			var year = today.getFullYear()	;		
-			
+			var year = today.getFullYear();
+
 			var oData = '{ "COMMODITIES" : [';
-			
+
 			for (var i = 1; i <= 12; i++) {
-			  var ii = i < 10 ? '0' + i.toString() : i.toString();	
-			  
-			  oData += '{ ';
-			  
-			  oData += ' "CDEF_IDCOMMODITIES":"'+ oEntidad.IdCommoditie +'", ';
-			  oData += ' "CDEF_COMMODITIE":"'+ oEntidad.Descripcion +'", ';
-			  oData += ' "CDEF_PERIODO":"'+ year +'", ';
-			  oData += ' "CDEF_MES":"'+  ii +'" ';
-			  
-			  if (i === 12){
-			  	oData += ' }';
-			  }
-			  else {
-			  	 oData += ' },';
-			  }
-			 
-			  
+				var ii = i < 10 ? '0' + i.toString() : i.toString();
+
+				oData += '{ ';
+
+				oData += ' "CDEF_IDCOMMODITIES":"' + oEntidad.IdCommoditie + '", ';
+				oData += ' "CDEF_COMMODITIE":"' + oEntidad.Descripcion + '", ';
+				oData += ' "CDEF_PERIODO":"' + year + '", ';
+				oData += ' "CDEF_MES":"' + ii + '" ';
+
+				if (i === 12) {
+					oData += ' }';
+				} else {
+					oData += ' },';
+				}
+
 			}
-			
-			oData = oData +  ']}';
+
+			oData = oData + ']}';
 			var obj = $.parseJSON(oData);
-			
-			
+
 			// var ODataPeriodos = { "COMMODITIES": [ 
 			// 		{
 			//             "CDEF_IDCOMMODITIES": "",
@@ -239,12 +300,12 @@ sap.ui.define([
 			//             "CDEF_MES": "1"
 			//         }
 			// 	] };
-				
+
 			// for (var j = 0; j < 12; j++) {
-				
+
 			// 	ODataPeriodos[j].CDEF_IDCOMMODITIES =  oEntidad.IdCommoditie;
 			// 	ODataPeriodos[j].CDEF_COMMODITIE    =  oEntidad.DesCommoditie;
-				
+
 			// 	// //var oProduct = oData.COMMODITIES[i];
 			// 	// if (oProduct.CDEF_IDCOMMODITIES && jQuery.inArray(oProduct.CDEF_IDCOMMODITIES, aTemp1) < 0) {
 			// 	// 	aTemp1.push(oProduct.CDEF_IDCOMMODITIES);
@@ -258,11 +319,11 @@ sap.ui.define([
 			// 	// 		Name: oProduct.CDEF_COMMODITIE
 			// 	// 	});
 			// 	// }
-	
+
 			// }
-           
-            //var obj = $.parseJSON(OData);
-	    	var json = new sap.ui.model.json.JSONModel(obj);
+
+			//var obj = $.parseJSON(OData);
+			var json = new sap.ui.model.json.JSONModel(obj);
 			this.getView().setModel(json);
 
 			oModel.setData(oData);
@@ -279,16 +340,17 @@ sap.ui.define([
 
 		EditDetailVersion: function () {
 			//this.byId("txtDetailVersion").setEditable(true);
-			
+
 		},
-		
-		onGoToIdCommoditieTable: function(oEvent) {
-			//var oPageContainer = sap.ui.getCore().byId("pageContainer");
-			var oMainContentView = oEvent.getSource().getParent().getParent().getParent().getParent().getParent().getParent().getParent().getParent().getParent().getParent();
-			
-			var oPageContainer = oMainContentView.byId("pageContainer");
-			
-	    	oPageContainer.to(oMainContentView.createId("rtChIDCommodities"));
+
+		onGoToIdCommoditieTable: function (oEvent) {
+			//var oPageContainer = sap.ui.getCore().byId("NavContainer");
+			var oMainContentView = oEvent.getSource().getParent().getParent().getParent().getParent().getParent().getParent().getParent().getParent()
+				.getParent().getParent();
+
+			var oNavContainer = oMainContentView.byId("NavContainer");
+
+			oNavContainer.to(oMainContentView.createId("rtChIDCommodities"));
 		}
 
 	});

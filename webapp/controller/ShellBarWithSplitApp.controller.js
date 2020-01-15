@@ -175,7 +175,7 @@ sap.ui.define([
 
 		onItemSelect : function(oEvent) {
 			var item = oEvent.getParameter('item');
-			this.byId("pageContainer").to(this.getView().createId(item.getKey()));
+			this.byId("NavContainer").to(this.getView().createId(item.getKey()));
 		},
 
 		onMenuButtonPress : function() {

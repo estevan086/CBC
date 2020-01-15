@@ -13,8 +13,8 @@
             "CDEF_MES": "1"
         },
         {
-            "CDEF_IDCOMMODITIES": "COM_0001",
-            "CDEF_COMMODITIE": "ALUMINIO",
+            "CDEF_IDCOMMODITIES": "COM_0002",
+            "CDEF_COMMODITIE": "ALUMINIO2",
             "CDEF_SOCIEDAD": "A001_EL CARMEN, S. A.",
             "CDEF_MONEDA": "USD",
             "CDEF_UMD": "TON",
@@ -25,8 +25,8 @@
             "CDEF_MES": "2"
         },
         {
-            "CDEF_IDCOMMODITIES": "COM_0001",
-            "CDEF_COMMODITIE": "ALUMINIO",
+            "CDEF_IDCOMMODITIES": "COM_0003",
+            "CDEF_COMMODITIE": "ALUMINIO3",
             "CDEF_SOCIEDAD": "A001_EL CARMEN, S. A.",
             "CDEF_MONEDA": "USD",
             "CDEF_UMD": "TON",
@@ -145,6 +145,13 @@
             "CDEF_MES": "12"
         }
     ],
+    "supplierObject" : [{
+				"Supplier": "Titanium"
+			}, {
+				"Supplier": "Technocom"
+			}, {
+				"Supplier": "Red Point Stores"
+			}],
     "expression": " (AssetTurnover + ProfitMargin) Contains (Reference3)+ \"StringConstant\"",
 	"title": "Dupont Analysis",
 	"showToolbar": true,

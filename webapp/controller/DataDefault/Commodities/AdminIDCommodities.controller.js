@@ -1,14 +1,20 @@
 sap.ui.define( ["sap/ui/core/mvc/Controller", "sap/ui/core/routing/History"], function (Controller, History) {
 	"use strict";
 
-	return Controller.extend("sap.ui.demo.walkthrough.controller.DataDefault.Commodities.View2", {
+	return Controller.extend("sap.ui.demo.walkthrough.controller.DataDefault.Commodities.AdminIDCommodities", {
 		onInit : function () {
 		//	var sUrl = "#" + this.getOwnerComponent().getRouter().getURL("page1");
 		//	this.byId("link").setHref(sUrl);
 		},
 
-		onToPage1 : function () {
-			this.getOwnerComponent().getRouter().navTo("page1");
+		onToPage1 : function (oEvent) {
+			
+		//	this.getOwnerComponent().getRouter().navTo("page1");
+		
+			var oApp = oEvent.getSource().getParent().getParent().getParent().getParent().getParent().getParent().getParent();
+			var oNavContainer = oApp.byId("NavContainer");
+			//oNavContainer.to(oApp.createId("rtChCommodities"));
+			oNavContainer.back();
 		},
 
 		onBack : function () {
