@@ -34,8 +34,8 @@ sap.ui.define([
 		//	});
 
 			// set explored app's demo model on this sample
-			// var json = this.initSampleDataModel();
-			// this.getView().setModel(json);
+			var json = this.initSampleDataModel();
+			this.getView().setModel(json);
 
 			var fnPress = this.handleActionPress.bind(this);
 			var fnEditDetail = this.showFormEditDetail.bind(this);
@@ -196,10 +196,6 @@ sap.ui.define([
 
 		AddAllPeriodsforCommoditie: function (oEntidad) {
 			var oModel = new JSONModel();
-			
-			
-			//var ValDate = this.byId("txtDate").getValue();\
-			
 			var today = new Date();
 			var year = today.getFullYear()	;		
 			
@@ -284,6 +280,15 @@ sap.ui.define([
 		EditDetailVersion: function () {
 			//this.byId("txtDetailVersion").setEditable(true);
 			
+		},
+		
+		onGoToIdCommoditieTable: function(oEvent) {
+			//var oPageContainer = sap.ui.getCore().byId("pageContainer");
+			var oMainContentView = oEvent.getSource().getParent().getParent().getParent().getParent().getParent().getParent().getParent().getParent().getParent().getParent();
+			
+			var oPageContainer = oMainContentView.byId("pageContainer");
+			
+	    	oPageContainer.to(oMainContentView.createId("rtChIDCommodities"));
 		}
 
 	});

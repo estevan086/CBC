@@ -1,45 +1,32 @@
-<mvc:View height="100%"
-	xmlns:mvc="sap.ui.core.mvc"
-	xmlns="sap.m"
-	xmlns:f="sap.f"
-	xmlns:tnt="sap.tnt"
-	xmlns:html="http://www.w3.org/1999/xhtml"
-    xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+<mvc:View height="100%" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:f="sap.f" xmlns:tnt="sap.tnt"
+	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
 	controllerName="sap.ui.demo.walkthrough.controller.ShellBarWithSplitApp">
 	<tnt:ToolPage id="toolPage">
 		<tnt:header>
 			<tnt:ToolHeader>
-				<f:ShellBar 
-				homeIcon="http://localhost:54213/webapp/css/images/cbc-logo.png"
-				showMenuButton="true"
-				menuButtonPressed="onMenuButtonPress">
-			</f:ShellBar>
-			
+				<f:ShellBar homeIcon="../css/images/cbc-logo.png" showMenuButton="true" menuButtonPressed="onMenuButtonPress"></f:ShellBar>
 				<ToolbarSpacer>
 					<layoutData>
-						<OverflowToolbarLayoutData priority="NeverOverflow" minWidth="20px" />
+						<OverflowToolbarLayoutData priority="NeverOverflow" minWidth="20px"/>
 					</layoutData>
 				</ToolbarSpacer>
 				<Button text="Fernando Molina" type="Transparent" press="handleUserNamePress" icon="sap-icon://employee">
 					<layoutData>
-						<OverflowToolbarLayoutData priority="NeverOverflow" />
+						<OverflowToolbarLayoutData priority="NeverOverflow"/>
 					</layoutData>
 				</Button>
-
 			</tnt:ToolHeader>
 		</tnt:header>
 		<tnt:sideContent>
 			<tnt:SideNavigation expanded="true" selectedKey="{/selectedKey}" itemSelect="onItemSelect">
 				<tnt:NavigationList items="{path: '/navigation'}">
 					<tnt:NavigationListItem text="{title}" icon="{icon}" enabled="{enabled}" expanded="{expanded}" items="{items}" key="{key}">
-						<tnt:NavigationListItem text="{title}" key="{key}" enabled="{enabled}">
-						</tnt:NavigationListItem>
+						<tnt:NavigationListItem text="{title}" key="{key}" enabled="{enabled}"></tnt:NavigationListItem>
 					</tnt:NavigationListItem>
 				</tnt:NavigationList>
 				<tnt:fixedItem>
 					<tnt:NavigationList items="{path: '/fixedNavigation'}">
-						<tnt:NavigationListItem text="{title}" icon="{icon}">
-						</tnt:NavigationListItem>
+						<tnt:NavigationListItem text="{title}" icon="{icon}"></tnt:NavigationListItem>
 					</tnt:NavigationList>
 				</tnt:fixedItem>
 			</tnt:SideNavigation>
@@ -50,8 +37,7 @@
 					<ScrollContainer id="rtHome" horizontal="false" vertical="true" height="100%">
 						<mvc:XMLView viewName="sap.ui.demo.walkthrough.view.Home"/>
 					</ScrollContainer>
-					<ScrollContainer id="rtAdministracion" horizontal="false" vertical="true" height="100%">
-					</ScrollContainer>
+					<ScrollContainer id="rtAdministracion" horizontal="false" vertical="true" height="100%"></ScrollContainer>
 					<ScrollContainer id="rtChCentros" horizontal="false" vertical="true" height="100%">
 						<mvc:XMLView viewName="sap.ui.demo.walkthrough.view.Admon.Centros"/>
 					</ScrollContainer>
@@ -60,7 +46,7 @@
 					</ScrollContainer>
 					<ScrollContainer id="rtChPeriodo" horizontal="false" vertical="true" height="100%">
 						<mvc:XMLView viewName="sap.ui.demo.walkthrough.view.Admon.CreateParameters"/>
-					</ScrollContainer>	
+					</ScrollContainer>
 					<ScrollContainer id="rtChAdminLogistica" horizontal="false" vertical="true" height="100%">
 						<mvc:XMLView viewName="sap.ui.demo.walkthrough.view.Admon.CreateParameters"/>
 					</ScrollContainer>
@@ -72,12 +58,15 @@
 					</ScrollContainer>
 					<ScrollContainer id="rtChCreateIcoterm" horizontal="false" vertical="true" height="100%">
 						<mvc:XMLView viewName="sap.ui.demo.walkthrough.view.DataDefault.Icoterm.AdminIcoterm"/>
-					</ScrollContainer>	
+					</ScrollContainer>
 					<ScrollContainer id="rtChCopyVersion" horizontal="false" vertical="true" height="100%">
 						<mvc:XMLView viewName="sap.ui.demo.walkthrough.view.DataDefault.Version.AdminVersion"/>
 					</ScrollContainer>
 					<ScrollContainer id="rtChCommodities" horizontal="false" vertical="true" height="100%">
 						<mvc:XMLView viewName="sap.ui.demo.walkthrough.view.DataDefault.Commodities.AdminCommodities"/>
+					</ScrollContainer>
+					<ScrollContainer id="rtChIDCommodities" horizontal="false" vertical="true" height="100%">
+						<mvc:XMLView viewName="sap.ui.demo.walkthrough.view.DataDefault.Commodities.View2"/>
 					</ScrollContainer>
 					<ScrollContainer id="rtChMateriales" horizontal="false" vertical="true" height="100%">
 						<mvc:XMLView viewName="sap.ui.demo.walkthrough.view.DataDefault.Materiales.AdminMateriales"/>
@@ -103,10 +92,10 @@
 					<ScrollContainer id="rtCCOGS" horizontal="false" vertical="true" height="100%">
 						<mvc:XMLView viewName="sap.ui.demo.walkthrough.view.COGS.COGS"/>
 					</ScrollContainer>
-						<ScrollContainer id="rtChVisualizacion" horizontal="false" vertical="true" height="100%">
+					<ScrollContainer id="rtChVisualizacion" horizontal="false" vertical="true" height="100%">
 						<mvc:XMLView viewName="sap.ui.demo.walkthrough.view.Reportes.Reportes"/>
 					</ScrollContainer>
-						<ScrollContainer id="rtChCargaManufactura" horizontal="false" vertical="true" height="100%">
+					<ScrollContainer id="rtChCargaManufactura" horizontal="false" vertical="true" height="100%">
 						<mvc:XMLView viewName="sap.ui.demo.walkthrough.view.Utilities.BasicGrid"/>
 					</ScrollContainer>
 				</pages>

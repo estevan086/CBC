@@ -1,6 +1,18 @@
 <mvc:View controllerName="sap.ui.demo.walkthrough.controller.DataDefault.Commodities.GridAdminCommodities"
 	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:mvc="sap.ui.core.mvc" displayBlock="true" xmlns="sap.ui.table" xmlns:m="sap.m"
 	xmlns:u="sap.ui.unified" xmlns:c="sap.ui.core" xmlns:f="sap.ui.layout.form" xmlns:tnt="sap.tnt" height="100%">
+	<m:Toolbar class="sapNocolor">
+			<!--<m:Title text="Datos Default - Commodities" level="H2"/>-->
+			<m:ToolbarSpacer/>
+			<m:Title text="" level="H2"/>
+			<m:ToolbarSpacer/>
+			<m:Button icon="sap-icon://message-information" press=".onOpenDialog" ariaLabelledBy="editButtonLabel"/>
+		</m:Toolbar>
+	<m:ObjectHeader binding="{/ProductCollection/0}" title="Datos Default - Commodit" condensed="true"
+		number="{ parts:[{path:'Price'},{path:'CurrencyCode'}], type: 'sap.ui.model.type.Currency', formatOptions: {showMeasure: false} }"
+		numberUnit="{CurrencyCode}">
+		<m:ObjectAttribute text="{WeightMeasure} {WeightUnit} {Width} x {Depth} x {Height} {DimUnit}"/>
+	</m:ObjectHeader>
 	<m:App>
 		<m:pages>
 			<m:Page showHeader="false" enableScrolling="false" class="sapUiContentPadding">
@@ -11,7 +23,53 @@
 							<m:Button icon="sap-icon://save" text="Guardar" tooltip="Guardar version de commoditie" press="saveVersionCommodities"/>
 							<m:Button icon="sap-icon://upload-to-cloud" text="Publicar" tooltip="Publicar version de commoditie" press="PublicVersionCommodities"/>
 						</m:items>
-					</m:FlexBox>
+					</m:FlexBox> 
+					<m:Table id="idProductsTable" inset="false" items="{/COMMODITIES}" popinLayout="GridLarge">
+						<m:headerToolbar>
+							<m:OverflowToolbar>
+								<m:content>
+									<m:Title id="title1" text="Commodities" level="H2"/>
+									<m:ToolbarSpacer/>
+									<m:Button icon="sap-icon://sys-next-page" text="Exportar" tooltip="Exportar version de commoditie"/>
+									<m:Button icon="sap-icon://sys-prev-page" text="Importar" tooltip="Importar version de commoditie"/>
+									<!--<m:Button icon="sap-icon://factory" text="Administrar Commodities" tooltip="Crear Commodities" press="showFormAddCommoditie"/>-->
+									<m:Button icon="sap-icon://factory" text="Administrar Commodities" tooltip="Crear Commodities" press="onGoToIdCommoditieTable"/>
+									<m:Button icon="sap-icon://edit" text="Editar Version Default" tooltip="Version Default" press="showFormEditCommoditie"/>
+								</m:content>
+							</m:OverflowToolbar>
+						</m:headerToolbar>
+						<m:columns>
+							<m:Column width="12em">
+								<m:Text text="ID Commoditie"/>
+							</m:Column>
+							<m:Column minScreenWidth="Tablet" demandPopin="true">
+								<m:Text text="Supplier"/>
+							</m:Column>
+							<m:Column minScreenWidth="Desktop" demandPopin="true" hAlign="End">
+								<m:Text text="Dimensions"/>
+							</m:Column>
+							<m:Column minScreenWidth="Desktop" demandPopin="true" hAlign="Center">
+								<m:Text text="Weight"/>
+							</m:Column>
+							<m:Column hAlign="End">
+								<m:Text text="Price"/>
+							</m:Column>
+						</m:columns>
+						<m:items>
+							<m:ColumnListItem>
+								<m:cells>
+									<m:ObjectIdentifier title="{CDEF_COMMODITIE}" text="{CDEF_IDCOMMODITIES}"/>
+									<m:Text text="{SupplierName}"/>
+									<m:Text text="{Width} x {Depth} x {Height} {DimUnit}"/>
+									<m:ObjectNumber number="{WeightMeasure}" unit="{WeightUnit}"
+										state="{ parts: [ {path: 'WeightMeasure'}, {path: 'WeightUnit'} ], formatter: 'sap.m.sample.Table.Formatter.weightState' }"/>
+									<m:ObjectNumber
+										number="{ parts:[{path:'Price'},{path:'CurrencyCode'}], type: 'sap.ui.model.type.Currency', formatOptions: {showMeasure: false} }"
+										unit="{CurrencyCode}"/>
+								</m:cells>
+							</m:ColumnListItem>
+						</m:items>
+					</m:Table>
 					<Table id="tblCommodities" rows="{/COMMODITIES}" selectionMode="None" visibleRowCount="10">
 						<toolbar>
 							<m:OverflowToolbar>
