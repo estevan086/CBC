@@ -11,9 +11,9 @@ html[dir="rtl"] .myAppDemoWT .myCustomButton.sapMBtn {
    font-weight: bold;
 }/* Enter your custom styles here */
 
-.sapMTB{
+/*.sapMTB{
 	background : #3f5161 !important;
-}
+}*/
 
 .sapMTBHeader-CTX{
 	background : #eff4f9 !important;

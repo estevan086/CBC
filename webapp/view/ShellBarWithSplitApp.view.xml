@@ -98,6 +98,11 @@
 					<ScrollContainer id="rtChCargaManufactura" horizontal="false" vertical="true" height="100%">
 						<mvc:XMLView viewName="sap.ui.demo.walkthrough.view.Utilities.BasicGrid"/>
 					</ScrollContainer>
+					
+					
+					<ScrollContainer id="rtChFromuladora" horizontal="false" vertical="true" height="100%">
+						<mvc:XMLView viewName="sap.ui.demo.walkthrough.view.Utilities.Formuladora"/>
+					</ScrollContainer>
 				</pages>
 			</NavContainer>
 		</tnt:mainContents>

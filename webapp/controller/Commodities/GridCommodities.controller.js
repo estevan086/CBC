@@ -1,6 +1,6 @@
 jQuery.sap.require("sap.ui.demo.walkthrough.Formatter");
 sap.ui.define([
-	"sap/ui/core/mvc/Controller",
+	"sap/ui/demo/walkthrough/controller/BaseController",
 	"sap/ui/model/json/JSONModel",
 	"sap/m/MessageToast",
 	"sap/ui/core/format/DateFormat",
@@ -109,7 +109,16 @@ sap.ui.define([
 		},
 		
 		showCalculator: function(oEvent){
-			var oModel = new JSONModel();
+			//rtChFromuladora
+			
+			var oMainContentView = oEvent.getSource().getParent().getParent().getParent().getParent().getParent().getParent().getParent().getParent()
+				.getParent().getParent().getParent();
+
+			var oNavContainer = oMainContentView.byId("NavContainer");
+
+			oNavContainer.to(oMainContentView.createId("rtChFromuladora"));
+			
+			/*var oModel = new JSONModel();
 			jQuery.ajax("model/CommoditiesTest.json", {
 				dataType: "json",
 				success: function(oData) {
@@ -127,11 +136,11 @@ sap.ui.define([
 				allowLogical: true,
 				readOnly: false
 			});
-			YO.getView().setModel(YO._oModelSettings, "settings");
+			YO.getView().setModel(YO._oModelSettings, "settings");*/
 			
-		
-			this.LogisticaDisplay = sap.ui.xmlfragment("sap.ui.demo.walkthrough.view.Utilities.fragments.Calculadora", YO);
-			this.LogisticaDisplay.open();
+			//this.fnOpenDialog("sap.ui.demo.walkthrough.view.Utilities.fragments.Calculadora");
+			//this.LogisticaDisplay = sap.ui.xmlfragment("sap.ui.demo.walkthrough.view.Utilities.fragments.Calculadora", YO);
+			//this.LogisticaDisplay.open();
 			//var testA = that.getView();
 			//var testB = YO.getView();
 			/*var sInputValue = oEvent.getSource().getId();
@@ -178,12 +187,7 @@ sap.ui.define([
 		
 	
 		closeDialog: function (oEvent) {
-			that = this;
 			this.fnCloseFragment();
-		},
-		
-		fnCloseFragment: function(){
-			that.LogisticaDisplay.destroy();
 		},
 		
 		preCopyVersion: function(oEvent) {
