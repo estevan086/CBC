@@ -1,5 +1,5 @@
 <mvc:View
-	controllerName="sap.ui.demo.walkthrough.controller.COGS.COGS"
+	controllerName="cbc.co.simulador_costos.controller.COGS.COGS"
 	height="100%"
 	xmlns:l="sap.ui.layout"
 	xmlns:mvc="sap.ui.core.mvc"
@@ -21,7 +21,7 @@
 				icon="sap-icon://capital-projects"
 				iconColor="Neutral"
 				text="COGS">
-				<mvc:XMLView viewName="sap.ui.demo.walkthrough.view..COGS.GridCOGS"/>
+				<mvc:XMLView viewName="cbc.co.simulador_costos.view..COGS.GridCOGS"/>
 			</IconTabFilter>
 			<IconTabFilter
 				icon=""

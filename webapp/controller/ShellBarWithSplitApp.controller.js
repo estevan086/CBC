@@ -10,7 +10,7 @@ sap.ui.define([
 	var ButtonType = mobileLibrary.ButtonType,
 		PlacementType = mobileLibrary.PlacementType;
 		
-	var CController = Controller.extend("sap.ui.demo.walkthrough.controller.ShellBarWithSplitApp", {
+	var CController = Controller.extend("cbc.co.simulador_costos.controller.ShellBarWithSplitApp", {
 		onInit : function() {
 			this.oModel = new JSONModel();
 			this.oModel.setData({

@@ -4,7 +4,7 @@ sap.ui.define([
 ], function (ManagedObject, Fragment) {
 	"use strict";
 
-	return ManagedObject.extend("sap.ui.demo.walkthrough.controller.Utilities.HelloDialog", {
+	return ManagedObject.extend("cbc.co.simulador_costos.controller.Utilities.HelloDialog", {
 
 		constructor : function (oView) {
 			this._oView = oView;
@@ -27,7 +27,7 @@ sap.ui.define([
 				// load asynchronous XML fragment
 				Fragment.load({
 					id: oView.getId(),
-					name: "sap.ui.demo.walkthrough.view.Utilities.HelloDialog",
+					name: "cbc.co.simulador_costos.view.Utilities.HelloDialog",
 					controller: oFragmentController
 				}).then(function (oDialog) {
 					// connect dialog to the root view of this component (models, lifecycle)

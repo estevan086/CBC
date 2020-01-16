@@ -1,7 +1,7 @@
 sap.ui.define( ["sap/ui/core/mvc/Controller", "sap/ui/core/routing/History"], function (Controller, History) {
 	"use strict";
 
-	return Controller.extend("sap.ui.demo.walkthrough.controller.DataDefault.Commodities.AdminIDCommodities", {
+	return Controller.extend("cbc.co.simulador_costos.controller.DataDefault.Commodities.AdminIDCommodities", {
 		onInit : function () {
 		//	var sUrl = "#" + this.getOwnerComponent().getRouter().getURL("page1");
 		//	this.byId("link").setHref(sUrl);

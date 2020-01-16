@@ -6,7 +6,7 @@ sap.ui.define([
 ], function (UIComponent, JSONModel, ResourceModel, HelloDialog) {
 	"use strict";
 
-	return UIComponent.extend("sap.ui.demo.walkthrough.Component", {
+	return UIComponent.extend("cbc.co.simulador_costos.Component", {
 
 		metadata : {
 	            manifest: "json"
@@ -27,7 +27,7 @@ sap.ui.define([
 
 			// set i18n model
 			var i18nModel = new ResourceModel({
-				bundleName : "sap.ui.demo.walkthrough.i18n.i18n"
+				bundleName : "cbc.co.simulador_costos.i18n.i18n"
 			});
 			this.setModel(i18nModel, "i18n");
 		// set dialog

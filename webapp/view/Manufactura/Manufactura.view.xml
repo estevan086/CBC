@@ -1,5 +1,5 @@
 <mvc:View
-	controllerName="sap.ui.demo.walkthrough.controller.Manufactura.Manufactura"
+	controllerName="cbc.co.simulador_costos.controller.Manufactura.Manufactura"
 	height="100%"
 	xmlns:l="sap.ui.layout"
 	xmlns:mvc="sap.ui.core.mvc"
@@ -26,7 +26,7 @@
 				icon="sap-icon://edit"
 				iconColor="Neutral"
 				text="Editar">
-				<mvc:XMLView viewName="sap.ui.demo.walkthrough.view.InvoiceList"/>
+				<mvc:XMLView viewName="cbc.co.simulador_costos.view.InvoiceList"/>
 			</IconTabFilter>
 		</items>
 	</IconTabBar>

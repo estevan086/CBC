@@ -1,6 +1,6 @@
 <mvc:View
 	height="100%"
-	controllerName="sap.ui.demo.walkthrough.controller.Escenarios.MatrizEsc.AddEsc"
+	controllerName="cbc.co.simulador_costos.controller.Escenarios.MatrizEsc.AddEsc"
 	xmlns:l="sap.ui.layout"
 	xmlns:core="sap.ui.core"
 	xmlns:mvc="sap.ui.core.mvc"

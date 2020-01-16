@@ -1,6 +1,6 @@
 <mvc:View id="sbwsa1" height="100%" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:f="sap.f" xmlns:tnt="sap.tnt"
 	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
-	controllerName="sap.ui.demo.walkthrough.controller.ShellBarWithSplitApp">
+	controllerName="cbc.co.simulador_costos.controller.ShellBarWithSplitApp">
 	<tnt:ToolPage id="toolPage">
 		<tnt:header>
 			<tnt:ToolHeader>
@@ -35,73 +35,73 @@
 			<NavContainer id="NavContainer" initialPage="page2">
 				<pages>
 					<ScrollContainer id="rtHome" horizontal="false" vertical="true" height="100%">
-						<mvc:XMLView viewName="sap.ui.demo.walkthrough.view.Home"/>
+						<mvc:XMLView viewName="cbc.co.simulador_costos.view.Home"/>
 					</ScrollContainer>
 					<ScrollContainer id="rtAdministracion" horizontal="false" vertical="true" height="100%"></ScrollContainer>
 					<ScrollContainer id="rtChCentros" horizontal="false" vertical="true" height="100%">
-						<mvc:XMLView viewName="sap.ui.demo.walkthrough.view.Admon.Centros"/>
+						<mvc:XMLView viewName="cbc.co.simulador_costos.view.Admon.Centros"/>
 					</ScrollContainer>
 					<ScrollContainer id="rtChUndMedida" horizontal="false" vertical="true" height="100%">
-						<mvc:XMLView viewName="sap.ui.demo.walkthrough.view.Admon.CreateParameters"/>
+						<mvc:XMLView viewName="cbc.co.simulador_costos.view.Admon.CreateParameters"/>
 					</ScrollContainer>
 					<ScrollContainer id="rtChPeriodo" horizontal="false" vertical="true" height="100%">
-						<mvc:XMLView viewName="sap.ui.demo.walkthrough.view.Admon.CreateParameters"/>
+						<mvc:XMLView viewName="cbc.co.simulador_costos.view.Admon.CreateParameters"/>
 					</ScrollContainer>
 					<ScrollContainer id="rtChAdminLogistica" horizontal="false" vertical="true" height="100%">
-						<mvc:XMLView viewName="sap.ui.demo.walkthrough.view.Admon.CreateParameters"/>
+						<mvc:XMLView viewName="cbc.co.simulador_costos.view.Admon.CreateParameters"/>
 					</ScrollContainer>
 					<ScrollContainer id="rtChAddProfile" horizontal="false" vertical="true" height="100%">
-						<mvc:XMLView viewName="sap.ui.demo.walkthrough.view.Admon.Users"/>
+						<mvc:XMLView viewName="cbc.co.simulador_costos.view.Admon.Users"/>
 					</ScrollContainer>
 					<ScrollContainer id="rtChTypeChange" horizontal="false" vertical="true" height="100%">
-						<mvc:XMLView viewName="sap.ui.demo.walkthrough.view.DataDefault.TypeChange.AdminTypeChange"/>
+						<mvc:XMLView viewName="cbc.co.simulador_costos.view.DataDefault.TypeChange.AdminTypeChange"/>
 					</ScrollContainer>
 					<ScrollContainer id="rtChCreateIcoterm" horizontal="false" vertical="true" height="100%">
-						<mvc:XMLView viewName="sap.ui.demo.walkthrough.view.DataDefault.Icoterm.AdminIcoterm"/>
+						<mvc:XMLView viewName="cbc.co.simulador_costos.view.DataDefault.Icoterm.AdminIcoterm"/>
 					</ScrollContainer>
 					<ScrollContainer id="rtChCopyVersion" horizontal="false" vertical="true" height="100%">
-						<mvc:XMLView viewName="sap.ui.demo.walkthrough.view.DataDefault.Version.AdminVersion"/>
+						<mvc:XMLView viewName="cbc.co.simulador_costos.view.DataDefault.Version.AdminVersion"/>
 					</ScrollContainer>
 					<ScrollContainer id="rtChCommodities" horizontal="false" vertical="true" height="100%">
-						<mvc:XMLView viewName="sap.ui.demo.walkthrough.view.DataDefault.Commodities.AdminCommodities"/>
+						<mvc:XMLView viewName="cbc.co.simulador_costos.view.DataDefault.Commodities.AdminCommodities"/>
 					</ScrollContainer>
 					<ScrollContainer id="rtChIDCommodities" horizontal="false" vertical="true" height="100%">
-						<mvc:XMLView viewName="sap.ui.demo.walkthrough.view.DataDefault.Commodities.AdminIDCommodities"/>
+						<mvc:XMLView viewName="cbc.co.simulador_costos.view.DataDefault.Commodities.AdminIDCommodities"/>
 					</ScrollContainer>
 					<ScrollContainer id="rtChMateriales" horizontal="false" vertical="true" height="100%">
-						<mvc:XMLView viewName="sap.ui.demo.walkthrough.view.DataDefault.Materiales.AdminMateriales"/>
+						<mvc:XMLView viewName="cbc.co.simulador_costos.view.DataDefault.Materiales.AdminMateriales"/>
 					</ScrollContainer>
 					<ScrollContainer id="rtChCostosLogisticos" horizontal="false" vertical="true" height="100%">
-						<mvc:XMLView viewName="sap.ui.demo.walkthrough.view.DataDefault.LogisticCost.AdminLogisticCost"/>
+						<mvc:XMLView viewName="cbc.co.simulador_costos.view.DataDefault.LogisticCost.AdminLogisticCost"/>
 					</ScrollContainer>
 					<ScrollContainer id="rtChMatrizEs" horizontal="false" vertical="true" height="100%">
-						<mvc:XMLView viewName="sap.ui.demo.walkthrough.view.Escenarios.MatrizEsc"/>
+						<mvc:XMLView viewName="cbc.co.simulador_costos.view.Escenarios.MatrizEsc"/>
 					</ScrollContainer>
 					<ScrollContainer id="rtChAdmonEs" horizontal="false" vertical="true" height="100%">
-						<mvc:XMLView viewName="sap.ui.demo.walkthrough.view.Escenarios.AdmonEsc"/>
+						<mvc:XMLView viewName="cbc.co.simulador_costos.view.Escenarios.AdmonEsc"/>
 					</ScrollContainer>
 					<ScrollContainer id="rtChMantenimientoCommodities" horizontal="false" vertical="true" height="100%">
-						<mvc:XMLView viewName="sap.ui.demo.walkthrough.view.Commodities.Commodities"/>
+						<mvc:XMLView viewName="cbc.co.simulador_costos.view.Commodities.Commodities"/>
 					</ScrollContainer>
 					<ScrollContainer id="rtChMantenimientoMateriales" horizontal="false" vertical="true" height="100%">
-						<mvc:XMLView viewName="sap.ui.demo.walkthrough.view.Materiales.AdmonMateriales"/>
+						<mvc:XMLView viewName="cbc.co.simulador_costos.view.Materiales.AdmonMateriales"/>
 					</ScrollContainer>
 					<ScrollContainer id="rtChMantenimientoCostLog" horizontal="false" vertical="true" height="100%">
-						<mvc:XMLView viewName="sap.ui.demo.walkthrough.view.LogisticCost.AdmonLogisticCost"/>
+						<mvc:XMLView viewName="cbc.co.simulador_costos.view.LogisticCost.AdmonLogisticCost"/>
 					</ScrollContainer>
 					<ScrollContainer id="rtCCOGS" horizontal="false" vertical="true" height="100%">
-						<mvc:XMLView viewName="sap.ui.demo.walkthrough.view.COGS.COGS"/>
+						<mvc:XMLView viewName="cbc.co.simulador_costos.view.COGS.COGS"/>
 					</ScrollContainer>
 					<ScrollContainer id="rtChVisualizacion" horizontal="false" vertical="true" height="100%">
-						<mvc:XMLView viewName="sap.ui.demo.walkthrough.view.Reportes.Reportes"/>
+						<mvc:XMLView viewName="cbc.co.simulador_costos.view.Reportes.Reportes"/>
 					</ScrollContainer>
 					<ScrollContainer id="rtChCargaManufactura" horizontal="false" vertical="true" height="100%">
-						<mvc:XMLView viewName="sap.ui.demo.walkthrough.view.Utilities.BasicGrid"/>
+						<mvc:XMLView viewName="cbc.co.simulador_costos.view.Utilities.BasicGrid"/>
 					</ScrollContainer>
 					
 					
 					<ScrollContainer id="rtChFromuladora" horizontal="false" vertical="true" height="100%">
-						<mvc:XMLView viewName="sap.ui.demo.walkthrough.view.Utilities.Formuladora"/>
+						<mvc:XMLView viewName="cbc.co.simulador_costos.view.Utilities.Formuladora"/>
 					</ScrollContainer>
 				</pages>
 			</NavContainer>

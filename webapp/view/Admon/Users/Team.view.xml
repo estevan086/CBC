@@ -1,5 +1,5 @@
 <mvc:View
-	controllerName="sap.ui.demo.walkthrough.controller.Admon.Users.Team"
+	controllerName="cbc.co.simulador_costos.controller.Admon.Users.Team"
 	xmlns:html="http://www.w3.org/1999/xhtml" 
 	xmlns:mvc="sap.ui.core.mvc" 
 	displayBlock="true"

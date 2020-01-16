@@ -1,4 +1,4 @@
-jQuery.sap.require("sap.ui.demo.walkthrough.Formatter");
+jQuery.sap.require("cbc.co.simulador_costos.Formatter");
 sap.ui.define([
 	"sap/ui/core/mvc/Controller",
 	"sap/ui/model/json/JSONModel",
@@ -9,7 +9,7 @@ sap.ui.define([
 	"sap/ui/model/FilterOperator"
 ], function(Controller, JSONModel, MessageToast, DateFormat, library, Filter, FilterOperator){
 	"use strict";
-	return Controller.extend("sap.ui.demo.walkthrough.controller.Admon.CreateParameters.MasterSap", {
+	return Controller.extend("cbc.co.simulador_costos.controller.Admon.CreateParameters.MasterSap", {
 
 		onInit : function() {
 			var obj = {

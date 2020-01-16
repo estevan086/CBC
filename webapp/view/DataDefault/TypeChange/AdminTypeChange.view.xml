@@ -1,5 +1,5 @@
 <mvc:View
-	controllerName="sap.ui.demo.walkthrough.controller.DataDefault.TypeChange.AdminTypeChange"
+	controllerName="cbc.co.simulador_costos.controller.DataDefault.TypeChange.AdminTypeChange"
 	height="100%"
 	xmlns:l="sap.ui.layout"
 	xmlns:mvc="sap.ui.core.mvc"
@@ -21,7 +21,7 @@
 				icon="sap-icon://collections-insight"
 				iconColor="Neutral"
 				text="Tipo de Cambio">
-					<mvc:XMLView viewName="sap.ui.demo.walkthrough.view.DataDefault.TypeChange.GridTypeChange"/>
+					<mvc:XMLView viewName="cbc.co.simulador_costos.view.DataDefault.TypeChange.GridTypeChange"/>
 			</IconTabFilter>
 			<IconTabFilter
 				icon=""

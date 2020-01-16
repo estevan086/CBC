@@ -8,7 +8,7 @@ sap.ui.define([
 ], function (Fragment, Controller, Filter, JSONModel, Token, FilterOperator) {
 	"use strict";
 
-	var oPageController = Controller.extend("sap.ui.demo.walkthrough.controller.CalculationBuilder", {
+	var oPageController = Controller.extend("cbc.co.simulador_costos.controller.CalculationBuilder", {
 		onInit: function () {
 				// set explored app's demo model on this sample
 			var oModel = new JSONModel("model/productsN.json");
@@ -24,7 +24,7 @@ sap.ui.define([
 			if (!this._valueHelpDialog) {
 				Fragment.load({
 					id: "valueHelpDialog",
-					name: "sap.ui.demo.walkthrough.view.Utilities.fragments.AdminMaterialesDisplay",
+					name: "cbc.co.simulador_costos.view.Utilities.fragments.AdminMaterialesDisplay",
 					controller: this
 				}).then(function (oValueHelpDialog) {
 					this._valueHelpDialog = oValueHelpDialog;

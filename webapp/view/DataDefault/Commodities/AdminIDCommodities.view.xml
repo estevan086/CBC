@@ -1,5 +1,5 @@
 <mvc:View xmlns="sap.m" xmlns:layout="sap.ui.layout" xmlns:mvc="sap.ui.core.mvc" xmlns:ui="sap.ui.table"
-	controllerName="sap.ui.demo.walkthrough.controller.DataDefault.Commodities.AdminIDCommodities">
+	controllerName="cbc.co.simulador_costos.controller.DataDefault.Commodities.AdminIDCommodities">
 	<App>
 		<pages>
 			<Page showHeader="false" enableScrolling="false" class="sapUiContentPadding" showNavButton="true" navButtonPress="onBack">

@@ -1,5 +1,5 @@
 <mvc:View
-	controllerName="sap.ui.demo.walkthrough.controller.Reportes.ChartContainer"
+	controllerName="cbc.co.simulador_costos.controller.Reportes.ChartContainer"
 	xmlns="sap.suite.ui.commons"
 	xmlns:mvc="sap.ui.core.mvc"
 	xmlns:viz="sap.viz.ui5.controls"

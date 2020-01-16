@@ -1,5 +1,5 @@
 <mvc:View
-	controllerName="sap.ui.demo.walkthrough.controller.DataDefault.LogisticCost.AdminLogisticCost"
+	controllerName="cbc.co.simulador_costos.controller.DataDefault.LogisticCost.AdminLogisticCost"
 	height="100%"
 	xmlns:l="sap.ui.layout"
 	xmlns:mvc="sap.ui.core.mvc"
@@ -21,7 +21,7 @@
 				icon="sap-icon://travel-expense"
 				iconColor="Neutral"
 				text="Costos Logísticos">
-				<mvc:XMLView viewName="sap.ui.demo.walkthrough.view.DataDefault.LogisticCost.GridLogisticCost"/>
+				<mvc:XMLView viewName="cbc.co.simulador_costos.view.DataDefault.LogisticCost.GridLogisticCost"/>
 			</IconTabFilter>
 			<IconTabFilter
 				icon=""

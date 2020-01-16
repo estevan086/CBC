@@ -1,7 +1,7 @@
 {
 	"_version": "1.17.0",
 	"sap.app": {
-		"id": "sap.ui.demo.walkthrough",
+		"id": "cbc.co.simulador_costos",
 		"type": "application",
 		"i18n": "i18n/i18n.properties",
 		"title": "{{appTitle}}",
@@ -33,7 +33,7 @@
 	},
 	"sap.ui5": {
 		"rootView": {
-			"viewName": "sap.ui.demo.walkthrough.view.App",
+			"viewName": "cbc.co.simulador_costos.view.App",
 			"type": "XML",
 			"async": true,
 			"id": "app"
@@ -50,7 +50,7 @@
 			"i18n": {
 				"type": "sap.ui.model.resource.ResourceModel",
 				"settings": {
-					"bundleName": "sap.ui.demo.walkthrough.i18n.i18n"
+					"bundleName": "cbc.co.simulador_costos.i18n.i18n"
 				}
 			},
 			"invoice": {

@@ -1,4 +1,4 @@
-<mvc:View  controllerName="sap.ui.demo.walkthrough.controller.Home"
+<mvc:View  controllerName="cbc.co.simulador_costos.controller.Home"
 	xmlns:l="sap.ui.layout" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" 	xmlns:f="sap.ui.layout.form">
 
 	<Panel id="containerLayout"

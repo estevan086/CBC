@@ -4,7 +4,7 @@ sap.ui.define([
    "sap/ui/core/Fragment"
 ], function (Controller, MessageToast, Fragment) {
    "use strict";
-   return Controller.extend("sap.ui.demo.walkthrough.controller.DataDefault.Icoterm.AdminIcoterm", {
+   return Controller.extend("cbc.co.simulador_costos.controller.DataDefault.Icoterm.AdminIcoterm", {
 		onOpenDialog : function () {
 			this.getOwnerComponent().openHelloDialog();
 		}

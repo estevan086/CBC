@@ -1,5 +1,5 @@
 <mvc:View
-	controllerName="sap.ui.demo.walkthrough.controller.Admon.Users"
+	controllerName="cbc.co.simulador_costos.controller.Admon.Users"
 	height="100%"
 	xmlns:l="sap.ui.layout"
 	xmlns:mvc="sap.ui.core.mvc"
@@ -7,17 +7,17 @@
 	xmlns="sap.m">
 		<Panel expandable="true" headerText="Perfil" width="auto" height="auto" class="sapUiResponsiveMargin">
 			<content>
-				<mvc:XMLView viewName="sap.ui.demo.walkthrough.view.Admon.Users.Perfil"/>
+				<mvc:XMLView viewName="cbc.co.simulador_costos.view.Admon.Users.Perfil"/>
 			</content>
 		</Panel>
 		<Panel expandable="true" headerText="Team" width="auto" height="auto" class="sapUiResponsiveMargin">
 			<content>
-				<mvc:XMLView viewName="sap.ui.demo.walkthrough.view.Admon.Users.Team"/>
+				<mvc:XMLView viewName="cbc.co.simulador_costos.view.Admon.Users.Team"/>
 			</content>
 		</Panel>
 		<Panel expandable="true" headerText="Usuarios" width="auto" height="auto" class="sapUiResponsiveMargin">
 			<content>
-				<mvc:XMLView viewName="sap.ui.demo.walkthrough.view.Admon.Users.AddUser"/>
+				<mvc:XMLView viewName="cbc.co.simulador_costos.view.Admon.Users.AddUser"/>
 			</content>
 		</Panel>
 </mvc:View>

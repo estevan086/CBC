@@ -1,5 +1,5 @@
 <mvc:View
-	controllerName="sap.ui.demo.walkthrough.controller.Escenarios.MatrizEsc"
+	controllerName="cbc.co.simulador_costos.controller.Escenarios.MatrizEsc"
 	height="100%"
 	xmlns:l="sap.ui.layout"
 	xmlns:mvc="sap.ui.core.mvc"
@@ -21,7 +21,7 @@
 				icon="sap-icon://add"
 				iconColor="Neutral"
 				text="Crear">
-				<mvc:XMLView viewName="sap.ui.demo.walkthrough.view.Escenarios.MatrizEsc.AddEsc"/>
+				<mvc:XMLView viewName="cbc.co.simulador_costos.view.Escenarios.MatrizEsc.AddEsc"/>
 			</IconTabFilter>
 			<IconTabFilter
 				icon="sap-icon://table-chart"

@@ -6,10 +6,10 @@ sap.ui.define([
 	function(Controller, JSONModel, FlattenedDataset, FeedItem) {
 	"use strict";
 
-	var oPageController = Controller.extend("sap.ui.demo.walkthrough.controller.Reportes.ChartContainer", {
+	var oPageController = Controller.extend("cbc.co.simulador_costos.controller.Reportes.ChartContainer", {
 	
 		_constants: {
-			sampleName: "sap.ui.demo.walkthrough",
+			sampleName: "cbc.co.simulador_costos",
 			vizFrame: {
 				id: "chartContainerVizFrame",
 				dataset: {

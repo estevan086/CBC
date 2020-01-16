@@ -1,5 +1,5 @@
 <mvc:View
-	controllerName="sap.ui.demo.walkthrough.controller.Admon.CreateParameters"
+	controllerName="cbc.co.simulador_costos.controller.Admon.CreateParameters"
 	height="100%"
 	xmlns:l="sap.ui.layout"
 	xmlns:mvc="sap.ui.core.mvc"
@@ -21,18 +21,18 @@
 				icon="sap-icon://copy"
 				iconColor="Neutral"
 				text="Maestros SAP">
-				<mvc:XMLView viewName="sap.ui.demo.walkthrough.view.Admon.CreateParameters.MasterSap"/>
+				<mvc:XMLView viewName="cbc.co.simulador_costos.view.Admon.CreateParameters.MasterSap"/>
 			</IconTabFilter>
 			<IconTabFilter
 				icon="sap-icon://date-time"
 				iconColor="Neutral"
 				text="Tiempo">
-				<mvc:XMLView viewName="sap.ui.demo.walkthrough.view.Admon.CreateParameters.Tiempo"/>
+				<mvc:XMLView viewName="cbc.co.simulador_costos.view.Admon.CreateParameters.Tiempo"/>
 			</IconTabFilter>
 			<IconTabFilter
 				icon="sap-icon://travel-expense"
 				iconColor="Neutral" text="Logística">
-				<mvc:XMLView viewName="sap.ui.demo.walkthrough.view.Admon.CreateParameters.Logistica"/>
+				<mvc:XMLView viewName="cbc.co.simulador_costos.view.Admon.CreateParameters.Logistica"/>
 			</IconTabFilter>
 		</items>
 	</IconTabBar>

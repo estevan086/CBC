@@ -1,4 +1,4 @@
-jQuery.sap.require("sap.ui.demo.walkthrough.Formatter");
+jQuery.sap.require("cbc.co.simulador_costos.Formatter");
 sap.ui.define([
 	"sap/ui/core/mvc/Controller",
 	"sap/ui/model/json/JSONModel",
@@ -13,7 +13,7 @@ sap.ui.define([
 ], function(Controller, JSONModel, MessageToast, DateFormat, library, Filter, FilterOperator, TablePersoController, Fragment, Token) {
 	"use strict";
 	this.YO = this;
-	return Controller.extend("sap.ui.demo.walkthrough.controller.Admon.Centros", {
+	return Controller.extend("cbc.co.simulador_costos.controller.Admon.Centros", {
 		
 		onInit : function() {
 			// set explored app's demo model on this sample
@@ -120,7 +120,7 @@ sap.ui.define([
 		
 		showFormAdd: function() {
 			//this.onPersonalizationDialogPress();
-			this.LogisticaDisplay = sap.ui.xmlfragment("sap.ui.demo.walkthrough.view.Utilities.fragments.AddCentro", this);
+			this.LogisticaDisplay = sap.ui.xmlfragment("cbc.co.simulador_costos.view.Utilities.fragments.AddCentro", this);
 			this.LogisticaDisplay.open();
 			//this.getOwnerComponent().OpnFrmLogitica();
 		},
@@ -136,7 +136,7 @@ sap.ui.define([
 			if (!this._valueHelpDialog) {
 				Fragment.load({
 					id: "valueHelpDialog",
-					name: "sap.ui.demo.walkthrough.view.Utilities.fragments.Dialog",
+					name: "cbc.co.simulador_costos.view.Utilities.fragments.Dialog",
 					controller: this
 				}).then(function (oValueHelpDialog) {
 					this._valueHelpDialog = oValueHelpDialog;

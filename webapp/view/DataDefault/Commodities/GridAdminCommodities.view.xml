@@ -1,8 +1,8 @@
-<mvc:View controllerName="sap.ui.demo.walkthrough.controller.DataDefault.Commodities.GridAdminCommodities"
+<mvc:View controllerName="cbc.co.simulador_costos.controller.DataDefault.Commodities.GridAdminCommodities"
 	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:mvc="sap.ui.core.mvc" displayBlock="true" xmlns="sap.ui.table" xmlns:m="sap.m"
 	xmlns:u="sap.ui.unified" xmlns:c="sap.ui.core" xmlns:f="sap.ui.layout.form" xmlns:tnt="sap.tnt" height="100%">
 	<!--<m:Toolbar class="sapNocolor">-->
-		<!--<m:Title text="Datos Default - Commodities" level="H2"/>-->
+	<!--<m:Title text="Datos Default - Commodities" level="H2"/>-->
 	<!--	<m:ToolbarSpacer/>-->
 	<!--	<m:Title text="" level="H2"/>-->
 	<!--	<m:ToolbarSpacer/>-->
@@ -24,130 +24,145 @@
 							<m:Button icon="sap-icon://upload-to-cloud" text="Publicar" tooltip="Publicar version de commoditie" press="PublicVersionCommodities"/>
 						</m:items>
 					</m:FlexBox>
-					<m:Table id="tblCommodities2" inset="false" items="{/COMMODITIES}" popinLayout="GridLarge">
-						<m:headerToolbar>
-							<m:OverflowToolbar>
-								<m:content>
-									<m:Title id="title1" text="Commodities" level="H2"/>
-									<m:ToolbarSpacer/>
-									<m:Button icon="sap-icon://sys-next-page" text="Exportar" tooltip="Exportar version de commoditie"/>
-									<m:Button icon="sap-icon://sys-prev-page" text="Importar" tooltip="Importar version de commoditie"/>
-									<!--<m:Button icon="sap-icon://factory" text="Administrar Commodities" tooltip="Crear Commodities" press="showFormAddCommoditie"/>-->
-									<m:Button icon="sap-icon://factory" text="Administrar Commodities" tooltip="Crear Commodities" press="onGoToIdCommoditieTable"/>
-									<m:Button icon="sap-icon://edit" text="Editar Version Default" tooltip="Version Default" press="showFormEditCommoditie"/>
-								</m:content>
-							</m:OverflowToolbar>
-						</m:headerToolbar>
-						<m:columns>
-							<m:Column width="12em">
-								<m:Text text="ID Commoditie"/>
-							</m:Column>
-							<m:Column minScreenWidth="Desktop" demandPopin="true" hAlign="End">
-								<m:Text text="Dimensions"/>
-							</m:Column>
-							<m:Column minScreenWidth="Desktop" demandPopin="true" hAlign="Center">
-								<m:Text text="Weight"/>
-							</m:Column>
-							<m:Column hAlign="End">
-								<m:Text text="Price"/>
-							</m:Column>
-							<m:Column>
-								<m:Label text="Supplier"/>
-							</m:Column>
-						</m:columns>
-						<m:items>
-							<m:ColumnListItem>
-								<m:cells>
-									<m:ObjectIdentifier title="{CDEF_COMMODITIE}" text="{CDEF_IDCOMMODITIES}"/>
-									<m:Text text="{Width} x {Depth} x {Height} {DimUnit}"/>
-									<m:ObjectNumber number="{WeightMeasure}" unit="{WeightUnit}"
-										state="{ parts: [ {path: 'WeightMeasure'}, {path: 'WeightUnit'} ], formatter: 'sap.m.sample.Table.Formatter.weightState' }"/>
-									<m:ObjectNumber
-										number="{ parts:[{path:'Price'},{path:'CurrencyCode'}], type: 'sap.ui.model.type.Currency', formatOptions: {showMeasure: false} }"
-										unit="{CurrencyCode}"/>
-									<m:ComboBox selectionChange="onChange" items="{ path: '/supplierObject', sorter: { path: 'Supplier' } }" >
-											<c:Item key="{Supplier}" text="{Supplier}"/>
-									</m:ComboBox>
-								</m:cells>
-							</m:ColumnListItem>
-						</m:items>
-					</m:Table>
-					<!--<Table id="tblCommodities" rows="{/COMMODITIES}" selectionMode="None" visibleRowCount="10">-->
-					<!--	<toolbar>-->
+					<!--<m:Table id="tblCommodities2" inset="false" items="{/COMMODITIES}" popinLayout="GridLarge">-->
+					<!--	<m:headerToolbar>-->
 					<!--		<m:OverflowToolbar>-->
 					<!--			<m:content>-->
-					<!--				<m:Title id="title" text="Commodities"/>-->
+					<!--				<m:Title id="title1" text="Commodities" level="H2"/>-->
 					<!--				<m:ToolbarSpacer/>-->
 					<!--				<m:Button icon="sap-icon://sys-next-page" text="Exportar" tooltip="Exportar version de commoditie"/>-->
 					<!--				<m:Button icon="sap-icon://sys-prev-page" text="Importar" tooltip="Importar version de commoditie"/>-->
-					<!--				<m:Button icon="sap-icon://factory" text="Administrar Commodities" tooltip="Crear Commodities" press="showFormAddCommoditie"/>-->
+					<!--<m:Button icon="sap-icon://factory" text="Administrar Commodities" tooltip="Crear Commodities" press="showFormAddCommoditie"/>-->
+					<!--				<m:Button icon="sap-icon://factory" text="Administrar Commodities" tooltip="Crear Commodities" press="onGoToIdCommoditieTable"/>-->
 					<!--				<m:Button icon="sap-icon://edit" text="Editar Version Default" tooltip="Version Default" press="showFormEditCommoditie"/>-->
 					<!--			</m:content>-->
 					<!--		</m:OverflowToolbar>-->
-					<!--	</toolbar>-->
-					<!--	<columns>-->
-					<!--		<Column>-->
-					<!--			<m:Label text="ICDEF_IDCOMMODITIES"/>-->
-					<!--			<template>-->
-					<!--				<m:Text text="{CDEF_IDCOMMODITIES}" wrapping="false"/>-->
-					<!--			</template>-->
-					<!--		</Column>-->
-					<!--		<Column>-->
-					<!--			<m:Label text="CDEF_COMMODITIE"/>-->
-					<!--			<template>-->
-					<!--				<m:Text text="{CDEF_COMMODITIE}" wrapping="false"/>-->
-					<!--			</template>-->
-					<!--		</Column>-->
-					<!--		<Column>-->
-					<!--			<m:Label text="CDEF_SOCIEDAD"/>-->
-					<!--			<template>-->
-					<!--				<m:Text text="{CDEF_SOCIEDAD}" wrapping="false"/>-->
-					<!--			</template>-->
-					<!--		</Column>-->
-					<!--		<Column>-->
-					<!--			<m:Label text="CDEF_MONEDA"/>-->
-					<!--			<template>-->
-					<!--				<m:Text text="{CDEF_MONEDA}" wrapping="false"/>-->
-					<!--			</template>-->
-					<!--		</Column>-->
-					<!--		<Column>-->
-					<!--			<m:Label text="CDEF_UMD"/>-->
-					<!--			<template>-->
-					<!--				<m:Text text="{CDEF_UMD}" wrapping="false"/>-->
-					<!--			</template>-->
-					<!--		</Column>-->
-					<!--		<Column>-->
-					<!--			<m:Label text="CDEF_PRECIO"/>-->
-					<!--			<template>-->
-					<!--				<m:Text text="{CDEF_PRECIO}" wrapping="false"/>-->
-					<!--			</template>-->
-					<!--		</Column>-->
-					<!--		<Column>-->
-					<!--			<m:Label text="CDEF_OTROCOSTO"/>-->
-					<!--			<template>-->
-					<!--				<m:Text text="{CDEF_OTROCOSTO}" wrapping="false"/>-->
-					<!--			</template>-->
-					<!--		</Column>-->
-					<!--		<Column>-->
-					<!--			<m:Label text="CDEF_FORMULA"/>-->
-					<!--			<template>-->
-					<!--				<m:Text text="{CDEF_FORMULA}" wrapping="false"/>-->
-					<!--			</template>-->
-					<!--		</Column>-->
-					<!--		<Column>-->
-					<!--			<m:Label text="CDEF_PERIODO"/>-->
-					<!--			<template>-->
-					<!--				<m:Text text="{CDEF_PERIODO}" wrapping="false"/>-->
-					<!--			</template>-->
-					<!--		</Column>-->
-					<!--		<Column>-->
-					<!--			<m:Label text="CDEF_MES"/>-->
-					<!--			<template>-->
-					<!--				<m:Text text="{CDEF_MES}" wrapping="false"/>-->
-					<!--			</template>-->
-					<!--		</Column>-->
-					<!--	</columns>-->
-					<!--</Table>-->
+					<!--	</m:headerToolbar>-->
+					<!--	<m:columns>-->
+					<!--		<m:Column width="12em">-->
+					<!--			<m:Text text="ID Commoditie"/>-->
+					<!--		</m:Column>-->
+					<!--		<m:Column minScreenWidth="Desktop" demandPopin="true" hAlign="End">-->
+					<!--			<m:Text text="Dimensions"/>-->
+					<!--		</m:Column>-->
+					<!--		<m:Column minScreenWidth="Desktop" demandPopin="true" hAlign="Center">-->
+					<!--			<m:Text text="Weight"/>-->
+					<!--		</m:Column>-->
+					<!--		<m:Column hAlign="End">-->
+					<!--			<m:Text text="Price"/>-->
+					<!--		</m:Column>-->
+					<!--		<m:Column>-->
+					<!--			<m:Label text="Supplier"/>-->
+					<!--		</m:Column>-->
+					<!--	</m:columns>-->
+					<!--	<m:items>-->
+					<!--		<m:ColumnListItem>-->
+					<!--			<m:cells>-->
+					<!--				<m:ObjectIdentifier title="{CDEF_COMMODITIE}" text="{CDEF_IDCOMMODITIES}"/>-->
+					<!--				<m:Text text="{Width} x {Depth} x {Height} {DimUnit}"/>-->
+					<!--				<m:ObjectNumber number="{WeightMeasure}" unit="{WeightUnit}"-->
+					<!--					state="{ parts: [ {path: 'WeightMeasure'}, {path: 'WeightUnit'} ], formatter: 'sap.m.sample.Table.Formatter.weightState' }"/>-->
+					<!--				<m:ObjectNumber-->
+					<!--					number="{ parts:[{path:'Price'},{path:'CurrencyCode'}], type: 'sap.ui.model.type.Currency', formatOptions: {showMeasure: false} }"-->
+					<!--					unit="{CurrencyCode}"/>-->
+					<!--				<m:ComboBox selectionChange="onChange" items="{ path: '/supplierObject', sorter: { path: 'Supplier' } }" >-->
+					<!--						<c:Item key="{Supplier}" text="{Supplier}"/>-->
+					<!--				</m:ComboBox>-->
+					<!--			</m:cells>-->
+					<!--		</m:ColumnListItem>-->
+					<!--	</m:items>-->
+					<!--</m:Table>-->
+					<Table id="tblCommodities" rows="{/COMMODITIES}" selectionMode="None" visibleRowCount="10" rowActionCount="1" class="sapUiSizeCompact">
+						<extension>
+							<m:OverflowToolbar>
+								<m:content>
+									<m:Title id="title" text="Commodities"/>
+									<m:ToolbarSpacer/>
+									<m:Button icon="sap-icon://sys-next-page" text="Exportar" tooltip="Exportar version de commoditie"/>
+									<m:Button icon="sap-icon://sys-prev-page" text="Importar" tooltip="Importar version de commoditie"/>
+									<m:Button icon="sap-icon://factory" text="Administrar Commodities" tooltip="Crear Commodities" press="showFormAddCommoditie"/>
+									<m:Button icon="sap-icon://edit" text="Editar Version Default" tooltip="Version Default" press="showFormEditCommoditie"/>
+								</m:content>
+							</m:OverflowToolbar>
+						</extension>
+						<columns>
+							<Column>
+								<m:Label text="ICDEF_IDCOMMODITIES"/>
+								<template>
+									<m:Text text="{CDEF_IDCOMMODITIES}" wrapping="false"/>
+								</template>
+							</Column>
+							<Column>
+								<m:Label text="CDEF_COMMODITIE"/>
+								<template>
+									<m:Text text="{CDEF_COMMODITIE}" wrapping="false"/>
+								</template>
+							</Column>
+							<Column>
+								<m:Label text="CDEF_SOCIEDAD"/>
+								<template>
+									<m:Input value="{CDEF_SOCIEDAD}" editable="false"/>
+								</template>
+							</Column>
+							<Column>
+								<m:Label text="CDEF_MONEDA"/>
+								<template>
+									<m:Input value="{CDEF_MONEDA}" editable="false"/>
+								</template>
+							</Column>
+							<Column>
+								<m:Label text="CDEF_UMD"/>
+								<template>
+									<m:Input value="{CDEF_UMD}" editable="false"/>
+								</template>
+							</Column>
+							<Column>
+								<m:Label text="CDEF_PRECIO"/>
+								<template>
+									<m:Input value="{CDEF_PRECIO}" editable="false"/>
+								</template>
+							</Column>
+							<Column>
+								<m:Label text="CDEF_OTROCOSTO"/>
+								<template>
+									<m:Input value="{CDEF_OTROCOSTO}" editable="false"/>
+								</template>
+							</Column>
+							<Column>
+								<m:Label text="CDEF_FORMULA"/>
+								<template>
+									<m:Text text="{CDEF_FORMULA}" wrapping="false"/>
+								</template>
+							</Column>
+							<Column width="9rem">
+								<template>
+									<m:Button icon="sap-icon://puzzle" press="handleDetailsPress"/>
+								</template>
+							</Column>
+							<Column>
+								<m:Label text="CDEF_PERIODO"/>
+								<template>
+									<m:Text text="{CDEF_PERIODO}" wrapping="false"/>
+								</template>
+							</Column>
+							<Column>
+								<m:Label text="CDEF_MES"/>
+								<template>
+									<m:Text text="{CDEF_MES}" wrapping="false"/>
+								</template>
+							</Column>
+						</columns>
+						<rowActionTemplate>
+							<RowAction>
+								<items>
+									<RowActionItem type="Navigation" text="Editar" press="handleEditPress" icon="sap-icon://edit"></RowActionItem>
+								</items>
+							</RowAction>
+						</rowActionTemplate>
+						<rowSettingsTemplate>
+							<RowSettings highlight="None"/>
+						</rowSettingsTemplate>
+					</Table>
 				</m:content>
 			</m:Page>
 		</m:pages>

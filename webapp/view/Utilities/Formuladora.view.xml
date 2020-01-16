@@ -1,4 +1,4 @@
-<mvc:View controllerName="sap.ui.demo.walkthrough.controller.Utilities.Formuladora" xmlns="sap.suite.ui.commons" xmlns:mvc="sap.ui.core.mvc"
+<mvc:View controllerName="cbc.co.simulador_costos.controller.Utilities.Formuladora" xmlns="sap.suite.ui.commons" xmlns:mvc="sap.ui.core.mvc"
 	xmlns:core="sap.ui.core" xmlns:m="sap.m" height="100%">
 	<m:App>
 		<m:pages>

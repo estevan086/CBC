@@ -1,5 +1,5 @@
 <mvc:View
-	controllerName="sap.ui.demo.walkthrough.controller.Escenarios.ControlEsc"
+	controllerName="cbc.co.simulador_costos.controller.Escenarios.ControlEsc"
 	height="100%"
 	xmlns:l="sap.ui.layout"
 	xmlns:mvc="sap.ui.core.mvc"

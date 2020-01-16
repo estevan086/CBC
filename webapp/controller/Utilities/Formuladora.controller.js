@@ -4,9 +4,9 @@ sap.ui.define([
 ], function (Controller, JSONModel) {
 	"use strict";
 
-	var oPageController = Controller.extend("sap.ui.demo.walkthrough.controller.Utilities.Formuladora", {
+	var oPageController = Controller.extend("cbc.co.simulador_costos.controller.Utilities.Formuladora", {
 		onInit: function () {
-			//var oModel = new JSONModel(jQuery.sap.getModulePath("sap.ui.demo.walkthrough", "/dataFormuladora.json"));
+			//var oModel = new JSONModel(jQuery.sap.getModulePath("cbc.co.simulador_costos", "/dataFormuladora.json"));
 			
 			
 			var oModel = new JSONModel();

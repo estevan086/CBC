@@ -1,4 +1,4 @@
-jQuery.sap.require("sap.ui.demo.walkthrough.Formatter");
+jQuery.sap.require("cbc.co.simulador_costos.Formatter");
 sap.ui.define([
 	"sap/ui/core/mvc/Controller",
 	"sap/ui/model/json/JSONModel",
@@ -18,7 +18,7 @@ sap.ui.define([
 
 	var SortOrder = library.SortOrder;
 	
-	return Controller.extend("sap.ui.demo.walkthrough.controller.DataDefault.LogisticCost.GridLogisticCost", {
+	return Controller.extend("cbc.co.simulador_costos.controller.DataDefault.LogisticCost.GridLogisticCost", {
 
 		onInit : function() {
 			// set explored app's demo model on this sample
@@ -78,7 +78,7 @@ sap.ui.define([
 		},
 		
 		frmLogisticPress: function(oEvent) {
-			this.LogisticaDisplay = sap.ui.xmlfragment("sap.ui.demo.walkthrough.view.Utilities.fragments.AdminLogisticCostDisplay", this);
+			this.LogisticaDisplay = sap.ui.xmlfragment("cbc.co.simulador_costos.view.Utilities.fragments.AdminLogisticCostDisplay", this);
 			this.LogisticaDisplay.open();
 			//this.getOwnerComponent().OpnFrmLogitica();
 		},

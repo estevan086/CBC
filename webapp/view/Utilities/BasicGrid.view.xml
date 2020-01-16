@@ -1,5 +1,5 @@
 <mvc:View 
-		controllerName="sap.ui.demo.walkthrough.controller.Utilities.BasicGrid" 
+		controllerName="cbc.co.simulador_costos.controller.Utilities.BasicGrid" 
 		xmlns:html="http://www.w3.org/1999/xhtml" 
 		xmlns:mvc="sap.ui.core.mvc" 
 		displayBlock="true"
@@ -18,7 +18,7 @@
 		        <template>
 		         <m:VBox>
 		          <m:ObjectStatus text="{first}"/>
-		          <m:Link text="Demo Link" visible="{path:'FI',formatter:'sap.ui.demo.walkthrough.Formatter.LinkDisplay'}"/>
+		          <m:Link text="Demo Link" visible="{path:'FI',formatter:'cbc.co.simulador_costos.Formatter.LinkDisplay'}"/>
 		         </m:VBox>
 		        </template>
 		       </Column>

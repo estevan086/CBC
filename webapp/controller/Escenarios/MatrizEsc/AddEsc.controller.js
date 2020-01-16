@@ -7,7 +7,7 @@ sap.ui.define([
 	'sap/ui/model/FilterOperator'
 ], function (Fragment, Controller, Filter, JSONModel, Token, FilterOperator) {
 	"use strict";
-   return Controller.extend("sap.ui.demo.walkthrough.controller.Escenarios.MatrizEsc.AddEsc", {
+   return Controller.extend("cbc.co.simulador_costos.controller.Escenarios.MatrizEsc.AddEsc", {
 		onInit: function () {
 				// set explored app's demo model on this sample
 			//var oModel = new JSONModel("model/productsN.json");
@@ -29,7 +29,7 @@ sap.ui.define([
 			if (!this._valueHelpDialog) {
 				Fragment.load({
 					id: "valueHelpDialog",
-					name: "sap.ui.demo.walkthrough.view.Utilities.fragments.Dialog",
+					name: "cbc.co.simulador_costos.view.Utilities.fragments.Dialog",
 					controller: this
 				}).then(function (oValueHelpDialog) {
 					this._valueHelpDialog = oValueHelpDialog;

@@ -1,5 +1,5 @@
 <mvc:View
-	controllerName="sap.ui.demo.walkthrough.controller.Materiales.AdmonMateriales"
+	controllerName="cbc.co.simulador_costos.controller.Materiales.AdmonMateriales"
 	height="100%"
 	xmlns:l="sap.ui.layout"
 	xmlns:mvc="sap.ui.core.mvc"
@@ -21,7 +21,7 @@
 				icon="sap-icon://product"
 				iconColor="Neutral"
 				text="Materiales">
-				<mvc:XMLView viewName="sap.ui.demo.walkthrough.view.DataDefault.Materiales.GridMateriales"/>
+				<mvc:XMLView viewName="cbc.co.simulador_costos.view.DataDefault.Materiales.GridMateriales"/>
 			</IconTabFilter>
 			<IconTabFilter
 				icon=""

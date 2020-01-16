@@ -4,7 +4,7 @@ sap.ui.define([
 	"use strict";
 
 	new ComponentContainer({
-		name: "sap.ui.demo.walkthrough",
+		name: "cbc.co.simulador_costos",
 		settings : {
 			id : "walkthrough"
 		},

@@ -4,7 +4,7 @@ sap.ui.define([
    "sap/ui/core/Fragment"
 ], function (Controller, MessageToast, Fragment) {
    "use strict";
-   return Controller.extend("sap.ui.demo.walkthrough.controller.Admon.CreateParameters", {
+   return Controller.extend("cbc.co.simulador_costos.controller.Admon.CreateParameters", {
    		onShowHello : function () {
 			// read msg from i18n model
 			var oBundle = this.getView().getModel("i18n").getResourceBundle();

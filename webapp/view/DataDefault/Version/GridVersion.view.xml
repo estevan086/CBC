@@ -1,5 +1,5 @@
 <mvc:View
-	controllerName="sap.ui.demo.walkthrough.controller.DataDefault.Version.GridVersion"
+	controllerName="cbc.co.simulador_costos.controller.DataDefault.Version.GridVersion"
 	xmlns:html="http://www.w3.org/1999/xhtml" 
 	xmlns:mvc="sap.ui.core.mvc" 
 	displayBlock="true"

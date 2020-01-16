@@ -10,7 +10,7 @@ sap.ui.define([
 ], function(Controller, History, Dialog, Button, MessageToast, Text) {
 	"use strict";
 
-	return Controller.extend("sap.ui.demo.walkthrough.controller.BaseController", {
+	return Controller.extend("cbc.co.simulador_costos.controller.BaseController", {
 		/**
 		 * Convenience method for accessing the router in every controller of the application.
 		 * @public

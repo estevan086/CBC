@@ -1,6 +1,6 @@
-jQuery.sap.require("sap.ui.demo.walkthrough.Formatter");
+jQuery.sap.require("cbc.co.simulador_costos.Formatter");
 sap.ui.define([
-	"sap/ui/demo/walkthrough/controller/BaseController",
+	"cbc/co/simulador_costos/controller/BaseController",
 	"sap/ui/model/json/JSONModel",
 	"sap/m/MessageToast",
 	"sap/ui/core/Fragment",
@@ -13,13 +13,14 @@ sap.ui.define([
 	"sap/m/List",
 	"sap/m/StandardListItem",
 	"sap/m/ButtonType",
-	'sap/m/MessageBox'
+	'sap/m/MessageBox',
+    "sap/ui/table/RowSettings"
 
 ], function (Controller, JSONModel, MessageToast, Fragment, DateFormat, library, Filter, FilterOperator, Button, Dialog, List,
-	StandardListItem, ButtonType, MessageBox) {
+	StandardListItem, ButtonType, MessageBox, RowSettings) {
 	"use strict";
 	var that = this;
-	return Controller.extend("sap.ui.demo.walkthrough.controller.DataDefault.Commodities.GridAdminCommodities", {
+	return Controller.extend("cbc.co.simulador_costos.controller.DataDefault.Commodities.GridAdminCommodities", {
 
 		onInit: function () {
 
@@ -40,54 +41,7 @@ sap.ui.define([
 			// var itemTemplate = new sap.ui.core.ListItem();      //  creating a ListItem object                  
 			// itemTemplate .bindProperty("text", "text");   //  bind for the "text" property a certain path from the model
 			
-			// var comboBox = new sap.ui.commons.ComboBox({});    // create the ComboBox
-			// comboBox .bindItems({ 
-			//   path: "/items", 
-			//   template: itemTemplate, 
-			//   templateShareable:true
-			//   });  
-			
-			
-			// var model = new sap.ui.model.json.JSONModel({items:[
-			//   {text:"Item 1"},
-			//   {text:"Item 2"},
-			//   {text:"Item 3"},
-			//   {text:"Item 4"},
-			//   {text:"Item 5"}
-			// ]});
-			// comboBox.setModel(model);
-			// comboBox.placeAt("body");
-			
-			// var clone = comboBox.clone();
-			// clone.placeAt("body");
-
-
-
-			var dataObject = [{
-				Product: "Power Projector 4713",
-				Weight: "1467",
-				Supplier: ""
-			}, {
-				Product: "Gladiator MX",
-				Weight: "321",
-				Supplier: ""
-			}, {
-				Product: "Hurricane GX",
-				Weight: "588",
-				Supplier: ""
-			}, {
-				Product: "Webcam",
-				Weight: "700",
-				Supplier: ""
-			}, {
-				Product: "Monitor Locking Cable",
-				Weight: "40",
-				Supplier: ""
-			}, {
-				Product: "Laptop Case",
-				Weight: "1289",
-				Supplier: ""
-			}];
+	
 			var supplierObject = [{
 				Supplier: "Titanium"
 			}, {
@@ -139,7 +93,7 @@ sap.ui.define([
 			if (oTemplate) {
 				oTemplate.destroy();
 				oTemplate = null;
-			}
+			} 
 
 			for (var i = 0; i < this.modes.length; i++) {
 				if (sKey === this.modes[i].key) {
@@ -154,35 +108,67 @@ sap.ui.define([
 			oTable.setRowActionCount(iCount);
 		},
 
-		handleActionPress: function (oEvent) {
-			var oRow = oEvent.getParameter("row");
+		handleEditPress : function(oEvent, Data) {
+			//var oRow = oEvent.getParameter("row");
 			var oItem = oEvent.getParameter("item");
-			MessageToast.show("Item " + (oItem.getText() || oItem.getType()) + " pressed for product with id " +
-				this.getView().getModel().getProperty("ProductId", oRow.getBindingContext()));
+			
+			var oTable = this.byId("tblCommodities");  
+			var oRowData = oEvent.getSource().getBindingContext().getProperty();
+			
+			var oRowEdited = oEvent.getSource().getParent().getParent();
+			
+			//this.byId("tblCommodities").getRows()[3].getCells()[3].mProperties.editable = "true";
+			
+			//Sociedad
+			oRowEdited.getCells()[2].setProperty("editable", true);
+			//Moneda
+			oRowEdited.getCells()[3].setProperty("editable", true);
+			//Unidad de Medida
+			oRowEdited.getCells()[4].setProperty("editable", true); 
+			//Precio
+			oRowEdited.getCells()[5].setProperty("editable", true); 
+			//Otros Costos
+			oRowEdited.getCells()[6].setProperty("editable", true); 
+
+			// var oToggleButton = oEvent.getSource();
+
+			// if (oToggleButton.getPressed()) {
+			// 	oTable.setRowSettingsTemplate(new RowSettings({
+			// 		navigated: true
+			// 	}));
+			// } else {
+			// 	oTable.setRowSettingsTemplate(null);
+			// }
+			
+			MessageToast.show("ID " + (oItem.getText() || oItem.getType()) + " pressed for id " + oRowData.CDEF_IDCOMMODITIES);
+			
+			
+			
 		},
+		
 
 		showFormEditDetail: function (oEvent) {
 			this.LogisticaDisplay = sap.ui.xmlfragment(
-				"sap.ui.demo.walkthrough.view.Utilities.fragments.AdminCommodities.EditDetailCommodities", this);
+				"cbc.co.simulador_costos.view.Utilities.fragments.AdminCommodities.EditDetailCommodities", this);
 			this.LogisticaDisplay.open();
 			//this.getOwnerComponent().OpnFrmLogitica();
 		},
 
 		showFormCopyVersionCommoditie: function (oEvent) {
 			this.LogisticaDisplay = sap.ui.xmlfragment(
-				"sap.ui.demo.walkthrough.view.Utilities.fragments.AdminCommodities.CopyVersionCommodities", this);
+				"cbc.co.simulador_costos.view.Utilities.fragments.AdminCommodities.CopyVersionCommodities", this);
 			this.LogisticaDisplay.open();
 			//this.getOwnerComponent().OpnFrmLogitica();
 		},
 
 		showFormAddCommoditie: function (oEvent) {
 			//Abre Fragment para insertar registro de ID Commoditie
-			this.fnOpenDialog("sap.ui.demo.walkthrough.view.Utilities.fragments.AdminCommodities.AddCommodities");
+			this.fnOpenDialog("cbc.co.simulador_costos.view.Utilities.fragments.AdminCommodities.AddCommodities");
 
 		},
 
 		showFormEditCommoditie: function (oEvent) {
-			//this.LogisticaDisplay = sap.ui.xmlfragment("sap.ui.demo.walkthrough.view.Utilities.fragments.AdminCommodities.EditCommodities",
+			//this.LogisticaDisplay = sap.ui.xmlfragment("cbc.co.simulador_costos.view.Utilities.fragments.AdminCommodities.EditCommodities",
 			//	this);
 			//this.LogisticaDisplay.open();
 			//this.getOwnerComponent().OpnFrmLogitica();

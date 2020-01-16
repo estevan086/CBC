@@ -1,8 +1,8 @@
 sap.ui.define([
-   "sap/ui/demo/walkthrough/controller/BaseController"
+   "cbc/co/simulador_costos/controller/BaseController"
 ], function (Controller) {
    "use strict";
-   return Controller.extend("sap.ui.demo.walkthrough.controller.App", {
+   return Controller.extend("cbc.co.simulador_costos.controller.App", {
    	onOpenDialog : function () {
 			this.getOwnerComponent().openHelloDialog();
 		}

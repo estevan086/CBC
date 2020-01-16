@@ -1,4 +1,4 @@
-jQuery.sap.require("sap.ui.demo.walkthrough.Formatter");
+jQuery.sap.require("cbc.co.simulador_costos.Formatter");
 sap.ui.define([
 	"sap/ui/core/mvc/Controller",
 	"sap/ui/model/json/JSONModel",
@@ -18,7 +18,7 @@ sap.ui.define([
 
 	var SortOrder = library.SortOrder;
 	
-	return Controller.extend("sap.ui.demo.walkthrough.controller.Admon.CreateParameters.MasterSap", {
+	return Controller.extend("cbc.co.simulador_costos.controller.Admon.CreateParameters.MasterSap", {
 
 		onInit : function() {
 			// set explored app's demo model on this sample
@@ -308,7 +308,7 @@ sap.ui.define([
 			if (!this._valueHelpDialog) {
 				Fragment.load({
 					id: "valueHelpDialog",
-					name: "sap.ui.demo.walkthrough.view.Utilities.fragments.Dialog",
+					name: "cbc.co.simulador_costos.view.Utilities.fragments.Dialog",
 					controller: this
 				}).then(function (oValueHelpDialog) {
 					this._valueHelpDialog = oValueHelpDialog;

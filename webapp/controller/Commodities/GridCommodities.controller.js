@@ -1,6 +1,6 @@
-jQuery.sap.require("sap.ui.demo.walkthrough.Formatter");
+jQuery.sap.require("cbc.co.simulador_costos.Formatter");
 sap.ui.define([
-	"sap/ui/demo/walkthrough/controller/BaseController",
+	"cbc/co/simulador_costos/controller/BaseController",
 	"sap/ui/model/json/JSONModel",
 	"sap/m/MessageToast",
 	"sap/ui/core/format/DateFormat",
@@ -19,7 +19,7 @@ sap.ui.define([
 	"use strict";
 	var YO = this;
 	var that = this;
-	return Controller.extend("sap.ui.demo.walkthrough.controller.Commodities.GridCommodities", {
+	return Controller.extend("cbc.co.simulador_costos.controller.Commodities.GridCommodities", {
 		
 		onInit : function() {
 			
@@ -85,25 +85,25 @@ sap.ui.define([
 		},
 		
 		showFormEditDetail: function(oEvent) {
-			this.LogisticaDisplay = sap.ui.xmlfragment("sap.ui.demo.walkthrough.view.Utilities.fragments.AdminCommodities.EditDetailCommodities", this);
+			this.LogisticaDisplay = sap.ui.xmlfragment("cbc.co.simulador_costos.view.Utilities.fragments.AdminCommodities.EditDetailCommodities", this);
 			this.LogisticaDisplay.open();
 			//this.getOwnerComponent().OpnFrmLogitica();
 		},
 		
 		showFormCopyVersionCommoditie: function(oEvent) {
-			this.LogisticaDisplay = sap.ui.xmlfragment("sap.ui.demo.walkthrough.view.Utilities.fragments.AdminCommodities.CopyVersionCommodities", this);
+			this.LogisticaDisplay = sap.ui.xmlfragment("cbc.co.simulador_costos.view.Utilities.fragments.AdminCommodities.CopyVersionCommodities", this);
 			this.LogisticaDisplay.open();
 			//this.getOwnerComponent().OpnFrmLogitica();
 		},
 		
 		showFormAddCommoditie: function(oEvent) {
-			this.LogisticaDisplay = sap.ui.xmlfragment("sap.ui.demo.walkthrough.view.Utilities.fragments.AdminCommodities.AddCommodities", this);
+			this.LogisticaDisplay = sap.ui.xmlfragment("cbc.co.simulador_costos.view.Utilities.fragments.AdminCommodities.AddCommodities", this);
 			this.LogisticaDisplay.open();
 			//this.getOwnerComponent().OpnFrmLogitica();
 		},
 		
 		showFormEditCommoditie: function(oEvent) {
-			this.LogisticaDisplay = sap.ui.xmlfragment("sap.ui.demo.walkthrough.view.Utilities.fragments.AdminCommodities.EditCommodities", this);
+			this.LogisticaDisplay = sap.ui.xmlfragment("cbc.co.simulador_costos.view.Utilities.fragments.AdminCommodities.EditCommodities", this);
 			this.LogisticaDisplay.open();
 			//this.getOwnerComponent().OpnFrmLogitica();
 		},
@@ -138,8 +138,8 @@ sap.ui.define([
 			});
 			YO.getView().setModel(YO._oModelSettings, "settings");*/
 			
-			//this.fnOpenDialog("sap.ui.demo.walkthrough.view.Utilities.fragments.Calculadora");
-			//this.LogisticaDisplay = sap.ui.xmlfragment("sap.ui.demo.walkthrough.view.Utilities.fragments.Calculadora", YO);
+			//this.fnOpenDialog("cbc.co.simulador_costos.view.Utilities.fragments.Calculadora");
+			//this.LogisticaDisplay = sap.ui.xmlfragment("cbc.co.simulador_costos.view.Utilities.fragments.Calculadora", YO);
 			//this.LogisticaDisplay.open();
 			//var testA = that.getView();
 			//var testB = YO.getView();
@@ -149,7 +149,7 @@ sap.ui.define([
 			if (!this._valueHelpDialog) {
 				Fragment.load({
 					id: "valueHelpDialog",
-					name: "sap.ui.demo.walkthrough.view.Utilities.fragments.Calculadora",
+					name: "cbc.co.simulador_costos.view.Utilities.fragments.Calculadora",
 					controller: this
 				})
 				.then(function (oValueHelpDialog) {

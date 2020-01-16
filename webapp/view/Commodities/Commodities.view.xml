@@ -1,9 +1,9 @@
 <mvc:View
-	controllerName="sap.ui.demo.walkthrough.controller.Commodities.Commodities"
+	controllerName="cbc.co.simulador_costos.controller.Commodities.Commodities"
 	height="100%"
 	xmlns:l="sap.ui.layout"
 	xmlns:mvc="sap.ui.core.mvc"
 	xmlns:core="sap.ui.core"
 	xmlns="sap.m">
-		<mvc:XMLView viewName="sap.ui.demo.walkthrough.view.Commodities.GridCommodities"/>
+		<mvc:XMLView viewName="cbc.co.simulador_costos.view.Commodities.GridCommodities"/>
 </mvc:View>

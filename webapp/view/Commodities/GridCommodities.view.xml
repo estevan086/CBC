@@ -1,5 +1,5 @@
 <mvc:View
-	controllerName="sap.ui.demo.walkthrough.controller.Commodities.GridCommodities"
+	controllerName="cbc.co.simulador_costos.controller.Commodities.GridCommodities"
 	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:mvc="sap.ui.core.mvc" displayBlock="true" xmlns="sap.ui.table" xmlns:m="sap.m"
 	xmlns:u="sap.ui.unified" xmlns:c="sap.ui.core" xmlns:f="sap.ui.layout.form" xmlns:tnt="sap.tnt" height="100%">
 	<m:ObjectHeader binding="{/ProductCollection/0}" title="Commodities" condensed="true"

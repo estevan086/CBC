@@ -1,5 +1,5 @@
 <mvc:View
-	controllerName="sap.ui.demo.walkthrough.controller.DataDefault.Icoterm.AdminIcoterm"
+	controllerName="cbc.co.simulador_costos.controller.DataDefault.Icoterm.AdminIcoterm"
 	height="100%"
 	xmlns:l="sap.ui.layout"
 	xmlns:mvc="sap.ui.core.mvc"
@@ -21,7 +21,7 @@
 				icon="sap-icon://factory"
 				iconColor="Neutral"
 				text="Icoterm">
-					<mvc:XMLView viewName="sap.ui.demo.walkthrough.view.DataDefault.Icoterm.GridIcoterm"/>
+					<mvc:XMLView viewName="cbc.co.simulador_costos.view.DataDefault.Icoterm.GridIcoterm"/>
 			</IconTabFilter>
 			<IconTabFilter
 				icon=""

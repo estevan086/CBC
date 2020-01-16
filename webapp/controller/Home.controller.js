@@ -2,7 +2,7 @@ sap.ui.define(['jquery.sap.global','sap/ui/core/mvc/Controller','sap/ui/model/js
 	function(jQuery, Controller, JSONModel) {
 	"use strict";
 
-	var CarouselController = Controller.extend("sap.ui.demo.walkthrough.controller.Home", {
+	var CarouselController = Controller.extend("cbc.co.simulador_costos.controller.Home", {
 		onInit: function (evt) {
 			// set explored app's demo model on this sample
 			var oImgModel = new JSONModel("model/img.json");
