@@ -10,6 +10,19 @@
 
 	<m:Dialog title="Agregar Centro" >
 	<m:VBox class="sapUiSmallMargin">
+	
+				<m:Label wrapping="true" text="Layout Type:"/>
+			
+					<m:Select id="layoutType" tooltip="Layout Types" change="layoutTypeChanged"
+							  selectedKey="{settings>/layoutType}">
+						<core:Item key="Default" text="Default"/>
+						<core:Item key="VisualTextualReadOnly" text="Visual Textual Read Only"/>
+						<core:Item key="VisualOnly" text="Visual Only"/>
+						<core:Item key="TextualOnly" text="Textual Only"/>
+					</m:Select>
+			
+				<m:ToggleButton text="Read only" pressed="{settings>/readOnly}" press="readOnlyChanged"/>
+			
 		<CalculationBuilder
 					allowStringConstants="true"
 					id="builder"

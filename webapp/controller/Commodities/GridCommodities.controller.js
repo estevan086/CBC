@@ -18,6 +18,7 @@ sap.ui.define([
 ], function(Controller, JSONModel, MessageToast, DateFormat, library, Filter, FilterOperator, Button, Dialog, List, StandardListItem,  ButtonType, MessageBox, Fragment) {
 	"use strict";
 	var YO = this;
+	var that = this;
 	return Controller.extend("sap.ui.demo.walkthrough.controller.Commodities.GridCommodities", {
 		
 		onInit : function() {
@@ -108,11 +109,32 @@ sap.ui.define([
 		},
 		
 		showCalculator: function(oEvent){
-			//this.LogisticaDisplay = sap.ui.xmlfragment("sap.ui.demo.walkthrough.view.Utilities.fragments.Calculadora", this);
-			//this.LogisticaDisplay.open();
+			var oModel = new JSONModel();
+			jQuery.ajax("model/CommoditiesTest.json", {
+				dataType: "json",
+				success: function(oData) {
+					oModel.setData(oData);
+				},
+				error: function() {
+					jQuery.sap.log.error("failed to load json");
+				}
+			});
+			YO.getView().setModel(oModel);
+			
+			YO._oModelSettings = new JSONModel({
+				layoutType: "Default",
+				allowComparison: true,
+				allowLogical: true,
+				readOnly: false
+			});
+			YO.getView().setModel(YO._oModelSettings, "settings");
+			
+		
+			this.LogisticaDisplay = sap.ui.xmlfragment("sap.ui.demo.walkthrough.view.Utilities.fragments.Calculadora", YO);
+			this.LogisticaDisplay.open();
 			//var testA = that.getView();
 			//var testB = YO.getView();
-			var sInputValue = oEvent.getSource().getId();
+			/*var sInputValue = oEvent.getSource().getId();
 
 			// create value help dialog
 			if (!this._valueHelpDialog) {
@@ -120,14 +142,15 @@ sap.ui.define([
 					id: "valueHelpDialog",
 					name: "sap.ui.demo.walkthrough.view.Utilities.fragments.Calculadora",
 					controller: this
-				}).then(function (oValueHelpDialog) {
+				})
+				.then(function (oValueHelpDialog) {
 					this._valueHelpDialog = oValueHelpDialog;
 					this.getView().addDependent(this._valueHelpDialog);
 					this._openValueHelpDialog(sInputValue);
 				}.bind(this));
 			} else {
 				this._openValueHelpDialog(sInputValue);
-			}
+			}*/
 			
 		},
 		
@@ -153,8 +176,14 @@ sap.ui.define([
 			evt.getSource().getBinding("items").filter([oFilter]);
 		},
 		
-		closeDialog: function() {
-			this.LogisticaDisplay.close();
+	
+		closeDialog: function (oEvent) {
+			that = this;
+			this.fnCloseFragment();
+		},
+		
+		fnCloseFragment: function(){
+			that.LogisticaDisplay.destroy();
 		},
 		
 		preCopyVersion: function(oEvent) {

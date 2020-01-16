@@ -2,74 +2,17 @@
 	controllerName="sap.ui.demo.walkthrough.controller.Commodities.GridCommodities"
 	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:mvc="sap.ui.core.mvc" displayBlock="true" xmlns="sap.ui.table" xmlns:m="sap.m"
 	xmlns:u="sap.ui.unified" xmlns:c="sap.ui.core" xmlns:f="sap.ui.layout.form" xmlns:tnt="sap.tnt" height="100%">
+	<m:ObjectHeader binding="{/ProductCollection/0}" title="Commodities" condensed="true"
+		number="{ parts:[{path:'Price'},{path:'CurrencyCode'}], type: 'sap.ui.model.type.Currency', formatOptions: {showMeasure: false} }"
+		numberUnit="{CurrencyCode}">
+		<m:ObjectAttribute text="{WeightMeasure} {WeightUnit} {Width} x {Depth} x {Height} {DimUnit}"/>
+	</m:ObjectHeader>
 	<m:App>
 		<m:pages>
 			<m:Page showHeader="false" enableScrolling="false" class="sapUiContentPadding">
 				<m:content>
-					<m:IconTabBar
-						id="idIconTabBarNoIcons"
-						expanded="{device>/isNoPhone}"
-						class="sapUiResponsiveContentPadding">
-						<m:items>
-							<m:IconTabFilter
-								text="Crear">
-								<m:Panel id="PanelVersionHeader" expandable="true" headerText="Crear Version Commodities" width="auto" height="auto" class="sapUiResponsiveMargin">
-								<m:content>
-									<f:SimpleForm  columnsM="1" columnsL="2" columnsXL="2">
-										<f:content>
-											<m:Label text="Nombre de Version"/>
-											<m:Input id="txtNameVersion"/>
-											<m:Label text="Descripcion Version"/>
-											<m:TextArea name="txtDetailVersion"/>
-											<m:Label text="origen"/>
-												<m:ComboBox id="cbxOrigen" showSecondaryValues="true" selectionChange="setValuesVersion">
-												<c:ListItem text="VersionDefault2020" key="0" additionalText="2020"/>
-												<c:ListItem text="VersionDefault2021" key="1" additionalText="2020"/>
-												<c:ListItem text="VersionDefault2022" key="2" additionalText="2022"/>
-												<c:ListItem text="VersionDefault2023" key="3" additionalText="2023"/>
-												<c:ListItem text="VersionDefault2024" key="4" additionalText="2024"/>
-												<c:ListItem text="VersionDefault2025" key="5" additionalText="2025"/>
-											</m:ComboBox>
-											<m:Label text="Descripcion"/>
-											<m:TextArea id="txtDetailVersionOrigen"
-													placeholder="Descripcion de version origen"
-													enabled="true"
-													editable="false"
-												/>
-										</f:content>
-									</f:SimpleForm>
-								</m:content>
-								</m:Panel>
-							</m:IconTabFilter>
-							<m:IconTabFilter
-								text="Editar">
-								<m:Panel id="PanelVersionHeader2" expandable="true" headerText="Editar Version Commodities" width="auto" height="auto" class="sapUiResponsiveMargin">
-								<m:content>
-									<f:SimpleForm  columnsM="1" columnsL="2" columnsXL="2">
-										<f:content>
-											<m:Label text="Nombre de Version"/>
-											<m:ComboBox id="cbxVersion" showSecondaryValues="true" selectionChange="setValuesVersion">
-												<c:ListItem text="VersionDefault2020" key="0" additionalText="2020"/>
-												<c:ListItem text="VersionDefault2021" key="1" additionalText="2020"/>
-												<c:ListItem text="VersionDefault2022" key="2" additionalText="2022"/>
-												<c:ListItem text="VersionDefault2023" key="3" additionalText="2023"/>
-												<c:ListItem text="VersionDefault2024" key="4" additionalText="2024"/>
-												<c:ListItem text="VersionDefault2025" key="5" additionalText="2025"/>
-											</m:ComboBox>
-											<m:Label text="Nombre de version"/>
-											<m:Input id="txtNameVersion2"/>
-											<m:Label text="Descripcion"/>
-											<m:TextArea name="txtDetail"/>
-										</f:content>
-									</f:SimpleForm>
-								</m:content>
-								</m:Panel>
-							</m:IconTabFilter>
-						</m:items>
-					</m:IconTabBar>
 					<m:FlexBox height="auto" alignItems="Start" justifyContent="Start">
 						<m:items>
-							<tnt:InfoLabel id="lblInfoStatusVersion" text="Version Publica"/>
 							<m:Button icon="sap-icon://copy" text="Copiar" tooltip="Copiar version de commoditie" press="showFormCopyVersionCommoditie"/>
 							<m:Button icon="sap-icon://save" text="Guardar" tooltip="Guardar version de commoditie"/>
 							<m:Button icon="sap-icon://upload-to-cloud" text="Publicar" tooltip="Publicar version de commoditie"/>
@@ -81,13 +24,10 @@
 								<m:content>
 									<m:Title id="title" text="Commodities"/>
 									<m:ToolbarSpacer/>
-									<m:Button icon="sap-icon://download" text="Exportar" tooltip="Exportar version de commoditie"/>
-									<m:Button icon="sap-icon://upload" text="Importar" tooltip="Importar version de commoditie"/>
-									<m:Button icon="sap-icon://add" text="Crear Commodities" tooltip="Crear Commodities" press="showFormAddCommoditie"/>
-									<m:Button icon="sap-icon://edit" text="Editar Commodities" tooltip="Editar Commodities" press="showFormEditCommoditie"/>
-									<m:Button icon="sap-icon://sort" tooltip="Sort Categories" press="sortCategories"/>
-									<m:Button icon="sap-icon://decline" tooltip="Clear all sortings" press="clearAllSortings"/>
-									<m:SearchField placeholder="Filter" value="{ui>/globalFilter}" search="filterGlobally" width="15rem"/>
+									<m:Button icon="sap-icon://sys-next-page" text="Exportar" tooltip="Exportar version de commoditie"/>
+									<m:Button icon="sap-icon://sys-prev-page" text="Importar" tooltip="Importar version de commoditie"/>
+									<m:Button icon="sap-icon://factory" text="Administrar Commodities" tooltip="Administrar Commodities" press="onGoToIdCommoditieTable"/>
+									<m:Button icon="sap-icon://edit" text="Editar Version Default" tooltip="Administrar Version" press="showFormEditCommoditie"/>
 								</m:content>
 							</m:OverflowToolbar>
 						</toolbar>
