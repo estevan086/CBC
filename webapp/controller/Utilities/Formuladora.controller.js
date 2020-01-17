@@ -25,7 +25,7 @@ sap.ui.define([
 			this._oBuilder = this.getView().byId("builder");
 
 			this._oModelSettings = new JSONModel({
-				layoutType: "Default",
+				layoutType: "Default", 
 				allowComparison: true,
 				allowLogical: true,
 				readOnly: false

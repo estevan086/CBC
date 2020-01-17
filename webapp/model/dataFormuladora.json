@@ -1,7 +1,7 @@
 {
-	"expression": " (AssetTurnover + ProfitMargin) Contains (Reference3)+ \"StringConstant\"",
-	"title": "Dupont Analysis",
-	"showToolbar": true,
+	"expression": "",
+	"title": "test",
+	"showToolbar": false,
 	"references": [
 		{
 			"text": "Reference 1",
