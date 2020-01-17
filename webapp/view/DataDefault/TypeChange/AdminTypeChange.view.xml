@@ -5,29 +5,5 @@
 	xmlns:mvc="sap.ui.core.mvc"
 	xmlns:core="sap.ui.core"
 	xmlns="sap.m">
-		<Toolbar class="sapNocolor">
-			<Title text="Mantenimiento tipo de cambio" level="H2"/>
-			<ToolbarSpacer/>
-			<Title text="" level="H2"/>
-			<ToolbarSpacer/>
-			<Button icon="sap-icon://message-information" press=".onOpenDialog" ariaLabelledBy="editButtonLabel"/>
-		</Toolbar>
-		<IconTabBar
-		id="idIconTabBarSeparatorNoIcon"
-		expanded="true"
-		class="sapUiResponsiveContentPadding">
-		<items>
-			<IconTabFilter
-				icon="sap-icon://collections-insight"
-				iconColor="Neutral"
-				text="Tipo de Cambio">
-					<mvc:XMLView viewName="cbc.co.simulador_costos.view.DataDefault.TypeChange.GridTypeChange"/>
-			</IconTabFilter>
-			<IconTabFilter
-				icon=""
-				iconColor="Neutral" text="">
-			</IconTabFilter>
-		</items>
-	</IconTabBar>
-	
+	<mvc:XMLView viewName="cbc.co.simulador_costos.view.DataDefault.TypeChange.GridTypeChange"/>
 </mvc:View>

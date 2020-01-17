@@ -8,6 +8,11 @@
 	xmlns:u="sap.ui.unified" 
 	xmlns:c="sap.ui.core"
     height="100%">
+	<m:ObjectHeader binding="{/ProductCollection/0}" title="Datos Default - Icoterm" condensed="true"
+		number="{ parts:[{path:'Price'},{path:'CurrencyCode'}], type: 'sap.ui.model.type.Currency', formatOptions: {showMeasure: false} }"
+		numberUnit="{CurrencyCode}">
+		<m:ObjectAttribute text="{WeightMeasure} {WeightUnit} {Width} x {Depth} x {Height} {DimUnit}"/>
+	</m:ObjectHeader>
 	 <m:App>
 	   <m:pages>
 		<m:Page
@@ -17,33 +22,20 @@
 			<m:content>
 				<Table id="tblIcoterm"
 					rows="{/ICOTERM}"
-					selectionMode="MultiToggle"
+					selectionMode="None"
 					visibleRowCount="12">
-						<toolbar>
-						<m:OverflowToolbar>
-							<m:content>
-								<m:Title id="title" text="Icoterm" />
-								<m:ToolbarSpacer/>
-									<m:Button
-								icon="sap-icon://add"
-								tooltip="add item"
-								press="frmLogisticPress"/>
-								<m:Button
-									icon="sap-icon://sort"
-									tooltip="Sort Categories"
-									press="sortCategories"/>
-								<m:Button
-									icon="sap-icon://decline"
-									tooltip="Clear all sortings"
-									press="clearAllSortings"/>
-								<m:SearchField
-									placeholder="Filter"
-									value="{ui>/globalFilter}"
-									search="filterGlobally"
-									width="15rem"/>
-							</m:content>
-						</m:OverflowToolbar>
-					</toolbar>
+					<extension>
+							<m:OverflowToolbar>
+								<m:content>
+									<m:Title id="title" text="Icoterm"/>
+									<m:ToolbarSpacer/>
+									<m:Button icon="sap-icon://sys-next-page" text="Exportar" tooltip="Exportar Icoterm"/>
+									<m:Button icon="sap-icon://sys-prev-page" text="Importar" tooltip="Importar Icoterm"/>
+									<m:Button icon="sap-icon://factory" text="Crear Icoterm" tooltip="Crear Icoterm" press="showFormAddCommoditie"/>
+									<m:Button icon="sap-icon://save" text="Guardar" tooltip="Guardar" press="saveVersionCommodities"/>
+								</m:content>
+							</m:OverflowToolbar>
+						</extension>
 					<columns>
 						<Column width="15%">
 							<m:Label text="ID" />
