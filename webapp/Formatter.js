@@ -17,15 +17,26 @@ sap.ui.define([], function () {
 		statusText: function (sStatus) {
 			var resourceBundle = this.getView().getModel("i18n").getResourceBundle();
 			switch (sStatus) {
-				case "A":
-					return resourceBundle.getText("invoiceStatusA");
-				case "B":
-					return resourceBundle.getText("invoiceStatusB");
-				case "C":
-					return resourceBundle.getText("invoiceStatusC");
-				default:
-					return sStatus;
+			case "A":
+				return resourceBundle.getText("invoiceStatusA");
+			case "B":
+				return resourceBundle.getText("invoiceStatusB");
+			case "C":
+				return resourceBundle.getText("invoiceStatusC");
+			default:
+				return sStatus;
 			}
+		},
+		LinkDisplay: function (path) {
+			var oRespuesta = false;
+			if (path !== null) {
+				if (path === "R") {
+					oRespuesta = true;
+				} else {
+					oRespuesta = false;
+				}
+			}
+			return oRespuesta;
 		}
 	};
 });

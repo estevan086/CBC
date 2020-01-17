@@ -3,8 +3,8 @@
 	
 	},
 	"images": [
-		"http://localhost:54213/webapp/css/images/cbcImgLogo.jpg",
-		"http://localhost:54213/webapp/css/images/ImgCbc2.PNG",
-		"http://localhost:54213/webapp/css/images/ImgCbc3.PNG"
+		"../webapp/css/images/cbcImgLogo.jpg",
+		"../webapp/css/images/ImgCbc2.PNG",
+		"../webapp/css/images/ImgCbc3.PNG"
 	]
 }

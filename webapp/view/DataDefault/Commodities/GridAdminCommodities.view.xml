@@ -128,13 +128,13 @@
 									<m:Input value="{CDEF_OTROCOSTO}" editable="false"/>
 								</template>
 							</Column>
-							<Column>
+							<Column  width="14rem">
 								<m:Label text="CDEF_FORMULA"/>
 								<template>
-									<m:Text text="{CDEF_FORMULA}" wrapping="false"/>
+									<m:Text text="{CDEF_FORMULA}" wrapping="true"/>
 								</template>
 							</Column>
-							<Column width="9rem">
+							<Column width="4rem" hAlign="Center" >
 								<template>
 									<m:Button icon="sap-icon://puzzle" press="handleDetailsPress"/>
 								</template>
@@ -151,6 +151,12 @@
 									<m:Text text="{CDEF_MES}" wrapping="false"/>
 								</template>
 							</Column>
+							<Column visible="false">
+								<m:Label text="CDEF_EDIT_FLAG"/>
+								<template>
+									<m:Text text="{CDEF_EDIT_FLAG}" wrapping="false"/>
+								</template>
+							</Column>
 						</columns>
 						<rowActionTemplate>
 							<RowAction>
@@ -159,9 +165,9 @@
 								</items>
 							</RowAction>
 						</rowActionTemplate>
-						<rowSettingsTemplate>
-							<RowSettings highlight="None"/>
-						</rowSettingsTemplate>
+						<!--<rowSettingsTemplate>-->
+						<!--	<RowSettings highlight="None"/>-->
+						<!--</rowSettingsTemplate>-->
 					</Table>
 				</m:content>
 			</m:Page>

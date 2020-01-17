@@ -14,12 +14,15 @@ sap.ui.define([
 	"sap/m/StandardListItem",
 	"sap/m/ButtonType",
 	'sap/m/MessageBox',
-    "sap/ui/table/RowSettings"
+    "sap/ui/table/RowSettings",
+   	"sap/ui/core/library"
 
 ], function (Controller, JSONModel, MessageToast, Fragment, DateFormat, library, Filter, FilterOperator, Button, Dialog, List,
-	StandardListItem, ButtonType, MessageBox, RowSettings) {
+	StandardListItem, ButtonType, MessageBox, RowSettings, CoreLibrary) {
 	"use strict";
 	var that = this;
+	var MessageType = CoreLibrary.MessageType;
+	
 	return Controller.extend("cbc.co.simulador_costos.controller.DataDefault.Commodities.GridAdminCommodities", {
 
 		onInit: function () {
@@ -119,6 +122,23 @@ sap.ui.define([
 			
 			//this.byId("tblCommodities").getRows()[3].getCells()[3].mProperties.editable = "true";
 			
+			for (var i = 0; i < oTable.getRows().length; i++) {
+				
+				oTable.getRows()[i].getBindingContext().getProperty().CDEF_EDIT_FLAG = "None";
+				oTable.getRows()[i].getBindingContext().getProperty().CDEF_NAV_FLAG = false;
+				
+              	//Sociedad
+				oTable.getRows()[i].getCells()[2].setProperty("editable", false);
+				//Moneda
+				oTable.getRows()[i].getCells()[3].setProperty("editable", false);
+				//Unidad de Medida
+				oTable.getRows()[i].getCells()[4].setProperty("editable", false); 
+				//Precio
+				oTable.getRows()[i].getCells()[5].setProperty("editable", false); 
+				//Otros Costos
+				oTable.getRows()[i].getCells()[6].setProperty("editable", false); 
+			}
+			
 			//Sociedad
 			oRowEdited.getCells()[2].setProperty("editable", true);
 			//Moneda
@@ -130,6 +150,46 @@ sap.ui.define([
 			//Otros Costos
 			oRowEdited.getCells()[6].setProperty("editable", true); 
 
+			oRowData.CDEF_EDIT_FLAG = "Information";
+			
+			oRowData.CDEF_NAV_FLAG = true;
+			
+			oTable.setRowSettingsTemplate(new RowSettings({
+				highlight: "{CDEF_EDIT_FLAG}",
+				navigated: "{CDEF_NAV_FLAG}"
+				// 	path: "",
+				// 	formatter: function() {
+				// 		var oRow = this._getRow();
+	
+				// 		if (oRow !== null) {
+				// 			var iIndex = oRow.getIndex();
+	
+				// 			if (iIndex === 0) {
+				// 				return MessageType.Success;
+				// 			} else if (iIndex === 1) {
+				// 				return MessageType.Warning;
+				// 			} else if (iIndex === 2) {
+				// 				return MessageType.Error;
+				// 			} else if (iIndex === 3) {
+				// 				return MessageType.Information;
+				// 			} else if (iIndex === 4) {
+				// 				return MessageType.None;
+				// 			} else if (iIndex === 5) {
+				// 				return MessageType.Success;
+				// 			} else if (iIndex === 6) {
+				// 				return MessageType.Success;
+				// 			}
+				// 		}
+	
+				// 		return "None";
+				// 	}
+				// }
+				
+			}));
+
+		sap.ui.getCore().applyChanges();
+		
+		
 			// var oToggleButton = oEvent.getSource();
 
 			// if (oToggleButton.getPressed()) {

@@ -4,7 +4,7 @@
 	<tnt:ToolPage id="toolPage">
 		<tnt:header>
 			<tnt:ToolHeader>
-				<f:ShellBar homeIcon="../css/images/cbc-logo.png" showMenuButton="true" menuButtonPressed="onMenuButtonPress"></f:ShellBar>
+				<f:ShellBar homeIcon="../webapp/css/images/cbc-logo.png" showMenuButton="true" menuButtonPressed="onMenuButtonPress"></f:ShellBar>
 				<ToolbarSpacer>
 					<layoutData>
 						<OverflowToolbarLayoutData priority="NeverOverflow" minWidth="20px"/>

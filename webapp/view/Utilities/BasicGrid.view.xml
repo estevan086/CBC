@@ -18,7 +18,8 @@
 		        <template>
 		         <m:VBox>
 		          <m:ObjectStatus text="{first}"/>
-		          <m:Link text="Demo Link" visible="{path:'FI',formatter:'cbc.co.simulador_costos.Formatter.LinkDisplay'}"/>
+	     	       <m:Link text="Demo Link" visible="true"/>
+		           <!--<m:Link text="Demo Link" visible="{path:'FI',formatter:'cbc.co.simulador_costos.Formatter.LinkDisplay'}"/>-->
 		         </m:VBox>
 		        </template>
 		       </Column>
