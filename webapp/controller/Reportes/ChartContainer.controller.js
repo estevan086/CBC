@@ -47,7 +47,7 @@ sap.ui.define([
 						path: "/Products"
 					}
 				},
-				modulePath: "model/ChartContainerData.json",
+				modulePath: "/model/ChartContainerData.json",
 				type: "line",
 				properties: {
 					plotArea: {

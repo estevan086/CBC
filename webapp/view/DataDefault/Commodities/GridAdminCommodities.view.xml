@@ -1,3 +1,4 @@
+
 <mvc:View controllerName="cbc.co.simulador_costos.controller.DataDefault.Commodities.GridAdminCommodities"
 	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:mvc="sap.ui.core.mvc" displayBlock="true" xmlns="sap.ui.table" xmlns:m="sap.m"
 	xmlns:u="sap.ui.unified" xmlns:c="sap.ui.core" xmlns:f="sap.ui.layout.form" xmlns:tnt="sap.tnt" height="100%">
@@ -8,10 +9,9 @@
 	<!--	<m:ToolbarSpacer/>-->
 	<!--	<m:Button icon="sap-icon://message-information" press=".onOpenDialog" ariaLabelledBy="editButtonLabel"/>-->
 	<!--</m:Toolbar>-->
-	<m:ObjectHeader binding="{/ProductCollection/0}" title="Datos Default - Commodit" condensed="true"
+	<m:ObjectHeader binding="{/ProductCollection/0}" title="Datos Default - Commodities" condensed="true"
 		number="{ parts:[{path:'Price'},{path:'CurrencyCode'}], type: 'sap.ui.model.type.Currency', formatOptions: {showMeasure: false} }"
 		numberUnit="{CurrencyCode}">
-		<m:ObjectAttribute text="{WeightMeasure} {WeightUnit} {Width} x {Depth} x {Height} {DimUnit}"/>
 	</m:ObjectHeader>
 	<m:App>
 		<m:pages>
@@ -72,7 +72,7 @@
 					<!--		</m:ColumnListItem>-->
 					<!--	</m:items>-->
 					<!--</m:Table>-->
-					<Table id="tblCommodities" rows="{/COMMODITIES}" selectionMode="None" visibleRowCount="10" rowActionCount="1" class="sapUiSizeCompact">
+					<Table id="tblCommodities" rows="{/COMMODITIES}" selectionMode="Single" visibleRowCount="7" rowActionCount="1" class="sapUiSizeCompact">
 						<extension>
 							<m:OverflowToolbar>
 								<m:content>
@@ -80,8 +80,8 @@
 									<m:ToolbarSpacer/>
 									<m:Button icon="sap-icon://sys-next-page" text="Exportar" tooltip="Exportar version de commoditie"/>
 									<m:Button icon="sap-icon://sys-prev-page" text="Importar" tooltip="Importar version de commoditie"/>
-									<m:Button icon="sap-icon://factory" text="Administrar Commodities" tooltip="Crear Commodities" press="showFormAddCommoditie"/>
-									<m:Button icon="sap-icon://edit" text="Editar Version Default" tooltip="Version Default" press="showFormEditCommoditie"/>
+									<m:Button icon="sap-icon://factory" type="Emphasized" text="Administrar Commodities" tooltip="Crear Commodities" press="onGoToIdCommoditieTable"/>
+									<m:Button icon="sap-icon://edit" type="Emphasized"  text="Editar Version Default" tooltip="Version Default" press="showFormEditCommoditie"/>
 								</m:content>
 							</m:OverflowToolbar>
 						</extension>
@@ -89,7 +89,7 @@
 							<Column>
 								<m:Label text="ICDEF_IDCOMMODITIES"/>
 								<template>
-									<m:Text text="{CDEF_IDCOMMODITIES}" wrapping="false"/>
+									<m:Text text="{CDEF_IDCOMMODITIES}" wrapping="false" />
 								</template>
 							</Column>
 							<Column>
@@ -101,7 +101,9 @@
 							<Column>
 								<m:Label text="CDEF_SOCIEDAD"/>
 								<template>
-									<m:Input value="{CDEF_SOCIEDAD}" editable="false"/>
+									<!--<m:TextField text="{CDEF_SOCIEDAD}" editable="false"/>-->
+									<m:Input value="{CDEF_SOCIEDAD}"  editable="false" />
+									<!--<m:Text text="{CDEF_SOCIEDAD}" editable="false" visible="false"/>-->
 								</template>
 							</Column>
 							<Column>
@@ -136,7 +138,7 @@
 							</Column>
 							<Column width="4rem" hAlign="Center" >
 								<template>
-									<m:Button icon="sap-icon://puzzle" press="handleDetailsPress"/>
+									<m:Button icon="sap-icon://puzzle" press="showCalculator"/>
 								</template>
 							</Column>
 							<Column>

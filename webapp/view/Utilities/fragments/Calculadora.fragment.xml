@@ -7,75 +7,75 @@
 	xmlns:html="http://www.w3.org/1999/xhtml" 
 	xmlns:l="sap.ui.layout"
 	height="100%">
-	<m:Dialog title="Formuladora" >
+	<!--<m:Dialog title="Formuladora" >-->
 	
-		<m:Label wrapping="true" text="Layout Type:"/>
+	<!--	<m:Label wrapping="true" text="Layout Type:"/>-->
 	
-			<m:Select id="layoutType" tooltip="Layout Types" change="layoutTypeChanged"
-					  selectedKey="{settings>/layoutType}">
-				<core:Item key="Default" text="Default"/>
-				<core:Item key="VisualTextualReadOnly" text="Visual Textual Read Only"/>
-				<core:Item key="VisualOnly" text="Visual Only"/>
-				<core:Item key="TextualOnly" text="Textual Only"/>
-			</m:Select>
+	<!--		<m:Select id="layoutType" tooltip="Layout Types" change="layoutTypeChanged"-->
+	<!--				  selectedKey="{settings>/layoutType}">-->
+	<!--			<core:Item key="Default" text="Default"/>-->
+	<!--			<core:Item key="VisualTextualReadOnly" text="Visual Textual Read Only"/>-->
+	<!--			<core:Item key="VisualOnly" text="Visual Only"/>-->
+	<!--			<core:Item key="TextualOnly" text="Textual Only"/>-->
+	<!--		</m:Select>-->
 	
-		<m:ToggleButton text="Read only" pressed="{settings>/readOnly}" press="readOnlyChanged"/>
+	<!--	<m:ToggleButton text="Read only" pressed="{settings>/readOnly}" press="readOnlyChanged"/>-->
 			
-		<CalculationBuilder
-					allowStringConstants="true"
-					id="builder"
-					layoutType="{settings>/layoutType}"
-					expression=""
-					readOnly="{settings>/readOnly}"
-					allowComparisonOperators="{settings>/allowComparison}"
-					allowLogicalOperators="{settings>/allowLogical}"
-					validateFunction="validateFunction"
-					afterValidation="afterValidation"
-					title="{/title}"
-					variables="{/variables}">
-				<variables>
-					<CalculationBuilderVariable
-							key="{key}"
-							group="{group}"
-							label="{label}"
-							items="{path:'items', templateShareable:true}">
-						<items>
-							<CalculationBuilderItem
-									key="{key}">
-							</CalculationBuilderItem>
-						</items>
-					</CalculationBuilderVariable>
-				</variables>
-				<operators>
-					<core:Item key="Contains" text="Contains" />
-				</operators>
-				<groups>
-					<CalculationBuilderGroup setSelection="setSelection"
-							title="References" key="references" icon="sap-icon://account" description="Internal item references">
-						<customView >
-							 	<m:Tree
-									id="Tree"
-									select="handleChange"
-									mode="SingleSelectMaster"
-		 							items="{/references}"
-									includeItemInSelection="true">
-										<m:StandardTreeItem	title="{text}" icon="{ref}">
-											<m:customData>
-												<core:CustomData key="{key}" value="{key}"/>
-											</m:customData>
-										</m:StandardTreeItem>
-								</m:Tree>
-						</customView>
-					</CalculationBuilderGroup>
-				</groups>
-			</CalculationBuilder>
+	<!--	<CalculationBuilder-->
+	<!--				allowStringConstants="true"-->
+	<!--				id="builder"-->
+	<!--				layoutType="{settings>/layoutType}"-->
+	<!--				expression=""-->
+	<!--				readOnly="{settings>/readOnly}"-->
+	<!--				allowComparisonOperators="{settings>/allowComparison}"-->
+	<!--				allowLogicalOperators="{settings>/allowLogical}"-->
+	<!--				validateFunction="validateFunction"-->
+	<!--				afterValidation="afterValidation"-->
+	<!--				title="{/title}"-->
+	<!--				variables="{/variables}">-->
+	<!--			<variables>-->
+	<!--				<CalculationBuilderVariable-->
+	<!--						key="{key}"-->
+	<!--						group="{group}"-->
+	<!--						label="{label}"-->
+	<!--						items="{path:'items', templateShareable:true}">-->
+	<!--					<items>-->
+	<!--						<CalculationBuilderItem-->
+	<!--								key="{key}">-->
+	<!--						</CalculationBuilderItem>-->
+	<!--					</items>-->
+	<!--				</CalculationBuilderVariable>-->
+	<!--			</variables>-->
+	<!--			<operators>-->
+	<!--				<core:Item key="Contains" text="Contains" />-->
+	<!--			</operators>-->
+	<!--			<groups>-->
+	<!--				<CalculationBuilderGroup setSelection="setSelection"-->
+	<!--						title="References" key="references" icon="sap-icon://account" description="Internal item references">-->
+	<!--					<customView >-->
+	<!--						 	<m:Tree-->
+	<!--								id="Tree"-->
+	<!--								select="handleChange"-->
+	<!--								mode="SingleSelectMaster"-->
+	<!--	 							items="{/references}"-->
+	<!--								includeItemInSelection="true">-->
+	<!--									<m:StandardTreeItem	title="{text}" icon="{ref}">-->
+	<!--										<m:customData>-->
+	<!--											<core:CustomData key="{key}" value="{key}"/>-->
+	<!--										</m:customData>-->
+	<!--									</m:StandardTreeItem>-->
+	<!--							</m:Tree>-->
+	<!--					</customView>-->
+	<!--				</CalculationBuilderGroup>-->
+	<!--			</groups>-->
+	<!--		</CalculationBuilder>-->
 	
-	<m:beginButton>
-         <m:Button icon="sap-icon://save"  text="save" tooltip="save" press="closeDialog"/>
-    </m:beginButton>
-	<m:endButton>
-         <m:Button icon="sap-icon://decline" text="cancel" tooltip="cancel"  press="closeDialog"/>
-    </m:endButton>
-	</m:Dialog>
+	<!--<m:beginButton>-->
+ <!--        <m:Button icon="sap-icon://save"  text="save" tooltip="save" press="closeDialog"/>-->
+ <!--   </m:beginButton>-->
+	<!--<m:endButton>-->
+ <!--        <m:Button icon="sap-icon://decline" text="cancel" tooltip="cancel"  press="closeDialog"/>-->
+ <!--   </m:endButton>-->
+	<!--</m:Dialog>-->
 </core:FragmentDefinition>
 

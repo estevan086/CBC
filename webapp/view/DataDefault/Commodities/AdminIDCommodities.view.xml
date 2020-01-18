@@ -4,7 +4,7 @@
 		<pages>
 			<Page showHeader="false" enableScrolling="false" class="sapUiContentPadding" showNavButton="true" navButtonPress="onBack">
 				<content>
-					<Button text="To the first Page" press="onToPage1"/>
+					<Button type="Back" press="onToPage1"/>
 					<ui:Table id="tblCommodities" rows="{/COMMODITIES}" selectionMode="None" visibleRowCount="10">
 						<ui:columns>
 							<ui:Column>

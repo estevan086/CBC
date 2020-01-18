@@ -1,49 +1,67 @@
 sap.ui.define([
-	"sap/ui/core/mvc/Controller",
+	"cbc/co/simulador_costos/controller/BaseController",
 	"sap/ui/model/json/JSONModel"
 ], function (Controller, JSONModel) {
 	"use strict";
 
 	var oPageController = Controller.extend("cbc.co.simulador_costos.controller.Utilities.Formuladora", {
+
+		onBeforeRendering: function () {
+		//	alert("onBeforeRendering function called");
+		},
+		
+		onAfterRendering: function () {
+			//alert("onAfterRendering function called");
+		},
 		onInit: function () {
 			//var oModel = new JSONModel(jQuery.sap.getModulePath("cbc.co.simulador_costos", "/dataFormuladora.json"));
-			
-			
+
 			var oModel = new JSONModel();
 			jQuery.ajax("model/dataFormuladora.json", {
 				dataType: "json",
-				success: function(oData) {
+				success: function (oData) {
 					oModel.setData(oData);
 				},
-				error: function() {
+				error: function () {
 					jQuery.sap.log.error("failed to load json");
 				}
 			});
-			
-			
+
 			this.getView().setModel(oModel);
 			this._oBuilder = this.getView().byId("builder");
 
 			this._oModelSettings = new JSONModel({
-				layoutType: "Default", 
-				allowComparison: true,
-				allowLogical: true,
+				layoutType: "Default",
+				showInputToolbar: false,
+				allowComparison: false,
+				allowComparisonOperators: false,
+				allowLogical: false,
 				readOnly: false
 			});
 			this.getView().setModel(this._oModelSettings, "settings");
+
+			this._oBuilder.setShowInputToolbar(true);
+
+			this.getView().addEventDelegate({
+				onBeforeShow: function (event) {
+					/*Do sth with*/
+					this.getView().data("data");
+				//	alert("onBeforeShow function called");
+				}
+			}, this);
+
 		},
-		
-		onToPage1 : function (oEvent) {
-			
-		//	this.getOwnerComponent().getRouter().navTo("page1");
-		
+
+		onToPage1: function (oEvent) {
+
+			//	this.getOwnerComponent().getRouter().navTo("page1");
+
 			var oApp = oEvent.getSource().getParent().getParent().getParent().getParent().getParent().getParent().getParent().getParent();
 			var oNavContainer = oApp.byId("NavContainer");
 			//oNavContainer.to(oApp.createId("rtChCommodities"));
 			oNavContainer.back();
 		},
 
-		
 		layoutTypeChanged: function (oEvent) {
 			var sKey = oEvent.getSource().getProperty("selectedKey");
 			this._oBuilder.setShowInputToolbar(sKey === "TextualOnly");

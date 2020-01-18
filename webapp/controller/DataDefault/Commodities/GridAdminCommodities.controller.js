@@ -14,15 +14,15 @@ sap.ui.define([
 	"sap/m/StandardListItem",
 	"sap/m/ButtonType",
 	'sap/m/MessageBox',
-    "sap/ui/table/RowSettings",
-   	"sap/ui/core/library"
+	"sap/ui/table/RowSettings",
+	"sap/ui/core/library"
 
 ], function (Controller, JSONModel, MessageToast, Fragment, DateFormat, library, Filter, FilterOperator, Button, Dialog, List,
 	StandardListItem, ButtonType, MessageBox, RowSettings, CoreLibrary) {
 	"use strict";
 	var that = this;
 	var MessageType = CoreLibrary.MessageType;
-	
+
 	return Controller.extend("cbc.co.simulador_costos.controller.DataDefault.Commodities.GridAdminCommodities", {
 
 		onInit: function () {
@@ -43,8 +43,7 @@ sap.ui.define([
 
 			// var itemTemplate = new sap.ui.core.ListItem();      //  creating a ListItem object                  
 			// itemTemplate .bindProperty("text", "text");   //  bind for the "text" property a certain path from the model
-			
-	
+
 			var supplierObject = [{
 				Supplier: "Titanium"
 			}, {
@@ -52,40 +51,8 @@ sap.ui.define([
 			}, {
 				Supplier: "Red Point Stores"
 			}];
-			// var oModel = new sap.ui.model.json.JSONModel();
-			// oModel.setData(dataObject);
-			// sap.ui.getCore().setModel(oModel);
+
 			
-			// sap.ui.getCore().getModel().setProperty("/Supplier", supplierObject);
-
-			// var fnPress = this.handleActionPress.bind(this);
-			// var fnEditDetail = this.showFormEditDetail.bind(this);
-
-			// this.modes = [{
-			// 	key: "NavigationDelete",
-			// 	text: "Navigation & Delete",
-			// 	handler: function () {
-			// 		var oTemplate = new sap.ui.table.RowAction({
-			// 			items: [
-			// 				new sap.ui.table.RowActionItem({
-			// 					icon: "sap-icon://edit",
-			// 					text: "Edit",
-			// 					press: fnEditDetail
-			// 				}),
-			// 				new sap.ui.table.RowActionItem({
-			// 					icon: "sap-icon://simulate",
-			// 					text: "Edit Formula",
-			// 					press: fnPress
-			// 				})
-			// 			]
-			// 		});
-			// 		return [2, oTemplate];
-			// 	}
-			// }];
-			// this.getView().setModel(new JSONModel({
-			// 	items: this.modes
-			// }), "modes");
-			// this.switchState("NavigationDelete");
 
 		},
 
@@ -96,7 +63,7 @@ sap.ui.define([
 			if (oTemplate) {
 				oTemplate.destroy();
 				oTemplate = null;
-			} 
+			}
 
 			for (var i = 0; i < this.modes.length; i++) {
 				if (sKey === this.modes[i].key) {
@@ -111,59 +78,59 @@ sap.ui.define([
 			oTable.setRowActionCount(iCount);
 		},
 
-		handleEditPress : function(oEvent, Data) {
+		handleEditPress: function (oEvent, Data) {
 			//var oRow = oEvent.getParameter("row");
 			var oItem = oEvent.getParameter("item");
-			
-			var oTable = this.byId("tblCommodities");  
+
+			var oTable = this.byId("tblCommodities");
 			var oRowData = oEvent.getSource().getBindingContext().getProperty();
-			
+
 			var oRowEdited = oEvent.getSource().getParent().getParent();
-			
+
 			//this.byId("tblCommodities").getRows()[3].getCells()[3].mProperties.editable = "true";
-			
+
 			for (var i = 0; i < oTable.getRows().length; i++) {
-				
+
 				oTable.getRows()[i].getBindingContext().getProperty().CDEF_EDIT_FLAG = "None";
 				oTable.getRows()[i].getBindingContext().getProperty().CDEF_NAV_FLAG = false;
-				
-              	//Sociedad
+
+				//Sociedad
 				oTable.getRows()[i].getCells()[2].setProperty("editable", false);
 				//Moneda
 				oTable.getRows()[i].getCells()[3].setProperty("editable", false);
 				//Unidad de Medida
-				oTable.getRows()[i].getCells()[4].setProperty("editable", false); 
+				oTable.getRows()[i].getCells()[4].setProperty("editable", false);
 				//Precio
-				oTable.getRows()[i].getCells()[5].setProperty("editable", false); 
+				oTable.getRows()[i].getCells()[5].setProperty("editable", false);
 				//Otros Costos
-				oTable.getRows()[i].getCells()[6].setProperty("editable", false); 
+				oTable.getRows()[i].getCells()[6].setProperty("editable", false);
 			}
-			
+
 			//Sociedad
 			oRowEdited.getCells()[2].setProperty("editable", true);
 			//Moneda
 			oRowEdited.getCells()[3].setProperty("editable", true);
 			//Unidad de Medida
-			oRowEdited.getCells()[4].setProperty("editable", true); 
+			oRowEdited.getCells()[4].setProperty("editable", true);
 			//Precio
-			oRowEdited.getCells()[5].setProperty("editable", true); 
+			oRowEdited.getCells()[5].setProperty("editable", true);
 			//Otros Costos
-			oRowEdited.getCells()[6].setProperty("editable", true); 
+			oRowEdited.getCells()[6].setProperty("editable", true);
 
 			oRowData.CDEF_EDIT_FLAG = "Information";
-			
+
 			oRowData.CDEF_NAV_FLAG = true;
-			
+
 			oTable.setRowSettingsTemplate(new RowSettings({
 				highlight: "{CDEF_EDIT_FLAG}",
 				navigated: "{CDEF_NAV_FLAG}"
-				// 	path: "",
-				// 	formatter: function() {
-				// 		var oRow = this._getRow();
-	
+					// 	path: "",
+					// 	formatter: function() {
+					// 		var oRow = this._getRow();
+
 				// 		if (oRow !== null) {
 				// 			var iIndex = oRow.getIndex();
-	
+
 				// 			if (iIndex === 0) {
 				// 				return MessageType.Success;
 				// 			} else if (iIndex === 1) {
@@ -180,16 +147,15 @@ sap.ui.define([
 				// 				return MessageType.Success;
 				// 			}
 				// 		}
-	
+
 				// 		return "None";
 				// 	}
 				// }
-				
+
 			}));
 
-		sap.ui.getCore().applyChanges();
-		
-		
+			sap.ui.getCore().applyChanges();
+
 			// var oToggleButton = oEvent.getSource();
 
 			// if (oToggleButton.getPressed()) {
@@ -199,13 +165,10 @@ sap.ui.define([
 			// } else {
 			// 	oTable.setRowSettingsTemplate(null);
 			// }
-			
+
 			MessageToast.show("ID " + (oItem.getText() || oItem.getType()) + " pressed for id " + oRowData.CDEF_IDCOMMODITIES);
-			
-			
-			
+
 		},
-		
 
 		showFormEditDetail: function (oEvent) {
 			this.LogisticaDisplay = sap.ui.xmlfragment(
@@ -397,6 +360,29 @@ sap.ui.define([
 			var oNavContainer = oMainContentView.byId("NavContainer");
 
 			oNavContainer.to(oMainContentView.createId("rtChIDCommodities"));
+		},
+
+		showCalculator: function (oEvent) {
+			//rtChFromuladora
+			var oRowData = oEvent.getSource().getBindingContext().getProperty();
+
+			var oMainContentView = oEvent.getSource().getParent().getParent().getParent().getParent().getParent().getParent().getParent().getParent()
+				.getParent().getParent();
+
+			var oNavContainer = oMainContentView.byId("NavContainer");
+
+			this.getView().addEventDelegate({
+				onBeforeHide: function (event) {
+					var targetView = event.to;
+					var dataToPass = "Precio+Precio";/*...*/
+					targetView.data("data", dataToPass);
+				}
+			}, this);
+
+			//oNavContainer.to(oMainContentView.createId("rtChFromuladora", {	formula: oRowData.CDEF_FORMULA } ) );
+			
+			oNavContainer.to(oMainContentView.createId("rtChFromuladora"), "slide", oRowData );
+
 		}
 
 	});

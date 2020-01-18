@@ -14,7 +14,7 @@ sap.ui.define([
 		onInit : function() {
 			this.oModel = new JSONModel();
 			this.oModel.setData({
-				"selectedKey": "page2",
+				"selectedKey": "rtHome",
 				"navigation": [
 					{
 						"title": "Home",

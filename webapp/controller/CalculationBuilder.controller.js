@@ -10,11 +10,11 @@ sap.ui.define([
 
 	var oPageController = Controller.extend("cbc.co.simulador_costos.controller.CalculationBuilder", {
 		onInit: function () {
-				// set explored app's demo model on this sample
-			var oModel = new JSONModel("model/productsN.json");
-			// the default limit of the model is set to 100. We want to show all the entries.
-			oModel.setSizeLimit(1000000);
-			this.getView().setModel(oModel);
+			// 	// set explored app's demo model on this sample
+			// var oModel = new JSONModel("model/productsN.json");
+			// // the default limit of the model is set to 100. We want to show all the entries.
+			// oModel.setSizeLimit(1000000);
+			// this.getView().setModel(oModel);
 		},
 		
 			handleValueHelp: function (oEvent) {

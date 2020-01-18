@@ -40,3 +40,11 @@ html[dir="rtl"] .myAppDemoWT .myCustomButton.sapMBtn {
 	border: none !important;
 }
 
+.sapMInputBaseContentWrapper{
+	border: none !important;
+}
+
+.sapMInputBaseInner{
+	background: white !important;
+}
+
