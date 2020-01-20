@@ -6,6 +6,17 @@
 				<content>
 					<Button type="Back" press="onToPage1"/>
 					<ui:Table id="tblCommodities" rows="{/COMMODITIES}" selectionMode="None" visibleRowCount="10">
+						<ui:extension>
+							<OverflowToolbar>
+								<content>
+									<Title id="title" text="Commodities"/>
+									<ToolbarSpacer/>
+									<Button icon="sap-icon://factory" type="Emphasized" text="Crear Commodities" tooltip="Crear Commodities"
+										press="showFormAddCommoditie"/>
+									<Button icon="sap-icon://save" type="Emphasized" text="Guardar Commodities" tooltip="Guardar Commodities"/>
+								</content>
+							</OverflowToolbar>
+						</ui:extension>
 						<ui:columns>
 							<ui:Column>
 								<Label text="ICDEF_IDCOMMODITIES"/>
@@ -16,54 +27,7 @@
 							<ui:Column>
 								<Label text="CDEF_COMMODITIE"/>
 								<ui:template>
-								</ui:template>
-							</ui:Column>
-							<ui:Column>
-								<Label text="CDEF_SOCIEDAD"/>
-								<ui:template>
-									<Text text="{CDEF_SOCIEDAD}" wrapping="false"/>
-								</ui:template>
-							</ui:Column>
-							<ui:Column>
-								<Label text="CDEF_MONEDA"/>
-								<ui:template>
-									<Text text="{CDEF_MONEDA}" wrapping="false"/>
-								</ui:template>
-							</ui:Column>
-							<ui:Column>
-								<Label text="CDEF_UMD"/>
-								<ui:template>
-									<Text text="{CDEF_UMD}" wrapping="false"/>
-								</ui:template>
-							</ui:Column>
-							<ui:Column>
-								<Label text="CDEF_PRECIO"/>
-								<ui:template>
-									<Text text="{CDEF_PRECIO}" wrapping="false"/>
-								</ui:template>
-							</ui:Column>
-							<ui:Column>
-								<Label text="CDEF_OTROCOSTO"/>
-								<ui:template>
-									<Text text="{CDEF_OTROCOSTO}" wrapping="false"/>
-								</ui:template>
-							</ui:Column>
-							<ui:Column>
-								<Label text="CDEF_FORMULA"/>
-								<ui:template>
-									<Text text="{CDEF_FORMULA}" wrapping="false"/>
-								</ui:template>
-							</ui:Column>
-							<ui:Column>
-								<Label text="CDEF_PERIODO"/>
-								<ui:template>
-									<Text text="{CDEF_PERIODO}" wrapping="false"/>
-								</ui:template>
-							</ui:Column>
-							<ui:Column>
-								<Label text="CDEF_MES"/>
-								<ui:template>
-									<Text text="{CDEF_MES}" wrapping="false"/>
+									<Text text="{CDEF_COMMODITIE}" wrapping="false"/>
 								</ui:template>
 							</ui:Column>
 						</ui:columns>
