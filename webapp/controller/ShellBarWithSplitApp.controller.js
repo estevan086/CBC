@@ -222,6 +222,10 @@ sap.ui.define([
 			} else {
 				toggleButton.setTooltip('Small Size Navigation');
 			}
+		},
+		
+		onAfterNavigate : function(){
+			console.log("Test Navegacion");
 		}
 
 	});

@@ -2,7 +2,7 @@
 	xmlns:core="sap.ui.core" xmlns:m="sap.m" height="100%">
 	<m:App>
 		<m:pages>
-			<m:Page showHeader="false" enableScrolling="false" class="sapUiContentPadding">
+			<m:Page id="pageFormuladora" showHeader="false" enableScrolling="false" class="sapUiContentPadding">
 				<m:subHeader>
 					<m:OverflowToolbar>
 						<m:Button type="Back" press="onToPage1"/>

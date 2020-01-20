@@ -32,7 +32,7 @@
 			</tnt:SideNavigation>
 		</tnt:sideContent>
 		<tnt:mainContents>
-			<NavContainer id="NavContainer" initialPage="rtHome">
+			<NavContainer id="NavContainer" initialPage="rtHome" afterNavigate="onAfterNavigate">
 				<pages>
 					<ScrollContainer id="rtHome" horizontal="false" vertical="true" height="100%">
 						<mvc:XMLView viewName="cbc.co.simulador_costos.view.Home"/>

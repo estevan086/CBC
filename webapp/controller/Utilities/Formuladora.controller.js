@@ -7,9 +7,15 @@ sap.ui.define([
 	var oPageController = Controller.extend("cbc.co.simulador_costos.controller.Utilities.Formuladora", {
 
 		onBeforeRendering: function () {
-		//	alert("onBeforeRendering function called");
+
+
+
 		},
-		
+
+		onBeforeShow: function (oEvent) {
+			console.log("onBeforeShow was called"); // For https://stackoverflow.com/q/48097675/5846045
+		},
+
 		onAfterRendering: function () {
 			//alert("onAfterRendering function called");
 		},
@@ -43,11 +49,7 @@ sap.ui.define([
 			this._oBuilder.setShowInputToolbar(true);
 
 			this.getView().addEventDelegate({
-				onBeforeShow: function (event) {
-					/*Do sth with*/
-					this.getView().data("data");
-				//	alert("onBeforeShow function called");
-				}
+				onBeforeShow: this.onBeforeShow,
 			}, this);
 
 		},

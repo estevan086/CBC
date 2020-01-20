@@ -383,6 +383,31 @@ sap.ui.define([
 			
 			oNavContainer.to(oMainContentView.createId("rtChFromuladora"), "slide", oRowData );
 
+		},
+		
+		_generateInvalidUserInput: function () {
+			var oButton = this.getView().byId("messagePopoverBtn"),
+				oRequiredNameInput = this.oView.byId("formContainer").getItems()[4].getContent()[2],
+				oNumericZipInput = this.oView.byId("formContainer").getItems()[5].getContent()[7],
+				oEmailInput = this.oView.byId("formContainer").getItems()[6].getContent()[13],
+				iWeeklyHours = this.oView.byId("formContainerEmployment").getItems()[0].getContent()[13];
+
+			oButton.setVisible(true);
+			oRequiredNameInput.setValue(undefined);
+			oNumericZipInput.setValue("AAA");
+			oEmailInput.setValue("MariaFontes.com");
+			iWeeklyHours.setValue(400);
+
+			this.handleRequiredField(oRequiredNameInput);
+			this.checkInputConstraints(iWeeklyHours);
+
+			this.oMP.getBinding("items").attachChange(function(oEvent){
+				this.oMP.navigateBack();
+			}.bind(this));
+
+			setTimeout(function(){
+				this.oMP.openBy(oButton);
+			}.bind(this), 100);
 		}
 
 	});
