@@ -13,7 +13,7 @@ sap.ui.define([
 		},
 
 		onBeforeShow: function (oEvent) {
-			console.log("onBeforeShow was called"); // For https://stackoverflow.com/q/48097675/5846045
+			//console.log("onBeforeShow was called"); // For https://stackoverflow.com/q/48097675/5846045
 		},
 
 		onAfterRendering: function () {
