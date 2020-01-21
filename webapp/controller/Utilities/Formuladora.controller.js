@@ -6,19 +6,20 @@ sap.ui.define([
 
 	var oPageController = Controller.extend("cbc.co.simulador_costos.controller.Utilities.Formuladora", {
 
-		onBeforeRendering: function () {
-
-
-
+		onAfterShow: function (oEvent) {
+			//console.log("onBeforeShow was called"); // For https://stackoverflow.com/q/48097675/5846045
 		},
 
 		onBeforeShow: function (oEvent) {
 			//console.log("onBeforeShow was called"); // For https://stackoverflow.com/q/48097675/5846045
 		},
-
-		onAfterRendering: function () {
-			//alert("onAfterRendering function called");
+		
+		onNavigate: function (oEvent) {
+			 var isBack = !oEvent.getParameter("isTo"); // there are several types of back animation, but we want the general direction only
+		  //  alert("Navigating " + (isBack ? "back " : "") + " to page " + oEvent.getParameter("toId"));
+				
 		},
+
 		onInit: function () {
 			//var oModel = new JSONModel(jQuery.sap.getModulePath("cbc.co.simulador_costos", "/dataFormuladora.json"));
 
@@ -48,10 +49,38 @@ sap.ui.define([
 
 			this._oBuilder.setShowInputToolbar(true);
 
-			this.getView().addEventDelegate({
-				onBeforeShow: this.onBeforeShow,
-			}, this);
+			
+			var myRoute = this.getOwnerComponent().getRouter().getRoute("rtChFromuladora");
+			 myRoute.attachPatternMatched(this.onMyRoutePatternMatched, this);
 
+
+		// 	var oApp = this.getView().getAggregation("content")[0];
+		
+		// //	oApp.attachNavigate(this.onNavigate);
+			
+		// 	// oApp.attachNavigate(function(oEvent){
+		// 	// 	this.onNavigate(oEvent);
+		// 	// }.bind(this));
+			
+		// 	oApp.attachNavigate(function(evt) {
+		// 	  var isBack = !evt.getParameter("isTo"); // there are several types of back animation, but we want the general direction only
+		// //	  alert("Navigating " + (isBack ? "back " : "") + " to page " + evt.getParameter("toId"));
+		// 	});
+			
+		// 	var oPage = this.getView().getAggregation("content")[0].getAggregation("pages")[0];
+			
+		// 	oPage.addEventDelegate({
+		// 		onBeforeShow: this.onBeforeShow,
+		// 		onAfterShow: this.onAfterShow
+		// 	}, this);
+
+		},
+
+		onMyRoutePatternMatched: function(event) {
+		  // your code when the view is about to be displayed ..
+		  this.getView().byId("builder").setProperty("title", "X0001")
+		  
+		  
 		},
 
 		onToPage1: function (oEvent) {

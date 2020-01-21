@@ -31,6 +31,13 @@
 								</ui:template>
 							</ui:Column>
 						</ui:columns>
+						<ui:rowActionTemplate>
+							<ui:RowAction>
+								<ui:items>
+									<ui:RowActionItem type="Navigation" text="Editar" press="handleEditPress" icon="sap-icon://edit"></ui:RowActionItem>
+								</ui:items>
+							</ui:RowAction>
+						</ui:rowActionTemplate>
 					</ui:Table>
 				</content>
 			</Page>

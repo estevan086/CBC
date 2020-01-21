@@ -25,24 +25,15 @@ sap.ui.define([
 
 	return Controller.extend("cbc.co.simulador_costos.controller.DataDefault.Commodities.GridAdminCommodities", {
 
+		
+		
 		onInit: function () {
 
-			//  	var oInput1 = this.byId("InputNameVersion");
-			//	oInput1.attachBrowserEvent("onblur", function () {
-			//		this.setEditable(false);
-			//	});
 
-			//	var oInput2 = this.byId("txtDetailVersion");
-			//	oInput2.attachBrowserEvent("blur", function () {
-			//		this.setEditable(false);
-			//	});
-
+			
 			// set explored app's demo model on this sample
 			var json = this.initSampleDataModel();
 			this.getView().setModel(json);
-
-			// var itemTemplate = new sap.ui.core.ListItem();      //  creating a ListItem object                  
-			// itemTemplate .bindProperty("text", "text");   //  bind for the "text" property a certain path from the model
 
 			var supplierObject = [{
 				Supplier: "Titanium"
@@ -359,29 +350,35 @@ sap.ui.define([
 
 			var oNavContainer = oMainContentView.byId("NavContainer");
 
-			oNavContainer.to(oMainContentView.createId("rtChIDCommodities"));
+			oNavContainer.to(oMainContentView.createId("rtChIDCommodities"), "slide", this);
 		},
 
 		showCalculator: function (oEvent) {
 			//rtChFromuladora
 			var oRowData = oEvent.getSource().getBindingContext().getProperty();
 
-			var oMainContentView = oEvent.getSource().getParent().getParent().getParent().getParent().getParent().getParent().getParent().getParent()
-				.getParent().getParent();
+			// var oMainContentView = oEvent.getSource().getParent().getParent().getParent().getParent().getParent().getParent().getParent().getParent()
+			// 	.getParent().getParent();
 
-			var oNavContainer = oMainContentView.byId("NavContainer");
+			// var oNavContainer = oMainContentView.byId("NavContainer");
 
-			this.getView().addEventDelegate({
-				onBeforeHide: function (event) {
-					var targetView = event.to;
-					var dataToPass = "Precio+Precio";/*...*/
-					targetView.data("data", dataToPass);
-				}
-			}, this);
+			// this.getView().addEventDelegate({
+			// 	onBeforeHide: function (event) {
+			// 		var targetView = event.to;
+			// 		var dataToPass = "Precio+Precio";/*...*/
+			// 		targetView.data("data", dataToPass);
+			// 	}
+			// }, this);
 
+
+			var router = this.getOwnerComponent().getRouter();
+			router.navTo("rtChFromuladora");
+			
+			//oNavContainer.to(oMainContentView.createId("rtChFromuladora", {	formula: "TEST" } ) );
+			
 			//oNavContainer.to(oMainContentView.createId("rtChFromuladora", {	formula: oRowData.CDEF_FORMULA } ) );
 			
-			oNavContainer.to(oMainContentView.createId("rtChFromuladora"), "slide", oRowData );
+			//oNavContainer.to(oMainContentView.createId("rtChFromuladora"), "slide", oRowData );
 
 		},
 		

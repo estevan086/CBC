@@ -1,6 +1,8 @@
 <mvc:View id="sbwsa1" height="100%" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:f="sap.f" xmlns:tnt="sap.tnt"
 	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
 	controllerName="cbc.co.simulador_costos.controller.ShellBarWithSplitApp">
+	
+	
 	<tnt:ToolPage id="toolPage">
 		<tnt:header>
 			<tnt:ToolHeader>
@@ -32,7 +34,7 @@
 			</tnt:SideNavigation>
 		</tnt:sideContent>
 		<tnt:mainContents>
-			<NavContainer id="NavContainer" initialPage="rtHome" afterNavigate="onAfterNavigate">
+			<NavContainer id="parentNavContainer"  afterNavigate="onAfterNavigate">
 				<pages>
 					<ScrollContainer id="rtHome" horizontal="false" vertical="true" height="100%">
 						<mvc:XMLView viewName="cbc.co.simulador_costos.view.Home"/>

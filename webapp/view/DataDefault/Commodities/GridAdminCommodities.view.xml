@@ -17,7 +17,7 @@
 				<m:content>
 					<m:FlexBox height="auto" alignItems="Start" justifyContent="Start">
 						<m:items>
-							<m:Button icon="sap-icon://copy" text="Copiar" tooltip="Copiar version de commoditie" press="showFormCopyVersionCommoditie"/>
+							<!--<m:Button icon="sap-icon://copy" text="Copiar" tooltip="Copiar version de commoditie" press="showFormCopyVersionCommoditie"/>-->
 							<m:Button icon="sap-icon://save" text="Guardar" tooltip="Guardar version de commoditie" press="saveVersionCommodities"/>
 							<m:Button icon="sap-icon://upload-to-cloud" text="Publicar" tooltip="Publicar version de commoditie" press="PublicVersionCommodities"/>
 						</m:items>
@@ -32,7 +32,7 @@
 									<m:Button icon="sap-icon://sys-prev-page" text="Importar" tooltip="Importar version de commoditie"/>
 									<m:Button icon="sap-icon://factory" type="Emphasized" text="Administrar Commodities" tooltip="Crear Commodities"
 										press="onGoToIdCommoditieTable"/>
-									<m:Button icon="sap-icon://edit" type="Emphasized" text="Editar Version Default" tooltip="Version Default" press="showFormEditCommoditie"/>
+									<!--<m:Button icon="sap-icon://edit" type="Emphasized" text="Editar Version Default" tooltip="Version Default" press="showFormEditCommoditie"/>-->
 								</m:content>
 							</m:OverflowToolbar>
 						</extension>
