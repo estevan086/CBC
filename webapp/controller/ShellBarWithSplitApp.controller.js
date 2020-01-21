@@ -225,7 +225,7 @@ sap.ui.define([
 		},
 		
 		onAfterNavigate : function(){
-			console.log("Test Navegacion");
+			//console.log("Test Navegacion");
 		}
 
 	});
