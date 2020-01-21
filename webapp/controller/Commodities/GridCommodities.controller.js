@@ -414,7 +414,7 @@ sap.ui.define([
 		SetRowoDetail: function (oValue) {
 			var oDetail = {
 				Formula: oValue.CDEF_FORMULA,
-				IdCommoditie: oValue.CDEF_IDCOMMODITIES,
+				IdCommoditie: oValue.CDEF_IDCOMMODITIES, 
 				Sociedad: oValue.CDEF_SOCIEDAD,
 				Centro: oValue.CDEF_CENTRO,
 				UnidadMedida: oValue.CDEF_UMD,
