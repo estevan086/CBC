@@ -1,6 +1,7 @@
 sap.ui.define([
-	"cbc/co/simulador_costos/controller/BaseController"
-], function (BaseController) {
+	"cbc/co/simulador_costos/controller/BaseController",
+	"sap/ui/model/Filter"
+], function (BaseController, Filter) {
 	"use strict";
 
 	return BaseController.extend("cbc.co.simulador_costos.controller.DataDefault.LogisticCost.AdminIDLogisticCost", {
@@ -11,15 +12,16 @@ sap.ui.define([
 		 * @memberOf cbc.co.simulador_costos.view.AdminIDLogisticCost
 		 */
 		onInit: function () {
+			
 			this.getView().addDelegate({
 				onBeforeShow: this.onBeforeShow,
 				onAfterRendering: function (evt) {
-					var a = "";
+					
 				}
 			}, this);
 		},
 		onBeforeShow: function (evt) {
-			var a = "";
+			
 		},
 		showFormAddLC: function (oEvent) {
 			this.fnOpenDialog("cbc.co.simulador_costos.view.Utilities.fragments.AdminLogisticCost.AddLogisticCost");

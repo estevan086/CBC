@@ -9,9 +9,9 @@
 					<m:Label text="Descripción"/>
 					<m:Input id="inpDesc" name="txtName"/>
 					<m:Label text="Categoria Logistica"/>
-					<m:ComboBox id="cmbCategory">
+					<m:ComboBox id="cmbCategory" items="{ModelSimulador>/categorialogisticaSet}">
 						<m:items>
-							<core:ListItem key="" text=""/>
+							<core:ListItem key="{CatCostLo}" text="CatCostLo"/>
 						</m:items>
 					</m:ComboBox>
 				</f:content>

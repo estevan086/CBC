@@ -25,7 +25,7 @@
 									<m:Button icon="sap-icon://sys-prev-page" text="{i18n>Importar}" tooltip="{i18n>Importar}"/>
 									<m:Button icon="sap-icon://factory" type="Emphasized" text="{i18n>Administrar}" tooltip="{i18n>Administrar}"
 										press="onGotoadminlc"/>
-									<m:Button icon="sap-icon://edit" type="Emphasized" text="Editar Version Default" tooltip="Version Default" press="showFormEditCommoditie"/>
+									
 								</m:content>
 							</m:OverflowToolbar>
 						</extension>
@@ -73,6 +73,18 @@
 								</template>
 							</Column>
 							<Column >
+								<m:Label text="Año"/>
+								<template>
+									<u:Currency value="{Price}" currency="{CurrencyCode}"/>
+								</template>
+							</Column>
+							<Column >
+								<m:Label text="Mes"/>
+								<template>
+									<u:Currency value="{Price}" currency="{CurrencyCode}"/>
+								</template>
+							</Column>
+							<Column >
 								<m:Label text="Costo 1"/>
 								<template>
 									<u:Currency value="{Price}" currency="{CurrencyCode}"/>
@@ -86,6 +98,12 @@
 							</Column>
 							<Column>
 								<m:Label text="Total Costo"/>
+								<template>
+									<u:Currency value="{Price}" currency="{CurrencyCode}"/>
+								</template>
+							</Column>
+							<Column>
+								<m:Label text="Costo Und"/>
 								<template>
 									<u:Currency value="{Price}" currency="{CurrencyCode}"/>
 								</template>
