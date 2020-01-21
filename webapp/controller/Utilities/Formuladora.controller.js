@@ -78,9 +78,8 @@ sap.ui.define([
 
 		onMyRoutePatternMatched: function(event) {
 		  // your code when the view is about to be displayed ..
-		  this.getView().byId("builder").setProperty("title", "X0001")
-		  
-		  
+		  this.getView().byId("builder").setProperty("title", "X0001");
+		 
 		},
 
 		onToPage1: function (oEvent) {
