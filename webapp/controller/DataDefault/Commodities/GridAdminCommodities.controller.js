@@ -24,13 +24,8 @@ sap.ui.define([
 	var MessageType = CoreLibrary.MessageType;
 
 	return Controller.extend("cbc.co.simulador_costos.controller.DataDefault.Commodities.GridAdminCommodities", {
-
-		
 		
 		onInit: function () {
-
-
-			
 			// set explored app's demo model on this sample
 			var json = this.initSampleDataModel();
 			this.getView().setModel(json);
@@ -42,9 +37,6 @@ sap.ui.define([
 			}, {
 				Supplier: "Red Point Stores"
 			}];
-
-			
-
 		},
 
 		switchState: function (sKey) {

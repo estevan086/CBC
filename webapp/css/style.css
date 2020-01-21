@@ -23,13 +23,14 @@ html[dir="rtl"] .myAppDemoWT .myCustomButton.sapMBtn {
 	color : #cae4fb !important;
 }
 
-.sapFShellBar .sapFShellBarOTB {
+.sapUiUfdShellHeader {
     height: 3rem;
     padding: 0 0rem !important;
     padding-top: 0px;
     padding-right: 1rem !important;
     padding-bottom: 0px;
     padding-left: 1rem !important;
+    background : #496b8a !important;
 }
 
 .sapNocolor{
