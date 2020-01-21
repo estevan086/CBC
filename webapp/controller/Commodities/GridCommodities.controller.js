@@ -1,5 +1,6 @@
 jQuery.sap.require("cbc.co.simulador_costos.Formatter");
 sap.ui.define([
+	'jquery.sap.global',
 	"cbc/co/simulador_costos/controller/BaseController",
 	"sap/ui/model/json/JSONModel",
 	"sap/m/MessageToast",
@@ -13,49 +14,68 @@ sap.ui.define([
 	"sap/m/StandardListItem",
 	"sap/m/ButtonType",
 	'sap/m/MessageBox',
-	'sap/ui/core/Fragment'
-	
-], function(Controller, JSONModel, MessageToast, DateFormat, library, Filter, FilterOperator, Button, Dialog, List, StandardListItem,  ButtonType, MessageBox, Fragment) {
+	'sap/ui/core/Fragment',
+	'sap/m/StandardTile'
+
+], function (jQuery, Controller, JSONModel, MessageToast, DateFormat, library, Filter, FilterOperator, Button, Dialog, List,
+	StandardListItem, ButtonType, MessageBox, Fragment, StandardTile) {
 	"use strict";
 	var YO = this;
 	var that = this;
 	return Controller.extend("cbc.co.simulador_costos.controller.Commodities.GridCommodities", {
+
+		onInit: function () {
+
+			var oModel = new sap.ui.model.json.JSONModel();
+			oModel.setSizeLimit(10000);
+			sap.ui.getCore().setModel(oModel);
+			var oUploader = this.getView().byId("fileUploader");
+			oUploader.oBrowse.setText("Importar");
+			oUploader.oFilePath.setVisible(false);
+			oUploader.addEventDelegate({
+				onAfterRendering: function () {
+					this.setFileType(['csv']);
+				}
+			}, oUploader);
+
 		
-		onInit : function() {
-			
-			//this.getView().byId("cbxVersion").setSelectedKey("0");
-			//this.getView().byId("txtNameVersion").setValue(this.byId("cbxVersion").getValue().toString().substr(0,(this.byId("cbxVersion").getValue().toString().length -4)));
-			//this.byId("PanelVersionHeader").setHeaderText(this.byId("cbxVersion").getValue());
-			//this.getView().byId("ddlfecha").setSelectedKey(this.byId("cbxVersion").getSelectedKey());
-			// set explored app's demo model on this sample
 			var json = this.initSampleDataModel();
-			// Setting json to current view....
-				//var json = new sap.ui.model.json.JSONModel("model/products.json");
 			this.getView().setModel(json);
-			
+
 			var fnFormuladora = this.showCalculator.bind(this);
 			var fnEditDetail = this.showFormEditDetail.bind(this);
 
-			this.modes = [
-				{
-					key: "NavigationDelete",
-					text: "Navigation & Delete",
-					handler: function(){
-						var oTemplate = new sap.ui.table.RowAction({items: [
-							new sap.ui.table.RowActionItem({icon: "sap-icon://edit", text: "Edit", press:  fnEditDetail}),
-							new sap.ui.table.RowActionItem({icon: "sap-icon://simulate", text: "Edit Formula", press: fnFormuladora, id:"btnFormuladora"})
-						]});
-						return [2, oTemplate];
-					}
+			this.modes = [{
+				key: "NavigationDelete",
+				text: "Navigation & Delete",
+				handler: function () {
+					var oTemplate = new sap.ui.table.RowAction({
+						items: [
+							new sap.ui.table.RowActionItem({
+								icon: "sap-icon://edit",
+								text: "Edit",
+								press: fnEditDetail
+							}),
+							new sap.ui.table.RowActionItem({
+								icon: "sap-icon://simulate",
+								text: "Edit Formula",
+								press: fnFormuladora,
+								id: "btnFormuladora"
+							})
+						]
+					});
+					return [2, oTemplate];
 				}
-			];
-			this.getView().setModel(new JSONModel({items: this.modes}), "modes");
+			}];
+			this.getView().setModel(new JSONModel({
+				items: this.modes
+			}), "modes");
 			this.switchState("NavigationDelete");
 			var that = this;
 			YO = this;
 		},
 
-		switchState : function(sKey) {
+		switchState: function (sKey) {
 			var oTable = this.byId("tblCommodities");
 			var iCount = 0;
 			var oTemplate = oTable.getRowActionTemplate();
@@ -76,48 +96,51 @@ sap.ui.define([
 			oTable.setRowActionTemplate(oTemplate);
 			oTable.setRowActionCount(iCount);
 		},
-		
-		handleActionPress : function(oEvent) {
+
+		handleActionPress: function (oEvent) {
 			var oRow = oEvent.getParameter("row");
 			var oItem = oEvent.getParameter("item");
 			MessageToast.show("Item " + (oItem.getText() || oItem.getType()) + " pressed for product with id " +
 				this.getView().getModel().getProperty("ProductId", oRow.getBindingContext()));
 		},
-		
-		showFormEditDetail: function(oEvent) {
-			this.LogisticaDisplay = sap.ui.xmlfragment("cbc.co.simulador_costos.view.Utilities.fragments.AdminCommodities.EditDetailCommodities", this);
+
+		showFormEditDetail: function (oEvent) {
+			this.LogisticaDisplay = sap.ui.xmlfragment(
+				"cbc.co.simulador_costos.view.Utilities.fragments.AdminCommodities.EditDetailCommodities", this);
 			this.LogisticaDisplay.open();
 			//this.getOwnerComponent().OpnFrmLogitica();
 		},
-		
-		showFormCopyVersionCommoditie: function(oEvent) {
-			this.LogisticaDisplay = sap.ui.xmlfragment("cbc.co.simulador_costos.view.Utilities.fragments.AdminCommodities.CopyVersionCommodities", this);
+
+		showFormCopyVersionCommoditie: function (oEvent) {
+			this.LogisticaDisplay = sap.ui.xmlfragment(
+				"cbc.co.simulador_costos.view.Utilities.fragments.AdminCommodities.CopyVersionCommodities", this);
 			this.LogisticaDisplay.open();
 			//this.getOwnerComponent().OpnFrmLogitica();
 		},
-		
-		showFormAddCommoditie: function(oEvent) {
+
+		showFormAddCommoditie: function (oEvent) {
 			this.LogisticaDisplay = sap.ui.xmlfragment("cbc.co.simulador_costos.view.Utilities.fragments.AdminCommodities.AddCommodities", this);
 			this.LogisticaDisplay.open();
 			//this.getOwnerComponent().OpnFrmLogitica();
 		},
-		
-		showFormEditCommoditie: function(oEvent) {
-			this.LogisticaDisplay = sap.ui.xmlfragment("cbc.co.simulador_costos.view.Utilities.fragments.AdminCommodities.EditCommodities", this);
+
+		showFormEditCommoditie: function (oEvent) {
+			this.LogisticaDisplay = sap.ui.xmlfragment("cbc.co.simulador_costos.view.Utilities.fragments.AdminCommodities.EditCommodities",
+				this);
 			this.LogisticaDisplay.open();
 			//this.getOwnerComponent().OpnFrmLogitica();
 		},
-		
-		showCalculator: function(oEvent){
+
+		showCalculator: function (oEvent) {
 			//rtChFromuladora
-			
+
 			var oMainContentView = oEvent.getSource().getParent().getParent().getParent().getParent().getParent().getParent().getParent().getParent()
 				.getParent().getParent().getParent();
 
 			var oNavContainer = oMainContentView.byId("NavContainer");
 
 			oNavContainer.to(oMainContentView.createId("rtChFromuladora"));
-			
+
 			/*var oModel = new JSONModel();
 			jQuery.ajax("model/CommoditiesTest.json", {
 				dataType: "json",
@@ -137,7 +160,7 @@ sap.ui.define([
 				readOnly: false
 			});
 			YO.getView().setModel(YO._oModelSettings, "settings");*/
-			
+
 			//this.fnOpenDialog("cbc.co.simulador_costos.view.Utilities.fragments.Calculadora");
 			//this.LogisticaDisplay = sap.ui.xmlfragment("cbc.co.simulador_costos.view.Utilities.fragments.Calculadora", YO);
 			//this.LogisticaDisplay.open();
@@ -160,9 +183,9 @@ sap.ui.define([
 			} else {
 				this._openValueHelpDialog(sInputValue);
 			}*/
-			
+
 		},
-		
+
 		_openValueHelpDialog: function (sInputValue) {
 			// create a filter for the binding
 			this._valueHelpDialog.getBinding("items").filter([new Filter(
@@ -184,34 +207,32 @@ sap.ui.define([
 			);
 			evt.getSource().getBinding("items").filter([oFilter]);
 		},
-		
-	
+
 		closeDialog: function (oEvent) {
 			this.fnCloseFragment();
 		},
-		
-		preCopyVersion: function(oEvent) {
+
+		preCopyVersion: function (oEvent) {
 			YO = this;
 			var bCompact = !!this.getView().$().closest(".sapUiSizeCompact").length;
 			MessageBox.warning(
-				"esta seguro de copiar esta version?",
-				{
+				"esta seguro de copiar esta version?", {
 					actions: [MessageBox.Action.OK, MessageBox.Action.CANCEL],
 					styleClass: bCompact ? "sapUiSizeCompact" : "",
-					onClose: function(sAction) {
+					onClose: function (sAction) {
 						YO.LogisticaDisplay.close();
 					}
 				}
 			);
 		},
-		
-		initSampleDataModel : function() {
+
+		initSampleDataModel: function () {
 			var oModel = new JSONModel();
 			//var oDateFormat = DateFormat.getDateInstance({source: {pattern: "timestamp"}, pattern: "dd/MM/yyyy"});
 
 			jQuery.ajax("model/CommoditiesTest.json", {
 				dataType: "json",
-				success: function(oData) {
+				success: function (oData) {
 					var aTemp1 = [];
 					var aTemp2 = [];
 					var aSuppliersData = [];
@@ -220,11 +241,15 @@ sap.ui.define([
 						var oProduct = oData.COMMODITIES[i];
 						if (oProduct.CDEF_IDCOMMODITIES && jQuery.inArray(oProduct.CDEF_IDCOMMODITIES, aTemp1) < 0) {
 							aTemp1.push(oProduct.CDEF_IDCOMMODITIES);
-							aSuppliersData.push({Name: oProduct.CDEF_IDCOMMODITIES});
+							aSuppliersData.push({
+								Name: oProduct.CDEF_IDCOMMODITIES
+							});
 						}
 						if (oProduct.CDEF_COMMODITIE && jQuery.inArray(oProduct.CDEF_COMMODITIE, aTemp2) < 0) {
 							aTemp2.push(oProduct.CDEF_COMMODITIE);
-							aCategoryData.push({Name: oProduct.CDEF_COMMODITIE});
+							aCategoryData.push({
+								Name: oProduct.CDEF_COMMODITIE
+							});
 						}
 						//oProduct.DeliveryDate = (new Date()).getTime() - (i % 10 * 4 * 24 * 60 * 60 * 1000);
 						//var d = new Date(oProduct.DeliveryDate);
@@ -239,34 +264,33 @@ sap.ui.define([
 
 					oModel.setData(oData);
 				},
-				error: function() {
+				error: function () {
 					jQuery.sap.log.error("failed to load json");
 				}
 			});
 
 			return oModel;
 		},
-		
-		//EVENTO vERSION
-		
-		setValuesVersion : function(oEvent)
-		{
-				var ValDate = this.byId("cbxVersion").getValue();
-				this.getView().byId("txtNameVersion").setValue(this.byId("cbxVersion").getValue().toString().substr(0,(this.byId("cbxVersion").getValue().toString().length -4)));
-				this.byId("PanelVersionHeader").setHeaderText(ValDate);
-				this.getView().byId("ddlfecha").setSelectedKey(this.byId("cbxVersion").getSelectedKey());
+
+		//EVENTO VERSION
+
+		setValuesVersion: function (oEvent) {
+			var ValDate = this.byId("cbxVersion").getValue();
+			this.getView().byId("txtNameVersion").setValue(this.byId("cbxVersion").getValue().toString().substr(0, (this.byId("cbxVersion").getValue()
+				.toString().length - 4)));
+			this.byId("PanelVersionHeader").setHeaderText(ValDate);
+			this.getView().byId("ddlfecha").setSelectedKey(this.byId("cbxVersion").getSelectedKey());
 		},
-		
-		setValuesFecha : function(oEvent)
-		{
-				this.getView().byId("cbxVersion").setSelectedKey(this.byId("ddlfecha").getSelectedKey());
-				this.getView().byId("txtNameVersion").setValue(this.byId("cbxVersion").getValue().toString().substr(0,(this.byId("cbxVersion").getValue().toString().length -4)));
-				this.byId("PanelVersionHeader").setHeaderText(this.byId("cbxVersion").getValue());
+
+		setValuesFecha: function (oEvent) {
+			this.getView().byId("cbxVersion").setSelectedKey(this.byId("ddlfecha").getSelectedKey());
+			this.getView().byId("txtNameVersion").setValue(this.byId("cbxVersion").getValue().toString().substr(0, (this.byId("cbxVersion").getValue()
+				.toString().length - 4)));
+			this.byId("PanelVersionHeader").setHeaderText(this.byId("cbxVersion").getValue());
 		},
-		
-		
+
 		//EVENTOS CALCULADORA
-		
+
 		layoutTypeChanged: function (oEvent) {
 			var sKey = oEvent.getSource().getProperty("selectedKey");
 			this._oBuilder.setShowInputToolbar(sKey === "TextualOnly");
@@ -300,7 +324,48 @@ sap.ui.define([
 				}
 			}
 
-		}
+		},
+
+		//EVENTO UPLOADFILE
+	/*	onSelectionChange: function(oEvent) {
+          var oSelectedItem = oEvent.getParameter("listItem");
+          var oModel = oSelectedItem.getBindingContext().getObject();
+          //alert(JSON.stringify(oModel));
+        },*/
+
+        handleUpload: function(oEvent) {
+          var that = this;
+          var oFile = oEvent.getParameter("files")[0];
+          if (oFile && window.FileReader) {
+            var reader = new FileReader();
+            reader.onload = function(evt) {
+              var strCSV = evt.target.result; //string in CSV 
+              that.csvJSON(strCSV);
+            };
+            reader.readAsText(oFile);
+          }
+        },
+
+        csvJSON: function(csv) {
+          var lines = csv.split("\n");
+          var result = [];
+          var headers = lines[0].split(";");
+          for (var i = 1; i < lines.length; i++) {
+            var obj = {};
+            var currentline = lines[i].split(";");
+            for (var j = 0; j < headers.length; j++) {
+              obj[headers[j]] = currentline[j];
+            }
+            result.push(obj);
+          }
+          var oStringResult = JSON.stringify(result);
+          var oFinalResult = JSON.parse(oStringResult.replace(/\\r/g, ""));//OBJETO JSON para guardar
+          	MessageToast.show(oStringResult);
+          	
+          //return result; //JavaScript object
+          //sap.ui.getCore().getModel().setProperty("/", oFinalResult);
+          //this.generateTile();
+        }
 		
 	});
 
