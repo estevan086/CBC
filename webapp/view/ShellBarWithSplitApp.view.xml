@@ -5,6 +5,17 @@
 	
 	<tnt:ToolPage id="toolPage">
 		<tnt:header>
+			<!--<OverflowToolbar id="toolbar">-->
+			<!--	<Button text="Accept" type="Accept"/>-->
+			<!--	<ToolbarSpacer/>-->
+			<!--	<CheckBox text="CheckBox"/>-->
+			<!--	<ToolbarSpacer/>-->
+			<!--	<Input width="100px" value="Input"/>-->
+			<!--	<ToolbarSpacer/>-->
+			<!--	<RadioButton text="RadioButton"/>-->
+			<!--	<ToolbarSpacer/>-->
+			<!--	<Button text="Reject" type="Reject"/>-->
+			<!--</OverflowToolbar>-->
 			<tnt:ToolHeader>
 				<f:ShellBar homeIcon="../webapp/css/images/cbc-logo.png" showMenuButton="true" menuButtonPressed="onMenuButtonPress"></f:ShellBar>
 				<ToolbarSpacer>

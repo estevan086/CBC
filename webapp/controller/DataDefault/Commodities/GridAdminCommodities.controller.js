@@ -29,8 +29,6 @@ sap.ui.define([
 		
 		onInit: function () {
 
-
-			
 			// set explored app's demo model on this sample
 			var json = this.initSampleDataModel();
 			this.getView().setModel(json);
@@ -43,7 +41,9 @@ sap.ui.define([
 				Supplier: "Red Point Stores"
 			}];
 
-			
+
+			 var myRoute = this.getOwnerComponent().getRouter().getRoute("rtChFromuladora");
+			 myRoute.attachPatternMatched(this.onMyRoutePatternMatched, this);			
 
 		},
 
