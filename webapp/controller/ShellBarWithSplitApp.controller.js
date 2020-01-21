@@ -237,6 +237,17 @@ sap.ui.define([
 		
 		onAfterNavigate : function(oEvent){
 		//	console.log("Test Navegacion");
+		},
+		
+		handlePressConfiguration: function(oEvent) {
+		/*	var oItem = oEvent.getSource();
+			var oShell = this.byId("myShell");
+			var bState = oShell.getShowPane();
+			oShell.setShowPane(!bState);
+			oItem.setShowMarker(!bState);
+			oItem.setSelected(!bState);*/
+			var toolPage = this.byId("toolPage");
+			toolPage.setSideExpanded(!toolPage.getSideExpanded());
 		}
 
 	});

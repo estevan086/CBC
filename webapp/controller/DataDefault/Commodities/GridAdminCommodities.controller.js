@@ -24,8 +24,6 @@ sap.ui.define([
 	var MessageType = CoreLibrary.MessageType;
 
 	return Controller.extend("cbc.co.simulador_costos.controller.DataDefault.Commodities.GridAdminCommodities", {
-
-		
 		
 		onInit: function () {
 
