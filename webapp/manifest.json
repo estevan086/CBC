@@ -102,9 +102,20 @@
 					"target": "rtChCommoditiesTarget"
 				},
 				"rtChFromuladora": {
-					"pattern": "rtChFromuladora",
+					"pattern": "rtChFromuladora/{oRowPath}",
 					"target": "rtChFromuladoraTarget"
+				},
+				
+				"rtChMateriales": {
+					"pattern": "rtChMateriales",
+					"target": "rtChMaterialesTarget"
+				},
+				
+				"rtChMantenimientoCommodities": {
+					"pattern": "rtChMantenimientoCommodities",
+					"target": "rtChMantenimientoCommoditiesTarget"
 				}
+				
 			},
 			"targets": {
 				"parentTarget": {
@@ -137,6 +148,24 @@
 					"transition": "flip",
 					"controlAggregation": "pages",
 					"viewLevel": 4
+				},
+				"rtChMaterialesTarget": {
+					"viewPath": "cbc.co.simulador_costos.view.DataDefault.Materiales",
+					"viewName": "AdminMateriales",
+					"parent": "parentTarget",
+					"controlId": "parentNavContainer",
+					"transition": "slide",
+					"controlAggregation": "pages",
+					"viewLevel": 3
+				},
+				"rtChMantenimientoCommoditiesTarget": {
+					"viewPath": "cbc.co.simulador_costos.view.Commodities",
+					"viewName": "Commodities",
+					"parent": "parentTarget",
+					"controlId": "parentNavContainer",
+					"transition": "slide",
+					"controlAggregation": "pages",
+					"viewLevel": 3
 				},
 				"notFound": {
 					"viewName": "Parent",

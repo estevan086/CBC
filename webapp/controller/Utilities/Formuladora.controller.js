@@ -1,24 +1,13 @@
 sap.ui.define([
 	"cbc/co/simulador_costos/controller/BaseController",
-	"sap/ui/model/json/JSONModel"
-], function (Controller, JSONModel) {
+	"sap/ui/model/json/JSONModel",
+	 "sap/ui/core/routing/History"
+], function (Controller, JSONModel, History) {
 	"use strict";
 
 	var oPageController = Controller.extend("cbc.co.simulador_costos.controller.Utilities.Formuladora", {
 
-		onAfterShow: function (oEvent) {
-			//console.log("onBeforeShow was called"); // For https://stackoverflow.com/q/48097675/5846045
-		},
-
-		onBeforeShow: function (oEvent) {
-			//console.log("onBeforeShow was called"); // For https://stackoverflow.com/q/48097675/5846045
-		},
-		
-		onNavigate: function (oEvent) {
-			 var isBack = !oEvent.getParameter("isTo"); // there are several types of back animation, but we want the general direction only
-		  //  alert("Navigating " + (isBack ? "back " : "") + " to page " + oEvent.getParameter("toId"));
-				
-		},
+	
 
 		onInit: function () {
 			//var oModel = new JSONModel(jQuery.sap.getModulePath("cbc.co.simulador_costos", "/dataFormuladora.json"));
@@ -49,47 +38,32 @@ sap.ui.define([
 
 			this._oBuilder.setShowInputToolbar(true);
 
-			
 			var myRoute = this.getOwnerComponent().getRouter().getRoute("rtChFromuladora");
 			 myRoute.attachPatternMatched(this.onMyRoutePatternMatched, this);
-
-
-		// 	var oApp = this.getView().getAggregation("content")[0];
-		
-		// //	oApp.attachNavigate(this.onNavigate);
-			
-		// 	// oApp.attachNavigate(function(oEvent){
-		// 	// 	this.onNavigate(oEvent);
-		// 	// }.bind(this));
-			
-		// 	oApp.attachNavigate(function(evt) {
-		// 	  var isBack = !evt.getParameter("isTo"); // there are several types of back animation, but we want the general direction only
-		// //	  alert("Navigating " + (isBack ? "back " : "") + " to page " + evt.getParameter("toId"));
-		// 	});
-			
-		// 	var oPage = this.getView().getAggregation("content")[0].getAggregation("pages")[0];
-			
-		// 	oPage.addEventDelegate({
-		// 		onBeforeShow: this.onBeforeShow,
-		// 		onAfterShow: this.onAfterShow
-		// 	}, this);
-
 		},
 
 		onMyRoutePatternMatched: function(event) {
 		  // your code when the view is about to be displayed ..
-		  this.getView().byId("builder").setProperty("title", "X0001");
+		  
+		  var oIdCommoditie = event.getParameter("arguments").oRowPath;
+		  
+		  this.getView().byId("builder").setProperty("title", oIdCommoditie);
 		 
 		},
 
 		onToPage1: function (oEvent) {
 
-			//	this.getOwnerComponent().getRouter().navTo("page1");
+		
+			var sPreviousHash = History.getInstance().getPreviousHash();
 
-			var oApp = oEvent.getSource().getParent().getParent().getParent().getParent().getParent().getParent().getParent().getParent();
-			var oNavContainer = oApp.byId("NavContainer");
-			//oNavContainer.to(oApp.createId("rtChCommodities"));
-			oNavContainer.back();
+			//The history contains a previous entry
+			if (sPreviousHash !== undefined) {
+				window.history.go(-1);
+			} else {
+				// There is no history!
+				// replace the current hash with page 1 (will not add an history entry)
+				this.getOwnerComponent().getRouter().navTo("rtChCommodities", null, true);
+			}
 		},
 
 		layoutTypeChanged: function (oEvent) {

@@ -45,34 +45,34 @@ sap.ui.define([
 			var fnFormuladora = this.showCalculator.bind(this);
 			var fnEditDetail = this.showFormEditDetail.bind(this);
 
-			this.modes = [{
-				key: "NavigationDelete",
-				text: "Navigation & Delete",
-				handler: function () {
-					var oTemplate = new sap.ui.table.RowAction({
-						items: [
-							new sap.ui.table.RowActionItem({
-								icon: "sap-icon://edit",
-								text: "Edit",
-								press: fnEditDetail
-							}),
-							new sap.ui.table.RowActionItem({
-								icon: "sap-icon://simulate",
-								text: "Edit Formula",
-								press: fnFormuladora,
-								id: "btnFormuladora"
-							})
-						]
-					});
-					return [2, oTemplate];
-				}
-			}];
-			this.getView().setModel(new JSONModel({
-				items: this.modes
-			}), "modes");
-			this.switchState("NavigationDelete");
-			var that = this;
-			YO = this;
+			// this.modes = [{
+			// 	key: "NavigationDelete",
+			// 	text: "Navigation & Delete",
+			// 	handler: function () {
+			// 		var oTemplate = new sap.ui.table.RowAction({
+			// 			items: [
+			// 				new sap.ui.table.RowActionItem({
+			// 					icon: "sap-icon://edit",
+			// 					text: "Edit",
+			// 					press: fnEditDetail
+			// 				}),
+			// 				new sap.ui.table.RowActionItem({
+			// 					icon: "sap-icon://simulate",
+			// 					text: "Edit Formula",
+			// 					press: fnFormuladora,
+			// 					id: "btnFormuladora"
+			// 				})
+			// 			]
+			// 		});
+			// 		return [2, oTemplate];
+			// 	}
+			// }];
+			// this.getView().setModel(new JSONModel({
+			// 	items: this.modes
+			// }), "modes");
+			// this.switchState("NavigationDelete");
+			// var that = this;
+			// YO = this;
 		},
 
 		switchState: function (sKey) {
@@ -349,10 +349,10 @@ sap.ui.define([
         csvJSON: function(csv) {
           var lines = csv.split("\n");
           var result = [];
-          var headers = lines[0].split(";");
+          var headers = lines[0].split(",");
           for (var i = 1; i < lines.length; i++) {
             var obj = {};
-            var currentline = lines[i].split(";");
+            var currentline = lines[i].split(",");
             for (var j = 0; j < headers.length; j++) {
               obj[headers[j]] = currentline[j];
             }

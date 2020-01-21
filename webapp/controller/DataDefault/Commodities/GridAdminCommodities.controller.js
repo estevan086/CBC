@@ -371,8 +371,23 @@ sap.ui.define([
 			// }, this);
 
 
-			var router = this.getOwnerComponent().getRouter();
-			router.navTo("rtChFromuladora");
+			var oItem = oEvent.getSource();
+			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+			//oRouter.navTo("rtChFromuladora",{ oRowPath: JSON.stringify(oRowData) });
+			
+		
+			
+			var context = {
+				bindingContext : oEvent.getSource().getBindingContext()
+		    };
+		    
+			oRouter.navTo("rtChFromuladora",{  oRowPath: oRowData.CDEF_IDCOMMODITIES });
+			
+			//{ o: JSON.stringify(myObj) }, false
+			// var router = this.getOwnerComponent().getRouter();
+			// router.navTo("rtChFromuladora", {
+			// 	oRowData: oRowData
+			// });
 			
 			//oNavContainer.to(oMainContentView.createId("rtChFromuladora", {	formula: "TEST" } ) );
 			

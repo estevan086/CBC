@@ -8,13 +8,7 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 	var MessageType = CoreLibrary.MessageType;
 
 	return Controller.extend("cbc.co.simulador_costos.controller.DataDefault.Commodities.AdminIDCommodities", {
-		onBeforeRendering: function () {
-			
-		},
-		
-		onAfterRendering: function () {
-			
-		},
+	
 		
 		onInit: function () {
 			//	var sUrl = "#" + this.getOwnerComponent().getRouter().getURL("page1");
@@ -65,12 +59,21 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 		
 		onToPage1: function (oEvent) {
 
-			//	this.getOwnerComponent().getRouter().navTo("page1");
+			var sPreviousHash = History.getInstance().getPreviousHash();
 
-			var oApp = oEvent.getSource().getParent().getParent().getParent().getParent().getParent().getParent().getParent();
-			var oNavContainer = oApp.byId("NavContainer");
-			//oNavContainer.to(oApp.createId("rtChCommodities"));
-			oNavContainer.back();
+			//The history contains a previous entry
+			if (sPreviousHash !== undefined) {
+				window.history.go(-1);
+			} else {
+				// There is no history!
+				// replace the current hash with page 1 (will not add an history entry)
+				this.getOwnerComponent().getRouter().navTo("rtChCommodities", null, true);
+			}
+
+			// var oApp = oEvent.getSource().getParent().getParent().getParent().getParent().getParent().getParent().getParent();
+			// var oNavContainer = oApp.byId("NavContainer");
+			// //oNavContainer.to(oApp.createId("rtChCommodities"));
+			// oNavContainer.back();
 		},
 
 		onBack: function () {
@@ -82,7 +85,7 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 			} else {
 				// There is no history!
 				// replace the current hash with page 1 (will not add an history entry)
-				//this.getOwnerComponent().getRouter().navTo("page1", null, true);
+				this.getOwnerComponent().getRouter().navTo("rtChCommodities", null, true);
 			}
 		},
 
