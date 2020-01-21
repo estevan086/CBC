@@ -98,7 +98,9 @@
 					<ScrollContainer id="rtChCargaManufactura" horizontal="false" vertical="true" height="100%">
 						<mvc:XMLView viewName="cbc.co.simulador_costos.view.Utilities.BasicGrid"/>
 					</ScrollContainer>
-					
+					<ScrollContainer id="rtChAdminCL" horizontal="false" vertical="true" height="100%">
+						<mvc:XMLView viewName="cbc.co.simulador_costos.view.DataDefault.LogisticCost.AdminIDLogisticCost"/>
+					</ScrollContainer>
 					
 					<ScrollContainer id="rtChFromuladora" horizontal="false" vertical="true" height="100%">
 						<mvc:XMLView viewName="cbc.co.simulador_costos.view.Utilities.Formuladora"/>

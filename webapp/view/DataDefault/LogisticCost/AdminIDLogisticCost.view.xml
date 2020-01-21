@@ -1,0 +1,39 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:ui="sap.ui.table"
+	controllerName="cbc.co.simulador_costos.controller.DataDefault.LogisticCost.AdminIDLogisticCost" xmlns:html="http://www.w3.org/1999/xhtml">
+	<Page title="{i18n>CrearLC}" showNavButton="true" navButtonPress="onNavBack">
+		<content>
+			<ui:Table id="tblLogisticcCost" selectionMode="None" visibleRowCount="10">
+				<ui:extension>
+					<OverflowToolbar>
+						<content>
+							<Title id="title" text="{i18n>CostosLogisticos}"/>
+							<ToolbarSpacer/>
+							<Button icon="sap-icon://factory" type="Emphasized" text="{i18n>Crear}" tooltip="Crear" press="showFormAddLC"/>
+							<Button icon="sap-icon://save" type="Emphasized" text="{i18n>Guardar}" tooltip="Guardar"/>
+						</content>
+					</OverflowToolbar>
+				</ui:extension>
+				<ui:columns>
+					<ui:Column>
+						<Label text="ID"/>
+						<ui:template>
+							<Text text="{CDEF_IDCOMMODITIES}" wrapping="false"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column>
+						<Label text="Descripción"/>
+						<ui:template>
+							<Text text="{CDEF_COMMODITIE}" wrapping="false"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column>
+						<Label text="Categoria Logistica"/>
+						<ui:template>
+							<Text text="{CDEF_COMMODITIE}" wrapping="false"/>
+						</ui:template>
+					</ui:Column>
+				</ui:columns>
+			</ui:Table>
+		</content>
+	</Page>
+</mvc:View>
