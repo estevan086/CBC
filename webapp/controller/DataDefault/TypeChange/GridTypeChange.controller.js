@@ -24,23 +24,23 @@ sap.ui.define([
 			var fnPress = this.handleActionPress.bind(this);
 			var fnfrPress = this.frmLogisticPress.bind(this);
 
-			this.modes = [
-				{
-					key: "NavigationDelete",
-					text: "Navigation & Delete",
-					handler: function(){
-						var oTemplate = new sap.ui.table.RowAction({items: [
-							new sap.ui.table.RowActionItem({icon: "sap-icon://edit", text: "Edit", press:  fnfrPress}),
-							new sap.ui.table.RowActionItem({type: "Delete", press: fnPress})
-						]});
-						return [2, oTemplate];
-					}
-				}
-			];
-			this.getView().setModel(new JSONModel({items: this.modes}), "modes");
-			this.switchState("NavigationDelete");
-		},
-	
+		// 	this.modes = [
+		// 		{
+		// 			key: "NavigationDelete",
+		// 			text: "Navigation & Delete",
+		// 			handler: function(){
+		// 				var oTemplate = new sap.ui.table.RowAction({items: [
+		// 					new sap.ui.table.RowActionItem({icon: "sap-icon://edit", text: "Edit", press:  fnfrPress}),
+		// 					new sap.ui.table.RowActionItem({type: "Delete", press: fnPress})
+		// 				]});
+		// 				return [2, oTemplate];
+		// 			}
+		// 		}
+		// 	];
+		// 	this.getView().setModel(new JSONModel({items: this.modes}), "modes");
+		// 	this.switchState("NavigationDelete");
+		 },
+		
 		initSampleDataModel : function() {
 			var oModel = new JSONModel();
 			//var oDateFormat = DateFormat.getDateInstance({source: {pattern: "timestamp"}, pattern: "dd/MM/yyyy"});
