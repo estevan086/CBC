@@ -20,8 +20,8 @@ sap.ui.define([
 ], function (Controller, JSONModel, MessageToast, Fragment, DateFormat, library, Filter, FilterOperator, Button, Dialog, List,
 	StandardListItem, ButtonType, MessageBox, RowSettings, CoreLibrary) {
 	"use strict";
-	
-	this.updatedRecords = [];	
+
+	this.updatedRecords = [];
 	var that = this;
 	var MessageType = CoreLibrary.MessageType;
 
@@ -159,9 +159,6 @@ sap.ui.define([
 
 			sap.ui.getCore().applyChanges();
 
-			
-			
-			
 			var oEntidad = {};
 			oEntidad.RowPath = oEvent.getSource().getBindingContext().sPath.split('/')[2];;
 			// oEntidad.IdCommoditie = oRowData.IdCommoditie;
@@ -171,7 +168,7 @@ sap.ui.define([
 			// oEntidad.Moneda = oRowData.Moneda;
 			// oEntidad.Mes = oRowData.Mes;
 			// oEntidad.Year = oRowData.Year;
-			
+
 			that.updatedRecords.push(oEntidad);
 
 			MessageToast.show("Puedes comenzar a " + (oItem.getText() || oItem.getType()) + " el ID " + oRowData.IdCommoditie);
@@ -184,7 +181,7 @@ sap.ui.define([
 			var oTable = this.byId("tblCommodities");
 
 			//var oSave = this.fnCreateEntity(oModelService, "/headerCommoditiesSet", that.updatedRecords);
-			
+
 			var sServiceUrl = this.getView().getModel("ModelSimulador").sServiceUrl,
 				oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true),
 				oEntidad = {},
@@ -200,9 +197,8 @@ sap.ui.define([
 
 				var CurrentRow = that.updatedRecords[i];
 
-				var oTempRow = oTable.getModel().getData().lstItemsCommodities[CurrentRow.RowPath];	
-				
-					
+				var oTempRow = oTable.getModel().getData().lstItemsCommodities[CurrentRow.RowPath];
+
 				oDetail = {
 					Formula: oTempRow.Formula,
 					IdCommoditie: oTempRow.IdCommoditie,
@@ -250,12 +246,10 @@ sap.ui.define([
 					}
 				);
 
-			}			
-			
-			
+			}
 
 		},
-		
+
 		showFormEditDetail: function (oEvent) {
 			this.LogisticaDisplay = sap.ui.xmlfragment(
 				"cbc.co.simulador_costos.view.Utilities.fragments.AdminCommodities.EditDetailCommodities", this);
@@ -437,35 +431,44 @@ sap.ui.define([
 		},
 
 		CargaMasiva: function (JsonValue) {
-
+			
 			var sServiceUrl = this.getView().getModel("ModelSimulador").sServiceUrl,
 				oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true),
+				oCommodities = [],
 				oEntidad = {},
 				oDetail = {};
 
-			oEntidad = {
-				IdCommoditie: '1111',
-				Descripcion: 'Prueba',
-				detailCommoditiesSet: []
-			};
-
+			var CurrentRow = "";
 			for (var i = 1; i < JsonValue.length; i++) {
+				if (CurrentRow === "") {
+					CurrentRow = JsonValue[i].CDEF_IDCOMMODITIES + JsonValue[i].CDEF_CENTRO + JsonValue[i].CDEF_PERIODO;
+					oEntidad = {
+						IdCommoditie: JsonValue[i].CDEF_IDCOMMODITIES,
+						Descripcion: JsonValue[i].CDEF_COMMODITIE,
+						detailCommoditiesSet: []
+					};
+					oDetail = this.SetRowoDetail(JsonValue[i]);
+					oEntidad.detailCommoditiesSet.push(oDetail);
 
-				var CurrentRow = JsonValue[i];
-
-				oDetail = {
-					Formula: CurrentRow.CDEF_FORMULA,
-					IdCommoditie: CurrentRow.CDEF_IDCOMMODITIES,
-					Sociedad: CurrentRow.CDEF_SOCIEDAD,
-					Centro: CurrentRow.CDEF_CENTRO,
-					UnidadMedida: CurrentRow.CDEF_UMD,
-					Moneda: CurrentRow.CDEF_MONEDA,
-					Mes: CurrentRow.CDEF_MES,
-					Year: CurrentRow.CDEF_PERIODO
-						// Recordmode: '1'
-				};
-
-				oEntidad.detailCommoditiesSet.push(oDetail);
+				} else {
+					if (CurrentRow === JsonValue[i].CDEF_IDCOMMODITIES + JsonValue[i].CDEF_CENTRO + JsonValue[i].CDEF_PERIODO) {
+						oDetail = this.SetRowoDetail(JsonValue[i]);
+						oEntidad.detailCommoditiesSet.push(oDetail);
+					} else {
+						CurrentRow = JsonValue[i].CDEF_IDCOMMODITIES + JsonValue[i].CDEF_CENTRO + JsonValue[i].CDEF_PERIODO;
+						oCommodities.push(oEntidad);
+						oEntidad = {
+							IdCommoditie: JsonValue[i].CDEF_IDCOMMODITIES,
+							Descripcion: JsonValue[i].CDEF_COMMODITIE,
+							detailCommoditiesSet: []
+						};
+						oDetail = this.SetRowoDetail(JsonValue[i]);
+						oEntidad.detailCommoditiesSet.push(oDetail);
+					}
+				}
+				if (i === (JsonValue.length - 1) && JsonValue[i].CDEF_IDCOMMODITIES !== "") {
+					oCommodities.push(oEntidad);
+				}
 			}
 
 			var oCreate = this.fnCreateEntity(oModelService, "/headerCommoditiesSet", oEntidad);
