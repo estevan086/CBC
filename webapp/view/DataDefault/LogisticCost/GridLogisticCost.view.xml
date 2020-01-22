@@ -1,9 +1,5 @@
-<mvc:View controllerName="cbc.co.simulador_costos.controller.DataDefault.LogisticCost.GridLogisticCost"
-	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:mvc="sap.ui.core.mvc" displayBlock="true" xmlns="sap.ui.table" xmlns:m="sap.m"
-	xmlns:u="sap.ui.unified" xmlns:c="sap.ui.core" height="100%">
-	<m:ObjectHeader binding="{/ProductCollection/0}" title="{i18n>CostosLogisticos}" condensed="true"
-		number="{ parts:[{path:'Price'},{path:'CurrencyCode'}], type: 'sap.ui.model.type.Currency', formatOptions: {showMeasure: false} }"
-		numberUnit="{CurrencyCode}"></m:ObjectHeader>
+<mvc:View xmlns:html="http://www.w3.org/1999/xhtml" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.ui.table" xmlns:m="sap.m" xmlns:u="sap.ui.unified" xmlns:c="sap.ui.core" controllerName="cbc.co.simulador_costos.controller.DataDefault.LogisticCost.GridLogisticCost" displayBlock="true" height="100%">
+	<m:ObjectHeader binding="{/ProductCollection/0}" title="{i18n>CostosLogisticos}" condensed="true" number="{ parts:[{path:'Price'},{path:'CurrencyCode'}], type: 'sap.ui.model.type.Currency', formatOptions: {showMeasure: false} }" numberUnit="{CurrencyCode}"/>
 	<m:App>
 		<m:pages>
 			<m:Page showHeader="false" enableScrolling="false" class="sapUiContentPadding">
@@ -19,18 +15,16 @@
 						<extension>
 							<m:OverflowToolbar>
 								<m:content>
-									<m:Title id="title" text="Commodities"/>
 									<m:ToolbarSpacer/>
 									<m:Button icon="sap-icon://sys-next-page" text="{i18n>Exportar}" tooltip="{i18n>Exportar}"/>
 									<m:Button icon="sap-icon://sys-prev-page" text="{i18n>Importar}" tooltip="{i18n>Importar}"/>
-									<m:Button icon="sap-icon://factory" type="Emphasized" text="{i18n>Administrar}" tooltip="{i18n>Administrar}"
-										press="onGotoadminlc"/>
-									
+									<m:Button icon="sap-icon://factory" type="Emphasized" text="{i18n>Administrar}" tooltip="{i18n>Administrar}" press="onGotoadminlc"/>
+									<m:Button icon="sap-icon://list" type="Emphasized" text="{i18n>NuevoMaterial}" tooltip="{i18n>NuevoMaterial}" press="onGotoaddmaterial"/>
 								</m:content>
 							</m:OverflowToolbar>
 						</extension>
 						<columns>
-							<Column >
+							<Column>
 								<m:Label text="ID Material"/>
 								<template>
 									<m:Text text="{Name}" wrapping="false"/>
@@ -48,7 +42,7 @@
 									<m:Label text="{ path: 'Quantity', type: 'sap.ui.model.type.Integer' }"/>
 								</template>
 							</Column>
-							<Column >
+							<Column>
 								<m:Label text="ID Icoterm"/>
 								<template>
 									<m:Label text="{Quantity}"/>
@@ -60,31 +54,31 @@
 									<m:ObjectStatus text="{Status}" state="{ path: 'Available', formatter: '.formatAvailableToObjectState' }"/>
 								</template>
 							</Column>
-							<Column >
+							<Column>
 								<m:Label text="Cant. Estandar"/>
 								<template>
 									<u:Currency value="{Price}" currency="{CurrencyCode}"/>
 								</template>
 							</Column>
-							<Column >
+							<Column>
 								<m:Label text="Moneda"/>
 								<template>
 									<u:Currency value="{Price}" currency="{CurrencyCode}"/>
 								</template>
 							</Column>
-							<Column >
+							<Column>
 								<m:Label text="Año"/>
 								<template>
 									<u:Currency value="{Price}" currency="{CurrencyCode}"/>
 								</template>
 							</Column>
-							<Column >
+							<Column>
 								<m:Label text="Mes"/>
 								<template>
 									<u:Currency value="{Price}" currency="{CurrencyCode}"/>
 								</template>
 							</Column>
-							<Column >
+							<Column>
 								<m:Label text="Costo 1"/>
 								<template>
 									<u:Currency value="{Price}" currency="{CurrencyCode}"/>

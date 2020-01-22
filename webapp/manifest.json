@@ -57,6 +57,9 @@
 				"type": "sap.ui.model.json.JSONModel",
 				"uri": "Invoices.json"
 			},
+			"LogisticCost": {
+				"type": "sap.ui.model.json.JSONModel"
+			},
 			"ModelSimulador": {
 				"type": "sap.ui.model.odata.v2.ODataModel",
 				"settings": {
@@ -69,9 +72,11 @@
 			}
 		},
 		"resources": {
-			"css": [{
-				"uri": "css/style.css"
-			}]
+			"css": [
+				{
+					"uri": "css/style.css"
+				}
+			]
 		},
 		"contentDensities": {
 			"compact": true,

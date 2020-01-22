@@ -1,0 +1,26 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<TableSelectDialog noDataText="{i18n>Material}" title="{i18n>AgregarMaterial}" confirm="handleOrgVentasClose" items="{/materialDefatultSet}">
+		<ColumnListItem>
+			<cells>
+				<ObjectIdentifier title="{Material}"/>
+				<Text text="{Plant}"/>
+				<Text text="{Incoterms}"/>
+				<Text text="{BaseUom}"/>
+			</cells>
+		</ColumnListItem>
+		<columns>
+			<Column hAlign="Begin" popinDisplay="Inline" demandPopin="true">
+				<Label text="{i18n>Material}"/>
+			</Column>
+			<Column hAlign="Center" popinDisplay="Inline" demandPopin="true" minScreenWidth="Tablet">
+				<Label text="{i18n>Centro}"/>
+			</Column>
+			<Column hAlign="Center" popinDisplay="Inline" demandPopin="false" minScreenWidth="Tablet">
+				<Label text="{i18n>Incoterms}"/>
+			</Column>
+			<Column hAlign="End" popinDisplay="Inline" demandPopin="true">
+				<Label text="{i18n>UM}"/>
+			</Column>
+		</columns>
+	</TableSelectDialog>
+</core:FragmentDefinition>

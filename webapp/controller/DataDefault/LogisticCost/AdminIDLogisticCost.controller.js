@@ -1,7 +1,8 @@
 sap.ui.define([
 	"cbc/co/simulador_costos/controller/BaseController",
-	"sap/ui/model/Filter"
-], function (BaseController, Filter) {
+	"sap/ui/model/Filter",
+	"sap/m/MessageToast"
+], function (BaseController, Filter, MessageToast) {
 	"use strict";
 
 	return BaseController.extend("cbc.co.simulador_costos.controller.DataDefault.LogisticCost.AdminIDLogisticCost", {
@@ -12,49 +13,72 @@ sap.ui.define([
 		 * @memberOf cbc.co.simulador_costos.view.AdminIDLogisticCost
 		 */
 		onInit: function () {
-			
+
 			this.getView().addDelegate({
 				onBeforeShow: this.onBeforeShow,
 				onAfterRendering: function (evt) {
-					
+
+					this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel({
+						CostLog: "",
+						Recordmode: "",
+						CatCoslLo: "",
+						PerResp: "",
+						Date0: "",
+						TxtMd: "",
+						CodLogisticCost: []
+					}), "LogisticCost");
+
+					var oModel = this.getView().getModel("ModelSimulador");
+
+					oModel.read("/codigocostologisticoSet", {
+						success: function (oData, response) {
+							var data = new sap.ui.model.json.JSONModel(oData);
+							data.setProperty("/CodLogisticCost", data.getProperty("/results"));
+							this.getOwnerComponent().setModel(data, "LogisticCost");
+							// this.getModel("modelView").setProperty("/busy", false);
+						}.bind(this),
+						error: function (oError) {
+							this.showGeneralError({
+								oDataError: oError
+							});
+							this.getModel("modelView").setProperty("/busy", false);
+						}
+					});
 				}
 			}, this);
 		},
+		_onObjectMatched: function (oEvent) {
+
+		},
 		onBeforeShow: function (evt) {
-			
+
 		},
 		showFormAddLC: function (oEvent) {
 			this.fnOpenDialog("cbc.co.simulador_costos.view.Utilities.fragments.AdminLogisticCost.AddLogisticCost");
 		},
-		AddLC: function (oEvent) {
+		onAddLC: function (oEvent) {
+			var oModel = this.getView().getModel("ModelSimulador"),
+				oModelLocal = this.getView().getModel("LogisticCost"),
+				data = oModelLocal.getProperty("/");
 
-			}
-			/**
-			 * Similar to onAfterRendering, but this hook is invoked before the controller's View is re-rendered
-			 * (NOT before the first rendering! onInit() is used for that one!).
-			 * @memberOf cbc.co.simulador_costos.view.AdminIDLogisticCost
-			 */
-			//	onBeforeRendering: function() {
-			//
-			//	},
+			//Crea el CL
+			oModel.create("/codigocostologisticoSet", data, {
+				success: function (oData, oResponse) {
+					MessageToast.show(oData.Vbeln);
+					this.getModel("modelView").setProperty("/busy", false);
+				}.bind(this),
+				error: function (oError) {
+					this.showGeneralError({
+						oDataError: oError
+					});
+					this.getModel("modelView").setProperty("/busy", false);
+				}.bind(this)
+			});
 
-		/**
-		 * Called when the View has been rendered (so its HTML is part of the document). Post-rendering manipulations of the HTML could be done here.
-		 * This hook is the same one that SAPUI5 controls get after being rendered.
-		 * @memberOf cbc.co.simulador_costos.view.AdminIDLogisticCost
-		 */
-		//	onAfterRendering: function() {
-		//
-		//	},
+			// oModel.create("/codigocostologisticoSet")
 
-		/**
-		 * Called when the Controller is destroyed. Use this one to free resources and finalize activities.
-		 * @memberOf cbc.co.simulador_costos.view.AdminIDLogisticCost
-		 */
-		//	onExit: function() {
-		//
-		//	}
-
+			this.fnCloseFragment(oEvent);
+		}
 	});
 
 });

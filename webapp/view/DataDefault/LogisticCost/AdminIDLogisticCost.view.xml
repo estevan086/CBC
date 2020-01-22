@@ -4,14 +4,13 @@
 		<pages>
 			<Page title="{i18n>CrearLC}" showNavButton="true" navButtonPress="onNavBack">
 				<content>
-					<ui:Table id="tblLogisticcCost" selectionMode="None" visibleRowCount="10">
+					<ui:Table id="tblLogisticcCost" rows="{LogisticCost>/CodLogisticCost}" selectionMode="None" visibleRowCount="10" rowActionCount="1" class="sapUiSizeCompact" >
 						<ui:extension>
 							<OverflowToolbar>
 								<content>
 									<Title id="title" text="{i18n>CostosLogisticos}"/>
 									<ToolbarSpacer/>
 									<Button icon="sap-icon://factory" type="Emphasized" text="{i18n>Crear}" tooltip="Crear" press="showFormAddLC"/>
-									<Button icon="sap-icon://save" type="Emphasized" text="{i18n>Guardar}" tooltip="Guardar"/>
 								</content>
 							</OverflowToolbar>
 						</ui:extension>
@@ -19,22 +18,29 @@
 							<ui:Column>
 								<Label text="ID"/>
 								<ui:template>
-									<Text text="{CDEF_IDCOMMODITIES}" wrapping="false"/>
+									<Text text="{LogisticCost>CostLog}" wrapping="false"/>
 								</ui:template>
 							</ui:Column>
 							<ui:Column>
 								<Label text="Descripción"/>
 								<ui:template>
-									<Text text="{CDEF_COMMODITIE}" wrapping="false"/>
+									<Text text="{CodLogisticCost}" wrapping="false"/>
 								</ui:template>
 							</ui:Column>
 							<ui:Column>
 								<Label text="Categoria Logistica"/>
 								<ui:template>
-									<Text text="{CDEF_COMMODITIE}" wrapping="false"/>
+									<Text text="{LogisticCost>CostLog}" wrapping="false"/>
 								</ui:template>
 							</ui:Column>
 						</ui:columns>
+						<ui:rowActionTemplate>
+							<ui:RowAction>
+								<ui:items>
+									<ui:RowActionItem type="Navigation" text="Editar" press="handleEditPress" icon="sap-icon://edit"></ui:RowActionItem>
+								</ui:items>
+							</ui:RowAction>
+						</ui:rowActionTemplate>
 					</ui:Table>
 				</content>
 			</Page>
