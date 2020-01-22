@@ -53,7 +53,7 @@ sap.ui.define([
 							},
 							{
 								"title": "Perfiles",
-								"key": "rtChAddProfile"
+								"key": "rtChUsers"
 							}
 						]
 					},
