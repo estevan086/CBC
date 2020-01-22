@@ -430,45 +430,36 @@ sap.ui.define([
 			//this.generateTile();
 		},
 
-		CargaMasiva: function (JsonValue) {
-			
+	CargaMasiva: function (JsonValue) {
+
 			var sServiceUrl = this.getView().getModel("ModelSimulador").sServiceUrl,
 				oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true),
-				oCommodities = [],
 				oEntidad = {},
 				oDetail = {};
 
-			var CurrentRow = "";
-			for (var i = 1; i < JsonValue.length; i++) {
-				if (CurrentRow === "") {
-					CurrentRow = JsonValue[i].CDEF_IDCOMMODITIES + JsonValue[i].CDEF_CENTRO + JsonValue[i].CDEF_PERIODO;
-					oEntidad = {
-						IdCommoditie: JsonValue[i].CDEF_IDCOMMODITIES,
-						Descripcion: JsonValue[i].CDEF_COMMODITIE,
-						detailCommoditiesSet: []
-					};
-					oDetail = this.SetRowoDetail(JsonValue[i]);
-					oEntidad.detailCommoditiesSet.push(oDetail);
+			oEntidad = {
+				IdCommoditie: '1111',
+				Descripcion: 'Prueba',
+				detailCommoditiesSet: []
+			};
 
-				} else {
-					if (CurrentRow === JsonValue[i].CDEF_IDCOMMODITIES + JsonValue[i].CDEF_CENTRO + JsonValue[i].CDEF_PERIODO) {
-						oDetail = this.SetRowoDetail(JsonValue[i]);
-						oEntidad.detailCommoditiesSet.push(oDetail);
-					} else {
-						CurrentRow = JsonValue[i].CDEF_IDCOMMODITIES + JsonValue[i].CDEF_CENTRO + JsonValue[i].CDEF_PERIODO;
-						oCommodities.push(oEntidad);
-						oEntidad = {
-							IdCommoditie: JsonValue[i].CDEF_IDCOMMODITIES,
-							Descripcion: JsonValue[i].CDEF_COMMODITIE,
-							detailCommoditiesSet: []
-						};
-						oDetail = this.SetRowoDetail(JsonValue[i]);
-						oEntidad.detailCommoditiesSet.push(oDetail);
-					}
-				}
-				if (i === (JsonValue.length - 1) && JsonValue[i].CDEF_IDCOMMODITIES !== "") {
-					oCommodities.push(oEntidad);
-				}
+			for (var i = 1; i < JsonValue.length; i++) {
+
+				var CurrentRow = JsonValue[i];
+
+				oDetail = {
+					Formula: CurrentRow.CDEF_FORMULA,
+					IdCommoditie: CurrentRow.CDEF_IDCOMMODITIES,
+					Sociedad: CurrentRow.CDEF_SOCIEDAD,
+					Centro: CurrentRow.CDEF_CENTRO,
+					UnidadMedida: CurrentRow.CDEF_UMD,
+					Moneda: CurrentRow.CDEF_MONEDA,
+					Mes: CurrentRow.CDEF_MES,
+					Year: CurrentRow.CDEF_PERIODO
+						// Recordmode: '1'
+				};
+
+				oEntidad.detailCommoditiesSet.push(oDetail);
 			}
 
 			var oCreate = this.fnCreateEntity(oModelService, "/headerCommoditiesSet", oEntidad);
@@ -504,6 +495,7 @@ sap.ui.define([
 			}
 
 		},
+
 
 		SetRowoDetail: function (oValue) {
 			var oDetail = {
