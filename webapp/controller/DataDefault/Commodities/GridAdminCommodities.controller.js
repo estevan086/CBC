@@ -491,7 +491,7 @@ sap.ui.define([
 			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 
 			oRouter.navTo("rtChFromuladora", {
-				oRowPath: oRowData.CDEF_IDCOMMODITIES
+				oRowPath: oRowData.IdCommoditie
 			});
 
 		},
