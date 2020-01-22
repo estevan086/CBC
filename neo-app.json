@@ -25,10 +25,10 @@
       "path": "/sap/opu/odata",
       "target": {
         "type": "destination",
-        "name": "gw_cbc_frontend_2",
+        "name": "CBC",
         "entryPath": "/sap/opu/odata"
       },
-      "description": "gw_cbc_frontend_2"
+      "description": "CBC"
     }
   ],
   "sendWelcomeFileRedirect": true
