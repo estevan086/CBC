@@ -23,6 +23,13 @@ html[dir="rtl"] .myAppDemoWT .myCustomButton.sapMBtn {
 	color : #cae4fb !important;
 }
 
+/*.sapUiUfdShell .sapUiUfdShellBrand {
+    background: #496b8a !important;
+}
+
+.sapUiUfdShellHead{
+	height: 39px !important;
+}
 .sapUiUfdShellHeader {
     height: 3rem;
     padding: 0 0rem !important;
@@ -31,7 +38,7 @@ html[dir="rtl"] .myAppDemoWT .myCustomButton.sapMBtn {
     padding-bottom: 0px;
     padding-left: 1rem !important;
     background : #496b8a !important;
-}
+}*/
 
 .sapNocolor{
 	background : #fafafa !important;
