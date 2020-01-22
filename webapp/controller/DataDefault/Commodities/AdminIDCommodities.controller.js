@@ -6,7 +6,6 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 
 	var that = this;
 	var MessageType = CoreLibrary.MessageType;
-	
 
 	return Controller.extend("cbc.co.simulador_costos.controller.DataDefault.Commodities.AdminIDCommodities", {
 
@@ -47,22 +46,22 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 				this.getOwnerComponent().getRouter().navTo("rtChCommodities", null, true);
 			}
 		},
-		
-		saveCommodities: function (oEvent){
+
+		saveCommodities: function (oEvent) {
 			var sServiceUrl = this.getView().getModel("ModelSimulador").sServiceUrl,
-			oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true),
-			oCommodities = [],
-			oEntidad = {},
-			oDetail = {};
-			
+				oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true),
+				oCommodities = [],
+				oEntidad = {},
+				oDetail = {};
+
 			var oTable = this.byId("tblCommodities");
-			
-			for (var i = 1; i < JsonValue.length; i++) {
+
+			/*for (var i = 1; i < JsonValue.length; i++) {
 				
-			}
+			}*/
 
 			var oSave = this.fnCreateEntity(oModelService, "/headerCommoditiesSet", oCommodities);
-			
+
 		},
 
 		showFormAddCommoditie: function (oEvent) {
@@ -73,8 +72,8 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 
 		AddCommoditie: function (oEvent) {
 
-			/*	var sServiceUrl = this.getView().getModel("ModelSimulador").sServiceUrl,
-					oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true);*/
+			var sServiceUrl = this.getView().getModel("ModelSimulador").sServiceUrl,
+				oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true);
 			var oEntidad = {};
 
 			var oIdCommoditie = sap.ui.getCore().getElementById("inputId").getValue();
@@ -83,7 +82,7 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 			oEntidad.IdCommoditie = oIdCommoditie;
 			oEntidad.Descripcion = oDescCommoditie;
 
-			/*var oCreate = this.fnCreateEntity(oModelService, "/headerCommoditiesSet", oEntidad);
+			var oCreate = this.fnCreateEntity(oModelService, "/headerCommoditiesSet", oEntidad);
 
 			that = this;
 			if (oCreate.tipo === "S") {
@@ -93,15 +92,15 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 
 					this.fnCloseFragment();
 
-					sap.m.MessageToast.show("ID Commoditie creada exitosamente.");*/
+					sap.m.MessageToast.show("ID Commoditie creada exitosamente.");
 
-			this.AddAllPeriodsforCommoditie(oEntidad);
+					this.AddAllPeriodsforCommoditie(oEntidad);
 
-			/*	}
+				}
 
 			} else {
 				sap.m.MessageBox.error(oCreate.msjs, null, "Mensaje del sistema", "OK", null);
-			}*/
+			}
 			this.fnCloseFragment();
 		},
 
@@ -230,7 +229,7 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 			sap.ui.getCore().applyChanges();
 
 			MessageToast.show("ID " + (oItem.getText() || oItem.getType()) + " pressed for id " + oRowData.CDEF_IDCOMMODITIES);
-			
+
 		},
 
 		handleDeletePress: function (oEvent, Data) {
@@ -242,7 +241,6 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 
 			var oRowEdited = oEvent.getSource().getParent().getParent();
 
-			
 			sap.ui.getCore().applyChanges();
 
 			MessageToast.show("ID " + (oItem.getText() || oItem.getType()) + " pressed for id " + oRowData.CDEF_IDCOMMODITIES);
