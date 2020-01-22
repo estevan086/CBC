@@ -46,7 +46,8 @@
 			</tnt:SideNavigation>
 		</tnt:sideContent>
 		<tnt:mainContents>
-			<NavContainer id="parentNavContainer" afterNavigate="onAfterNavigate">
+			<App id="parentNavContainer"/>
+			<!--<NavContainer id="parentNavContainer" afterNavigate="onAfterNavigate">
 				<pages>
 					<ScrollContainer id="rtHome" horizontal="false" vertical="true" height="100%">
 						<mvc:XMLView viewName="cbc.co.simulador_costos.view.Home"/>
@@ -115,12 +116,11 @@
 					<ScrollContainer id="rtChAdminCL" horizontal="false" vertical="true" height="100%">
 						<mvc:XMLView viewName="cbc.co.simulador_costos.view.DataDefault.LogisticCost.AdminIDLogisticCost"/>
 					</ScrollContainer>
-					
 					<ScrollContainer id="rtChFromuladora" horizontal="false" vertical="true" height="100%">
 						<mvc:XMLView viewName="cbc.co.simulador_costos.view.Utilities.Formuladora"/>
 					</ScrollContainer>
 				</pages>
-			</NavContainer>
+			</NavContainer>-->
 		</tnt:mainContents>
 	</tnt:ToolPage>
 </mvc:View>
