@@ -24,7 +24,7 @@ sap.ui.define([
 	var MessageType = CoreLibrary.MessageType;
 
 	return Controller.extend("cbc.co.simulador_costos.controller.DataDefault.Commodities.GridAdminCommodities", {
-		
+
 		onInit: function () {
 
 			// set explored app's demo model on this sample
@@ -38,7 +38,7 @@ sap.ui.define([
 			}, {
 				Supplier: "Red Point Stores"
 			}];
-	
+
 			var oUploader = this.getView().byId("fileUploader");
 			oUploader.oBrowse.setText("Importar");
 			oUploader.oFilePath.setVisible(false);
@@ -48,8 +48,8 @@ sap.ui.define([
 				}
 			}, oUploader);
 
-			 var myRoute = this.getOwnerComponent().getRouter().getRoute("rtChFromuladora");
-			 myRoute.attachPatternMatched(this.onMyRoutePatternMatched, this);			
+			var myRoute = this.getOwnerComponent().getRouter().getRoute("rtChFromuladora");
+			myRoute.attachPatternMatched(this.onMyRoutePatternMatched, this);
 
 		},
 
@@ -384,54 +384,75 @@ sap.ui.define([
 		},
 
 		CargaMasiva: function (JsonValue) {
-			
+
 			var sServiceUrl = this.getView().getModel("ModelSimulador").sServiceUrl,
 				oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true),
-				oCommodities = [],
 				oEntidad = {},
 				oDetail = {};
 
-			var CurrentRow = "";
-			for (var i = 1; i < JsonValue.length; i++) {
-				if (CurrentRow === "") {
-					CurrentRow = JsonValue[i].CDEF_IDCOMMODITIES + JsonValue[i].CDEF_CENTRO + JsonValue[i].CDEF_PERIODO;
-					oEntidad = {
-						IdCommoditie: JsonValue[i].CDEF_IDCOMMODITIES,
-						Descripcion: JsonValue[i].CDEF_COMMODITIE,
-						detailCommoditiesSet: []
-					};
-					oDetail = this.SetRowoDetail(JsonValue[i]);
-					oEntidad.detailCommoditiesSet.push(oDetail);
+			oEntidad = {
+				IdCommoditie: '1111',
+				Descripcion: 'Prueba',
+				detailCommoditiesSet: []
+			};
 
-				} else {
-					if (CurrentRow === JsonValue[i].CDEF_IDCOMMODITIES + JsonValue[i].CDEF_CENTRO + JsonValue[i].CDEF_PERIODO) {
-						oDetail = this.SetRowoDetail(JsonValue[i]);
-						oEntidad.detailCommoditiesSet.push(oDetail);
-					} else {
-						CurrentRow = JsonValue[i].CDEF_IDCOMMODITIES + JsonValue[i].CDEF_CENTRO + JsonValue[i].CDEF_PERIODO;
-						oCommodities.push(oEntidad);
-						oEntidad = {
-							IdCommoditie: JsonValue[i].CDEF_IDCOMMODITIES,
-							Descripcion: JsonValue[i].CDEF_COMMODITIE,
-							detailCommoditiesSet: []
-						};
-						oDetail = this.SetRowoDetail(JsonValue[i]);
-						oEntidad.detailCommoditiesSet.push(oDetail);
-					}
-				}
-				if (i === (JsonValue.length - 1) && JsonValue[i].CDEF_IDCOMMODITIES !== "") {
-					oCommodities.push(oEntidad);
-				}
+			for (var i = 1; i < JsonValue.length; i++) {
+
+				var CurrentRow = JsonValue[i];
+
+				oDetail = {
+					Formula: CurrentRow.CDEF_FORMULA,
+					IdCommoditie: CurrentRow.CDEF_IDCOMMODITIES,
+					Sociedad: CurrentRow.CDEF_SOCIEDAD,
+					Centro: CurrentRow.CDEF_CENTRO,
+					UnidadMedida: CurrentRow.CDEF_UMD,
+					Moneda: CurrentRow.CDEF_MONEDA,
+					Mes: CurrentRow.CDEF_MES,
+					Year: CurrentRow.CDEF_PERIODO
+						// Recordmode: '1'
+				};
+
+				oEntidad.detailCommoditiesSet.push(oDetail);
 			}
 
-			var oCreate = this.fnCreateEntity(oModelService, "/headerCommoditiesSet", oCommodities);
+			var oCreate = this.fnCreateEntity(oModelService, "/headerCommoditiesSet", oEntidad);
+
+			if (oCreate.tipo === 'S') {
+
+				MessageBox.show(
+					'Datos importados correctamente', {
+						icon: MessageBox.Icon.SUCCESS,
+						title: "Exito",
+						actions: [MessageBox.Action.OK],
+						onClose: function (oAction) {
+							if (oAction === sap.m.MessageBox.Action.OK) {
+								return;
+							}
+						}
+					}
+				);
+
+			} else if (oCreate.tipo === 'E') {
+
+				MessageBox.show(
+					oCreate.msjs, {
+						icon: MessageBox.Icon.ERROR,
+						title: "Error"
+							// actions: [MessageBox.Action.YES, MessageBox.Action.NO],
+							// onClose: function (oAction) {
+							// 	/ * do something * /
+							// }
+					}
+				);
+
+			}
 
 		},
 
 		SetRowoDetail: function (oValue) {
 			var oDetail = {
 				Formula: oValue.CDEF_FORMULA,
-				IdCommoditie: oValue.CDEF_IDCOMMODITIES, 
+				IdCommoditie: oValue.CDEF_IDCOMMODITIES,
 				Sociedad: oValue.CDEF_SOCIEDAD,
 				Centro: oValue.CDEF_CENTRO,
 				UnidadMedida: oValue.CDEF_UMD,
@@ -444,12 +465,12 @@ sap.ui.define([
 		},
 
 		onGoToIdCommoditieTable: function (oEvent) {
-			
+
 			var oItem = oEvent.getSource();
 			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 
 			oRouter.navTo("rtChIDCommodities");
-			
+
 		},
 
 		showCalculator: function (oEvent) {
@@ -458,10 +479,12 @@ sap.ui.define([
 			var oItem = oEvent.getSource();
 			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 
-			oRouter.navTo("rtChFromuladora",{  oRowPath: oRowData.CDEF_IDCOMMODITIES });
-			
+			oRouter.navTo("rtChFromuladora", {
+				oRowPath: oRowData.CDEF_IDCOMMODITIES
+			});
+
 		},
-		
+
 		_generateInvalidUserInput: function () {
 			var oButton = this.getView().byId("messagePopoverBtn"),
 				oRequiredNameInput = this.oView.byId("formContainer").getItems()[4].getContent()[2],
@@ -478,11 +501,11 @@ sap.ui.define([
 			this.handleRequiredField(oRequiredNameInput);
 			this.checkInputConstraints(iWeeklyHours);
 
-			this.oMP.getBinding("items").attachChange(function(oEvent){
+			this.oMP.getBinding("items").attachChange(function (oEvent) {
 				this.oMP.navigateBack();
 			}.bind(this));
 
-			setTimeout(function(){
+			setTimeout(function () {
 				this.oMP.openBy(oButton);
 			}.bind(this), 100);
 		}
