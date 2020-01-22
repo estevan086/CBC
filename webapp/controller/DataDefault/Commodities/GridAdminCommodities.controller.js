@@ -28,16 +28,6 @@ sap.ui.define([
 		onInit: function () {
 
 			// set explored app's demo model on this sample
-			var json = this.initSampleDataModel();
-			this.getView().setModel(json);
-
-			var supplierObject = [{
-				Supplier: "Titanium"
-			}, {
-				Supplier: "Technocom"
-			}, {
-				Supplier: "Red Point Stores"
-			}];
 
 			var oUploader = this.getView().byId("fileUploader");
 			oUploader.oBrowse.setText("Importar");
@@ -48,8 +38,46 @@ sap.ui.define([
 				}
 			}, oUploader);
 
-			var myRoute = this.getOwnerComponent().getRouter().getRoute("rtChFromuladora");
+			var myRoute = this.getOwnerComponent().getRouter().getRoute("rtChCommodities");
 			myRoute.attachPatternMatched(this.onMyRoutePatternMatched, this);
+
+		},
+
+		onMyRoutePatternMatched: function (event) {
+			// your code when the view is about to be displayed ..
+
+			//	var json = this.initSampleDataModel();
+			//	this.getView().setModel(json);
+
+			//Url Servicio
+			var oModel = this.getOwnerComponent().getModel("ModelSimulador");
+			var sServiceUrl = oModel.sServiceUrl;
+
+			//Definir modelo del servicio web
+			var oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true);
+			//Definir filtro
+
+			//Leer datos del ERP
+			var oRead = this.fnReadEntity(oModelService, "/detailCommoditiesSet", null);
+
+			if (oRead.tipo === "S") {
+				this.oDataDetalleCommodities = oRead.datos.results;
+			} else {
+				MessageBox.error(oRead.msjs, null, "Mensaje del sistema", "OK", null);
+			}
+
+			var oDataDetalleCommodities = "";
+			//SI el modelo NO existe, se crea.
+			if (!oDataDetalleCommodities) {
+				oDataDetalleCommodities = {
+					lstItemsCommodities: []
+				};
+			}
+
+			oDataDetalleCommodities.lstItemsCommodities = this.oDataDetalleCommodities;
+			var oTablaDetalleCommodities = this.byId("tblCommodities");
+			var oModel2 = new sap.ui.model.json.JSONModel(oDataDetalleCommodities);
+			oTablaDetalleCommodities.setModel(oModel2);
 
 		},
 
@@ -76,31 +104,35 @@ sap.ui.define([
 		},
 
 		handleEditPress: function (oEvent, Data) {
-			//var oRow = oEvent.getParameter("row");
+			var oRow = oEvent.getParameter("row");
 			var oItem = oEvent.getParameter("item");
 
 			var oTable = this.byId("tblCommodities");
 			var oRowData = oEvent.getSource().getBindingContext().getProperty();
 
-			var oRowEdited = oEvent.getSource().getParent().getParent();
+			var oRowEdited = oRow;
 
 			//this.byId("tblCommodities").getRows()[3].getCells()[3].mProperties.editable = "true";
 
-			for (var i = 0; i < oTable.getRows().length; i++) {
+			for (var i = 0; i < oTable.getModel().getData().lstItemsCommodities.length; i++) {
 
-				oTable.getRows()[i].getBindingContext().getProperty().CDEF_EDIT_FLAG = "None";
-				oTable.getRows()[i].getBindingContext().getProperty().CDEF_NAV_FLAG = false;
+				if (oTable.getRows()[i] !== undefined) {
+					oTable.getRows()[i].getBindingContext().getProperty().CDEF_EDIT_FLAG = "None";
+					oTable.getRows()[i].getBindingContext().getProperty().CDEF_NAV_FLAG = false;
 
-				//Sociedad
-				oTable.getRows()[i].getCells()[2].setProperty("editable", false);
-				//Moneda
-				oTable.getRows()[i].getCells()[3].setProperty("editable", false);
-				//Unidad de Medida
-				oTable.getRows()[i].getCells()[4].setProperty("editable", false);
-				//Precio
-				oTable.getRows()[i].getCells()[5].setProperty("editable", false);
-				//Otros Costos
-				oTable.getRows()[i].getCells()[6].setProperty("editable", false);
+					//Sociedad
+					oTable.getRows()[i].getCells()[2].setProperty("editable", false);
+					//Moneda
+					oTable.getRows()[i].getCells()[3].setProperty("editable", false);
+					//Unidad de Medida
+					oTable.getRows()[i].getCells()[4].setProperty("editable", false);
+					//Precio
+					oTable.getRows()[i].getCells()[5].setProperty("editable", false);
+					//Otros Costos
+					oTable.getRows()[i].getCells()[6].setProperty("editable", false);
+				} else {
+					break;
+				}
 			}
 
 			//Sociedad
@@ -163,7 +195,7 @@ sap.ui.define([
 			// 	oTable.setRowSettingsTemplate(null);
 			// }
 
-			MessageToast.show("ID " + (oItem.getText() || oItem.getType()) + " pressed for id " + oRowData.CDEF_IDCOMMODITIES);
+			MessageToast.show("Puedes comenzar a " + (oItem.getText() || oItem.getType()) + " el ID " + oRowData.IdCommoditie);
 
 		},
 
