@@ -13,44 +13,45 @@ sap.ui.define([
 	"sap/m/StandardListItem",
 	"sap/m/ButtonType",
 	'sap/ui/core/Fragment'
-	
-], function(Controller, JSONModel, MessageToast, DateFormat, library, Filter, FilterOperator, Button, Dialog, List, StandardListItem,  ButtonType,Fragment) {
+
+], function (Controller, JSONModel, MessageToast, DateFormat, library, Filter, FilterOperator, Button, Dialog, List, StandardListItem,
+	ButtonType, Fragment) {
 	"use strict";
 
 	var SortOrder = library.SortOrder;
-	
+
 	return Controller.extend("cbc.co.simulador_costos.controller.DataDefault.Materiales.GridMateriales", {
 
-		onInit : function() {
+		onInit: function () {
 			// set explored app's demo model on this sample
 			var json = this.initSampleDataModel();
 			// Setting json to current view....
-				//var json = new sap.ui.model.json.JSONModel("model/products.json");
+			//var json = new sap.ui.model.json.JSONModel("model/products.json");
 			this.getView().setModel(json);
-			
-			var fnPress = this.handleActionPress.bind(this);
-			var fnfrPress = this.frmLogisticPress.bind(this);
 
-			this.modes = [
-				{
-					key: "NavigationDelete",
-					text: "Navigation & Delete",
-					handler: function(){
-						var oTemplate = new sap.ui.table.RowAction({items: [
-							new sap.ui.table.RowActionItem({icon: "sap-icon://edit", text: "Edit", press:  fnfrPress}),
-							new sap.ui.table.RowActionItem({type: "Delete", press: fnPress})
-						]});
-						return [2, oTemplate];
-					}
-				}
-			];
-			this.getView().setModel(new JSONModel({items: this.modes}), "modes");
-			this.switchState("NavigationDelete");
-			//this.onInitCalculation();
-			//this.onInitDialog();
+			// var fnPress = this.handleActionPress.bind(this);
+			// var fnfrPress = this.frmLogisticPress.bind(this);
+
+			// this.modes = [
+			// 	{
+			// 		key: "NavigationDelete",
+			// 		text: "Navigation & Delete",
+			// 		handler: function(){
+			// 			var oTemplate = new sap.ui.table.RowAction({items: [
+			// 				new sap.ui.table.RowActionItem({icon: "sap-icon://edit", text: "Edit", press:  fnfrPress}),
+			// 				new sap.ui.table.RowActionItem({type: "Delete", press: fnPress})
+			// 			]});
+			// 			return [2, oTemplate];
+			// 		}
+			// 	}
+			// ];
+			// this.getView().setModel(new JSONModel({items: this.modes}), "modes");
+			// // this.switchState("NavigationDelete");
+			// //this.onInitCalculation();
+			// //this.onInitDialog();
 		},
-		
-		onInitCalculation : function () {
+
+		onInitCalculation: function () {
 			var oModel = new JSONModel("model/Calculation.json");
 			this.getView().setModel(oModel);
 			this._oBuilder = this.getView().byId("builder");
@@ -63,8 +64,8 @@ sap.ui.define([
 			});
 			this.getView().setModel(this._oModelSettings, "settings");
 		},
-		
-		switchState : function(sKey) {
+
+		switchState: function (sKey) {
 			var oTable = this.byId("table1");
 			var iCount = 0;
 			var oTemplate = oTable.getRowActionTemplate();
@@ -85,102 +86,121 @@ sap.ui.define([
 			oTable.setRowActionTemplate(oTemplate);
 			oTable.setRowActionCount(iCount);
 		},
-		
-		handleActionPress : function(oEvent) {
+
+		handleActionPress: function (oEvent) {
 			var oRow = oEvent.getParameter("row");
 			var oItem = oEvent.getParameter("item");
 			MessageToast.show("Item " + (oItem.getText() || oItem.getType()) + " pressed for product with id " +
 				this.getView().getModel().getProperty("ProductId", oRow.getBindingContext()));
 		},
-		
-		frmLogisticPress: function(oEvent) {
+
+		frmLogisticPress: function (oEvent) {
 			//this.onPersonalizationDialogPress();
 			this.LogisticaDisplay = sap.ui.xmlfragment("cbc.co.simulador_costos.view.Utilities.fragments.AdminMaterialesDisplay", this);
 			this.LogisticaDisplay.open();
 			//this.getOwnerComponent().OpnFrmLogitica();
 		},
-		
-		closeDialog: function() {
+
+		closeDialog: function () {
 			this.LogisticaDisplay.close();
 		},
-		
-		initSampleDataModel : function() {
+
+		initSampleDataModel: function () {
+			// var oModel = new JSONModel();
+			// //var oDateFormat = DateFormat.getDateInstance({source: {pattern: "timestamp"}, pattern: "dd/MM/yyyy"});
+
+			// jQuery.ajax("model/materiales.json", {
+			// 	dataType: "json",
+			// 	success: function(oData) {
+			// 		var aTemp1 = [];
+			// 		var aTemp2 = [];
+			// 		var aSuppliersData = [];
+			// 		var aCategoryData = [];
+			// 		for (var i = 0; i < oData.materiales.length; i++) {
+			// 			var oProduct = oData.materiales[i];
+			// 			if (oProduct.MDEF_IDMATERIAL && jQuery.inArray(oProduct.MDEF_IDMATERIAL, aTemp1) < 0) {
+			// 				aTemp1.push(oProduct.MDEF_IDMATERIAL);
+			// 				aSuppliersData.push({Name: oProduct.MDEF_IDMATERIAL});
+			// 			}
+			// 			if (oProduct.MDEF_SOCIEDAD && jQuery.inArray(oProduct.MDEF_SOCIEDAD, aTemp2) < 0) {
+			// 				aTemp2.push(oProduct.MDEF_SOCIEDAD);
+			// 				aCategoryData.push({Name: oProduct.MDEF_SOCIEDAD});
+			// 			}
+			// 			//oProduct.DeliveryDate = (new Date()).getTime() - (i % 10 * 4 * 24 * 60 * 60 * 1000);
+			// 			//var d = new Date(oProduct.DeliveryDate);
+			// 			//d = formatTime(d);
+			// 			//oProduct.DeliveryDateStr = oDateFormat.format(new Date(oProduct.DeliveryDate));
+			// 			//oProduct.Heavy = oProduct.WeightMeasure > 1000 ? "true" : "false";
+			// 			//oProduct.Available = oProduct.Status === "Available" ? true : false;
+			// 		}
+
+			// 		oData.Suppliers = aSuppliersData;
+			// 		oData.Categories = aCategoryData;
+
+			// 		oModel.setData(oData);
+			// 	},
+			// 	error: function() {
+			// 		jQuery.sap.log.error("failed to load json");
+			// 	}
+			// });
+
+			// return oModel;
+
 			var oModel = new JSONModel();
-			//var oDateFormat = DateFormat.getDateInstance({source: {pattern: "timestamp"}, pattern: "dd/MM/yyyy"});
 
-			jQuery.ajax("model/materiales.json", {
+			jQuery.ajax("model/MaterialTest.json", {
 				dataType: "json",
-				success: function(oData) {
-					var aTemp1 = [];
-					var aTemp2 = [];
-					var aSuppliersData = [];
-					var aCategoryData = [];
-					for (var i = 0; i < oData.materiales.length; i++) {
-						var oProduct = oData.materiales[i];
-						if (oProduct.MDEF_IDMATERIAL && jQuery.inArray(oProduct.MDEF_IDMATERIAL, aTemp1) < 0) {
-							aTemp1.push(oProduct.MDEF_IDMATERIAL);
-							aSuppliersData.push({Name: oProduct.MDEF_IDMATERIAL});
-						}
-						if (oProduct.MDEF_SOCIEDAD && jQuery.inArray(oProduct.MDEF_SOCIEDAD, aTemp2) < 0) {
-							aTemp2.push(oProduct.MDEF_SOCIEDAD);
-							aCategoryData.push({Name: oProduct.MDEF_SOCIEDAD});
-						}
-						//oProduct.DeliveryDate = (new Date()).getTime() - (i % 10 * 4 * 24 * 60 * 60 * 1000);
-						//var d = new Date(oProduct.DeliveryDate);
-						//d = formatTime(d);
-						//oProduct.DeliveryDateStr = oDateFormat.format(new Date(oProduct.DeliveryDate));
-						//oProduct.Heavy = oProduct.WeightMeasure > 1000 ? "true" : "false";
-						//oProduct.Available = oProduct.Status === "Available" ? true : false;
-					}
-
-					oData.Suppliers = aSuppliersData;
-					oData.Categories = aCategoryData;
+				success: function (oData) {
 
 					oModel.setData(oData);
 				},
-				error: function() {
+				error: function () {
 					jQuery.sap.log.error("failed to load json");
 				}
 			});
 
 			return oModel;
+
 		},
-	
-		updateMultipleSelection: function(oEvent) {
+
+		updateMultipleSelection: function (oEvent) {
 			var oMultiInput = oEvent.getSource(),
 				sTokensPath = oMultiInput.getBinding("tokens").getContext().getPath() + "/" + oMultiInput.getBindingPath("tokens"),
-				aRemovedTokensKeys = oEvent.getParameter("removedTokens").map(function(oToken) {
+				aRemovedTokensKeys = oEvent.getParameter("removedTokens").map(function (oToken) {
 					return oToken.getKey();
 				}),
-				aCurrentTokensData = oMultiInput.getTokens().map(function(oToken) {
-					return {"Key" : oToken.getKey(), "Name" : oToken.getText()};
+				aCurrentTokensData = oMultiInput.getTokens().map(function (oToken) {
+					return {
+						"Key": oToken.getKey(),
+						"Name": oToken.getText()
+					};
 				});
 
-			aCurrentTokensData = aCurrentTokensData.filter(function(oToken){
+			aCurrentTokensData = aCurrentTokensData.filter(function (oToken) {
 				return aRemovedTokensKeys.indexOf(oToken.Key) === -1;
 			});
 
 			oMultiInput.getModel().setProperty(sTokensPath, aCurrentTokensData);
 		},
 
-		formatAvailableToObjectState : function(bAvailable) {
+		formatAvailableToObjectState: function (bAvailable) {
 			return bAvailable ? "Success" : "Error";
 		},
 
-		formatAvailableToIcon : function(bAvailable) {
+		formatAvailableToIcon: function (bAvailable) {
 			return bAvailable ? "sap-icon://accept" : "sap-icon://decline";
 		},
 
-		handleDetailsPress : function(oEvent) {
+		handleDetailsPress: function (oEvent) {
 			MessageToast.show("Details for product with id " + this.getView().getModel().getProperty("ProductId", oEvent.getSource().getBindingContext()));
 		},
 
-		onPaste: function(oEvent) {
+		onPaste: function (oEvent) {
 			var aData = oEvent.getParameter("data");
 			sap.m.MessageToast.show("Pasted Data: " + aData);
 		},
-		
-		getSelectedIndices: function(evt) {
+
+		getSelectedIndices: function (evt) {
 			var aIndices = this.byId("table1").getSelectedIndices();
 			var sMsg;
 			if (aIndices.length < 1) {
@@ -190,30 +210,31 @@ sap.ui.define([
 			}
 			MessageToast.show(sMsg);
 		},
-		
-		clearAllSortings : function(oEvent) {
+
+		clearAllSortings: function (oEvent) {
 			var oTable = this.byId("table1");
 			oTable.getBinding("rows").sort(null);
 			this._resetSortingState();
 		},
 
-		sortCategories : function(oEvent) {
+		sortCategories: function (oEvent) {
 			var oView = this.getView();
 			var oTable = oView.byId("table1");
 			var oCategoriesColumn = oView.byId("categories");
 
-			oTable.sort(oCategoriesColumn, this._bSortColumnDescending ? SortOrder.Descending : SortOrder.Ascending, /*extend existing sorting*/true);
+			oTable.sort(oCategoriesColumn, this._bSortColumnDescending ? SortOrder.Descending : SortOrder.Ascending, /*extend existing sorting*/
+				true);
 			this._bSortColumnDescending = !this._bSortColumnDescending;
 		},
 
-		sortCategoriesAndName : function(oEvent) {
+		sortCategoriesAndName: function (oEvent) {
 			var oView = this.getView();
 			var oTable = oView.byId("table1");
 			oTable.sort(oView.byId("categories"), SortOrder.Ascending, false);
 			oTable.sort(oView.byId("name"), SortOrder.Ascending, true);
 		},
-		
-		_filter : function() {
+
+		_filter: function () {
 			var oFilter = null;
 
 			if (this._oGlobalFilter && this._oPriceFilter) {
@@ -226,8 +247,8 @@ sap.ui.define([
 
 			this.byId("table1").getBinding("rows").filter(oFilter, "Application");
 		},
-		
-		filterGlobally : function(oEvent) {
+
+		filterGlobally: function (oEvent) {
 			var sQuery = oEvent.getParameter("query");
 			this._oGlobalFilter = null;
 
@@ -240,7 +261,7 @@ sap.ui.define([
 
 			this._filter();
 		},
-		
+
 		layoutTypeChanged: function (oEvent) {
 			var sKey = oEvent.getSource().getProperty("selectedKey");
 			this._oBuilder.setShowInputToolbar(sKey === "TextualOnly");
@@ -275,174 +296,169 @@ sap.ui.define([
 			}
 
 		},
-		
-		
+
 		oDataInitial: {
-		    // Static data
-			Items: [
-				{
-					columnKey: "productId",
-					text: "Product ID",
-					aggregationRole: "Dimension"
-				}, {
-					columnKey: "name",
-					text: "Name",
-					aggregationRole: "Dimension"
-				}, {
-					columnKey: "category",
-					text: "Category",
-					aggregationRole: "Dimension"
-				}, {
-					columnKey: "supplierName",
-					text: "Supplier Name",
-					aggregationRole: "Dimension"
-				}, {
-					columnKey: "description",
-					text: "Description",
-					aggregationRole: "Dimension"
-				}, {
-					columnKey: "weightMeasure",
-					text: "Weight Measure",
-					aggregationRole: "Measure"
-				}, {
-					columnKey: "weightUnit",
-					text: "WeightUnit",
-					aggregationRole: "Dimension"
-				}, {
-					columnKey: "price",
-					text: "Price",
-					aggregationRole: "Measure"
-				}, {
-					columnKey: "currencyCode",
-					text: "Currency Code",
-					aggregationRole: "Dimension"
-				}, {
-					columnKey: "status",
-					text: "Status",
-					aggregationRole: "Dimension"
-				}, {
-					columnKey: "quantity",
-					text: "Quantity",
-					aggregationRole: "Measure"
-				}, {
-					columnKey: "uom",
-					text: "UoM",
-					aggregationRole: "Dimension"
-				}, {
-					columnKey: "width",
-					text: "Width",
-					aggregationRole: "Measure"
-				}, {
-					columnKey: "depth",
-					text: "Depth",
-					aggregationRole: "Measure"
-				}, {
-					columnKey: "height",
-					text: "Height",
-					aggregationRole: "Measure"
-				}, {
-					columnKey: "dimUnit",
-					text: "DimUnit",
-					aggregationRole: "Dimension"
-				}, {
-					columnKey: "productPicUrl",
-					text: "ProductPicUrl",
-					aggregationRole: "Dimension"
-				}
-			],
-            // Runtime data
-			DimMeasureItems: [
-				{
-					columnKey: "name",
-					visible: true,
-					index: 0,
-					role: "category",
-					aggregationRole: "Dimension"
-				}, {
-					columnKey: "category",
-					visible: true,
-					index: 1,
-					role: "series",
-					aggregationRole: "Dimension"
-				}, {
-					columnKey: "price",
-					visible: true,
-					index: 2,
-					role: "axis1",
-					aggregationRole: "Measure"
-				}, {
-					columnKey: "quantity",
-					visible: true,
-					index: 3,
-					role: "axis1",
-					aggregationRole: "Measure"
-				}, {
-					columnKey: "productId",
-					visible: false,
-					role: "category",
-					aggregationRole: "Dimension"
-				}, {
-					columnKey: "supplierName",
-					visible: false,
-					role: "category",
-					aggregationRole: "Dimension"
-				}, {
-					columnKey: "description",
-					visible: false,
-					role: "category",
-					aggregationRole: "Dimension"
-				}, {
-					columnKey: "weightMeasure",
-					visible: false,
-					role: "axis1",
-					aggregationRole: "Measure"
-				}, {
-					columnKey: "weightUnit",
-					visible: false,
-					role: "category",
-					aggregationRole: "Dimension"
-				}, {
-					columnKey: "currencyCode",
-					visible: false,
-					role: "category",
-					aggregationRole: "Dimension"
-				}, {
-					columnKey: "status",
-					visible: false,
-					role: "category",
-					aggregationRole: "Dimension"
-				}, {
-					columnKey: "uom",
-					visible: false,
-					role: "category",
-					aggregationRole: "Dimension"
-				}, {
-					columnKey: "width",
-					visible: false,
-					role: "axis1",
-					aggregationRole: "Measure"
-				}, {
-					columnKey: "depth",
-					visible: false,
-					role: "axis1",
-					aggregationRole: "Measure"
-				}, {
-					columnKey: "height",
-					visible: false,
-					role: "axis1",
-					aggregationRole: "Measure"
-				}, {
-					columnKey: "dimUnit",
-					visible: false,
-					role: "category",
-					aggregationRole: "Dimension"
-				}, {
-					columnKey: "productPicUrl",
-					visible: false,
-					role: "category",
-					aggregationRole: "Dimension"
-				}
-			],
+			// Static data
+			Items: [{
+				columnKey: "productId",
+				text: "Product ID",
+				aggregationRole: "Dimension"
+			}, {
+				columnKey: "name",
+				text: "Name",
+				aggregationRole: "Dimension"
+			}, {
+				columnKey: "category",
+				text: "Category",
+				aggregationRole: "Dimension"
+			}, {
+				columnKey: "supplierName",
+				text: "Supplier Name",
+				aggregationRole: "Dimension"
+			}, {
+				columnKey: "description",
+				text: "Description",
+				aggregationRole: "Dimension"
+			}, {
+				columnKey: "weightMeasure",
+				text: "Weight Measure",
+				aggregationRole: "Measure"
+			}, {
+				columnKey: "weightUnit",
+				text: "WeightUnit",
+				aggregationRole: "Dimension"
+			}, {
+				columnKey: "price",
+				text: "Price",
+				aggregationRole: "Measure"
+			}, {
+				columnKey: "currencyCode",
+				text: "Currency Code",
+				aggregationRole: "Dimension"
+			}, {
+				columnKey: "status",
+				text: "Status",
+				aggregationRole: "Dimension"
+			}, {
+				columnKey: "quantity",
+				text: "Quantity",
+				aggregationRole: "Measure"
+			}, {
+				columnKey: "uom",
+				text: "UoM",
+				aggregationRole: "Dimension"
+			}, {
+				columnKey: "width",
+				text: "Width",
+				aggregationRole: "Measure"
+			}, {
+				columnKey: "depth",
+				text: "Depth",
+				aggregationRole: "Measure"
+			}, {
+				columnKey: "height",
+				text: "Height",
+				aggregationRole: "Measure"
+			}, {
+				columnKey: "dimUnit",
+				text: "DimUnit",
+				aggregationRole: "Dimension"
+			}, {
+				columnKey: "productPicUrl",
+				text: "ProductPicUrl",
+				aggregationRole: "Dimension"
+			}],
+			// Runtime data
+			DimMeasureItems: [{
+				columnKey: "name",
+				visible: true,
+				index: 0,
+				role: "category",
+				aggregationRole: "Dimension"
+			}, {
+				columnKey: "category",
+				visible: true,
+				index: 1,
+				role: "series",
+				aggregationRole: "Dimension"
+			}, {
+				columnKey: "price",
+				visible: true,
+				index: 2,
+				role: "axis1",
+				aggregationRole: "Measure"
+			}, {
+				columnKey: "quantity",
+				visible: true,
+				index: 3,
+				role: "axis1",
+				aggregationRole: "Measure"
+			}, {
+				columnKey: "productId",
+				visible: false,
+				role: "category",
+				aggregationRole: "Dimension"
+			}, {
+				columnKey: "supplierName",
+				visible: false,
+				role: "category",
+				aggregationRole: "Dimension"
+			}, {
+				columnKey: "description",
+				visible: false,
+				role: "category",
+				aggregationRole: "Dimension"
+			}, {
+				columnKey: "weightMeasure",
+				visible: false,
+				role: "axis1",
+				aggregationRole: "Measure"
+			}, {
+				columnKey: "weightUnit",
+				visible: false,
+				role: "category",
+				aggregationRole: "Dimension"
+			}, {
+				columnKey: "currencyCode",
+				visible: false,
+				role: "category",
+				aggregationRole: "Dimension"
+			}, {
+				columnKey: "status",
+				visible: false,
+				role: "category",
+				aggregationRole: "Dimension"
+			}, {
+				columnKey: "uom",
+				visible: false,
+				role: "category",
+				aggregationRole: "Dimension"
+			}, {
+				columnKey: "width",
+				visible: false,
+				role: "axis1",
+				aggregationRole: "Measure"
+			}, {
+				columnKey: "depth",
+				visible: false,
+				role: "axis1",
+				aggregationRole: "Measure"
+			}, {
+				columnKey: "height",
+				visible: false,
+				role: "axis1",
+				aggregationRole: "Measure"
+			}, {
+				columnKey: "dimUnit",
+				visible: false,
+				role: "category",
+				aggregationRole: "Dimension"
+			}, {
+				columnKey: "productPicUrl",
+				visible: false,
+				role: "category",
+				aggregationRole: "Dimension"
+			}],
 			SelectedChartType: "line",
 			ShowResetEnabled: false
 		},
@@ -452,18 +468,18 @@ sap.ui.define([
 
 		oDataBeforeOpen: {},
 
-		onInitDialog: function() {
+		onInitDialog: function () {
 			this.oJSONModel = new JSONModel(jQuery.extend(true, {}, this.oDataInitial));
-            this.oJSONModel.setDefaultBindingMode(sap.ui.model.BindingMode.TwoWay);
+			this.oJSONModel.setDefaultBindingMode(sap.ui.model.BindingMode.TwoWay);
 		},
 
-		onOK: function(oEvent) {
+		onOK: function (oEvent) {
 			this.oDataBeforeOpen = {};
 			oEvent.getSource().close();
 			oEvent.getSource().destroy();
 		},
 
-		onCancel: function(oEvent) {
+		onCancel: function (oEvent) {
 			this.oJSONModel.setProperty("/", jQuery.extend(true, {}, this.oDataBeforeOpen));
 
 			this.oDataBeforeOpen = {};
@@ -471,11 +487,11 @@ sap.ui.define([
 			oEvent.getSource().destroy();
 		},
 
-		onReset: function() {
+		onReset: function () {
 			this.oJSONModel.setProperty("/", jQuery.extend(true, {}, this.oDataInitial));
 		},
 
-		onPersonalizationDialogPress: function() {
+		onPersonalizationDialogPress: function () {
 			var oPersonalizationDialog = sap.ui.xmlfragment("cbc.co.simulador_costos.view.Utilities.fragments.Calculation", this);
 			this.oJSONModel.setProperty("/ShowResetEnabled", this._isChangedDimMeasureItems());
 			oPersonalizationDialog.setModel(this.oJSONModel);
@@ -486,29 +502,29 @@ sap.ui.define([
 			oPersonalizationDialog.open();
 		},
 
-		onChangeChartType: function(oEvent) {
+		onChangeChartType: function (oEvent) {
 			this.oJSONModel.setProperty("/SelectedChartType", oEvent.getParameter("chartTypeKey"));
 			this.oJSONModel.setProperty("/ShowResetEnabled", this._isChangedDimMeasureItems());
 		},
 
-		onChangeDimMeasureItems: function(oEvent) {
+		onChangeDimMeasureItems: function (oEvent) {
 			this.oJSONModel.setProperty("/DimMeasureItems", oEvent.getParameter("items"));
 			this.oJSONModel.setProperty("/ShowResetEnabled", this._isChangedDimMeasureItems());
 		},
 
-		_isChangedDimMeasureItems: function() {
-			var fnGetArrayElementByKey = function(sKey, sValue, aArray) {
-				var aElements = aArray.filter(function(oElement) {
+		_isChangedDimMeasureItems: function () {
+			var fnGetArrayElementByKey = function (sKey, sValue, aArray) {
+				var aElements = aArray.filter(function (oElement) {
 					return oElement[sKey] !== undefined && oElement[sKey] === sValue;
 				});
 				return aElements.length ? aElements[0] : null;
 			};
-			var fnGetUnion = function(aDataBase, aData) {
+			var fnGetUnion = function (aDataBase, aData) {
 				if (!aData) {
 					return jQuery.extend(true, [], aDataBase);
 				}
 				var aUnion = jQuery.extend(true, [], aData);
-				aDataBase.forEach(function(oMItemBase) {
+				aDataBase.forEach(function (oMItemBase) {
 					var oMItemUnion = fnGetArrayElementByKey("columnKey", oMItemBase.columnKey, aUnion);
 					if (!oMItemUnion) {
 						aUnion.push(oMItemBase);
@@ -529,26 +545,27 @@ sap.ui.define([
 				});
 				return aUnion;
 			};
-			var fnIsEqual = function(aDataBase, aData) {
+			var fnIsEqual = function (aDataBase, aData) {
 				if (!aData) {
 					return true;
 				}
 				if (aDataBase.length !== aData.length) {
 					return false;
 				}
-				var fnSort = function(a, b) {
-                    if (a.columnKey < b.columnKey) {
-                        return -1;
-                    } else if (a.columnKey > b.columnKey) {
-                        return 1;
-                    } else {
-                        return 0;
-                    }
+				var fnSort = function (a, b) {
+					if (a.columnKey < b.columnKey) {
+						return -1;
+					} else if (a.columnKey > b.columnKey) {
+						return 1;
+					} else {
+						return 0;
+					}
 				};
 				aDataBase.sort(fnSort);
 				aData.sort(fnSort);
-				var aItemsNotEqual = aDataBase.filter(function(oDataBase, iIndex) {
-					return oDataBase.columnKey !== aData[iIndex].columnKey || oDataBase.visible !== aData[iIndex].visible || oDataBase.index !== aData[iIndex].index || oDataBase.role !== aData[iIndex].role || oDataBase.aggregationRole !== aData[iIndex].aggregationRole;
+				var aItemsNotEqual = aDataBase.filter(function (oDataBase, iIndex) {
+					return oDataBase.columnKey !== aData[iIndex].columnKey || oDataBase.visible !== aData[iIndex].visible || oDataBase.index !==
+						aData[iIndex].index || oDataBase.role !== aData[iIndex].role || oDataBase.aggregationRole !== aData[iIndex].aggregationRole;
 				});
 				return aItemsNotEqual.length === 0;
 			};
@@ -559,21 +576,11 @@ sap.ui.define([
 			var aDataRuntime = fnGetUnion(this.oDataInitial.DimMeasureItems, this.oJSONModel.getProperty("/DimMeasureItems"));
 			return !fnIsEqual(aDataRuntime, this.oDataInitial.DimMeasureItems);
 		},
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-			filterResetValue: 50,
+
+		filterResetValue: 50,
 		filterPreviousValue: 50,
 
-		onExit : function () {
+		onExit: function () {
 			if (this._oDialog) {
 				this._oDialog.destroy();
 			}
@@ -584,7 +591,7 @@ sap.ui.define([
 				Fragment.load({
 					name: "sap.m.sample.ViewSettingsDialogCustom.Dialog",
 					controller: this
-				}).then(function(oDialog){
+				}).then(function (oDialog) {
 					this._oDialog = oDialog;
 					// Set initial and reset value for Slider in custom control
 					var oSlider = this._oDialog.getFilterItems()[0].getCustomControl();
@@ -642,8 +649,168 @@ sap.ui.define([
 			oSlider.setValue(this.filterResetValue);
 			oCustomFilter.setFilterCount(0);
 			oCustomFilter.setSelected(false);
-		}
+		},
+
+		/**
+		 * After rendering page
+		 * @function
+		 * @param 
+		 * @private
+		 */
+		onAfterRendering: function () {
+			var table = this.getView().byId('tblMaterial');
+			for (var i = 0; i < table.getColumns().length; i++) {
+				table.autoResizeColumn(i);
+			}
+		},
+
+		/**
+		 * Edit rows
+		 * @function
+		 * @param 
+		 * @private
+		 */
+		handleEditPress: function (oEvent, Data) {
+			//var oRow = oEvent.getParameter("row");
+			var oItem = oEvent.getParameter("item");
+
+			var oTable = this.byId("tblMaterial");
+			var oRowData = oEvent.getSource().getBindingContext().getProperty();
+
+			var oRowEdited = oEvent.getSource().getParent().getParent();
+
+			// oRowEdited.getCells().filter(result => result.mProperties.value).map(cell => cell.setProperty("editable", true));
+
+			MessageToast.show("Editar Material " + oRowEdited.getCells()[0].getProperty("text"));
+
+		},
+
+		/**
+		 * Filter table
+		 * @function
+		 * @param 
+		 * @private
+		 */
+		filterGloballySup: function (oEvent) {
+			// var sQuery = oEvent.getParameter("query");
+			var sQuery = oEvent.getParameter("newValue");
+			this._oGlobalFilter = null;
+
+			if (sQuery) {
+				this._oGlobalFilter = new Filter([
+					new Filter("MDEF_IDMATERIAL", FilterOperator.Contains, sQuery),
+					new Filter("MDEF_MATERIAL", FilterOperator.Contains, sQuery),
+					new Filter("MDEF_SOCIEDAD", FilterOperator.Contains, sQuery),
+					new Filter("MDEF_CENTRO", FilterOperator.Contains, sQuery),
+					new Filter("MDEF_UMD", FilterOperator.Contains, sQuery),
+					new Filter("MDEF_MONEDA", FilterOperator.Contains, sQuery),
+					new Filter("MDEF_PESOMATERIAL", FilterOperator.Contains, sQuery),
+					new Filter("MDEF_COMMODITIE", FilterOperator.Contains, sQuery),
+					new Filter("MDEF_PRECIOPRODUCTIVO", FilterOperator.Contains, sQuery),
+					new Filter("MDEF_COSTOCONVERSION", FilterOperator.Contains, sQuery),
+					new Filter("MDEF_COSTOADICIONAL", FilterOperator.Contains, sQuery),
+					new Filter("MDEF_COSTOENVIO", FilterOperator.Contains, sQuery),
+					new Filter("MDEF_ICOTERM", FilterOperator.Contains, sQuery),
+					new Filter("MDEF_COSTOMATERIAL", FilterOperator.Contains, sQuery),
+					new Filter("MDEF_FORMULAOTROSCOSTOS", FilterOperator.Contains, sQuery),
+					new Filter("MDEF_OTROSCOSTOS", FilterOperator.Contains, sQuery),
+					new Filter("MDEF_%TRANSFERENCIA", FilterOperator.Contains, sQuery),
+					new Filter("MDEF_COSTOTRANSFERENCIA", FilterOperator.Contains, sQuery),
+					new Filter("MDEF_PRECIOPREMISA", FilterOperator.Contains, sQuery),
+					new Filter("MDEF_PERIODO", FilterOperator.Contains, sQuery),
+					new Filter("MDEF_MES", FilterOperator.Contains, sQuery)
+				], false);
+			}
+
+			this.filterSup();
+		},
+
+		/**
+		 * Filter 
+		 * @function
+		 * @param 
+		 * @private
+		 */
+		filterSup: function () {
+			var oFilter = null;
+
+			if (this._oGlobalFilter) {
+				oFilter = new sap.ui.model.Filter([this._oGlobalFilter], true);
+			} else if (this._oGlobalFilter) {
+				oFilter = this._oGlobalFilter;
+			}
+
+			this.byId("tblMaterial").getBinding("rows").filter(oFilter, "Application");
+		},
+
+		/**
+		 * Clear Filter 
+		 * @function
+		 * @param 
+		 * @private
+		 */
+		clearAllFilters: function (oEvent) {
+			var oTable = this.byId("tblMaterial");
+
+			var oUiModel = this.getView().getModel("ui");
+
+			this._oGlobalFilter = null;
+
+			var aColumns = oTable.getColumns();
+			for (var i = 0; i < aColumns.length; i++) {
+				oTable.filter(aColumns[i], null);
+			}
+
+			// var sServiceUrl = this.getView().getModel("ModelSimulador").sServiceUrl,
+			// 	oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true),
+			// 	oEntidad = {},
+			// 	oDetail = {};
+
+			// oDetail = {
+			// 	Formula: '1',
+			// 	IdCommoditie: '1',
+			// 	Sociedad: '1',
+			// 	Centro: '1',
+			// 	UnidadMedida: '1',
+			// 	Moneda: '1',
+			// 	Mes: '1',
+			// 	Year: '1',
+			// 	Recordmode: '1'
+			// };
+
+			// oEntidad = {
+			// 	IdCommoditie: '1111',
+			// 	Descripcion: 'Prueba',
+			// 	detailCommoditiesSet: []
+			// };
+			
+			// oEntidad.detailCommoditiesSet.push(oDetail);
+
+			// var oCreate = this.fnCreateEntity(oModelService, "/headerCommoditiesSet", oEntidad);
+
+		},
 		
+		fnCreateEntity: function(pModelo, pEntidad, pDatoEndidad) {
+			var vMensaje = null;
+			var oMensaje = {};
+
+			var fnSucess = function(data, response) {
+				oMensaje.tipo = "S";
+				oMensaje.datos = data;
+			};
+			var fnError = function(e) {
+				vMensaje = JSON.parse(e.response.body);
+				vMensaje = vMensaje.error.message.value;
+
+				oMensaje.tipo = "E";
+				oMensaje.msjs = vMensaje;
+			};
+
+			pModelo.create(pEntidad, pDatoEndidad, null, fnSucess, fnError, false);
+
+			return oMensaje;
+		}		
+
 	});
 
 });
