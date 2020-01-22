@@ -1,105 +1,277 @@
-<mvc:View
-	controllerName="cbc.co.simulador_costos.controller.DataDefault.Materiales.GridMateriales"
-	xmlns:html="http://www.w3.org/1999/xhtml" 
-	xmlns:mvc="sap.ui.core.mvc" 
-	displayBlock="true"
-	xmlns="sap.ui.table" 
-	xmlns:m="sap.m" 
-	xmlns:u="sap.ui.unified" 
-	xmlns:c="sap.ui.core"
-    height="100%">
+<mvc:View controllerName="cbc.co.simulador_costos.controller.DataDefault.Materiales.GridMateriales"
+	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:mvc="sap.ui.core.mvc" displayBlock="true" xmlns="sap.ui.table" xmlns:m="sap.m"
+	xmlns:u="sap.ui.unified" xmlns:c="sap.ui.core" height="100%">
 	<m:App>
 		<m:pages>
-			<m:Page
-			showHeader="false"
-			enableScrolling="false"
-			class="sapUiContentPadding">
-			<m:content>
-			<Table id="table1"
-				rows="{/materiales}"
-				selectionMode="MultiToggle"
-				visibleRowCount="10">
-					<toolbar>
-					<m:OverflowToolbar>
-						<m:content>
-							<m:Title id="title" text="Materiales" />
-							<m:ToolbarSpacer/>
-							<m:Button
-								icon="sap-icon://add"
-								tooltip="add item"
-								press="frmLogisticPress"/>
-							<m:Button
-								icon="sap-icon://sort"
-								tooltip="Sort Categories"
-								press="sortCategories"/>
-							<m:Button
-								icon="sap-icon://decline"
-								tooltip="Clear all sortings"
-								press="clearAllSortings"/>
-							<m:SearchField
-								placeholder="Filter"
-								value="{ui>/globalFilter}"
-								search="filterGlobally"
-								width="15rem"/>
-						</m:content>
-					</m:OverflowToolbar>
-				</toolbar>
-				<columns>
-					<Column width="11rem">
-						<m:Label text="ID Material" />
-						<template>
-							<m:Text text="{MDEF_IDMATERIAL}" wrapping="false" />
-						</template>
-					</Column>
-					<Column
-						id="categories"
-						width="11rem"
-						showSortMenuEntry="false"
-						sortProperty="MDEF_MATERIAL">
-						<m:Label text="Material" />
-						<template>
-							<m:Text text="{MDEF_MATERIAL}" wrapping="false" />
-						</template>
-					</Column>
-					<Column
-						id="quantity"
-						width="6rem"
-						hAlign="End"
-						sortProperty="MDEF_SOCIEDAD">
-						<m:Label text="Sociedad - Centro" />
-						<template>
-							<m:Label text="{MDEF_SOCIEDAD}" />
-						</template>
-					</Column>
-					<Column width="6rem" hAlign="End">
-						<m:Label text="Centro" />
-						<template>
-							<m:Label text="{MDEF_CENTRO}" />
-						</template>
-					</Column>
-					<Column width="6rem" hAlign="End">
-						<m:Label text="UMD" />
-						<template>
-							<m:Label text="{MDEF_UMD}" />
-						</template>
-					</Column>
-					<Column width="15rem">
-						<m:Label text="MDEF_COSTOMATERIAL" />
-						<template>
-							<m:Label text="{MDEF_COSTOMATERIAL}" />
-						</template>
-					</Column>
-					<Column width="15rem">
-						<m:Label text="MDEF_COSTOTRANSFERENCIA" />
-						<template>
-							<m:Label text="{MDEF_COSTOTRANSFERENCIA}" />
-						</template>
-					</Column>
-				
-				</columns>
-			</Table>
-			</m:content>
-		</m:Page>
+			<m:Page showHeader="false" enableScrolling="false" class="sapUiContentPadding">
+				<m:content>
+					<!--<Table id="table1"-->
+					<!--	rows="{/materiales}"-->
+					<!--	selectionMode="MultiToggle"-->
+					<!--	visibleRowCount="10">-->
+					<!--		<toolbar>-->
+					<!--		<m:OverflowToolbar>-->
+					<!--			<m:content>-->
+					<!--				<m:Title id="title" text="Materiales" />-->
+					<!--				<m:ToolbarSpacer/>-->
+					<!--				<m:Button-->
+					<!--					icon="sap-icon://add"-->
+					<!--					tooltip="add item"-->
+					<!--					press="frmLogisticPress"/>-->
+					<!--				<m:Button-->
+					<!--					icon="sap-icon://sort"-->
+					<!--					tooltip="Sort Categories"-->
+					<!--					press="sortCategories"/>-->
+					<!--				<m:Button-->
+					<!--					icon="sap-icon://decline"-->
+					<!--					tooltip="Clear all sortings"-->
+					<!--					press="clearAllSortings"/>-->
+					<!--				<m:SearchField-->
+					<!--					placeholder="Filter"-->
+					<!--					value="{ui>/globalFilter}"-->
+					<!--					search="filterGlobally"-->
+					<!--					width="15rem"/>-->
+					<!--			</m:content>-->
+					<!--		</m:OverflowToolbar>-->
+					<!--	</toolbar>-->
+					<!--	<columns>-->
+					<!--		<Column width="11rem">-->
+					<!--			<m:Label text="ID Material" />-->
+					<!--			<template>-->
+					<!--				<m:Text text="{MDEF_IDMATERIAL}" wrapping="false" />-->
+					<!--			</template>-->
+					<!--		</Column>-->
+					<!--		<Column-->
+					<!--			id="categories"-->
+					<!--			width="11rem"-->
+					<!--			showSortMenuEntry="false"-->
+					<!--			sortProperty="MDEF_MATERIAL">-->
+					<!--			<m:Label text="Material" />-->
+					<!--			<template>-->
+					<!--				<m:Text text="{MDEF_MATERIAL}" wrapping="false" />-->
+					<!--			</template>-->
+					<!--		</Column>-->
+					<!--		<Column-->
+					<!--			id="quantity"-->
+					<!--			width="6rem"-->
+					<!--			hAlign="End"-->
+					<!--			sortProperty="MDEF_SOCIEDAD">-->
+					<!--			<m:Label text="Sociedad - Centro" />-->
+					<!--			<template>-->
+					<!--				<m:Label text="{MDEF_SOCIEDAD}" />-->
+					<!--			</template>-->
+					<!--		</Column>-->
+					<!--		<Column width="6rem" hAlign="End">-->
+					<!--			<m:Label text="Centro" />-->
+					<!--			<template>-->
+					<!--				<m:Label text="{MDEF_CENTRO}" />-->
+					<!--			</template>-->
+					<!--		</Column>-->
+					<!--		<Column width="6rem" hAlign="End">-->
+					<!--			<m:Label text="UMD" />-->
+					<!--			<template>-->
+					<!--				<m:Label text="{MDEF_UMD}" />-->
+					<!--			</template>-->
+					<!--		</Column>-->
+					<!--		<Column width="15rem">-->
+					<!--			<m:Label text="MDEF_COSTOMATERIAL" />-->
+					<!--			<template>-->
+					<!--				<m:Label text="{MDEF_COSTOMATERIAL}" />-->
+					<!--			</template>-->
+					<!--		</Column>-->
+					<!--		<Column width="15rem">-->
+					<!--			<m:Label text="MDEF_COSTOTRANSFERENCIA" />-->
+					<!--			<template>-->
+					<!--				<m:Label text="{MDEF_COSTOTRANSFERENCIA}" />-->
+					<!--			</template>-->
+					<!--		</Column>-->
+					<!--	</columns>-->
+					<!--</Table>-->
+					<m:FlexBox height="auto" alignItems="Start" justifyContent="Start">
+						<m:items>
+							<m:Button icon="sap-icon://copy" text="Copiar" tooltip="Copiar version de commoditie" press="showFormCopyVersionCommoditie"/>
+							<m:Button icon="sap-icon://save" text="Guardar" tooltip="Guardar version de commoditie"/>
+							<m:Button icon="sap-icon://upload-to-cloud" text="Publicar" tooltip="Publicar version de commoditie"/>
+						</m:items>
+					</m:FlexBox>
+					<Table id="tblMaterial" rows="{/MATERIAL}" rowActionCount="1" selectionMode="None" visibleRowCount="10">
+						<extension>
+							<m:OverflowToolbar>
+								<m:content>
+									<m:Title id="title" text="Material"/>
+									<!--<m:ToggleButton icon="sap-icon://complete" tooltip="Show available products only" press="toggleAvailabilityFilter"-->
+									<!--	pressed="{ui>/availabilityFilterOn}"/>-->
+									<!--<m:ToggleButton icon="sap-icon://grid" tooltip="Enable / Disable Cell Filter Functionality" pressed="{ui>/cellFilterOn}"/>-->
+									<m:Button icon="sap-icon://decline" tooltip="Clear all filters" press="clearAllFilters"/>
+									<!--<m:ToolbarSeparator/>-->
+									<m:SearchField placeholder="Filter" value="{ui>/globalFilter}" liveChange="filterGloballySup" width="15rem"/>
+									<m:ToolbarSpacer/>
+									<m:Button icon="sap-icon://sys-next-page" text="Exportar" tooltip="Exportar version de material"/>
+									<m:Button icon="sap-icon://sys-prev-page" text="Importar" tooltip="Importar version de material"/>
+									<m:Button icon="sap-icon://factory" type="Emphasized" text="Administrar material" tooltip="Crear Material" press="onGoToIdCommoditieTable"/>
+									<m:Button icon="sap-icon://edit" type="Emphasized" text="Editar Version" tooltip="Version" press="showFormEditCommoditie"/>
+								</m:content>
+							</m:OverflowToolbar>
+						</extension>
+						<columns>
+							<Column autoResizable="true" filterProperty="MDEF_IDMATERIAL">
+								<m:Label text="MDEF_IDMATERIAL"/>
+								<template>
+									<m:Text text="{MDEF_IDMATERIAL}" wrapping="false"/>
+								</template>
+							</Column>
+							<Column autoResizable="true" filterProperty="MDEF_MATERIAL">
+								<m:Label text="MDEF_MATERIAL"/>
+								<template>
+									<m:Text text="{MDEF_MATERIAL}" wrapping="false"/>
+								</template>
+							</Column>
+							<Column autoResizable="true" filterProperty="MDEF_SOCIEDAD">
+								<m:Label text="MDEF_SOCIEDAD"/>
+								<template>
+									<!--<m:Text text="{MDEF_SOCIEDAD}" wrapping="false"/>-->
+									<m:Input value="{MDEF_SOCIEDAD}" editable="false"/>
+								</template>
+							</Column>
+							<Column autoResizable="true" filterProperty="MDEF_CENTRO">
+								<m:Label text="MDEF_CENTRO"/>
+								<template>
+									<!--<m:Text text="{MDEF_CENTRO}" wrapping="false"/>-->
+									<m:Input value="{MDEF_CENTRO}" editable="false"/>
+								</template>
+							</Column>
+							<Column autoResizable="true" filterProperty="MDEF_UMD">
+								<m:Label text="MDEF_UMD"/>
+								<template>
+									<m:Text text="{MDEF_UMD}" wrapping="false"/>
+								</template>
+							</Column>
+							<Column autoResizable="true" filterProperty="MDEF_MONEDA">
+								<m:Label text="MDEF_MONEDA"/>
+								<template>
+									<!--<m:Text text="{MDEF_MONEDA}" wrapping="false"/>-->
+									<m:Input value="{MDEF_MONEDA}" editable="false"/>
+								</template>
+							</Column>
+							<Column autoResizable="true" filterProperty="MDEF_PESOMATERIAL">
+								<m:Label text="MDEF_PESOMATERIAL"/>
+								<template>
+									<m:Text text="{MDEF_PESOMATERIAL}" wrapping="false"/>
+								</template>
+							</Column>
+							<Column autoResizable="true" filterProperty="MDEF_COMMODITIE">
+								<m:Label text="MDEF_COMMODITIE"/>
+								<template>
+									<!--<m:Text text="{MDEF_COMMODITIE}" wrapping="false"/>-->
+									<m:Input value="{MDEF_COMMODITIE}" editable="false"/>
+								</template>
+							</Column>
+							<Column autoResizable="true" filterProperty="MDEF_PRECIOPRODUCTIVO">
+								<m:Label text="MDEF_PRECIOPRODUCTIVO"/>
+								<template>
+									<!--<m:Text text="{MDEF_PRECIOPRODUCTIVO}" wrapping="false"/>-->
+									<m:Input value="{MDEF_PRECIOPRODUCTIVO}" editable="false"/>
+								</template>
+							</Column>
+							<Column autoResizable="true" filterProperty="MDEF_COSTOCONVERSION">
+								<m:Label text="MDEF_COSTOCONVERSION"/>
+								<template>
+									<!--<m:Text text="{MDEF_COSTOCONVERSION}" wrapping="false"/>-->
+									<m:Input value="{MDEF_COSTOCONVERSION}" editable="false"/>
+								</template>
+							</Column>
+							<Column autoResizable="true" filterProperty="MDEF_COSTOADICIONAL">
+								<m:Label text="MDEF_COSTOADICIONAL"/>
+								<template>
+									<!--<m:Text text="{MDEF_COSTOADICIONAL}" wrapping="false"/>-->
+									<m:Input value="{MDEF_COSTOADICIONAL}" editable="false"/>
+								</template>
+							</Column>
+							<Column autoResizable="true" filterProperty="MDEF_COSTOENVIO">
+								<m:Label text="MDEF_COSTOENVIO"/>
+								<template>
+									<!--<m:Text text="{MDEF_COSTOENVIO}" wrapping="false"/>-->
+									<m:Input value="{MDEF_COSTOENVIO}" editable="false"/>
+								</template>
+							</Column>
+							<Column autoResizable="true" filterProperty="MDEF_ICOTERM">
+								<m:Label text="MDEF_ICOTERM"/>
+								<template>
+									<!--<m:Text text="{MDEF_ICOTERM}" wrapping="false"/>-->
+									<m:Input value="{MDEF_ICOTERM}" editable="false"/>
+								</template>
+							</Column>
+							<Column autoResizable="true" filterProperty="MDEF_COSTOMATERIAL">
+								<m:Label text="MDEF_COSTOMATERIAL"/>
+								<template>
+									<!--<m:Text text="{MDEF_COSTOMATERIAL}" wrapping="false"/>-->
+									<m:Input value="{MDEF_COSTOMATERIAL}" editable="false"/>
+								</template>
+							</Column>
+							<Column autoResizable="true" filterProperty="MDEF_FORMULAOTROSCOSTOS">
+								<m:Label text="MDEF_FORMULAOTROSCOSTOS"/>
+								<template>
+									<!--<m:Text text="{MDEF_FORMULAOTROSCOSTOS}" wrapping="false"/>-->
+									<m:Input value="{MDEF_FORMULAOTROSCOSTOS}" editable="false"/>
+								</template>
+							</Column>
+							<Column autoResizable="true" filterProperty="MDEF_OTROSCOSTOS">
+								<m:Label text="MDEF_OTROSCOSTOS"/>
+								<template>
+									<!--<m:Text text="{MDEF_OTROSCOSTOS}" wrapping="false"/>-->
+									<m:Input value="{MDEF_OTROSCOSTOS}" editable="false"/>
+								</template>
+							</Column>
+							<Column autoResizable="true" filterProperty="MDEF_%TRANSFERENCIA">
+								<m:Label text="MDEF_%TRANSFERENCIA"/>
+								<template>
+									<!--<m:Text text="{MDEF_%TRANSFERENCIA}" wrapping="false"/>-->
+									<m:Input value="{MDEF_%TRANSFERENCIA}" editable="false"/>
+								</template>
+							</Column>
+							<Column autoResizable="true" filterProperty="MDEF_COSTOTRANSFERENCIA">
+								<m:Label text="MDEF_COSTOTRANSFERENCIA"/>
+								<template>
+									<!--<m:Text text="{MDEF_COSTOTRANSFERENCIA}" wrapping="false"/>-->
+									<m:Input value="{MDEF_COSTOTRANSFERENCIA}" editable="false"/>
+								</template>
+							</Column>
+							<Column autoResizable="true" filterProperty="MDEF_PRECIOPREMISA">
+								<m:Label text="MDEF_PRECIOPREMISA"/>
+								<template>
+									<!--<m:Text text="{MDEF_PRECIOPREMISA}" wrapping="false"/>-->
+									<m:Input value="{MDEF_PRECIOPREMISA}" editable="false"/>
+								</template>
+							</Column>
+							<Column autoResizable="true" filterProperty="MDEF_PERIODO">
+								<m:Label text="MDEF_PERIODO"/>
+								<template>
+									<m:Text text="{MDEF_PERIODO}" wrapping="false"/>
+								</template>
+							</Column>
+							<Column autoResizable="true" filterProperty="MDEF_MES">
+								<m:Label text="MDEF_MES"/>
+								<template>
+									<m:Text text="{MDEF_MES}" wrapping="false"/>
+								</template>
+							</Column>
+							<Column visible="false">
+								<m:Label text="CDEF_EDIT_FLAG"/>
+								<template>
+									<m:Text text="{CDEF_EDIT_FLAG}" wrapping="false"/>
+								</template>
+							</Column>
+						</columns>
+						<rowActionTemplate>
+							<RowAction>
+								<items>
+									<RowActionItem type="Navigation" text="Editar" press="handleEditPress" icon="sap-icon://edit"></RowActionItem>
+								</items>
+							</RowAction>
+						</rowActionTemplate>
+					</Table>
+				</m:content>
+			</m:Page>
 		</m:pages>
-		</m:App>
+	</m:App>
 </mvc:View>

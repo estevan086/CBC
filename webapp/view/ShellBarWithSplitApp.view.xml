@@ -1,9 +1,23 @@
 <mvc:View id="sbwsa1" height="100%" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:f="sap.f" xmlns:tnt="sap.tnt"
 	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
-	controllerName="cbc.co.simulador_costos.controller.ShellBarWithSplitApp">
+	controllerName="cbc.co.simulador_costos.controller.ShellBarWithSplitApp" xmlns:u="sap.ui.unified">
+	<!--<u:Shell id="myShell" icon="../webapp/css/images/cbc-logo.png">
+		<u:headItems>
+			<u:ShellHeadItem tooltip="Configuration" icon="sap-icon://menu2" press="handlePressConfiguration"/>
+			<u:ShellHeadItem tooltip="Home" icon="../webapp/css/images/cbc-logo.png" visible="true" press="handlePressHome"/>
+		</u:headItems>
+		<u:user>
+			<u:ShellHeadUserItem image="sap-icon://person-placeholder" username="Fernando Molina" press="handleUserItemPressed"/>
+		</u:user>
+		<u:paneContent>
+			<Text text="Lorem ipsum"/>
+		</u:paneContent>
+	</u:Shell>-->
 	<tnt:ToolPage id="toolPage">
-		<tnt:header>
+
+		<!--<tnt:header>
 			<tnt:ToolHeader>
+				
 				<f:ShellBar homeIcon="../webapp/css/images/cbc-logo.png" showMenuButton="true" menuButtonPressed="onMenuButtonPress"></f:ShellBar>
 				<ToolbarSpacer>
 					<layoutData>
@@ -16,7 +30,7 @@
 					</layoutData>
 				</Button>
 			</tnt:ToolHeader>
-		</tnt:header>
+		</tnt:header>-->
 		<tnt:sideContent>
 			<tnt:SideNavigation expanded="true" selectedKey="{/selectedKey}" itemSelect="onItemSelect">
 				<tnt:NavigationList items="{path: '/navigation'}">
@@ -32,7 +46,7 @@
 			</tnt:SideNavigation>
 		</tnt:sideContent>
 		<tnt:mainContents>
-			<NavContainer id="NavContainer" initialPage="rtHome" afterNavigate="onAfterNavigate">
+			<NavContainer id="parentNavContainer" afterNavigate="onAfterNavigate">
 				<pages>
 					<ScrollContainer id="rtHome" horizontal="false" vertical="true" height="100%">
 						<mvc:XMLView viewName="cbc.co.simulador_costos.view.Home"/>

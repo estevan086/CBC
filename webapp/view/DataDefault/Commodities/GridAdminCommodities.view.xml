@@ -17,74 +17,75 @@
 				<m:content>
 					<m:FlexBox height="auto" alignItems="Start" justifyContent="Start">
 						<m:items>
-							<m:Button icon="sap-icon://copy" text="Copiar" tooltip="Copiar version de commoditie" press="showFormCopyVersionCommoditie"/>
-							<m:Button icon="sap-icon://save" text="Guardar" tooltip="Guardar version de commoditie" press="saveVersionCommodities"/>
+							<!--<m:Button icon="sap-icon://copy" text="Copiar" tooltip="Copiar version de commoditie" press="showFormCopyVersionCommoditie"/>-->
+							<m:Button icon="sap-icon://save" text="Guardar" tooltip="Guardar version de commoditie" press="saveCommodities"/>
 							<m:Button icon="sap-icon://upload-to-cloud" text="Publicar" tooltip="Publicar version de commoditie" press="PublicVersionCommodities"/>
 						</m:items>
 					</m:FlexBox>
-					<Table id="tblCommodities" rows="{/COMMODITIES}" selectionMode="Single" visibleRowCount="7" rowActionCount="1" class="sapUiSizeCompact">
+					<Table id="tblCommodities" rows="{/lstItemsCommodities}" selectionMode="Single" visibleRowCount="7" rowActionCount="1" class="sapUiSizeCompact">
 						<extension>
 							<m:OverflowToolbar>
 								<m:content>
 									<m:Title id="title" text="Commodities"/>
 									<m:ToolbarSpacer/>
 									<m:Button icon="sap-icon://sys-next-page" text="Exportar" tooltip="Exportar version de commoditie"/>
-									<m:Button icon="sap-icon://sys-prev-page" text="Importar" tooltip="Importar version de commoditie"/>
+									<!--<m:Button icon="sap-icon://sys-prev-page" text="Importar" tooltip="Importar version de commoditie"/>-->
+									<u:FileUploader id="fileUploader" name="myFileUpload" icon="sap-icon://sys-prev-page" tooltip="Importar version de commoditie" change="handleUpload"/>
 									<m:Button icon="sap-icon://factory" type="Emphasized" text="Administrar Commodities" tooltip="Crear Commodities"
 										press="onGoToIdCommoditieTable"/>
-									<m:Button icon="sap-icon://edit" type="Emphasized" text="Editar Version Default" tooltip="Version Default" press="showFormEditCommoditie"/>
+									<!--<m:Button icon="sap-icon://edit" type="Emphasized" text="Editar Version Default" tooltip="Version Default" press="showFormEditCommoditie"/>-->
 								</m:content>
 							</m:OverflowToolbar>
 						</extension>
 						<columns>
-							<Column>
-								<m:Label text="ICDEF_IDCOMMODITIES"/>
+							<Column filterProperty="IdCommoditie">
+								<m:Label text="ID Commoditie" />
 								<template>
-									<m:Text text="{CDEF_IDCOMMODITIES}" wrapping="false"/>
+									<m:Text text="{IdCommoditie}" wrapping="false"/>
 								</template>
 							</Column>
 							<Column>
-								<m:Label text="CDEF_COMMODITIE"/>
+								<m:Label text="Descripcion"/>
 								<template>
-									<m:Text text="{CDEF_COMMODITIE}" wrapping="false"/>
+									<m:Text text="{Descripcion}" wrapping="false"/>
 								</template>
 							</Column>
 							<Column>
-								<m:Label text="CDEF_SOCIEDAD"/>
+								<m:Label text="Sociedad"/>
 								<template>
 									<!--<m:TextField text="{CDEF_SOCIEDAD}" editable="false"/>-->
-									<m:Input value="{CDEF_SOCIEDAD}" editable="false"/>
+									<m:Input value="{Sociedad}" editable="false"/>
 									<!--<m:Text text="{CDEF_SOCIEDAD}" editable="false" visible="false"/>-->
 								</template>
 							</Column>
 							<Column>
-								<m:Label text="CDEF_MONEDA"/>
+								<m:Label text="Moneda"/>
 								<template>
-									<m:Input value="{CDEF_MONEDA}" editable="false"/>
+									<m:Input value="{Moneda}" editable="false"/>
 								</template>
 							</Column>
 							<Column>
-								<m:Label text="CDEF_UMD"/>
+								<m:Label text="Unidad Medida"/>
 								<template>
-									<m:Input value="{CDEF_UMD}" editable="false"/>
+									<m:Input value="{UnidadMedida}" editable="false"/>
 								</template>
 							</Column>
 							<Column>
-								<m:Label text="CDEF_PRECIO"/>
+								<m:Label text="Precio"/>
 								<template>
-									<m:Input value="{CDEF_PRECIO}" editable="false"/>
+									<m:Input value="{PrecioMaterial}" editable="false"/>
 								</template>
 							</Column>
 							<Column>
-								<m:Label text="CDEF_OTROCOSTO"/>
+								<m:Label text="Otros Costos"/>
 								<template>
-									<m:Input value="{CDEF_OTROCOSTO}" editable="false"/>
+									<m:Input value="{OtrosCostos}" editable="false"/>
 								</template>
 							</Column>
 							<Column width="14rem">
-								<m:Label text="CDEF_FORMULA"/>
+								<m:Label text="Formula"/>
 								<template>
-									<m:Text text="{CDEF_FORMULA}" wrapping="true"/>
+									<m:Text text="{Formula}" wrapping="true"/>
 								</template>
 							</Column>
 							<Column width="4rem" hAlign="Center">
@@ -93,15 +94,15 @@
 								</template>
 							</Column>
 							<Column>
-								<m:Label text="CDEF_PERIODO"/>
+								<m:Label text="Periodo"/>
 								<template>
-									<m:Text text="{CDEF_PERIODO}" wrapping="false"/>
+									<m:Text text="{Year}" wrapping="false"/>
 								</template>
 							</Column>
 							<Column>
-								<m:Label text="CDEF_MES"/>
+								<m:Label text="Mes"/>
 								<template>
-									<m:Text text="{CDEF_MES}" wrapping="false"/>
+									<m:Text text="{Mes}" wrapping="false"/>
 								</template>
 							</Column>
 							<Column visible="false">
@@ -128,7 +129,7 @@
 						<m:Button id="messagePopoverBtn" icon="sap-icon://message-popup" type="Emphasized"
 							visible="{=!!${message>/}.length}" press="handleMessagePopoverPress"/>
 						<m:ToolbarSpacer/>
-						<m:Button type="Emphasized" text="Save" press="_generateInvalidUserInput"/>
+						<!--<m:Button type="Emphasized" text="Guardar" tooltip="Guardar version de commoditie" press="saveCommodities"/>-->
 						<!--<Button text="Cancel"/>-->
 					</m:OverflowToolbar>
 				</m:footer>

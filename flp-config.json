@@ -1,0 +1,35 @@
+{
+    "application": {
+        "id": "",
+        "title": "cbc.co.simulador_costos.CBC-1",
+        "description": "App Simulador",
+        "type": "SAP_UI5_Component",
+        "componentUrl": "/",
+        "appUrl": "#CBC1-Display",
+        "navigationComponentName": "cbc.co.simulador_costos",
+        "intentSemanticObject": "CBC-1",
+        "intentAction": "Display",
+        "html5ApplicationName": "cbc1",
+        "HCPParentApplicationName": ""
+    },
+    "assignment": {
+        "groups": [
+            "fe441acc-4268-4249-bd12-0ecce2d071ec"
+        ],
+        "contentPackages": [
+            "ffd9e87f-b078-43dc-9702-494facb351e5"
+        ],
+        "categories": []
+    },
+    "tile": {
+        "type": "StaticTile",
+        "title": "App Simulador v1",
+        "subtitle": "",
+        "searchKeywords": "App Simulador v1,",
+        "displayIconUrl": "sap-icon://bbyd-dashboard",
+        "displayInfoText": "",
+        "size": "1x1",
+        "serviceURL": "",
+        "refreshInterval": ""
+    }
+}

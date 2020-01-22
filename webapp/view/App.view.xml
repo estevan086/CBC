@@ -3,5 +3,12 @@
 	xmlns="sap.m"
 	xmlns:mvc="sap.ui.core.mvc"
 	displayBlock="true">
-	<mvc:XMLView viewName="cbc.co.simulador_costos.view.ShellBarWithSplitApp"/>
+	<!--<mvc:XMLView viewName="cbc.co.simulador_costos.view.ShellBarWithSplitApp"/>-->
+		<!--<Shell>-->
+		<App id="myApp">
+			<pages>
+				<!-- The "Parent" view will be added here by the routing mechanism -->
+			</pages>
+		</App>
+	<!--</Shell>-->
 </mvc:View>

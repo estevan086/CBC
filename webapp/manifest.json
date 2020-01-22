@@ -29,20 +29,31 @@
 			"desktop": true,
 			"tablet": true,
 			"phone": true
-		}
+		},
+		"fullWidth": true,
+		"flexEnabled": false,
+		"supportedThemes": [
+			"sap_belize_hcb",
+			"sap_belize_hcw",
+			"sap_belize",
+			"sap_belize_plus",
+			"sap_fiori_3",
+			"sap_fiori_3_hcb",
+			"sap_fiori_3_hcw"
+		]
 	},
 	"sap.ui5": {
 		"rootView": {
 			"viewName": "cbc.co.simulador_costos.view.App",
 			"type": "XML",
 			"async": true,
-			"id": "app"
+			"id": ""
 		},
 		"dependencies": {
-			"minUI5Version": "1.71.10",
+			"minUI5Version": "1.62.0",
 			"libs": {
-				"sap.ui.core": {},
 				"sap.m": {},
+				"sap.ui.core": {},
 				"sap.ui.layout": {}
 			}
 		},
@@ -82,6 +93,145 @@
 			"compact": true,
 			"cozy": true
 		},
-		"flexEnabled": false
+		"flexEnabled": false,
+		"routing": {
+			"routes": {
+				"home": {
+					"pattern": "",
+					"target": "parentTarget"
+				},
+				"rtChCommodities": {
+					"pattern": "rtChCommodities",
+					"target": "rtChCommoditiesTarget"
+				},
+				"rtChFromuladora": {
+					"pattern": "rtChFromuladora/{oRowPath}",
+					"target": "rtChFromuladoraTarget"
+				},
+				"rtChIDCommodities": {
+					"pattern": "rtChIDCommodities",
+					"target": "rtChIDCommoditiesTarget"
+				},
+				"rtChMateriales": {
+					"pattern": "rtChMateriales",
+					"target": "rtChMaterialesTarget"
+				},
+				"rtChMantenimientoCommodities": {
+					"pattern": "rtChMantenimientoCommodities",
+					"target": "rtChMantenimientoCommoditiesTarget"
+				},
+				"rtChCostosLogisticos": {
+					"pattern": "rtChCostosLogisticos",
+					"target": "rtChCostosLogisticosTarget"
+				},
+				"rtChUsers": {
+					"pattern": "rtChUsers",
+					"target": "rtChUsersTarget"
+				}
+			},
+			"targets": {
+				"parentTarget": {
+					"viewName": "ShellBarWithSplitApp",
+					"viewLevel": 1
+				},
+				"childTarget0": {
+					"viewPath": "demo.view.children",
+					"viewName": "Empty",
+					"parent": "parentTarget",
+					"controlId": "parentNavContainer",
+					"controlAggregation": "pages",
+					"transition": "flip",
+					"viewLevel": 2
+				},
+				"rtChCommoditiesTarget": {
+					"viewPath": "cbc.co.simulador_costos.view.DataDefault.Commodities",
+					"viewName": "AdminCommodities",
+					"parent": "parentTarget",
+					"controlId": "parentNavContainer",
+					"controlAggregation": "pages",
+					"transition": "slide",
+					"viewLevel": 3
+				},
+				"rtChFromuladoraTarget": {
+					"viewPath": "cbc.co.simulador_costos.view.Utilities",
+					"viewName": "Formuladora",
+					"parent": "parentTarget",
+					"controlId": "parentNavContainer",
+					"transition": "flip",
+					"controlAggregation": "pages",
+					"viewLevel": 4
+				},
+				"rtChIDCommoditiesTarget": {
+					"viewPath": "cbc.co.simulador_costos.view.DataDefault.Commodities",
+					"viewName": "AdminIDCommodities",
+					"parent": "parentTarget",
+					"controlId": "parentNavContainer",
+					"transition": "flip",
+					"controlAggregation": "pages",
+					"viewLevel": 4
+				},
+				"rtChMaterialesTarget": {
+					"viewPath": "cbc.co.simulador_costos.view.DataDefault.Materiales",
+					"viewName": "AdminMateriales",
+					"parent": "parentTarget",
+					"controlId": "parentNavContainer",
+					"transition": "slide",
+					"controlAggregation": "pages",
+					"viewLevel": 3
+				},
+				"rtChMantenimientoCommoditiesTarget": {
+					"viewPath": "cbc.co.simulador_costos.view.Commodities",
+					"viewName": "Commodities",
+					"parent": "parentTarget",
+					"controlId": "parentNavContainer",
+					"transition": "slide",
+					"controlAggregation": "pages",
+					"viewLevel": 3
+				},
+				"rtChCostosLogisticosTarget": {
+					"viewPath": "cbc.co.simulador_costos.view.DataDefault.LogisticCost",
+					"viewName": "AdminLogisticCost",
+					"parent": "parentTarget",
+					"controlId": "parentNavContainer",
+					"transition": "slide",
+					"controlAggregation": "pages",
+					"viewLevel": 3
+				},
+				"rtChUsersTarget": {
+					"viewPath": "cbc.co.simulador_costos.view.Admon",
+					"viewName": "Users",
+					"parent": "parentTarget",
+					"controlId": "parentNavContainer",
+					"transition": "slide",
+					"controlAggregation": "pages",
+					"viewLevel": 3
+				},
+				"notFound": {
+					"viewName": "Parent",
+					"transition": "flip",
+					"viewLevel": 0
+				}
+			},
+			"config": {
+				"viewPath": "cbc.co.simulador_costos.view",
+				"controlId": "myApp",
+				"controlAggregation": "pages",
+				"routerClass": "sap.m.routing.Router",
+				"fullWidth": true,
+				"viewType": "XML",
+				"async": true,
+				"bypassed": {
+					"target": "notFound"
+				}
+			}
+		}
+	},
+	"sap.platform.abap": {
+		"uri": "/sap/bc/ui5_ui5/sap/zsimulador_001/webapp",
+		"_version": "1.1.0"
+	},
+	"sap.platform.hcp": {
+		"uri": "webapp",
+		"_version": "1.1.0"
 	}
 }

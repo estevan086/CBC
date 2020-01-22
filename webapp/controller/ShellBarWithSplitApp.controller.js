@@ -12,6 +12,13 @@ sap.ui.define([
 		
 	var CController = Controller.extend("cbc.co.simulador_costos.controller.ShellBarWithSplitApp", {
 		onInit : function() {
+			
+			// const router = this.getOwnerComponent().getRouter();
+			// router.attachRoutePatternMatched(this.onRoutePatternMatched.bind(this));
+			// this.getView().addEventDelegate({
+			// 	onAfterShow: this.onAfterShow.bind(this, router),
+			// });
+			
 			this.oModel = new JSONModel();
 			this.oModel.setData({
 				"selectedKey": "rtHome",
@@ -46,7 +53,7 @@ sap.ui.define([
 							},
 							{
 								"title": "Perfiles",
-								"key": "rtChAddProfile"
+								"key": "rtChUsers"
 							}
 						]
 					},
@@ -174,8 +181,12 @@ sap.ui.define([
 		},
 
 		onItemSelect : function(oEvent) {
-			var item = oEvent.getParameter('item');
-			this.byId("NavContainer").to(this.getView().createId(item.getKey()));
+			
+			var router = this.getOwnerComponent().getRouter();
+			router.navTo(oEvent.getParameter("item").getProperty("key"));
+			
+			//var item = oEvent.getParameter('item');
+			//this.byId("NavContainer").to(this.getView().createId(item.getKey()));
 		},
 
 		onMenuButtonPress : function() {
@@ -224,8 +235,19 @@ sap.ui.define([
 			}
 		},
 		
-		onAfterNavigate : function(){
-			console.log("Test Navegacion");
+		onAfterNavigate : function(oEvent){
+		//	console.log("Test Navegacion");
+		},
+		
+		handlePressConfiguration: function(oEvent) {
+		/*	var oItem = oEvent.getSource();
+			var oShell = this.byId("myShell");
+			var bState = oShell.getShowPane();
+			oShell.setShowPane(!bState);
+			oItem.setShowMarker(!bState);
+			oItem.setSelected(!bState);*/
+			var toolPage = this.byId("toolPage");
+			toolPage.setSideExpanded(!toolPage.getSideExpanded());
 		}
 
 	});

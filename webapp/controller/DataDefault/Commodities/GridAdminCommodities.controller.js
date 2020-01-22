@@ -20,6 +20,8 @@ sap.ui.define([
 ], function (Controller, JSONModel, MessageToast, Fragment, DateFormat, library, Filter, FilterOperator, Button, Dialog, List,
 	StandardListItem, ButtonType, MessageBox, RowSettings, CoreLibrary) {
 	"use strict";
+
+	this.updatedRecords = [];
 	var that = this;
 	var MessageType = CoreLibrary.MessageType;
 
@@ -27,32 +29,57 @@ sap.ui.define([
 
 		onInit: function () {
 
-			//  	var oInput1 = this.byId("InputNameVersion");
-			//	oInput1.attachBrowserEvent("onblur", function () {
-			//		this.setEditable(false);
-			//	});
-
-			//	var oInput2 = this.byId("txtDetailVersion");
-			//	oInput2.attachBrowserEvent("blur", function () {
-			//		this.setEditable(false);
-			//	});
-
 			// set explored app's demo model on this sample
-			var json = this.initSampleDataModel();
-			this.getView().setModel(json);
 
-			// var itemTemplate = new sap.ui.core.ListItem();      //  creating a ListItem object                  
-			// itemTemplate .bindProperty("text", "text");   //  bind for the "text" property a certain path from the model
+			var oUploader = this.getView().byId("fileUploader");
+			oUploader.oBrowse.setText("Importar");
+			oUploader.oFilePath.setVisible(false);
+			oUploader.addEventDelegate({
+				onAfterRendering: function () {
+					this.setFileType(['csv']);
+				}
+			}, oUploader);
 
-			var supplierObject = [{
-				Supplier: "Titanium"
-			}, {
-				Supplier: "Technocom"
-			}, {
-				Supplier: "Red Point Stores"
-			}];
+			var myRoute = this.getOwnerComponent().getRouter().getRoute("rtChCommodities");
+			myRoute.attachPatternMatched(this.onMyRoutePatternMatched, this);
 
-			
+		},
+
+		onMyRoutePatternMatched: function (event) {
+			// your code when the view is about to be displayed ..
+
+			//	var json = this.initSampleDataModel();
+			//	this.getView().setModel(json);
+
+			//Url Servicio
+			var oModel = this.getOwnerComponent().getModel("ModelSimulador");
+			var sServiceUrl = oModel.sServiceUrl;
+
+			//Definir modelo del servicio web
+			var oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true);
+			//Definir filtro
+
+			//Leer datos del ERP
+			var oRead = this.fnReadEntity(oModelService, "/detailCommoditiesSet", null);
+
+			if (oRead.tipo === "S") {
+				this.oDataDetalleCommodities = oRead.datos.results;
+			} else {
+				MessageBox.error(oRead.msjs, null, "Mensaje del sistema", "OK", null);
+			}
+
+			var oDataDetalleCommodities = "";
+			//SI el modelo NO existe, se crea.
+			if (!oDataDetalleCommodities) {
+				oDataDetalleCommodities = {
+					lstItemsCommodities: []
+				};
+			}
+
+			oDataDetalleCommodities.lstItemsCommodities = this.oDataDetalleCommodities;
+			var oTablaDetalleCommodities = this.byId("tblCommodities");
+			var oModel2 = new sap.ui.model.json.JSONModel(oDataDetalleCommodities);
+			oTablaDetalleCommodities.setModel(oModel2);
 
 		},
 
@@ -79,31 +106,35 @@ sap.ui.define([
 		},
 
 		handleEditPress: function (oEvent, Data) {
-			//var oRow = oEvent.getParameter("row");
+			var oRow = oEvent.getParameter("row");
 			var oItem = oEvent.getParameter("item");
 
 			var oTable = this.byId("tblCommodities");
 			var oRowData = oEvent.getSource().getBindingContext().getProperty();
 
-			var oRowEdited = oEvent.getSource().getParent().getParent();
+			var oRowEdited = oRow;
 
 			//this.byId("tblCommodities").getRows()[3].getCells()[3].mProperties.editable = "true";
 
-			for (var i = 0; i < oTable.getRows().length; i++) {
+			for (var i = 0; i < oTable.getModel().getData().lstItemsCommodities.length; i++) {
 
-				oTable.getRows()[i].getBindingContext().getProperty().CDEF_EDIT_FLAG = "None";
-				oTable.getRows()[i].getBindingContext().getProperty().CDEF_NAV_FLAG = false;
+				if (oTable.getRows()[i] !== undefined) {
+					oTable.getRows()[i].getBindingContext().getProperty().CDEF_EDIT_FLAG = "None";
+					oTable.getRows()[i].getBindingContext().getProperty().CDEF_NAV_FLAG = false;
 
-				//Sociedad
-				oTable.getRows()[i].getCells()[2].setProperty("editable", false);
-				//Moneda
-				oTable.getRows()[i].getCells()[3].setProperty("editable", false);
-				//Unidad de Medida
-				oTable.getRows()[i].getCells()[4].setProperty("editable", false);
-				//Precio
-				oTable.getRows()[i].getCells()[5].setProperty("editable", false);
-				//Otros Costos
-				oTable.getRows()[i].getCells()[6].setProperty("editable", false);
+					//Sociedad
+					oTable.getRows()[i].getCells()[2].setProperty("editable", false);
+					//Moneda
+					oTable.getRows()[i].getCells()[3].setProperty("editable", false);
+					//Unidad de Medida
+					oTable.getRows()[i].getCells()[4].setProperty("editable", false);
+					//Precio
+					oTable.getRows()[i].getCells()[5].setProperty("editable", false);
+					//Otros Costos
+					oTable.getRows()[i].getCells()[6].setProperty("editable", false);
+				} else {
+					break;
+				}
 			}
 
 			//Sociedad
@@ -124,49 +155,98 @@ sap.ui.define([
 			oTable.setRowSettingsTemplate(new RowSettings({
 				highlight: "{CDEF_EDIT_FLAG}",
 				navigated: "{CDEF_NAV_FLAG}"
-					// 	path: "",
-					// 	formatter: function() {
-					// 		var oRow = this._getRow();
-
-				// 		if (oRow !== null) {
-				// 			var iIndex = oRow.getIndex();
-
-				// 			if (iIndex === 0) {
-				// 				return MessageType.Success;
-				// 			} else if (iIndex === 1) {
-				// 				return MessageType.Warning;
-				// 			} else if (iIndex === 2) {
-				// 				return MessageType.Error;
-				// 			} else if (iIndex === 3) {
-				// 				return MessageType.Information;
-				// 			} else if (iIndex === 4) {
-				// 				return MessageType.None;
-				// 			} else if (iIndex === 5) {
-				// 				return MessageType.Success;
-				// 			} else if (iIndex === 6) {
-				// 				return MessageType.Success;
-				// 			}
-				// 		}
-
-				// 		return "None";
-				// 	}
-				// }
-
 			}));
 
 			sap.ui.getCore().applyChanges();
 
-			// var oToggleButton = oEvent.getSource();
+			var oEntidad = {};
+			oEntidad.RowPath = oEvent.getSource().getBindingContext().sPath.split('/')[2];;
+			// oEntidad.IdCommoditie = oRowData.IdCommoditie;
+			// oEntidad.Sociedad = oRowData.Sociedad;
+			// oEntidad.Centro = oRowData.Centro;
+			// oEntidad.UnidadMedida = oRowData.UnidadMedida;
+			// oEntidad.Moneda = oRowData.Moneda;
+			// oEntidad.Mes = oRowData.Mes;
+			// oEntidad.Year = oRowData.Year;
 
-			// if (oToggleButton.getPressed()) {
-			// 	oTable.setRowSettingsTemplate(new RowSettings({
-			// 		navigated: true
-			// 	}));
-			// } else {
-			// 	oTable.setRowSettingsTemplate(null);
-			// }
+			that.updatedRecords.push(oEntidad);
 
-			MessageToast.show("ID " + (oItem.getText() || oItem.getType()) + " pressed for id " + oRowData.CDEF_IDCOMMODITIES);
+			MessageToast.show("Puedes comenzar a " + (oItem.getText() || oItem.getType()) + " el ID " + oRowData.IdCommoditie);
+
+		},
+
+		saveCommodities: function (oEvent) {
+			var oCommodities = [];
+
+			var oTable = this.byId("tblCommodities");
+
+			//var oSave = this.fnCreateEntity(oModelService, "/headerCommoditiesSet", that.updatedRecords);
+
+			var sServiceUrl = this.getView().getModel("ModelSimulador").sServiceUrl,
+				oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true),
+				oEntidad = {},
+				oDetail = {};
+
+			oEntidad = {
+				IdCommoditie: '1111',
+				Descripcion: 'Prueba',
+				detailCommoditiesSet: []
+			};
+
+			for (var i = 0; i < that.updatedRecords.length; i++) {
+
+				var CurrentRow = that.updatedRecords[i];
+
+				var oTempRow = oTable.getModel().getData().lstItemsCommodities[CurrentRow.RowPath];
+
+				oDetail = {
+					Formula: oTempRow.Formula,
+					IdCommoditie: oTempRow.IdCommoditie,
+					Sociedad: oTempRow.Sociedad,
+					Centro: oTempRow.Centro,
+					UnidadMedida: oTempRow.UnidadMedida,
+					Moneda: oTempRow.Moneda,
+					Mes: oTempRow.Mes,
+					Year: oTempRow.Year,
+					PrecioMaterial: oTempRow.PrecioMaterial,
+					OtrosCostos: oTempRow.OtrosCostos
+						// Recordmode: '1'
+				};
+
+				oEntidad.detailCommoditiesSet.push(oDetail);
+			}
+
+			var oCreate = this.fnCreateEntity(oModelService, "/headerCommoditiesSet", oEntidad);
+
+			if (oCreate.tipo === 'S') {
+
+				MessageBox.show(
+					'Datos guardados correctamente', {
+						icon: MessageBox.Icon.SUCCESS,
+						title: "Exito",
+						actions: [MessageBox.Action.OK],
+						onClose: function (oAction) {
+							if (oAction === sap.m.MessageBox.Action.OK) {
+								return;
+							}
+						}
+					}
+				);
+
+			} else if (oCreate.tipo === 'E') {
+
+				MessageBox.show(
+					oCreate.msjs, {
+						icon: MessageBox.Icon.ERROR,
+						title: "Error"
+							// actions: [MessageBox.Action.YES, MessageBox.Action.NO],
+							// onClose: function (oAction) {
+							// 	/ * do something * /
+							// }
+					}
+				);
+
+			}
 
 		},
 
@@ -295,42 +375,6 @@ sap.ui.define([
 			oData = oData + ']}';
 			var obj = $.parseJSON(oData);
 
-			// var ODataPeriodos = { "COMMODITIES": [ 
-			// 		{
-			//             "CDEF_IDCOMMODITIES": "",
-			//             "CDEF_COMMODITIE": "",
-			//             "CDEF_SOCIEDAD": "",
-			//             "CDEF_MONEDA": "",
-			//             "CDEF_UMD": "",
-			//             "CDEF_PRECIO": "",
-			//             "CDEF_OTROCOSTO": "",
-			//             "CDEF_FORMULA": "",
-			//             "CDEF_PERIODO": "2020",
-			//             "CDEF_MES": "1"
-			//         }
-			// 	] };
-
-			// for (var j = 0; j < 12; j++) {
-
-			// 	ODataPeriodos[j].CDEF_IDCOMMODITIES =  oEntidad.IdCommoditie;
-			// 	ODataPeriodos[j].CDEF_COMMODITIE    =  oEntidad.DesCommoditie;
-
-			// 	// //var oProduct = oData.COMMODITIES[i];
-			// 	// if (oProduct.CDEF_IDCOMMODITIES && jQuery.inArray(oProduct.CDEF_IDCOMMODITIES, aTemp1) < 0) {
-			// 	// 	aTemp1.push(oProduct.CDEF_IDCOMMODITIES);
-			// 	// 	aSuppliersData.push({
-			// 	// 		Name: oProduct.CDEF_IDCOMMODITIES
-			// 	// 	});
-			// 	// }
-			// 	// if (oProduct.CDEF_COMMODITIE && jQuery.inArray(oProduct.CDEF_COMMODITIE, aTemp2) < 0) {
-			// 	// 	aTemp2.push(oProduct.CDEF_COMMODITIE);
-			// 	// 	aCategoryData.push({
-			// 	// 		Name: oProduct.CDEF_COMMODITIE
-			// 	// 	});
-			// 	// }
-
-			// }
-
 			//var obj = $.parseJSON(OData);
 			var json = new sap.ui.model.json.JSONModel(obj);
 			this.getView().setModel(json);
@@ -352,39 +396,143 @@ sap.ui.define([
 
 		},
 
+		handleUpload: function (oEvent) {
+			var that = this;
+			var oFile = oEvent.getParameter("files")[0];
+			if (oFile && window.FileReader) {
+				var reader = new FileReader();
+				reader.onload = function (evt) {
+					var strCSV = evt.target.result; //string in CSV 
+					that.csvJSON(strCSV);
+				};
+				reader.readAsText(oFile);
+			}
+		},
+
+		csvJSON: function (csv) {
+			var lines = csv.split("\n");
+			var result = [];
+			var headers = lines[0].split(",");
+			for (var i = 1; i < lines.length; i++) {
+				var obj = {};
+				var currentline = lines[i].split(",");
+				for (var j = 0; j < headers.length; j++) {
+					obj[headers[j]] = currentline[j];
+				}
+				result.push(obj);
+			}
+			var oStringResult = JSON.stringify(result);
+			var oFinalResult = JSON.parse(oStringResult.replace(/\\r/g, "")); //OBJETO JSON para guardar
+			//MessageToast.show(oStringResult);
+			this.CargaMasiva(oFinalResult);
+			//return result; //JavaScript object
+			//sap.ui.getCore().getModel().setProperty("/", oFinalResult);
+			//this.generateTile();
+		},
+
+	CargaMasiva: function (JsonValue) {
+
+			var sServiceUrl = this.getView().getModel("ModelSimulador").sServiceUrl,
+				oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true),
+				oEntidad = {},
+				oDetail = {};
+
+			oEntidad = {
+				IdCommoditie: '1111',
+				Descripcion: 'Prueba',
+				detailCommoditiesSet: []
+			};
+
+			for (var i = 1; i < JsonValue.length; i++) {
+
+				var CurrentRow = JsonValue[i];
+
+				oDetail = {
+					Formula: CurrentRow.CDEF_FORMULA,
+					IdCommoditie: CurrentRow.CDEF_IDCOMMODITIES,
+					Sociedad: CurrentRow.CDEF_SOCIEDAD,
+					Centro: CurrentRow.CDEF_CENTRO,
+					UnidadMedida: CurrentRow.CDEF_UMD,
+					Moneda: CurrentRow.CDEF_MONEDA,
+					Mes: CurrentRow.CDEF_MES,
+					Year: CurrentRow.CDEF_PERIODO
+						// Recordmode: '1'
+				};
+
+				oEntidad.detailCommoditiesSet.push(oDetail);
+			}
+
+			var oCreate = this.fnCreateEntity(oModelService, "/headerCommoditiesSet", oEntidad);
+
+			if (oCreate.tipo === 'S') {
+
+				MessageBox.show(
+					'Datos importados correctamente', {
+						icon: MessageBox.Icon.SUCCESS,
+						title: "Exito",
+						actions: [MessageBox.Action.OK],
+						onClose: function (oAction) {
+							if (oAction === sap.m.MessageBox.Action.OK) {
+								return;
+							}
+						}
+					}
+				);
+
+			} else if (oCreate.tipo === 'E') {
+
+				MessageBox.show(
+					oCreate.msjs, {
+						icon: MessageBox.Icon.ERROR,
+						title: "Error"
+							// actions: [MessageBox.Action.YES, MessageBox.Action.NO],
+							// onClose: function (oAction) {
+							// 	/ * do something * /
+							// }
+					}
+				);
+
+			}
+
+		},
+
+
+		SetRowoDetail: function (oValue) {
+			var oDetail = {
+				Formula: oValue.CDEF_FORMULA,
+				IdCommoditie: oValue.CDEF_IDCOMMODITIES,
+				Sociedad: oValue.CDEF_SOCIEDAD,
+				Centro: oValue.CDEF_CENTRO,
+				UnidadMedida: oValue.CDEF_UMD,
+				Moneda: oValue.CDEF_MONEDA,
+				Mes: oValue.CDEF_MES,
+				Year: oValue.CDEF_PERIODO,
+				Recordmode: oValue.CDEF_CENTRO
+			};
+			return oDetail;
+		},
+
 		onGoToIdCommoditieTable: function (oEvent) {
-			//var oPageContainer = sap.ui.getCore().byId("NavContainer");
-			var oMainContentView = oEvent.getSource().getParent().getParent().getParent().getParent().getParent().getParent().getParent().getParent()
-				.getParent().getParent();
 
-			var oNavContainer = oMainContentView.byId("NavContainer");
+			var oItem = oEvent.getSource();
+			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 
-			oNavContainer.to(oMainContentView.createId("rtChIDCommodities"));
+			oRouter.navTo("rtChIDCommodities");
+
 		},
 
 		showCalculator: function (oEvent) {
 			//rtChFromuladora
 			var oRowData = oEvent.getSource().getBindingContext().getProperty();
+			var oItem = oEvent.getSource();
+			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 
-			var oMainContentView = oEvent.getSource().getParent().getParent().getParent().getParent().getParent().getParent().getParent().getParent()
-				.getParent().getParent();
-
-			var oNavContainer = oMainContentView.byId("NavContainer");
-
-			this.getView().addEventDelegate({
-				onBeforeHide: function (event) {
-					var targetView = event.to;
-					var dataToPass = "Precio+Precio";/*...*/
-					targetView.data("data", dataToPass);
-				}
-			}, this);
-
-			//oNavContainer.to(oMainContentView.createId("rtChFromuladora", {	formula: oRowData.CDEF_FORMULA } ) );
-			
-			oNavContainer.to(oMainContentView.createId("rtChFromuladora"), "slide", oRowData );
+			oRouter.navTo("rtChFromuladora", {
+				oRowPath: oRowData.IdCommoditie
+			});
 
 		},
-		
+
 		_generateInvalidUserInput: function () {
 			var oButton = this.getView().byId("messagePopoverBtn"),
 				oRequiredNameInput = this.oView.byId("formContainer").getItems()[4].getContent()[2],
@@ -401,11 +549,11 @@ sap.ui.define([
 			this.handleRequiredField(oRequiredNameInput);
 			this.checkInputConstraints(iWeeklyHours);
 
-			this.oMP.getBinding("items").attachChange(function(oEvent){
+			this.oMP.getBinding("items").attachChange(function (oEvent) {
 				this.oMP.navigateBack();
 			}.bind(this));
 
-			setTimeout(function(){
+			setTimeout(function () {
 				this.oMP.openBy(oButton);
 			}.bind(this), 100);
 		}
