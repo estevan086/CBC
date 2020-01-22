@@ -30,7 +30,7 @@ sap.ui.define([
 						"key": "rtHome"
 					},
 					{
-						"title": "Administración",
+						"title": "Administraci\u00F3n",
 						"icon": "sap-icon://employee",
 						"expanded": false,
 						"key": "rtAdministracion",

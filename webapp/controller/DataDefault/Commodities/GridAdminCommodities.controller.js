@@ -21,7 +21,7 @@ sap.ui.define([
 	StandardListItem, ButtonType, MessageBox, RowSettings, CoreLibrary) {
 	"use strict";
 
-	this.updatedRecords = [];
+	var updatedRecords = [];
 	var that = this;
 	var MessageType = CoreLibrary.MessageType;
 
@@ -44,8 +44,12 @@ sap.ui.define([
 			myRoute.attachPatternMatched(this.onMyRoutePatternMatched, this);
 
 		},
-
+		
 		onMyRoutePatternMatched: function (event) {
+			this.fnConsultaDetalleCommodities(); 
+		},
+
+		fnConsultaDetalleCommodities:  function (event) {
 			// your code when the view is about to be displayed ..
 
 			//	var json = this.initSampleDataModel();
@@ -169,7 +173,7 @@ sap.ui.define([
 			// oEntidad.Mes = oRowData.Mes;
 			// oEntidad.Year = oRowData.Year;
 
-			that.updatedRecords.push(oEntidad);
+			updatedRecords.push(oEntidad);
 
 			MessageToast.show("Puedes comenzar a " + (oItem.getText() || oItem.getType()) + " el ID " + oRowData.IdCommoditie);
 
@@ -193,9 +197,9 @@ sap.ui.define([
 				detailCommoditiesSet: []
 			};
 
-			for (var i = 0; i < that.updatedRecords.length; i++) {
+			for (var i = 0; i < updatedRecords.length; i++) {
 
-				var CurrentRow = that.updatedRecords[i];
+				var CurrentRow = updatedRecords[i];
 
 				var oTempRow = oTable.getModel().getData().lstItemsCommodities[CurrentRow.RowPath];
 
@@ -227,6 +231,8 @@ sap.ui.define([
 						actions: [MessageBox.Action.OK],
 						onClose: function (oAction) {
 							if (oAction === sap.m.MessageBox.Action.OK) {
+								
+								updatedRecords=[];
 								return;
 							}
 						}
@@ -430,7 +436,7 @@ sap.ui.define([
 			//this.generateTile();
 		},
 
-	CargaMasiva: function (JsonValue) {
+		CargaMasiva: function (JsonValue) {
 
 			var sServiceUrl = this.getView().getModel("ModelSimulador").sServiceUrl,
 				oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true),
@@ -463,7 +469,7 @@ sap.ui.define([
 			}
 
 			var oCreate = this.fnCreateEntity(oModelService, "/headerCommoditiesSet", oEntidad);
-
+			that = this;
 			if (oCreate.tipo === 'S') {
 
 				MessageBox.show(
@@ -473,6 +479,8 @@ sap.ui.define([
 						actions: [MessageBox.Action.OK],
 						onClose: function (oAction) {
 							if (oAction === sap.m.MessageBox.Action.OK) {
+								
+								that.fnConsultaDetalleCommodities(); 
 								return;
 							}
 						}
@@ -495,7 +503,6 @@ sap.ui.define([
 			}
 
 		},
-
 
 		SetRowoDetail: function (oValue) {
 			var oDetail = {
