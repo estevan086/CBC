@@ -21,7 +21,7 @@
 				<m:content>
 					<CalculationBuilder allowStringConstants="true" id="builder" layoutType="{settings>/layoutType}" expression="{/expression}"
 						readOnly="{settings>/readOnly}" allowComparisonOperators="{settings>/allowComparison}" allowLogicalOperators="{settings>/allowLogical}"
-						 title="{/title}" variables="{/variables}" disabledDefaultTokens="abs;sqrt;roundup;rounddown;round">
+						 title="" variables="{/variables}" disabledDefaultTokens="abs;sqrt;roundup;rounddown;round">
 						<variables>
 							<CalculationBuilderVariable key="{key}" group="{group}" label="{label}" items="{path:'items', templateShareable:true}">
 								<items>

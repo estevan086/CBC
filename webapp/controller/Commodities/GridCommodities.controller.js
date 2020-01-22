@@ -38,41 +38,40 @@ sap.ui.define([
 				}
 			}, oUploader);
 
-		
 			var json = this.initSampleDataModel();
 			this.getView().setModel(json);
 
 			var fnFormuladora = this.showCalculator.bind(this);
 			var fnEditDetail = this.showFormEditDetail.bind(this);
 
-			this.modes = [{
-				key: "NavigationDelete",
-				text: "Navigation & Delete",
-				handler: function () {
-					var oTemplate = new sap.ui.table.RowAction({
-						items: [
-							new sap.ui.table.RowActionItem({
-								icon: "sap-icon://edit",
-								text: "Edit",
-								press: fnEditDetail
-							}),
-							new sap.ui.table.RowActionItem({
-								icon: "sap-icon://simulate",
-								text: "Edit Formula",
-								press: fnFormuladora,
-								id: "btnFormuladora"
-							})
-						]
-					});
-					return [2, oTemplate];
-				}
-			}];
-			this.getView().setModel(new JSONModel({
-				items: this.modes
-			}), "modes");
-			this.switchState("NavigationDelete");
-			var that = this;
-			YO = this;
+			// this.modes = [{
+			// 	key: "NavigationDelete",
+			// 	text: "Navigation & Delete",
+			// 	handler: function () {
+			// 		var oTemplate = new sap.ui.table.RowAction({
+			// 			items: [
+			// 				new sap.ui.table.RowActionItem({
+			// 					icon: "sap-icon://edit",
+			// 					text: "Edit",
+			// 					press: fnEditDetail
+			// 				}),
+			// 				new sap.ui.table.RowActionItem({
+			// 					icon: "sap-icon://simulate",
+			// 					text: "Edit Formula",
+			// 					press: fnFormuladora,
+			// 					id: "btnFormuladora"
+			// 				})
+			// 			]
+			// 		});
+			// 		return [2, oTemplate];
+			// 	}
+			// }];
+			// this.getView().setModel(new JSONModel({
+			// 	items: this.modes
+			// }), "modes");
+			// this.switchState("NavigationDelete");
+			// var that = this;
+			// YO = this;
 		},
 
 		switchState: function (sKey) {
@@ -327,46 +326,106 @@ sap.ui.define([
 		},
 
 		//EVENTO UPLOADFILE
-	/*	onSelectionChange: function(oEvent) {
+		/*	onSelectionChange: function(oEvent) {
           var oSelectedItem = oEvent.getParameter("listItem");
           var oModel = oSelectedItem.getBindingContext().getObject();
           //alert(JSON.stringify(oModel));
         },*/
 
-        handleUpload: function(oEvent) {
-          var that = this;
-          var oFile = oEvent.getParameter("files")[0];
-          if (oFile && window.FileReader) {
-            var reader = new FileReader();
-            reader.onload = function(evt) {
-              var strCSV = evt.target.result; //string in CSV 
-              that.csvJSON(strCSV);
-            };
-            reader.readAsText(oFile);
-          }
-        },
+		handleUpload: function (oEvent) {
+			var that = this;
+			var oFile = oEvent.getParameter("files")[0];
+			if (oFile && window.FileReader) {
+				var reader = new FileReader();
+				reader.onload = function (evt) {
+					var strCSV = evt.target.result; //string in CSV 
+					that.csvJSON(strCSV);
+				};
+				reader.readAsText(oFile);
+			}
+		},
 
-        csvJSON: function(csv) {
-          var lines = csv.split("\n");
-          var result = [];
-          var headers = lines[0].split(";");
-          for (var i = 1; i < lines.length; i++) {
-            var obj = {};
-            var currentline = lines[i].split(";");
-            for (var j = 0; j < headers.length; j++) {
-              obj[headers[j]] = currentline[j];
-            }
-            result.push(obj);
-          }
-          var oStringResult = JSON.stringify(result);
-          var oFinalResult = JSON.parse(oStringResult.replace(/\\r/g, ""));//OBJETO JSON para guardar
-          	MessageToast.show(oStringResult);
-          	
-          //return result; //JavaScript object
-          //sap.ui.getCore().getModel().setProperty("/", oFinalResult);
-          //this.generateTile();
-        }
-		
+		csvJSON: function (csv) {
+			var lines = csv.split("\n");
+			var result = [];
+			var headers = lines[0].split(",");
+			for (var i = 1; i < lines.length; i++) {
+				var obj = {};
+				var currentline = lines[i].split(",");
+				for (var j = 0; j < headers.length; j++) {
+					obj[headers[j]] = currentline[j];
+				}
+				result.push(obj);
+			}
+			var oStringResult = JSON.stringify(result);
+			var oFinalResult = JSON.parse(oStringResult.replace(/\\r/g, "")); //OBJETO JSON para guardar
+			//MessageToast.show(oStringResult);
+			this.CargaMasiva(oFinalResult);
+			//return result; //JavaScript object
+			//sap.ui.getCore().getModel().setProperty("/", oFinalResult);
+			//this.generateTile();
+		},
+
+		CargaMasiva: function (JsonValue) {
+			
+			var sServiceUrl = this.getView().getModel("ModelSimulador").sServiceUrl,
+				oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true),
+				oCommodities = [],
+				oEntidad = {},
+				oDetail = {};
+
+			var CurrentRow = "";
+			for (var i = 1; i < JsonValue.length; i++) {
+				if (CurrentRow === "") {
+					CurrentRow = JsonValue[i].CDEF_IDCOMMODITIES + JsonValue[i].CDEF_CENTRO + JsonValue[i].CDEF_PERIODO;
+					oEntidad = {
+						IdCommoditie: JsonValue[i].CDEF_IDCOMMODITIES,
+						Descripcion: JsonValue[i].CDEF_COMMODITIE,
+						detailCommoditiesSet: []
+					};
+					oDetail = this.SetRowoDetail(JsonValue[i]);
+					oEntidad.detailCommoditiesSet.push(oDetail);
+
+				} else {
+					if (CurrentRow === JsonValue[i].CDEF_IDCOMMODITIES + JsonValue[i].CDEF_CENTRO + JsonValue[i].CDEF_PERIODO) {
+						oDetail = this.SetRowoDetail(JsonValue[i]);
+						oEntidad.detailCommoditiesSet.push(oDetail);
+					} else {
+						CurrentRow = JsonValue[i].CDEF_IDCOMMODITIES + JsonValue[i].CDEF_CENTRO + JsonValue[i].CDEF_PERIODO;
+						oCommodities.push(oEntidad);
+						oEntidad = {
+							IdCommoditie: JsonValue[i].CDEF_IDCOMMODITIES,
+							Descripcion: JsonValue[i].CDEF_COMMODITIE,
+							detailCommoditiesSet: []
+						};
+						oDetail = this.SetRowoDetail(JsonValue[i]);
+						oEntidad.detailCommoditiesSet.push(oDetail);
+					}
+				}
+				if (i === (JsonValue.length - 1) && JsonValue[i].CDEF_IDCOMMODITIES !== "") {
+					oCommodities.push(oEntidad);
+				}
+			}
+
+			var oCreate = this.fnCreateEntity(oModelService, "/headerCommoditiesSet", oCommodities);
+
+		},
+
+		SetRowoDetail: function (oValue) {
+			var oDetail = {
+				Formula: oValue.CDEF_FORMULA,
+				IdCommoditie: oValue.CDEF_IDCOMMODITIES, 
+				Sociedad: oValue.CDEF_SOCIEDAD,
+				Centro: oValue.CDEF_CENTRO,
+				UnidadMedida: oValue.CDEF_UMD,
+				Moneda: oValue.CDEF_MONEDA,
+				Mes: oValue.CDEF_MES,
+				Year: oValue.CDEF_PERIODO,
+				Recordmode: oValue.CDEF_CENTRO
+			};
+			return oDetail;
+		}
+
 	});
 
 });

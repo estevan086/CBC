@@ -2,7 +2,7 @@
 	controllerName="cbc.co.simulador_costos.controller.DataDefault.Commodities.AdminIDCommodities">
 	<App>
 		<pages>
-			<Page showHeader="false" enableScrolling="false" class="sapUiContentPadding" showNavButton="true" navButtonPress="onBack">
+			<Page showHeader="true" enableScrolling="false" class="sapUiContentPadding" showNavButton="true" navButtonPress="onBack">
 				<content>
 					<Button type="Back" press="onToPage1"/>
 					<ui:Table id="tblCommodities" rows="{/COMMODITIES}" selectionMode="None" visibleRowCount="10">
@@ -31,6 +31,13 @@
 								</ui:template>
 							</ui:Column>
 						</ui:columns>
+						<ui:rowActionTemplate>
+							<ui:RowAction>
+								<ui:items>
+									<ui:RowActionItem type="Navigation" text="Editar" press="handleEditPress" icon="sap-icon://edit"></ui:RowActionItem>
+								</ui:items>
+							</ui:RowAction>
+						</ui:rowActionTemplate>
 					</ui:Table>
 				</content>
 			</Page>

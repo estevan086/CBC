@@ -31,9 +31,9 @@ sap.ui.define([
 			});
 			this.setModel(i18nModel, "i18n");
 		// set dialog
-			this._helloDialog = new HelloDialog(this.getRootControl());
+		//	this._helloDialog = new HelloDialog(this.getRootControl());
 			
-			//this.getRouter().initialize();
+            this.getRouter().initialize();
 		},
 
 		exit : function() {
