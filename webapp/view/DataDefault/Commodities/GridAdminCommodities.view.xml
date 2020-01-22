@@ -129,7 +129,7 @@
 						<m:Button id="messagePopoverBtn" icon="sap-icon://message-popup" type="Emphasized"
 							visible="{=!!${message>/}.length}" press="handleMessagePopoverPress"/>
 						<m:ToolbarSpacer/>
-						<m:Button type="Emphasized" text="Save" press="_generateInvalidUserInput"/>
+						<!--<m:Button type="Emphasized" text="Guardar" tooltip="Guardar version de commoditie" press="saveCommodities"/>-->
 						<!--<Button text="Cancel"/>-->
 					</m:OverflowToolbar>
 				</m:footer>

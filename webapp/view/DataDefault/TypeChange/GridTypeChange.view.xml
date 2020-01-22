@@ -76,7 +76,7 @@
 							<Column width="11rem">
 								<m:Label text="Valor/Conversión"/>
 								<template>
-									<m:Label text="{=}"/>
+									<m:Label text=""/>
 								</template>
 							</Column>
 						</columns>

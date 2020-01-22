@@ -21,7 +21,7 @@
 				icon="sap-icon://capital-projects"
 				iconColor="Neutral"
 				text="COGS">
-				<mvc:XMLView viewName="cbc.co.simulador_costos.view..COGS.GridCOGS"/>
+				<mvc:XMLView viewName="cbc.co.simulador_costos.view.COGS.GridCOGS"/>
 			</IconTabFilter>
 			<IconTabFilter
 				icon=""
