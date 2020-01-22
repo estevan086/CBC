@@ -105,6 +105,10 @@
 					"pattern": "rtChFromuladora/{oRowPath}",
 					"target": "rtChFromuladoraTarget"
 				},
+				"rtChIDCommodities": {
+					"pattern": "rtChIDCommodities",
+					"target": "rtChIDCommoditiesTarget"
+				},
 				"rtChMateriales": {
 					"pattern": "rtChMateriales",
 					"target": "rtChMaterialesTarget"
@@ -144,6 +148,15 @@
 				"rtChFromuladoraTarget": {
 					"viewPath": "cbc.co.simulador_costos.view.Utilities",
 					"viewName": "Formuladora",
+					"parent": "parentTarget",
+					"controlId": "parentNavContainer",
+					"transition": "flip",
+					"controlAggregation": "pages",
+					"viewLevel": 4
+				},
+				"rtChIDCommoditiesTarget": {
+					"viewPath": "cbc.co.simulador_costos.view.DataDefault.Commodities",
+					"viewName": "AdminIDCommodities",
 					"parent": "parentTarget",
 					"controlId": "parentNavContainer",
 					"transition": "flip",

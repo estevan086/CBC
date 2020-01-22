@@ -342,57 +342,22 @@ sap.ui.define([
 		},
 
 		onGoToIdCommoditieTable: function (oEvent) {
-			//var oPageContainer = sap.ui.getCore().byId("NavContainer");
-			var oMainContentView = oEvent.getSource().getParent().getParent().getParent().getParent().getParent().getParent().getParent().getParent()
-				.getParent().getParent();
+			
+			var oItem = oEvent.getSource();
+			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 
-			var oNavContainer = oMainContentView.byId("NavContainer");
-
-			oNavContainer.to(oMainContentView.createId("rtChIDCommodities"), "slide", this);
+			oRouter.navTo("rtChIDCommodities");
+			
 		},
 
 		showCalculator: function (oEvent) {
 			//rtChFromuladora
 			var oRowData = oEvent.getSource().getBindingContext().getProperty();
-
-			// var oMainContentView = oEvent.getSource().getParent().getParent().getParent().getParent().getParent().getParent().getParent().getParent()
-			// 	.getParent().getParent();
-
-			// var oNavContainer = oMainContentView.byId("NavContainer");
-
-			// this.getView().addEventDelegate({
-			// 	onBeforeHide: function (event) {
-			// 		var targetView = event.to;
-			// 		var dataToPass = "Precio+Precio";/*...*/
-			// 		targetView.data("data", dataToPass);
-			// 	}
-			// }, this);
-
-
 			var oItem = oEvent.getSource();
 			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-			//oRouter.navTo("rtChFromuladora",{ oRowPath: JSON.stringify(oRowData) });
-			
-		
-			
-			var context = {
-				bindingContext : oEvent.getSource().getBindingContext()
-		    };
-		    
+
 			oRouter.navTo("rtChFromuladora",{  oRowPath: oRowData.CDEF_IDCOMMODITIES });
 			
-			//{ o: JSON.stringify(myObj) }, false
-			// var router = this.getOwnerComponent().getRouter();
-			// router.navTo("rtChFromuladora", {
-			// 	oRowData: oRowData
-			// });
-			
-			//oNavContainer.to(oMainContentView.createId("rtChFromuladora", {	formula: "TEST" } ) );
-			
-			//oNavContainer.to(oMainContentView.createId("rtChFromuladora", {	formula: oRowData.CDEF_FORMULA } ) );
-			
-			//oNavContainer.to(oMainContentView.createId("rtChFromuladora"), "slide", oRowData );
-
 		},
 		
 		_generateInvalidUserInput: function () {
