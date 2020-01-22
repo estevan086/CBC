@@ -16,3 +16,6 @@ APIExternalProducer.js
 .*/APIExternalProducer.js
 /mta_archives/
 /dist/
+/.che/
+neo-app.json
+.*/metadata.xml
