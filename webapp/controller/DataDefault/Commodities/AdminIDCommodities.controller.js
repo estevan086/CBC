@@ -4,6 +4,7 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 ], function (Controller, History, CoreLibrary, JSONModel, MessageToast, RowSettings) {
 	"use strict";
 
+	this.updatedRecords = [];
 	var that = this;
 	var MessageType = CoreLibrary.MessageType;
 
@@ -38,13 +39,13 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 			var sPreviousHash = History.getInstance().getPreviousHash();
 
 			//The history contains a previous entry
-			if (sPreviousHash !== undefined) {
+		/*	if (sPreviousHash !== undefined) {
 				window.history.go(-1);
-			} else {
+			} else {*/
 				// There is no history!
 				// replace the current hash with page 1 (will not add an history entry)
 				this.getOwnerComponent().getRouter().navTo("rtChCommodities", null, true);
-			}
+			//}
 		},
 
 		saveCommodities: function (oEvent) {
@@ -60,10 +61,10 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 				
 			}*/
 
-			var oSave = this.fnCreateEntity(oModelService, "/headerCommoditiesSet", oCommodities);
+			var oSave = this.fnCreateEntity(oModelService, "/headerCommoditiesSet", that.updatedRecords);
 
 		},
-
+		
 		showFormAddCommoditie: function (oEvent) {
 			//Abre Fragment para insertar registro de ID Commoditie
 			this.fnOpenDialog("cbc.co.simulador_costos.view.Utilities.fragments.AdminCommodities.AddCommodities");
@@ -227,7 +228,12 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 			}));
 
 			sap.ui.getCore().applyChanges();
-
+			
+			var oEntidad = {};
+			oEntidad.IdCommoditie = oRowData.CDEF_IDCOMMODITIES;
+			oEntidad.Descripcion = oRowData.CDEF_COMMODITIE;
+			that.updatedRecords.push(oEntidad);
+			
 			MessageToast.show("ID " + (oItem.getText() || oItem.getType()) + " pressed for id " + oRowData.CDEF_IDCOMMODITIES);
 
 		},

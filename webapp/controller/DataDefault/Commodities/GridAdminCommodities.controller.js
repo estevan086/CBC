@@ -20,6 +20,8 @@ sap.ui.define([
 ], function (Controller, JSONModel, MessageToast, Fragment, DateFormat, library, Filter, FilterOperator, Button, Dialog, List,
 	StandardListItem, ButtonType, MessageBox, RowSettings, CoreLibrary) {
 	"use strict";
+	
+	this.updatedRecords = [];	
 	var that = this;
 	var MessageType = CoreLibrary.MessageType;
 
@@ -153,52 +155,107 @@ sap.ui.define([
 			oTable.setRowSettingsTemplate(new RowSettings({
 				highlight: "{CDEF_EDIT_FLAG}",
 				navigated: "{CDEF_NAV_FLAG}"
-					// 	path: "",
-					// 	formatter: function() {
-					// 		var oRow = this._getRow();
-
-				// 		if (oRow !== null) {
-				// 			var iIndex = oRow.getIndex();
-
-				// 			if (iIndex === 0) {
-				// 				return MessageType.Success;
-				// 			} else if (iIndex === 1) {
-				// 				return MessageType.Warning;
-				// 			} else if (iIndex === 2) {
-				// 				return MessageType.Error;
-				// 			} else if (iIndex === 3) {
-				// 				return MessageType.Information;
-				// 			} else if (iIndex === 4) {
-				// 				return MessageType.None;
-				// 			} else if (iIndex === 5) {
-				// 				return MessageType.Success;
-				// 			} else if (iIndex === 6) {
-				// 				return MessageType.Success;
-				// 			}
-				// 		}
-
-				// 		return "None";
-				// 	}
-				// }
-
 			}));
 
 			sap.ui.getCore().applyChanges();
 
-			// var oToggleButton = oEvent.getSource();
-
-			// if (oToggleButton.getPressed()) {
-			// 	oTable.setRowSettingsTemplate(new RowSettings({
-			// 		navigated: true
-			// 	}));
-			// } else {
-			// 	oTable.setRowSettingsTemplate(null);
-			// }
+			
+			
+			
+			var oEntidad = {};
+			oEntidad.RowPath = oEvent.getSource().getBindingContext().sPath.split('/')[2];;
+			// oEntidad.IdCommoditie = oRowData.IdCommoditie;
+			// oEntidad.Sociedad = oRowData.Sociedad;
+			// oEntidad.Centro = oRowData.Centro;
+			// oEntidad.UnidadMedida = oRowData.UnidadMedida;
+			// oEntidad.Moneda = oRowData.Moneda;
+			// oEntidad.Mes = oRowData.Mes;
+			// oEntidad.Year = oRowData.Year;
+			
+			that.updatedRecords.push(oEntidad);
 
 			MessageToast.show("Puedes comenzar a " + (oItem.getText() || oItem.getType()) + " el ID " + oRowData.IdCommoditie);
 
 		},
 
+		saveCommodities: function (oEvent) {
+			var oCommodities = [];
+
+			var oTable = this.byId("tblCommodities");
+
+			//var oSave = this.fnCreateEntity(oModelService, "/headerCommoditiesSet", that.updatedRecords);
+			
+			var sServiceUrl = this.getView().getModel("ModelSimulador").sServiceUrl,
+				oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true),
+				oEntidad = {},
+				oDetail = {};
+
+			oEntidad = {
+				IdCommoditie: '1111',
+				Descripcion: 'Prueba',
+				detailCommoditiesSet: []
+			};
+
+			for (var i = 0; i < that.updatedRecords.length; i++) {
+
+				var CurrentRow = that.updatedRecords[i];
+
+				var oTempRow = oTable.getModel().getData().lstItemsCommodities[CurrentRow.RowPath];	
+				
+					
+				oDetail = {
+					Formula: oTempRow.Formula,
+					IdCommoditie: oTempRow.IdCommoditie,
+					Sociedad: oTempRow.Sociedad,
+					Centro: oTempRow.Centro,
+					UnidadMedida: oTempRow.UnidadMedida,
+					Moneda: oTempRow.Moneda,
+					Mes: oTempRow.Mes,
+					Year: oTempRow.Year,
+					PrecioMaterial: oTempRow.PrecioMaterial,
+					OtrosCostos: oTempRow.OtrosCostos
+						// Recordmode: '1'
+				};
+
+				oEntidad.detailCommoditiesSet.push(oDetail);
+			}
+
+			var oCreate = this.fnCreateEntity(oModelService, "/headerCommoditiesSet", oEntidad);
+
+			if (oCreate.tipo === 'S') {
+
+				MessageBox.show(
+					'Datos guardados correctamente', {
+						icon: MessageBox.Icon.SUCCESS,
+						title: "Exito",
+						actions: [MessageBox.Action.OK],
+						onClose: function (oAction) {
+							if (oAction === sap.m.MessageBox.Action.OK) {
+								return;
+							}
+						}
+					}
+				);
+
+			} else if (oCreate.tipo === 'E') {
+
+				MessageBox.show(
+					oCreate.msjs, {
+						icon: MessageBox.Icon.ERROR,
+						title: "Error"
+							// actions: [MessageBox.Action.YES, MessageBox.Action.NO],
+							// onClose: function (oAction) {
+							// 	/ * do something * /
+							// }
+					}
+				);
+
+			}			
+			
+			
+
+		},
+		
 		showFormEditDetail: function (oEvent) {
 			this.LogisticaDisplay = sap.ui.xmlfragment(
 				"cbc.co.simulador_costos.view.Utilities.fragments.AdminCommodities.EditDetailCommodities", this);
@@ -323,42 +380,6 @@ sap.ui.define([
 
 			oData = oData + ']}';
 			var obj = $.parseJSON(oData);
-
-			// var ODataPeriodos = { "COMMODITIES": [ 
-			// 		{
-			//             "CDEF_IDCOMMODITIES": "",
-			//             "CDEF_COMMODITIE": "",
-			//             "CDEF_SOCIEDAD": "",
-			//             "CDEF_MONEDA": "",
-			//             "CDEF_UMD": "",
-			//             "CDEF_PRECIO": "",
-			//             "CDEF_OTROCOSTO": "",
-			//             "CDEF_FORMULA": "",
-			//             "CDEF_PERIODO": "2020",
-			//             "CDEF_MES": "1"
-			//         }
-			// 	] };
-
-			// for (var j = 0; j < 12; j++) {
-
-			// 	ODataPeriodos[j].CDEF_IDCOMMODITIES =  oEntidad.IdCommoditie;
-			// 	ODataPeriodos[j].CDEF_COMMODITIE    =  oEntidad.DesCommoditie;
-
-			// 	// //var oProduct = oData.COMMODITIES[i];
-			// 	// if (oProduct.CDEF_IDCOMMODITIES && jQuery.inArray(oProduct.CDEF_IDCOMMODITIES, aTemp1) < 0) {
-			// 	// 	aTemp1.push(oProduct.CDEF_IDCOMMODITIES);
-			// 	// 	aSuppliersData.push({
-			// 	// 		Name: oProduct.CDEF_IDCOMMODITIES
-			// 	// 	});
-			// 	// }
-			// 	// if (oProduct.CDEF_COMMODITIE && jQuery.inArray(oProduct.CDEF_COMMODITIE, aTemp2) < 0) {
-			// 	// 	aTemp2.push(oProduct.CDEF_COMMODITIE);
-			// 	// 	aCategoryData.push({
-			// 	// 		Name: oProduct.CDEF_COMMODITIE
-			// 	// 	});
-			// 	// }
-
-			// }
 
 			//var obj = $.parseJSON(OData);
 			var json = new sap.ui.model.json.JSONModel(obj);
