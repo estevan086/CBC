@@ -679,7 +679,7 @@ sap.ui.define([
 
 			var oRowEdited = oEvent.getSource().getParent().getParent();
 
-			oRowEdited.getCells().filter(result => result.mProperties.value).map(cell => cell.setProperty("editable", true));
+			// oRowEdited.getCells().filter(result => result.mProperties.value).map(cell => cell.setProperty("editable", true));
 
 			MessageToast.show("Editar Material " + oRowEdited.getCells()[0].getProperty("text"));
 
