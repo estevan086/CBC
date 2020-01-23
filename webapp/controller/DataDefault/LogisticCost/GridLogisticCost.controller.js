@@ -3,15 +3,28 @@ sap.ui.define([
 	"cbc/co/simulador_costos/controller/BaseController",
 	"sap/ui/model/json/JSONModel",
 	"sap/m/MessageToast",
-	"sap/ui/model/Filter"
-], function (BaseController, JSONModel, MessageToast, Filter) {
+	"sap/ui/model/Filter",
+	"sap/ui/core/util/Export",
+	"sap/ui/core/util/ExportTypeCSV"
+], function (BaseController, JSONModel, MessageToast, Filter, Export, ExportTypeCSV) {
 	"use strict";
-
-	var initModelStructure;
+	
+	jQuery.sap.require("sap.ui.core.util.Export");
+	jQuery.sap.require("sap.ui.core.util.ExportTypeCSV");
 
 	return BaseController.extend("cbc.co.simulador_costos.controller.DataDefault.LogisticCost.GridLogisticCost", {
 
 		onInit: function () {
+
+			var oUploader = this.getView().byId("fileUploader");
+			oUploader.oBrowse.setText("Importar");
+			oUploader.oFilePath.setVisible(false);
+			oUploader.addEventDelegate({
+				onAfterRendering: function () {
+					this.setFileType(['csv']);
+				}
+			}, oUploader);
+
 			var myRoute = this.getOwnerComponent().getRouter().getRoute("rtChCostosLogisticos");
 			myRoute.attachPatternMatched(this.onMyRoutePatternMatched, this);
 		},
@@ -60,7 +73,7 @@ sap.ui.define([
 				costData = oModel.getProperty("/CodLogisticCost"),
 				costValoration = oModel.getProperty("/LogisticCostValoration");
 			//Crear columnas dinamicas
-			var columnData = [{
+			var _columnData = [{
 				columnName: "Material",
 				label: "Id Material",
 				enabled: false
@@ -101,7 +114,7 @@ sap.ui.define([
 			if (costData instanceof Array) {
 
 				costData.forEach(function (oValue, i) {
-					columnData.push({
+					_columnData.push({
 						columnName: oValue.CostLog,
 						label: oValue.TxtMd,
 						enabled: true
@@ -110,15 +123,17 @@ sap.ui.define([
 				});
 			}
 
-			columnData.push({
-				columnName: "T",
+			_columnData.push({
+				columnName: "CostTotal",
 				label: "Total Costo",
 				enabled: false
 			}, {
-				columnName: "U",
+				columnName: "CostUnid",
 				label: "Costo Und",
 				enabled: false
 			});
+			//guardamos las columnas
+			this.columnData = _columnData;
 
 			var material = "";
 			var oMaterial = [],
@@ -150,7 +165,7 @@ sap.ui.define([
 
 			oTableModel.setData({
 				rows: oModel.getProperty("/LogisticCostValoration"),
-				columns: columnData,
+				columns: _columnData
 			});
 
 			oTable.setModel(oTableModel);
@@ -160,10 +175,10 @@ sap.ui.define([
 				return new sap.ui.table.Column({
 					label: oContext.getObject().label,
 					filterProperty: oContext.getObject().enabled === false ? columnName : "",
-					template: oContext.getObject().enabled === false ? new sap.m.Text( columnName, {
+					template: oContext.getObject().enabled === false ? new sap.m.Text(columnName, {
 						text: "{" + columnName + "}",
 						wrapping: false
-					} ) : new sap.m.Input(columnName, {
+					}) : new sap.m.Input(columnName, {
 						key: "text",
 						value: "{" + columnName + "}",
 						enabled: oContext.getObject().enabled
@@ -185,9 +200,9 @@ sap.ui.define([
 			costValorationTable.forEach(function (oValue, i) {
 
 				costData.forEach(function (oLogisticCost, j) {
-					
+
 					modelStructure = {};
-					
+
 					modelStructure.Material = oValue.Material;
 					modelStructure.Plant = oValue.Plant;
 					modelStructure.Fiscyear = oValue.Fiscyear;
@@ -195,11 +210,12 @@ sap.ui.define([
 					modelStructure.Fiscper3 = oValue.Fiscper3;
 					modelStructure.CompCode = oValue.CompCode;
 					modelStructure.CostLog = oLogisticCost.CostLog;
-					
-					if( oValue[oLogisticCost.CostLog] ){
+					modelStructure.CantEst = oValue.CantEst;
+
+					if (oValue[oLogisticCost.CostLog]) {
 						modelStructure.VCostLog = oValue[oLogisticCost.CostLog];
 					}
-					
+
 					data.push(modelStructure);
 				});
 			});
@@ -227,6 +243,78 @@ sap.ui.define([
 		},
 		onGotoaddmaterial: function (oEvent) {
 			this.fnOpenDialog("cbc.co.simulador_costos.view.Utilities.fragments.AdminLogisticCost.AddMaterialLogisticCost");
+		},
+
+		onDataExport: sap.ui.table.Table || function () {
+
+			jQuery.sap.require("sap.ui.core.util.Export");
+			jQuery.sap.require("sap.ui.core.util.ExportTypeCSV");
+			/*var oTable = this.getView().byId("tblLogicCost");
+			oTable.exportData({
+					exportType: new sap.ui.core.util.ExportTypeCSV()
+				})
+				.saveFile()
+				.always(function () {
+					this.destroy();
+				});*/
+
+			var oModelLocal = this.getView().getModel("LogisticCost"),
+				oModel = oModelLocal.getProperty("/LogisticCostValoration"),
+				_columns = [];
+
+			this.columnData.forEach(function (oValue, i) {
+				_columns.push({
+					name: oValue.label,
+					template: {
+						content: {
+							path: oValue.columnName
+						}
+					}
+				});
+			});
+
+			var oExport = new Export({
+
+				exportType: new ExportTypeCSV({
+					fileExtension: "csv",
+					separatorChar: ";"
+				}),
+
+				models: oModel,
+
+				rows: {
+					path: "/"
+				},
+				columns: _columns
+			});
+
+			oExport.saveFile().always(function () {
+				this.destroy();
+			});
+
+			/*oExport.saveFile().catch(function (oError) {
+				this.showGeneralError({
+					oDataError: oError
+				});
+			}).then(function () {
+				oExport.destroy();
+			});*/
+		},
+		handleUpload: function (oEvent) {
+
+			var that = this,
+				oFile = oEvent.getParameter("files")[0],
+				oImportData;
+
+			if (oFile && window.FileReader) {
+				var reader = new FileReader();
+				reader.onload = function (evt) {
+					var strCSV = evt.target.result; //string in CSV 
+					that.oImportData = that.csv_to_Json(strCSV);
+				};
+				reader.readAsText(oFile);
+
+			}
 		}
 	});
 
