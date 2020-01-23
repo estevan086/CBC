@@ -90,11 +90,11 @@
 					<m:FlexBox height="auto" alignItems="Start" justifyContent="Start">
 						<m:items>
 							<m:Button icon="sap-icon://copy" text="Copiar" tooltip="Copiar version de commoditie" press="showFormCopyVersionCommoditie"/>
-							<m:Button icon="sap-icon://save" text="Guardar" tooltip="Guardar version de commoditie"/>
+							<m:Button icon="sap-icon://save" text="Guardar" tooltip="Guardar Material" press="saveMaterial"/>
 							<m:Button icon="sap-icon://upload-to-cloud" text="Publicar" tooltip="Publicar version de commoditie"/>
 						</m:items>
 					</m:FlexBox>
-					<Table id="tblMaterial" rows="{/MATERIAL}" rowActionCount="1" selectionMode="None" visibleRowCount="10">
+					<Table id="tblMaterial" rows="{/MATERIAL}" selectionMode="None" visibleRowCount="7" rowActionCount="1" class="sapUiSizeCompact">
 						<extension>
 							<m:OverflowToolbar>
 								<m:content>
@@ -109,147 +109,203 @@
 									<m:Button icon="sap-icon://sys-next-page" text="Exportar" tooltip="Exportar version de material"/>
 									<m:Button icon="sap-icon://sys-prev-page" text="Importar" tooltip="Importar version de material"/>
 									<m:Button icon="sap-icon://factory" type="Emphasized" text="Administrar material" tooltip="Crear Material" press="onGoToIdCommoditieTable"/>
-									<m:Button icon="sap-icon://edit" type="Emphasized" text="Editar Version" tooltip="Version" press="showFormEditCommoditie"/>
+									<!--<m:Button icon="sap-icon://edit" type="Emphasized" text="Editar Version" tooltip="Version" press="showFormEditCommoditie"/>-->
 								</m:content>
 							</m:OverflowToolbar>
 						</extension>
 						<columns>
-							<Column autoResizable="true" filterProperty="MDEF_IDMATERIAL">
+							<Column autoResizable="true" width="10rem" filterProperty="MDEF_IDMATERIAL">
 								<m:Label text="MDEF_IDMATERIAL"/>
 								<template>
 									<m:Text text="{MDEF_IDMATERIAL}" wrapping="false"/>
 								</template>
 							</Column>
-							<Column autoResizable="true" filterProperty="MDEF_MATERIAL">
+							<Column autoResizable="true" width="10rem" filterProperty="MDEF_MATERIAL">
 								<m:Label text="MDEF_MATERIAL"/>
 								<template>
 									<m:Text text="{MDEF_MATERIAL}" wrapping="false"/>
 								</template>
 							</Column>
-							<Column autoResizable="true" filterProperty="MDEF_SOCIEDAD">
+							<Column autoResizable="true" width="10rem" filterProperty="MDEF_SOCIEDAD">
 								<m:Label text="MDEF_SOCIEDAD"/>
 								<template>
 									<!--<m:Text text="{MDEF_SOCIEDAD}" wrapping="false"/>-->
 									<m:Input value="{MDEF_SOCIEDAD}" editable="false"/>
 								</template>
 							</Column>
-							<Column autoResizable="true" filterProperty="MDEF_CENTRO">
+							<Column autoResizable="true" width="10rem" filterProperty="MDEF_CENTRO">
 								<m:Label text="MDEF_CENTRO"/>
 								<template>
 									<!--<m:Text text="{MDEF_CENTRO}" wrapping="false"/>-->
 									<m:Input value="{MDEF_CENTRO}" editable="false"/>
 								</template>
 							</Column>
-							<Column autoResizable="true" filterProperty="MDEF_UMD">
+							<Column autoResizable="true" width="10rem" filterProperty="MDEF_UMD">
 								<m:Label text="MDEF_UMD"/>
 								<template>
 									<m:Text text="{MDEF_UMD}" wrapping="false"/>
 								</template>
 							</Column>
-							<Column autoResizable="true" filterProperty="MDEF_MONEDA">
+							<Column autoResizable="true" width="10rem" filterProperty="MDEF_MONEDA">
 								<m:Label text="MDEF_MONEDA"/>
 								<template>
 									<!--<m:Text text="{MDEF_MONEDA}" wrapping="false"/>-->
 									<m:Input value="{MDEF_MONEDA}" editable="false"/>
 								</template>
 							</Column>
-							<Column autoResizable="true" filterProperty="MDEF_PESOMATERIAL">
+							<Column autoResizable="true" width="10rem" filterProperty="MDEF_PESOMATERIAL">
 								<m:Label text="MDEF_PESOMATERIAL"/>
 								<template>
 									<m:Text text="{MDEF_PESOMATERIAL}" wrapping="false"/>
 								</template>
 							</Column>
-							<Column autoResizable="true" filterProperty="MDEF_COMMODITIE">
+							<Column autoResizable="true" width="10rem" filterProperty="MDEF_COMMODITIE">
 								<m:Label text="MDEF_COMMODITIE"/>
 								<template>
 									<!--<m:Text text="{MDEF_COMMODITIE}" wrapping="false"/>-->
 									<m:Input value="{MDEF_COMMODITIE}" editable="false"/>
 								</template>
 							</Column>
-							<Column autoResizable="true" filterProperty="MDEF_PRECIOPRODUCTIVO">
+							<Column autoResizable="true" width="10rem" filterProperty="MDEF_PRECIOPRODUCTIVO">
 								<m:Label text="MDEF_PRECIOPRODUCTIVO"/>
 								<template>
 									<!--<m:Text text="{MDEF_PRECIOPRODUCTIVO}" wrapping="false"/>-->
 									<m:Input value="{MDEF_PRECIOPRODUCTIVO}" editable="false"/>
 								</template>
 							</Column>
-							<Column autoResizable="true" filterProperty="MDEF_COSTOCONVERSION">
+							<Column autoResizable="true" width="10rem" filterProperty="MDEF_COSTOCONVERSION">
 								<m:Label text="MDEF_COSTOCONVERSION"/>
 								<template>
 									<!--<m:Text text="{MDEF_COSTOCONVERSION}" wrapping="false"/>-->
 									<m:Input value="{MDEF_COSTOCONVERSION}" editable="false"/>
 								</template>
 							</Column>
-							<Column autoResizable="true" filterProperty="MDEF_COSTOADICIONAL">
+							<Column autoResizable="true" width="10rem" filterProperty="MDEF_COSTOADICIONAL">
 								<m:Label text="MDEF_COSTOADICIONAL"/>
 								<template>
 									<!--<m:Text text="{MDEF_COSTOADICIONAL}" wrapping="false"/>-->
 									<m:Input value="{MDEF_COSTOADICIONAL}" editable="false"/>
 								</template>
 							</Column>
-							<Column autoResizable="true" filterProperty="MDEF_COSTOENVIO">
+							<Column autoResizable="true" width="10rem" filterProperty="MDEF_COSTOENVIO">
 								<m:Label text="MDEF_COSTOENVIO"/>
 								<template>
 									<!--<m:Text text="{MDEF_COSTOENVIO}" wrapping="false"/>-->
 									<m:Input value="{MDEF_COSTOENVIO}" editable="false"/>
 								</template>
 							</Column>
-							<Column autoResizable="true" filterProperty="MDEF_ICOTERM">
+							<Column autoResizable="true" width="10rem" filterProperty="MDEF_ICOTERM">
 								<m:Label text="MDEF_ICOTERM"/>
 								<template>
 									<!--<m:Text text="{MDEF_ICOTERM}" wrapping="false"/>-->
 									<m:Input value="{MDEF_ICOTERM}" editable="false"/>
 								</template>
 							</Column>
-							<Column autoResizable="true" filterProperty="MDEF_COSTOMATERIAL">
+							<Column autoResizable="true" width="10rem" filterProperty="MDEF_COSTOMATERIAL">
 								<m:Label text="MDEF_COSTOMATERIAL"/>
 								<template>
 									<!--<m:Text text="{MDEF_COSTOMATERIAL}" wrapping="false"/>-->
 									<m:Input value="{MDEF_COSTOMATERIAL}" editable="false"/>
 								</template>
 							</Column>
-							<Column autoResizable="true" filterProperty="MDEF_FORMULAOTROSCOSTOS">
+							<Column autoResizable="true" width="10rem" filterProperty="MDEF_FORMULAOTROSCOSTOS">
 								<m:Label text="MDEF_FORMULAOTROSCOSTOS"/>
 								<template>
 									<!--<m:Text text="{MDEF_FORMULAOTROSCOSTOS}" wrapping="false"/>-->
 									<m:Input value="{MDEF_FORMULAOTROSCOSTOS}" editable="false"/>
 								</template>
 							</Column>
-							<Column autoResizable="true" filterProperty="MDEF_OTROSCOSTOS">
+							<Column autoResizable="true" width="10rem" filterProperty="MDEF_OTROSCOSTOS">
 								<m:Label text="MDEF_OTROSCOSTOS"/>
 								<template>
 									<!--<m:Text text="{MDEF_OTROSCOSTOS}" wrapping="false"/>-->
 									<m:Input value="{MDEF_OTROSCOSTOS}" editable="false"/>
 								</template>
 							</Column>
-							<Column autoResizable="true" filterProperty="MDEF_%TRANSFERENCIA">
-								<m:Label text="MDEF_%TRANSFERENCIA"/>
+							<Column autoResizable="true" width="10rem" filterProperty="MDEF_PCTRANSFERENCIA">
+								<m:Label text="MDEF_PCTRANSFERENCIA"/>
 								<template>
 									<!--<m:Text text="{MDEF_%TRANSFERENCIA}" wrapping="false"/>-->
-									<m:Input value="{MDEF_%TRANSFERENCIA}" editable="false"/>
+									<m:Input value="{MDEF_PCTRANSFERENCIA}" editable="false"/>
 								</template>
 							</Column>
-							<Column autoResizable="true" filterProperty="MDEF_COSTOTRANSFERENCIA">
+							<Column autoResizable="true" width="10rem" filterProperty="MDEF_COSTOTRANSFERENCIA">
 								<m:Label text="MDEF_COSTOTRANSFERENCIA"/>
 								<template>
 									<!--<m:Text text="{MDEF_COSTOTRANSFERENCIA}" wrapping="false"/>-->
 									<m:Input value="{MDEF_COSTOTRANSFERENCIA}" editable="false"/>
 								</template>
 							</Column>
-							<Column autoResizable="true" filterProperty="MDEF_PRECIOPREMISA">
+							<Column autoResizable="true" width="10rem" filterProperty="MDEF_PRECIOPREMISA">
 								<m:Label text="MDEF_PRECIOPREMISA"/>
 								<template>
 									<!--<m:Text text="{MDEF_PRECIOPREMISA}" wrapping="false"/>-->
 									<m:Input value="{MDEF_PRECIOPREMISA}" editable="false"/>
 								</template>
 							</Column>
-							<Column autoResizable="true" filterProperty="MDEF_PERIODO">
+							<Column autoResizable="true" width="10rem" filterProperty="MDEF_IDCATEGORIA">
+								<m:Label text="MDEF_IDCATEGORIA"/>
+								<template>
+									<m:Text text="{MDEF_IDCATEGORIA}" wrapping="false"/>
+									<!--<m:Input value="{MDEF_PRECIOPREMISA}" editable="false"/>-->
+								</template>
+							</Column>
+							<Column autoResizable="true" width="10rem" filterProperty="MDEF_CATEGORIA">
+								<m:Label text="MDEF_CATEGORIA"/>
+								<template>
+									<m:Text text="{MDEF_CATEGORIA}" wrapping="false"/>
+									<!--<m:Input value="{MDEF_PRECIOPREMISA}" editable="false"/>-->
+								</template>
+							</Column>
+							<Column autoResizable="true" width="10rem" filterProperty="MDEF_IDSUBCATEGORIA">
+								<m:Label text="MDEF_IDSUBCATEGORIA"/>
+								<template>
+									<m:Text text="{MDEF_IDSUBCATEGORIA}" wrapping="false"/>
+									<!--<m:Input value="{MDEF_PRECIOPREMISA}" editable="false"/>-->
+								</template>
+							</Column>
+							<Column autoResizable="true" width="10rem" filterProperty="MDEF_SUBCATEGORIA">
+								<m:Label text="MDEF_SUBCATEGORIA"/>
+								<template>
+									<m:Text text="{MDEF_SUBCATEGORIA}" wrapping="false"/>
+									<!--<m:Input value="{MDEF_PRECIOPREMISA}" editable="false"/>-->
+								</template>
+							</Column>
+							<Column autoResizable="true" width="10rem" filterProperty="MDEF_IDFAMILIA">
+								<m:Label text="MDEF_IDFAMILIA"/>
+								<template>
+									<m:Text text="{MDEF_IDFAMILIA}" wrapping="false"/>
+									<!--<m:Input value="{MDEF_PRECIOPREMISA}" editable="false"/>-->
+								</template>
+							</Column>
+							<Column autoResizable="true" width="10rem" filterProperty="MDEF_FAMILIA">
+								<m:Label text="MDEF_FAMILIA"/>
+								<template>
+									<m:Text text="{MDEF_FAMILIA}" wrapping="false"/>
+									<!--<m:Input value="{MDEF_PRECIOPREMISA}" editable="false"/>-->
+								</template>
+							</Column>
+							<Column autoResizable="true" width="10rem" filterProperty="MDEF_IDSUFAMILIA">
+								<m:Label text="MDEF_IDSUFAMILIA"/>
+								<template>
+									<m:Text text="{MDEF_IDSUFAMILIA}" wrapping="false"/>
+									<!--<m:Input value="{MDEF_PRECIOPREMISA}" editable="false"/>-->
+								</template>
+							</Column>
+							<Column autoResizable="true" width="10rem" filterProperty="MDEF_SUBFAMILIA">
+								<m:Label text="MDEF_SUBFAMILIA"/>
+								<template>
+									<m:Text text="{MDEF_SUBFAMILIA}" wrapping="false"/>
+									<!--<m:Input value="{MDEF_PRECIOPREMISA}" editable="false"/>-->
+								</template>
+							</Column>
+							<Column autoResizable="true" width="10rem" filterProperty="MDEF_PERIODO">
 								<m:Label text="MDEF_PERIODO"/>
 								<template>
 									<m:Text text="{MDEF_PERIODO}" wrapping="false"/>
 								</template>
 							</Column>
-							<Column autoResizable="true" filterProperty="MDEF_MES">
+							<Column autoResizable="true" width="10rem" filterProperty="MDEF_MES">
 								<m:Label text="MDEF_MES"/>
 								<template>
 									<m:Text text="{MDEF_MES}" wrapping="false"/>

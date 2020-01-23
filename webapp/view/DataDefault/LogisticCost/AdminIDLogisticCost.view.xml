@@ -24,20 +24,25 @@
 							<ui:Column>
 								<Label text="Descripción"/>
 								<ui:template>
-									<Text text="{CodLogisticCost}" wrapping="false"/>
+									<Text text="{LogisticCost>TxtMd}" wrapping="false"/>
 								</ui:template>
 							</ui:Column>
 							<ui:Column>
 								<Label text="Categoria Logistica"/>
 								<ui:template>
-									<Text text="{LogisticCost>CostLog}" wrapping="false"/>
+									<Text text="{LogisticCost>CatCosLo}" wrapping="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="4rem" hAlign="Center">
+								<ui:template>
+									<Button tooltip="Editar" icon="sap-icon://edit" press="onEditLC"/>
 								</ui:template>
 							</ui:Column>
 						</ui:columns>
 						<ui:rowActionTemplate>
 							<ui:RowAction>
 								<ui:items>
-									<ui:RowActionItem type="Navigation" text="Editar" press="handleEditPress" icon="sap-icon://edit"></ui:RowActionItem>
+									<ui:RowActionItem type="Navigation" text="Eliminar" press="onDeleteLC" icon="sap-icon://delete"></ui:RowActionItem>
 								</ui:items>
 							</ui:RowAction>
 						</ui:rowActionTemplate>

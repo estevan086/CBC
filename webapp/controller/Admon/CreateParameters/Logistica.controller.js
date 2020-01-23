@@ -99,8 +99,8 @@ sap.ui.define([
 					var aTemp2 = [];
 					var aSuppliersData = [];
 					var aCategoryData = [];
-					for (var i = 0; i < oData.CategoriaLogistica.length; i++) {
-						var oProduct = oData.CategoriaLogistica[i];
+					for (var i = 0; i < oData.CategoriasLogisticas.length; i++) {
+						var oProduct = oData.CategoriasLogisticas[i];
 						if (oProduct.Nombre && jQuery.inArray(oProduct.Nombre, aTemp1) < 0) {
 							aTemp1.push(oProduct.Nombre);
 							aSuppliersData.push({Name: oProduct.Nombre});
