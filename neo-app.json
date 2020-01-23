@@ -29,6 +29,14 @@
         "entryPath": "/sap/opu/odata"
       },
       "description": "CBC"
+    },
+    {
+      "path": "/Northwind",
+      "target": {
+        "type": "destination",
+        "name": "Northwind"
+      },
+      "description": "Northwind OData services"
     }
   ],
   "sendWelcomeFileRedirect": true

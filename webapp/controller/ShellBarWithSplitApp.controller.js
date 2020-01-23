@@ -56,7 +56,7 @@ sap.ui.define([
 						"key": "rtChAdminLogistica"
 					}, {
 						"title": "Perfiles",
-						"key": "rtChUsers"
+						"key": "rtChProfiles"
 					}]
 				}, {
 					"title": "Datos Default",

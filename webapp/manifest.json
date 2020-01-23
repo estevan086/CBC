@@ -3,7 +3,7 @@
 	"sap.app": {
 		"id": "cbc.co.simulador_costos",
 		"type": "application",
-		"i18n": "i18n/i18n.properties", 
+		"i18n": "i18n/i18n.properties",
 		"title": "{{appTitle}}",
 		"description": "{{appDescription}}",
 		"applicationVersion": {
@@ -14,6 +14,14 @@
 				"uri": "/sap/opu/odata/sap/Z_SIMULADOR_SRV/",
 				"type": "OData",
 				"settings": {
+					"localUri": "localService/metadata.xml"
+				}
+			},
+			"Northwind": {
+				"uri": "/Northwind/V2/Northwind/Northwind.svc/",
+				"type": "OData",
+				"settings": {
+					"odataVersion": "2.0",
 					"localUri": "localService/metadata.xml"
 				}
 			}
@@ -32,13 +40,7 @@
 		},
 		"fullWidth": true,
 		"flexEnabled": false,
-		"supportedThemes": [
-			"sap_belize_hcb",
-			"sap_belize_hcw",
-			"sap_belize",
-			"sap_belize_plus",
-			"sap_fiori_3",
-			"sap_fiori_3_hcb",
+		"supportedThemes": ["sap_belize_hcb", "sap_belize_hcw", "sap_belize", "sap_belize_plus", "sap_fiori_3", "sap_fiori_3_hcb",
 			"sap_fiori_3_hcw"
 		]
 	},
@@ -80,14 +82,22 @@
 				},
 				"dataSource": "Z_SIMULADOR_SRV",
 				"preload": true
+			},
+			"Northwind": {
+				"dataSource": "Northwind",
+				"preload": true
+			},
+			"ImgHome": {
+				"type": "sap.ui.model.json.JSONModel",
+				"settings": {},
+				"uri": "model/img.json",
+				"preload": true
 			}
 		},
 		"resources": {
-			"css": [
-				{
-					"uri": "css/style.css"
-				}
-			]
+			"css": [{
+				"uri": "css/style.css"
+			}]
 		},
 		"contentDensities": {
 			"compact": true,
@@ -132,8 +142,8 @@
 					"pattern": "rtChCostosLogisticos",
 					"target": "rtChCostosLogisticosTarget"
 				},
-				"rtChUsers": {
-					"pattern": "rtChUsers",
+				"rtChProfiles": {
+					"pattern": "Profiles",
 					"target": "rtHomeTarget"
 				},
 				"rtChCentros": {
@@ -191,7 +201,7 @@
 				"rtChVolumen": {
 					"pattern": "rtChVolumen",
 					"target": "rtHomeTarget"
-				}, 
+				},
 				"rtChAdminCL": {
 					"pattern": "rtChAdminCL",
 					"target": "rtChAdminCLTarget"
@@ -260,12 +270,21 @@
 					"controlId": "parentNavContainer",
 					"transition": "slide"
 				},
-				"rtChUsersTarget": {
+				"rtChProfilesTarget": {
 					"viewPath": "cbc.co.simulador_costos.view.Admon",
-					"viewName": "Users",
+					"viewName": "Profiles",
 					"parent": "parentTarget",
 					"controlId": "parentNavContainer",
 					"transition": "slide"
+				},
+				"rtChListProfilesTarget": {
+					"viewPath": "cbc.co.simulador_costos.view.Admon.Profiles",
+					"viewName": "ListProfiles",
+					"parent": "parentNavContainer",
+					"controlId": "profilesApp",
+					"transition": "slide",
+					"controlAggregation": "beginColumnPages",
+					"viewLevel": 2
 				},
 				"rtChCentrosTarget": {
 					"viewPath": "cbc.co.simulador_costos.view.Admon",
@@ -312,7 +331,7 @@
 				"rtChCopyVersionTarget": {
 					"viewPath": "cbc.co.simulador_costos.view.DataDefault.Version",
 					"viewName": "AdminVersion",
-				"parent": "parentTarget",
+					"parent": "parentTarget",
 					"controlId": "parentNavContainer",
 					"transition": "slide"
 				},
@@ -376,6 +395,10 @@
 					"viewName": "Parent",
 					"transition": "flip",
 					"viewLevel": 0
+				},
+				"ListProfiles": {
+					"viewType": "XML",
+					"viewName": "ListProfiles"
 				}
 			},
 			"config": {

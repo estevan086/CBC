@@ -1,16 +1,19 @@
-sap.ui.define(['jquery.sap.global','sap/ui/core/mvc/Controller','sap/ui/model/json/JSONModel'],
-	function(jQuery, Controller, JSONModel) {
+sap.ui.define([
+	"jquery.sap.global",
+	"cbc/co/simulador_costos/controller/BaseController",
+	"sap/ui/model/json/JSONModel"
+], function (jQuery, Controller, JSONModel) {
 	"use strict";
 
-	var CarouselController = Controller.extend("cbc.co.simulador_costos.controller.Home", {
+	return Controller.extend("cbc.co.simulador_costos.controller.Home", {
 		onInit: function (evt) {
 			// set explored app's demo model on this sample
-			var oImgModel = new JSONModel("model/img.json");
-			this.getView().setModel(oImgModel, "img");
+			//var oImgModel = new JSONModel("model/img.json");
+			//this.getView().setModel(oImgModel, "img");
 
 			// set the possible screen sizes
 			var oCarouselContainer = {
-				screenSizes : [
+				screenSizes: [
 					"350px",
 					"420px",
 					"555px",
@@ -21,9 +24,7 @@ sap.ui.define(['jquery.sap.global','sap/ui/core/mvc/Controller','sap/ui/model/js
 			var oScreenSizesModel = new JSONModel(oCarouselContainer);
 			this.getView().setModel(oScreenSizesModel, "ScreenSizesModel");
 
-			this._setNumberOfImagesInCarousel(3);
-			
-			jQuery.sap.intervalCall(5000, this , "changeCarouselImage", [this]);
+			this.getRouter().getRoute("home2").attachPatternMatched(this._onRouteMatched, this);
 		},
 		onArrowsPlacementSelect: function (oEvent) {
 			var oCarousel = this.byId("carouselSample");
@@ -67,20 +68,28 @@ sap.ui.define(['jquery.sap.global','sap/ui/core/mvc/Controller','sap/ui/model/js
 			var numberOfImages = oEvent.getSource().getValue();
 			this._setNumberOfImagesInCarousel(Number(numberOfImages));
 		},
+		_onRouteMatched: function(oEvent){
+			this._setNumberOfImagesInCarousel(3);
+
+			jQuery.sap.intervalCall(5000, this, "changeCarouselImage", [this]);
+		},
 		_setNumberOfImagesInCarousel: function (numberOfImages) {
-			if (!numberOfImages || numberOfImages < 1 || numberOfImages > 9){
+			if (!numberOfImages || numberOfImages < 1 || numberOfImages > 9) {
 				return;
 			}
 
 			var oCarousel = this.byId("carouselSample");
 			oCarousel.destroyPages();
 
+			var oImgModel = this.getView().getModel("ImgHome");
+			var oRootPath = jQuery.sap.getModulePath("cbc.co.simulador_costos");
+
 			for (var i = 0; i < numberOfImages; i++) {
 				var imgId = "img" + (i + 1);
-				var imgSrc = "{img>/images/" + i + "}";
+				var imgSrc = oImgModel.getProperty("/images/" + i);
 				var imgAlt = "Example picture " + (i + 1);
 				var img = new sap.m.Image(imgId, {
-					src: imgSrc,
+					src: oRootPath + imgSrc,
 					alt: imgAlt,
 					densityAware: false,
 					decorative: false
@@ -88,16 +97,12 @@ sap.ui.define(['jquery.sap.global','sap/ui/core/mvc/Controller','sap/ui/model/js
 
 				oCarousel.addPage(img);
 			}
-			
+
 		},
-		changeCarouselImage: function(passedthis) {
+		changeCarouselImage: function (passedthis) {
 			var oCarousel = passedthis.byId("carouselSample");
 			oCarousel.next();
 		}
 
-
 	});
-
-	return CarouselController;
 });
-
