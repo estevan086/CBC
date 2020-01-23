@@ -13,6 +13,16 @@ sap.ui.define([
 	var CController = Controller.extend("cbc.co.simulador_costos.controller.ShellBarWithSplitApp", {
 		onInit: function () {
 
+			var toolPage = this.byId("toolPage");
+			toolPage.setSideExpanded(!toolPage.getSideExpanded());
+
+			var showValueHelp = function () {
+				var toolPageCurrent = this.getParent().byId("toolPage");
+				toolPageCurrent.setSideExpanded(!toolPageCurrent.getSideExpanded());
+			};
+
+			toolPage.attachBrowserEvent("dblclick", showValueHelp);
+		
 			// const router = this.getOwnerComponent().getRouter();
 			// router.attachRoutePatternMatched(this.onRoutePatternMatched.bind(this));
 			// this.getView().addEventDelegate({
@@ -72,7 +82,7 @@ sap.ui.define([
 						"title": "Costos Logísticos",
 						"key": "rtChCostosLogisticos"
 					}]
-				},  {
+				}, {
 					"title": "Commodities",
 					"icon": "sap-icon://factory",
 					"expanded": false,
@@ -104,8 +114,7 @@ sap.ui.define([
 						"title": "Carga Volumen",
 						"key": "rtChVolumen"
 					}]
-				},
-				{
+				}, {
 					"title": "Escenarios",
 					"icon": "sap-icon://simulate",
 					"expanded": false,
@@ -122,8 +131,7 @@ sap.ui.define([
 							"key": "rtChAdmonEs"
 						}
 					]
-				},
-				{
+				}, {
 					"title": "COGS",
 					"icon": "sap-icon://settings",
 					"expanded": false,
@@ -144,9 +152,7 @@ sap.ui.define([
 			//this.oModel.loadData(sap.ui.require.toUrl("sap/f/sample/ShellBarWithSplitApp/model") + "/model.json", null, false);
 			this.getView().setModel(this.oModel);
 			this.getRouter().navTo("home2");
-			
-			
-			
+
 		},
 
 		onItemSelect: function (oEvent) {
@@ -154,7 +160,7 @@ sap.ui.define([
 			var router = this.getOwnerComponent().getRouter(),
 				sKey = oEvent.getParameter("item").getProperty("key");
 			//if (this._isPageInNavContainer(sKey)) {
-				router.navTo(sKey);
+			router.navTo(sKey);
 			/*} else {
 				this._addPageToNavContainer(sKey);
 				router.navTo(sKey);

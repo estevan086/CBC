@@ -41,8 +41,8 @@ sap.ui.define([
 			var json = this.initSampleDataModel();
 			this.getView().setModel(json);
 
-			var fnFormuladora = this.showCalculator.bind(this);
-			var fnEditDetail = this.showFormEditDetail.bind(this);
+			/*	var fnFormuladora = this.showCalculator.bind(this);
+				var fnEditDetail = this.showFormEditDetail.bind(this);*/
 
 			// this.modes = [{
 			// 	key: "NavigationDelete",
@@ -94,40 +94,6 @@ sap.ui.define([
 
 			oTable.setRowActionTemplate(oTemplate);
 			oTable.setRowActionCount(iCount);
-		},
-
-		handleActionPress: function (oEvent) {
-			var oRow = oEvent.getParameter("row");
-			var oItem = oEvent.getParameter("item");
-			MessageToast.show("Item " + (oItem.getText() || oItem.getType()) + " pressed for product with id " +
-				this.getView().getModel().getProperty("ProductId", oRow.getBindingContext()));
-		},
-
-		showFormEditDetail: function (oEvent) {
-			this.LogisticaDisplay = sap.ui.xmlfragment(
-				"cbc.co.simulador_costos.view.Utilities.fragments.AdminCommodities.EditDetailCommodities", this);
-			this.LogisticaDisplay.open();
-			//this.getOwnerComponent().OpnFrmLogitica();
-		},
-
-		showFormCopyVersionCommoditie: function (oEvent) {
-			this.LogisticaDisplay = sap.ui.xmlfragment(
-				"cbc.co.simulador_costos.view.Utilities.fragments.AdminCommodities.CopyVersionCommodities", this);
-			this.LogisticaDisplay.open();
-			//this.getOwnerComponent().OpnFrmLogitica();
-		},
-
-		showFormAddCommoditie: function (oEvent) {
-			this.LogisticaDisplay = sap.ui.xmlfragment("cbc.co.simulador_costos.view.Utilities.fragments.AdminCommodities.AddCommodities", this);
-			this.LogisticaDisplay.open();
-			//this.getOwnerComponent().OpnFrmLogitica();
-		},
-
-		showFormEditCommoditie: function (oEvent) {
-			this.LogisticaDisplay = sap.ui.xmlfragment("cbc.co.simulador_costos.view.Utilities.fragments.AdminCommodities.EditCommodities",
-				this);
-			this.LogisticaDisplay.open();
-			//this.getOwnerComponent().OpnFrmLogitica();
 		},
 
 		showCalculator: function (oEvent) {
@@ -207,22 +173,20 @@ sap.ui.define([
 			evt.getSource().getBinding("items").filter([oFilter]);
 		},
 
-		closeDialog: function (oEvent) {
-			this.fnCloseFragment();
+		showFormCreateVersion: function (oEvent) {
+			this.fnOpenDialog("cbc.co.simulador_costos.view.Utilities.fragments.Commodities.CreateVersionCommodities");
+		},	
+		
+		showFormEditVersion: function (oEvent) {
+			this.fnOpenDialog("cbc.co.simulador_costos.view.Utilities.fragments.Commodities.EditVersionCommodities");
+		},
+		
+		SaveVersionCommoditie: function(oEvent){
+			
 		},
 
-		preCopyVersion: function (oEvent) {
-			YO = this;
-			var bCompact = !!this.getView().$().closest(".sapUiSizeCompact").length;
-			MessageBox.warning(
-				"esta seguro de copiar esta version?", {
-					actions: [MessageBox.Action.OK, MessageBox.Action.CANCEL],
-					styleClass: bCompact ? "sapUiSizeCompact" : "",
-					onClose: function (sAction) {
-						YO.LogisticaDisplay.close();
-					}
-				}
-			);
+		closeDialog: function (oEvent) {
+			this.fnCloseFragment();
 		},
 
 		initSampleDataModel: function () {
@@ -326,11 +290,6 @@ sap.ui.define([
 		},
 
 		//EVENTO UPLOADFILE
-		/*	onSelectionChange: function(oEvent) {
-          var oSelectedItem = oEvent.getParameter("listItem");
-          var oModel = oSelectedItem.getBindingContext().getObject();
-          //alert(JSON.stringify(oModel));
-        },*/
 
 		handleUpload: function (oEvent) {
 			var that = this;
@@ -367,7 +326,7 @@ sap.ui.define([
 		},
 
 		CargaMasiva: function (JsonValue) {
-			
+
 			var sServiceUrl = this.getView().getModel("ModelSimulador").sServiceUrl,
 				oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true),
 				oCommodities = [],
@@ -414,7 +373,7 @@ sap.ui.define([
 		SetRowoDetail: function (oValue) {
 			var oDetail = {
 				Formula: oValue.CDEF_FORMULA,
-				IdCommoditie: oValue.CDEF_IDCOMMODITIES, 
+				IdCommoditie: oValue.CDEF_IDCOMMODITIES,
 				Sociedad: oValue.CDEF_SOCIEDAD,
 				Centro: oValue.CDEF_CENTRO,
 				UnidadMedida: oValue.CDEF_UMD,
