@@ -27,7 +27,6 @@ sap.ui.define([
 	return Controller.extend("cbc.co.simulador_costos.controller.DataDefault.Materiales.GridMateriales", {
 
 		onInit: function () {
-			debugger;
 			// set explored app's demo model on this sample
 			// var json = this.initSampleDataModel();
 			// // Setting json to current view....
