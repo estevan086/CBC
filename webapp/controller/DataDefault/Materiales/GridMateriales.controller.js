@@ -1,6 +1,7 @@
 jQuery.sap.require("cbc.co.simulador_costos.Formatter");
 sap.ui.define([
-	"sap/ui/core/mvc/Controller",
+	"cbc/co/simulador_costos/controller/BaseController",
+	// "sap/ui/core/mvc/Controller",
 	"sap/ui/model/json/JSONModel",
 	"sap/m/MessageToast",
 	"sap/ui/core/format/DateFormat",
@@ -12,22 +13,26 @@ sap.ui.define([
 	"sap/m/List",
 	"sap/m/StandardListItem",
 	"sap/m/ButtonType",
-	'sap/ui/core/Fragment'
+	'sap/ui/core/Fragment',
+	'sap/m/MessageBox'
 
 ], function (Controller, JSONModel, MessageToast, DateFormat, library, Filter, FilterOperator, Button, Dialog, List, StandardListItem,
-	ButtonType, Fragment) {
+	ButtonType, Fragment, MessageBox) {
 	"use strict";
 
+	this.updatedRecords = [];
+	var that = this;
 	var SortOrder = library.SortOrder;
 
 	return Controller.extend("cbc.co.simulador_costos.controller.DataDefault.Materiales.GridMateriales", {
 
 		onInit: function () {
 			// set explored app's demo model on this sample
-			var json = this.initSampleDataModel();
-			// Setting json to current view....
-			//var json = new sap.ui.model.json.JSONModel("model/products.json");
-			this.getView().setModel(json);
+			// var json = this.initSampleDataModel();
+			// // Setting json to current view....
+			// this.getView().setModel(json);
+
+			this.loadModel();
 
 			// var fnPress = this.handleActionPress.bind(this);
 			// var fnfrPress = this.frmLogisticPress.bind(this);
@@ -49,6 +54,10 @@ sap.ui.define([
 			// // this.switchState("NavigationDelete");
 			// //this.onInitCalculation();
 			// //this.onInitDialog();
+
+			// var myRoute = this.getOwnerComponent().getRouter().getRoute("rtChCommodities");
+			// myRoute.attachPatternMatched(this.onMyRoutePatternMatched, this);			
+
 		},
 
 		onInitCalculation: function () {
@@ -658,10 +667,11 @@ sap.ui.define([
 		 * @private
 		 */
 		onAfterRendering: function () {
-			var table = this.getView().byId('tblMaterial');
-			for (var i = 0; i < table.getColumns().length; i++) {
-				table.autoResizeColumn(i);
-			}
+			// debugger;
+			// var table = this.getView().byId('tblMaterial');
+			// for (var i = 0; i < table.getColumns().length; i++) {
+			// 	table.autoResizeColumn(i);
+			// }
 		},
 
 		/**
@@ -671,17 +681,35 @@ sap.ui.define([
 		 * @private
 		 */
 		handleEditPress: function (oEvent, Data) {
-			//var oRow = oEvent.getParameter("row");
-			var oItem = oEvent.getParameter("item");
+			// //var oRow = oEvent.getParameter("row");
+			// var oItem = oEvent.getParameter("item");
 
-			var oTable = this.byId("tblMaterial");
-			var oRowData = oEvent.getSource().getBindingContext().getProperty();
+			// var oTable = this.byId("tblMaterial");
+			// var oRowData = oEvent.getSource().getBindingContext().getProperty();
 
-			var oRowEdited = oEvent.getSource().getParent().getParent();
+			var oRowEdited = oEvent.getSource().getParent().getParent(),
+				oEntidad = {};
 
 			// oRowEdited.getCells().filter(result => result.mProperties.value).map(cell => cell.setProperty("editable", true));
 
+			// oRowEdited.getCells()[6].setProperty("editable", true);
+			oRowEdited.getCells()[7].setProperty("editable", true);
+			oRowEdited.getCells()[8].setProperty("editable", true);
+			oRowEdited.getCells()[9].setProperty("editable", true);
+			oRowEdited.getCells()[10].setProperty("editable", true);
+			oRowEdited.getCells()[11].setProperty("editable", true);
+			oRowEdited.getCells()[12].setProperty("editable", true);
+			oRowEdited.getCells()[13].setProperty("editable", true);
+			oRowEdited.getCells()[14].setProperty("editable", true);
+			oRowEdited.getCells()[15].setProperty("editable", true);
+			oRowEdited.getCells()[16].setProperty("editable", true);
+			oRowEdited.getCells()[17].setProperty("editable", true);
+			oRowEdited.getCells()[18].setProperty("editable", true);
+
 			MessageToast.show("Editar Material " + oRowEdited.getCells()[0].getProperty("text"));
+
+			oEntidad.RowPath = oEvent.getSource().getBindingContext().sPath.split('/')[2];
+			that.updatedRecords.push(oEntidad);
 
 		},
 
@@ -783,22 +811,60 @@ sap.ui.define([
 			// 	Descripcion: 'Prueba',
 			// 	detailCommoditiesSet: []
 			// };
-			
+
 			// oEntidad.detailCommoditiesSet.push(oDetail);
 
 			// var oCreate = this.fnCreateEntity(oModelService, "/headerCommoditiesSet", oEntidad);
 
 		},
-		
-		fnCreateEntity: function(pModelo, pEntidad, pDatoEndidad) {
+
+		onMyRoutePatternMatched: function (event) {
+			// your code when the view is about to be displayed ..
+
+			//	var json = this.initSampleDataModel();
+			//	this.getView().setModel(json);
+
+			//Url Servicio
+			var oModel = this.getOwnerComponent().getModel("ModelSimulador");
+			var sServiceUrl = oModel.sServiceUrl;
+
+			//Definir modelo del servicio web
+			var oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true);
+			//Definir filtro
+
+			//Leer datos del ERP
+			var oRead = this.fnReadEntity(oModelService, "/materialDefatultSet", null);
+
+			// if (oRead.tipo === "S") {
+			// 	this.oDataDetalleCommodities = oRead.datos.results;
+			// } else {
+			// 	MessageBox.error(oRead.msjs, null, "Mensaje del sistema", "OK", null);
+			// }
+
+			// var oDataDetalleCommodities = "";
+			// //SI el modelo NO existe, se crea.
+			// if (!oDataDetalleCommodities) {
+			// 	oDataDetalleCommodities = {
+			// 		lstItemsCommodities: []
+			// 	};
+			// }
+
+			// oDataDetalleCommodities.lstItemsCommodities = this.oDataDetalleCommodities;
+			// var oTablaDetalleCommodities = this.byId("tblCommodities");
+			// var oModel2 = new sap.ui.model.json.JSONModel(oDataDetalleCommodities);
+			// oTablaDetalleCommodities.setModel(oModel2);
+
+		},
+
+		fnCreateEntity: function (pModelo, pEntidad, pDatoEndidad) {
 			var vMensaje = null;
 			var oMensaje = {};
 
-			var fnSucess = function(data, response) {
+			var fnSucess = function (data, response) {
 				oMensaje.tipo = "S";
 				oMensaje.datos = data;
 			};
-			var fnError = function(e) {
+			var fnError = function (e) {
 				vMensaje = JSON.parse(e.response.body);
 				vMensaje = vMensaje.error.message.value;
 
@@ -809,7 +875,196 @@ sap.ui.define([
 			pModelo.create(pEntidad, pDatoEndidad, null, fnSucess, fnError, false);
 
 			return oMensaje;
-		}		
+		},
+
+		/**
+		 * Load model data in table
+		 * @function
+		 * @param 
+		 * @private
+		 */
+		loadModel: function (event) {
+			var sServiceUrl = "",
+				oModelService = "",
+				aListMaterial = [];
+
+			sServiceUrl = this.getOwnerComponent().getModel("ModelSimulador").sServiceUrl;
+			oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true);
+
+			//Leer datos del ERP
+			var oRead = this.fnReadEntity(oModelService, "/materialDefatultSet", null);
+
+			if (oRead.tipo === "S") {
+				aListMaterial = oRead.datos.results;
+			} else {
+				MessageBox.error(oRead.msjs, null, "Mensaje del sistema", "OK", null);
+				return;
+			}
+
+			this.mapDataTable(aListMaterial);
+
+		},
+
+		/**
+		 * Load model data in table
+		 * @function
+		 * @param 
+		 * @private
+		 */
+		mapDataTable: function (p_listMaterial) {
+
+			var oList = "",
+				aList = {
+					MATERIAL: []
+				},
+				oModel = "";
+
+			for (var i = 0; i < p_listMaterial.length; i++) {
+
+				var value = p_listMaterial[i],
+					oMaterial = {
+						MDEF_IDMATERIAL: value.Material,
+						MDEF_MATERIAL: value.Txtmd,
+						MDEF_SOCIEDAD: value.CompCode,
+						MDEF_CENTRO: value.Plant,
+						MDEF_UMD: value.BaseUom,
+						MDEF_MONEDA: value.Currency,
+						MDEF_PESOMATERIAL: value.NetWeight,
+						MDEF_COMMODITIE: "",
+						MDEF_PRECIOPRODUCTIVO: "",
+						MDEF_COSTOCONVERSION: "",
+						MDEF_COSTOADICIONAL: "",
+						MDEF_COSTOENVIO: "",
+						MDEF_ICOTERM: "",
+						MDEF_COSTOMATERIAL: "",
+						MDEF_FORMULAOTROSCOSTOS: "",
+						MDEF_OTROSCOSTOS: "",
+						MDEF_PCTRANSFERENCIA: "",
+						MDEF_COSTOTRANSFERENCIA: "",
+						MDEF_PRECIOPREMISA: "",
+						MDEF_IDCATEGORIA: value.catgoria,
+						MDEF_CATEGORIA: value.Txtcat,
+						MDEF_IDSUBCATEGORIA: value.subcateg,
+						MDEF_SUBCATEGORIA: value.Txtsubcat,
+						MDEF_IDFAMILIA: value.yfamilia,
+						MDEF_FAMILIA: value.Txtfam,
+						MDEF_IDSUFAMILIA: value.ysubfamil,
+						MDEF_SUBFAMILIA: value.Txtsubfam,
+						MDEF_PERIODO: "",
+						MDEF_MES: ""
+					};
+
+				aList.MATERIAL.push(oMaterial);
+
+			}
+
+			oList = this.getView().byId("tblMaterial");
+
+			oModel = new sap.ui.model.json.JSONModel(aList);
+			oList.setModel(oModel);
+		},
+
+		/**
+		 * Save data material
+		 * @function
+		 * @param 
+		 * @private
+		 */
+		saveMaterial: function (oEvent) {
+			var oTable = this.byId("tblMaterial"),
+				sServiceUrl = this.getView().getModel("ModelSimulador").sServiceUrl,
+				oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true),
+				oEntidad = {},
+				oDetail = {};
+
+			oEntidad = {
+				Material: '1111',
+				Descrip: 'Save',
+				materialDefatultSet: []
+			};
+
+			for (var i = 0; i < that.updatedRecords.length; i++) {
+
+				var CurrentRow = that.updatedRecords[i];
+
+				var oTempRow = oTable.getModel().getData().MATERIAL[CurrentRow.RowPath];
+
+				oDetail = {
+					Txtmd: oTempRow.MDEF_MATERIAL,
+					Material: oTempRow.MDEF_IDMATERIAL,
+					CompCode: oTempRow.MDEF_SOCIEDAD,
+					Plant: oTempRow.MDEF_CENTRO,
+					BaseUom: oTempRow.MDEF_UMD,
+					Currency: oTempRow.MDEF_MONEDA,
+					Txtsubfam: oTempRow.MDEF_SUBFAMILIA,
+					Txtfam: oTempRow.MDEF_FAMILIA,
+					Txtsubcat: oTempRow.MDEF_SUBCATEGORIA,
+					Txtcat: oTempRow.MDEF_CATEGORIA,
+					// Recordmode: oTempRow.MDEF_IDMATERIAL,
+					catgoria: oTempRow.MDEF_IDCATEGORIA,
+					subcateg: oTempRow.MDEF_IDSUBCATEGORIA,
+					yfamilia: oTempRow.MDEF_IDFAMILIA,
+					ysubfamil: oTempRow.MDEF_IDSUFAMILIA,
+					Fiscyear: oTempRow.MDEF_PERIODO,
+					// Fiscvarnt: oTempRow.MDEF_IDMATERIAL,
+					Fiscper3: oTempRow.MDEF_MES,
+					NetWeight: oTempRow.MDEF_PESOMATERIAL,
+					// UnitOfWt: oTempRow.MDEF_IDMATERIAL,
+					commodit: oTempRow.MDEF_COMMODITIE,
+					Incoterms: oTempRow.MDEF_ICOTERM,
+					fotrcost: oTempRow.MDEF_FORMULAOTROSCOSTOS,
+					// Version: oTempRow.MDEF_IDMATERIAL,
+					// estado: oTempRow.MDEF_IDMATERIAL,
+					// Date0: oTempRow.MDEF_IDMATERIAL,
+					// usuario: oTempRow.MDEF_IDMATERIAL,
+					preprodc: oTempRow.MDEF_PRECIOPRODUCTIVO,
+					costconv: oTempRow.MDEF_COSTOCONVERSION,
+					costadic: oTempRow.MDEF_COSTOADICIONAL,
+					costenv: oTempRow.MDEF_COSTOENVIO,
+					costmat: oTempRow.MDEF_COSTOMATERIAL,
+					otrocost: oTempRow.MDEF_OTROSCOSTOS,
+					ptransf: oTempRow.MDEF_PCTRANSFERENCIA,
+					costrans: oTempRow.MDEF_COSTOTRANSFERENCIA,
+					ppremisa: oTempRow.MDEF_PRECIOPREMISA
+
+				};
+
+				oEntidad.materialDefatultSet.push(oDetail);
+			}
+
+			var oCreate = this.fnCreateEntity(oModelService, "/materialsaveSet", oEntidad);
+
+			if (oCreate.tipo === 'S') {
+
+				MessageBox.show(
+					'Datos guardados correctamente', {
+						icon: MessageBox.Icon.SUCCESS,
+						title: "Exito",
+						actions: [MessageBox.Action.OK],
+						onClose: function (oAction) {
+							if (oAction === sap.m.MessageBox.Action.OK) {
+								return;
+							}
+						}
+					}
+				);
+
+			} else if (oCreate.tipo === 'E') {
+
+				MessageBox.show(
+					oCreate.msjs, {
+						icon: MessageBox.Icon.ERROR,
+						title: "Error"
+							// actions: [MessageBox.Action.YES, MessageBox.Action.NO],
+							// onClose: function (oAction) {
+							// 	/ * do something * /
+							// }
+					}
+				);
+
+			}
+
+		}
 
 	});
 
