@@ -72,24 +72,7 @@ sap.ui.define([
 						"title": "Costos Logísticos",
 						"key": "rtChCostosLogisticos"
 					}]
-				}, {
-					"title": "Escenarios",
-					"icon": "sap-icon://simulate",
-					"expanded": false,
-					"items": [{
-							"title": "Matriz de Escenarios",
-							"key": "rtChMatrizEs"
-						},
-						//{
-						//	"title": "Control de Escenarios",
-						//	"key": "rtChControlEs"
-						//},
-						{
-							"title": "Administración Escenarios",
-							"key": "rtChAdmonEs"
-						}
-					]
-				}, {
+				},  {
 					"title": "Commodities",
 					"icon": "sap-icon://factory",
 					"expanded": false,
@@ -114,6 +97,33 @@ sap.ui.define([
 						"key": "rtChMantenimientoCostLog"
 					}]
 				}, {
+					"title": "Volumen",
+					"icon": "sap-icon://machine",
+					"expanded": false,
+					"items": [{
+						"title": "Carga Volumen",
+						"key": "rtChVolumen"
+					}]
+				},
+				{
+					"title": "Escenarios",
+					"icon": "sap-icon://simulate",
+					"expanded": false,
+					"items": [{
+							"title": "Matriz de Escenarios",
+							"key": "rtChMatrizEs"
+						},
+						//{
+						//	"title": "Control de Escenarios",
+						//	"key": "rtChControlEs"
+						//},
+						{
+							"title": "Administración Escenarios",
+							"key": "rtChAdmonEs"
+						}
+					]
+				},
+				{
 					"title": "COGS",
 					"icon": "sap-icon://settings",
 					"expanded": false,
@@ -129,19 +139,14 @@ sap.ui.define([
 						"title": "Visualización",
 						"key": "rtChVisualizacion"
 					}]
-				}, {
-					"title": "Manufactura",
-					"icon": "sap-icon://machine",
-					"expanded": false,
-					"items": [{
-						"title": "Carga Manufactura",
-						"key": "rtChCargaManufactura"
-					}]
 				}]
 			});
 			//this.oModel.loadData(sap.ui.require.toUrl("sap/f/sample/ShellBarWithSplitApp/model") + "/model.json", null, false);
 			this.getView().setModel(this.oModel);
 			this.getRouter().navTo("home2");
+			
+			
+			
 		},
 
 		onItemSelect: function (oEvent) {
