@@ -52,7 +52,7 @@ sap.ui.define([
 				TxtMd: data.TxtMd
 			}, {
 				success: function (oData, oResponse) {
-					//MessageToast.show(oData.Vbeln);
+					MessageToast.show(this.getView().getModel("i18n").getResourceBundle().getText("NotificacionGuardarOk"));
 					this.getLogisticCostData();
 				}.bind(this),
 				error: function (oError) {

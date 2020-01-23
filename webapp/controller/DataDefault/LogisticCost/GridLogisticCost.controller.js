@@ -7,6 +7,8 @@ sap.ui.define([
 ], function (BaseController, JSONModel, MessageToast, Filter) {
 	"use strict";
 
+	var initModelStructure;
+
 	return BaseController.extend("cbc.co.simulador_costos.controller.DataDefault.LogisticCost.GridLogisticCost", {
 
 		onInit: function () {
@@ -93,7 +95,7 @@ sap.ui.define([
 			}, {
 				columnName: "CantEst",
 				label: "Cnt. Estandar",
-				enabled: false
+				enabled: true
 			}];
 			//agrega columnas dinamicas
 			if (costData instanceof Array) {
@@ -120,7 +122,9 @@ sap.ui.define([
 
 			var material = "";
 			var oMaterial = [],
-				modelStructure = costValoration[1];
+				modelStructure;
+			//guardamos la estructura de la tabla inicial
+			this.initModelStructure = modelStructure = costValoration[1];
 
 			//agrega propiedades(columnas) al json
 			costData.forEach(function (oValue2, j) {
@@ -134,7 +138,7 @@ sap.ui.define([
 					oMaterial.push(modelStructure);
 				}
 				if (oValue.CostLog !== "") {
-					modelStructure[oValue.CostLog] = oValue.CantEst;
+					modelStructure[oValue.CostLog] = oValue.VCostLog;
 				}
 				material = oValue.Material;
 			});
@@ -146,7 +150,7 @@ sap.ui.define([
 
 			oTableModel.setData({
 				rows: oModel.getProperty("/LogisticCostValoration"),
-				columns: columnData
+				columns: columnData,
 			});
 
 			oTable.setModel(oTableModel);
@@ -155,7 +159,11 @@ sap.ui.define([
 				var columnName = oContext.getObject().columnName;
 				return new sap.ui.table.Column({
 					label: oContext.getObject().label,
-					template: new sap.m.Input(columnName, {
+					filterProperty: oContext.getObject().enabled === false ? columnName : "",
+					template: oContext.getObject().enabled === false ? new sap.m.Text( columnName, {
+						text: "{" + columnName + "}",
+						wrapping: false
+					} ) : new sap.m.Input(columnName, {
 						key: "text",
 						value: "{" + columnName + "}",
 						enabled: oContext.getObject().enabled
@@ -169,13 +177,39 @@ sap.ui.define([
 		saveLogisticCostVersion: function () {
 			var oModel = this.getView().getModel("ModelSimulador"),
 				oModelLocal = this.getView().getModel("LogisticCost"),
-				data = oModelLocal.getProperty("/LogisticCostValoration");
+				costValorationTable = oModelLocal.getProperty("/LogisticCostValoration"),
+				costData = oModelLocal.getProperty("/CodLogisticCost"),
+				modelStructure = {},
+				data = [];
 
-			//Crea el CL
-			oModel.create("/costologisticoSet", data, {
+			costValorationTable.forEach(function (oValue, i) {
+
+				costData.forEach(function (oLogisticCost, j) {
+					
+					modelStructure = {};
+					
+					modelStructure.Material = oValue.Material;
+					modelStructure.Plant = oValue.Plant;
+					modelStructure.Fiscyear = oValue.Fiscyear;
+					modelStructure.Fiscvarnt = oValue.Fiscvarnt;
+					modelStructure.Fiscper3 = oValue.Fiscper3;
+					modelStructure.CompCode = oValue.CompCode;
+					modelStructure.CostLog = oLogisticCost.CostLog;
+					
+					if( oValue[oLogisticCost.CostLog] ){
+						modelStructure.VCostLog = oValue[oLogisticCost.CostLog];
+					}
+					
+					data.push(modelStructure);
+				});
+			});
+			var oCstosLogisticos = costData[1];
+			oCstosLogisticos.costoslogisticos = data;
+			//Crea el vercion costo logistico
+			oModel.create("/codigocostologisticoSet", oCstosLogisticos, {
 				success: function (oData, oResponse) {
-					//MessageToast.show(oData.Vbeln);
-					this.getLogisticCostData();
+					MessageToast.show(this.getView().getModel("i18n").getResourceBundle().getText("NotificacionGuardarOk"));
+					this.getLogisticCostValoration();
 				}.bind(this),
 				error: function (oError) {
 					this.showGeneralError({
