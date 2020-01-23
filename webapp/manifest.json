@@ -127,6 +127,10 @@
 				"rtChUsers": {
 					"pattern": "rtChUsers",
 					"target": "rtChUsersTarget"
+				},
+				"rtChAdminCL": {
+					"pattern": "rtChAdminCL",
+					"target": "rtChAdminCLTarget"
 				}
 			},
 			"targets": {
@@ -200,6 +204,15 @@
 				"rtChUsersTarget": {
 					"viewPath": "cbc.co.simulador_costos.view.Admon",
 					"viewName": "Users",
+					"parent": "parentTarget",
+					"controlId": "parentNavContainer",
+					"transition": "slide",
+					"controlAggregation": "pages",
+					"viewLevel": 3
+				},
+				"rtChAdminCLTarget": {
+					"viewPath": "cbc.co.simulador_costos.view.DataDefault.LogisticCost",
+					"viewName": "AdminIDLogisticCost",
 					"parent": "parentTarget",
 					"controlId": "parentNavContainer",
 					"transition": "slide",

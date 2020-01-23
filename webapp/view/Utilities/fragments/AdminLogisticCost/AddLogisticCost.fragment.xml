@@ -5,13 +5,13 @@
 			<f:SimpleForm id="fmAddLC" columnsM="2" columnsL="2" columnsXL="2">
 				<f:content>
 					<m:Label text="ID" labelFor="inpId"/>
-					<m:Input id="inpId" name="txtID" type="Text" value="{LogisticCost>CostLog}"   />
+					<m:Input id="inpId" name="txtID" type="Text" value="LOG_" enabled="false"  />
 					<m:Label text="Descripción"/>
-					<m:Input id="inpDesc" name="txtName" required="true" value="{LogisticCost>TxtMd}"  />
+					<m:Input id="inpDesc" name="txtName" required="true" value="{LogisticCost>/TxtMd}" />
 					<m:Label text="Categoria Logistica"/>
-					<m:ComboBox id="cmbCategory" items="{ModelSimulador>/categorialogisticaSet}" selectedKey="{LogisticCost>/CatCoslLo}"  required="true">
+					<m:ComboBox id="cmbCategory" items="{ModelSimulador>/categorialogisticaSet}" showSecondaryValues="true" selectedKey="{LogisticCost>/CatCosLo}"  required="true">
 						<m:items>
-							<core:ListItem key="{ModelSimulador>CatCostLo}" text="{ModelSimulador>TxtMd}"/>
+							<core:ListItem key="{ModelSimulador>CatCosLo}" text="{ModelSimulador>TxtMd}"/>
 						</m:items>
 					</m:ComboBox>
 				</f:content>
