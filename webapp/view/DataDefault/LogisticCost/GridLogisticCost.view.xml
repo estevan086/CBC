@@ -17,8 +17,8 @@
 					<m:OverflowToolbar>
 						<m:content>
 							<m:ToolbarSpacer/>
-							<m:Button icon="sap-icon://sys-next-page" text="{i18n>Exportar}" tooltip="{i18n>Exportar}"/>
-							<m:Button icon="sap-icon://sys-prev-page" text="{i18n>Importar}" tooltip="{i18n>Importar}"/>
+							<m:Button icon="sap-icon://sys-next-page" text="{i18n>Exportar}" tooltip="{i18n>Exportar}" press="onDataExport" />
+							<u:FileUploader id="fileUploader" name="myFileUpload" icon="sap-icon://sys-prev-page" tooltip="{i18n>Importar}" change="handleUpload"/>
 							<m:Button icon="sap-icon://factory" type="Emphasized" text="{i18n>Administrar}" tooltip="{i18n>Administrar}" press="onGotoadminlc"/>
 							<!--<m:Button icon="sap-icon://list" type="Emphasized" text="{i18n>NuevoMaterial}" tooltip="{i18n>NuevoMaterial}" press="onGotoaddmaterial"/>-->
 						</m:content>
