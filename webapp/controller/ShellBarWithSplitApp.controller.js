@@ -22,98 +22,131 @@ sap.ui.define([
 			this.oModel = new JSONModel();
 			this.oModel.setData({
 				"selectedKey": "rtHome",
-				"navigation": [
-					{
-						"title": "Home",
-						"icon": "sap-icon://home",
-						"expanded": false,
-						"key": "rtHome"
-					},
-					{
-						"title": "Administraci\u00F3n",
-						"icon": "sap-icon://employee",
-						"expanded": false,
-						"key": "rtAdministracion",
-						"items": [
-							{
-								"title": "Centros",
-								"key": "rtChCentros"
-							},
-							{
-								"title": "Unidad de Medida",
-								"key": "rtChUndMedida"
-							},
-							{
-								"title": "Periodos",
-								"key": "rtChPeriodo"
-							},
-							{
-								"title": "Logística",
-								"key": "rtChAdminLogistica"
-							},
-							{
-								"title": "Perfiles",
-								"key": "rtChUsers"
-							}
-						]
-					},
-					{
-						"title": "Datos Default",
-						"icon": "sap-icon://accounting-document-verification",
-						"expanded": false,
-						"key": "rtDataDefault",
-						"items": [
-							{
-								"title": "Mantenimiento Tipo Cambio",
-								"key": "rtChTypeChange"
-							},
-							{
-								"title": "Crear Icoterm",
-								"key": "rtChCreateIcoterm"
-							},
-							{
-								"title": "Copiar Versiones",
-								"key": "rtChCopyVersion"
-							},
-							{
-								"title": "Commodities",
-								"key": "rtChCommodities"
-							},
-							{
-								"title": "Materiales",
-								"key": "rtChMateriales"
-							},
-							{
-								"title": "Costos Logísticos",
-								"key": "rtChCostosLogisticos"
-							}
-						]
-					},
-					{
-						"title": "Escenarios",
-						"icon": "sap-icon://simulate",
-						"expanded": false,
-						"items": [
-							{
-								"title": "Matriz de Escenarios",
-								"key": "rtChMatrizEs"
-							},
-							//{
-							//	"title": "Control de Escenarios",
-							//	"key": "rtChControlEs"
-							//},
-							{
-								"title": "Administración Escenarios",
-								"key": "rtChAdmonEs"
-							}
-						]
-					}
-				]
-				
+				"navigation": [{
+					"title": "Home",
+					"icon": "sap-icon://home",
+					"expanded": false,
+					"key": "rtHome"
+				}, {
+					"title": "Administración",
+					"icon": "sap-icon://employee",
+					"expanded": false,
+					"key": "rtAdministracion",
+					"items": [{
+						"title": "Centros",
+						"key": "rtChCentros"
+					}, {
+						"title": "Unidad de Medida",
+						"key": "rtChUndMedida"
+					}, {
+						"title": "Periodos",
+						"key": "rtChPeriodo"
+					}, {
+						"title": "Logística",
+						"key": "rtChAdminLogistica"
+					}, {
+						"title": "Perfiles",
+						"key": "rtChUsers"
+					}]
+				}, {
+					"title": "Datos Default",
+					"icon": "sap-icon://accounting-document-verification",
+					"expanded": false,
+					"key": "rtDataDefault",
+					"items": [{
+						"title": "Mantenimiento Tipo Cambio",
+						"key": "rtChTypeChange"
+					}, {
+						"title": "Crear Icoterm",
+						"key": "rtChCreateIcoterm"
+					}, {
+						"title": "Copiar Versiones",
+						"key": "rtChCopyVersion"
+					}, {
+						"title": "Commodities",
+						"key": "rtChCommodities"
+					}, {
+						"title": "Materiales",
+						"key": "rtChMateriales"
+					}, {
+						"title": "Costos Logísticos",
+						"key": "rtChCostosLogisticos"
+					}]
+				},  {
+					"title": "Commodities",
+					"icon": "sap-icon://factory",
+					"expanded": false,
+					"items": [{
+						"title": "Mantenimiento Commodities",
+						"key": "rtChMantenimientoCommodities"
+					}]
+				}, {
+					"title": "Materiales",
+					"icon": "sap-icon://product",
+					"expanded": false,
+					"items": [{
+						"title": "Mantenimiento Materiales",
+						"key": "rtChMantenimientoMateriales"
+					}]
+				}, {
+					"title": "Costos Logístico",
+					"icon": "sap-icon://travel-expense",
+					"expanded": false,
+					"items": [{
+						"title": "Mantenimiento Costos Logístico",
+						"key": "rtChMantenimientoCostLog"
+					}]
+				}, {
+					"title": "Volumen",
+					"icon": "sap-icon://machine",
+					"expanded": false,
+					"items": [{
+						"title": "Carga Volumen",
+						"key": "rtChVolumen"
+					}]
+				},
+				{
+					"title": "Escenarios",
+					"icon": "sap-icon://simulate",
+					"expanded": false,
+					"items": [{
+							"title": "Matriz de Escenarios",
+							"key": "rtChMatrizEs"
+						},
+						//{
+						//	"title": "Control de Escenarios",
+						//	"key": "rtChControlEs"
+						//},
+						{
+							"title": "Administración Escenarios",
+							"key": "rtChAdmonEs"
+						}
+					]
+				},
+				{
+					"title": "COGS",
+					"icon": "sap-icon://settings",
+					"expanded": false,
+					"items": [{
+						"title": "Reportes COGS",
+						"key": "rtCCOGS"
+					}]
+				}, {
+					"title": "Reportes",
+					"icon": "sap-icon://pie-chart",
+					"expanded": false,
+					"items": [{
+						"title": "Visualización",
+						"key": "rtChVisualizacion"
+					}]
+				}]
 			});
 			//this.oModel.loadData(sap.ui.require.toUrl("sap/f/sample/ShellBarWithSplitApp/model") + "/model.json", null, false);
 			this.getView().setModel(this.oModel);
 			this.getRouter().navTo("home2");
+			
+			
+			
 		},
 
 		onItemSelect: function (oEvent) {

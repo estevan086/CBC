@@ -104,6 +104,10 @@
 					"pattern": "home",
 					"target": "homeTarget"
 				},
+				"rtHome": {
+					"pattern": "rtHome",
+					"target": "rtHomeTarget"
+				},
 				"rtChCommodities": {
 					"pattern": "rtChCommodities",
 					"target": "rtChCommoditiesTarget"
@@ -130,7 +134,63 @@
 				},
 				"rtChUsers": {
 					"pattern": "rtChUsers",
-					"target": "rtChUsersTarget"
+					"target": "rtHomeTarget"
+				},
+				"rtChCentros": {
+					"pattern": "rtChCentros",
+					"target": "rtHomeTarget"
+				},
+				"rtChUndMedida": {
+					"pattern": "rtChUndMedida",
+					"target": "rtHomeTarget"
+				},
+				"rtChPeriodo": {
+					"pattern": "rtChPeriodo",
+					"target": "rtHomeTarget"
+				},
+				"rtChAdminLogistica": {
+					"pattern": "rtChAdminLogistica",
+					"target": "rtHomeTarget"
+				},
+				"rtChTypeChange": {
+					"pattern": "rtChTypeChange",
+					"target": "rtChTypeChangeTarget"
+				},
+				"rtChCreateIcoterm": {
+					"pattern": "rtChCreateIcoterm",
+					"target": "rtChCreateIcotermTarget"
+				},
+				"rtChCopyVersion": {
+					"pattern": "rtChCopyVersion",
+					"target": "rtHomeTarget"
+				},
+				"rtChMatrizEs": {
+					"pattern": "rtChMatrizEs",
+					"target": "rtHomeTarget"
+				},
+				"rtChAdmonEs": {
+					"pattern": "rtChAdmonEs",
+					"target": "rtHomeTarget"
+				},
+				"rtChMantenimientoMateriales": {
+					"pattern": "rtChMantenimientoMateriales",
+					"target": "rtHomeTarget"
+				},
+				"rtChMantenimientoCostLog": {
+					"pattern": "rtChMantenimientoCostLog",
+					"target": "rtHomeTarget"
+				},
+				"rtCCOGS": {
+					"pattern": "rtCCOGS",
+					"target": "rtHomeTarget"
+				},
+				"rtChVisualizacion": {
+					"pattern": "rtChVisualizacion",
+					"target": "rtHomeTarget"
+				},
+				"rtChVolumen": {
+					"pattern": "rtChVolumen",
+					"target": "rtHomeTarget"
 				}
 			},
 			"targets": {
@@ -138,6 +198,15 @@
 					"viewName": "ShellBarWithSplitApp"
 				},
 				"homeTarget": {
+					"viewPath": "cbc.co.simulador_costos.view",
+					"viewName": "Home",
+					"parent": "parentTarget",
+					"controlId": "parentNavContainer",
+					"controlAggregation": "pages",
+					"transition": "slide"
+				},
+				"rtHomeTarget": {
+					"viewPath": "cbc.co.simulador_costos.view",
 					"viewName": "Home",
 					"parent": "parentTarget",
 					"controlId": "parentNavContainer",
@@ -190,6 +259,104 @@
 				"rtChUsersTarget": {
 					"viewPath": "cbc.co.simulador_costos.view.Admon",
 					"viewName": "Users",
+					"parent": "parentTarget",
+					"controlId": "parentNavContainer",
+					"transition": "slide"
+				},
+				"rtChCentrosTarget": {
+					"viewPath": "cbc.co.simulador_costos.view.Admon",
+					"viewName": "Centros",
+					"parent": "parentTarget",
+					"controlId": "parentNavContainer",
+					"transition": "slide"
+				},
+				"rtChUndMedidaTarget": {
+					"viewPath": "cbc.co.simulador_costos.view.Admon",
+					"viewName": "CreateParameters",
+					"parent": "parentTarget",
+					"controlId": "parentNavContainer",
+					"transition": "slide"
+				},
+				"rtChPeriodoTarget": {
+					"viewPath": "cbc.co.simulador_costos.view.Admon",
+					"viewName": "CreateParameters",
+					"parent": "parentTarget",
+					"controlId": "parentNavContainer",
+					"transition": "slide"
+				},
+				"rtChAdminLogisticaTarget": {
+					"viewPath": "cbc.co.simulador_costos.view.Admon",
+					"viewName": "CreateParameters",
+					"parent": "parentTarget",
+					"controlId": "parentNavContainer",
+					"transition": "slide"
+				},
+				"rtChTypeChangeTarget": {
+					"viewPath": "cbc.co.simulador_costos.view.DataDefault.TypeChange",
+					"viewName": "AdminTypeChange",
+					"parent": "parentTarget",
+					"controlId": "parentNavContainer",
+					"transition": "slide"
+				},
+				"rtChCreateIcotermTarget": {
+					"viewPath": "cbc.co.simulador_costos.view.DataDefault.Icoterm",
+					"viewName": "AdminIcoterm",
+					"parent": "parentTarget",
+					"controlId": "parentNavContainer",
+					"transition": "slide"
+				},
+				"rtChCopyVersionTarget": {
+					"viewPath": "cbc.co.simulador_costos.view.DataDefault.Version",
+					"viewName": "AdminVersion",
+				"parent": "parentTarget",
+					"controlId": "parentNavContainer",
+					"transition": "slide"
+				},
+				"rtChMatrizEsTarget": {
+					"viewPath": "cbc.co.simulador_costos.view.Escenarios",
+					"viewName": "MatrizEsc",
+					"parent": "parentTarget",
+					"controlId": "parentNavContainer",
+					"transition": "slide"
+				},
+				"rtChAdmonEsTarget": {
+					"viewPath": "cbc.co.simulador_costos.view.Escenarios",
+					"viewName": "AdmonEsc",
+					"parent": "parentTarget",
+					"controlId": "parentNavContainer",
+					"transition": "slide"
+				},
+				"rtChMantenimientoMaterialesTarget": {
+					"viewPath": "cbc.co.simulador_costos.view.Materiales",
+					"viewName": "AdmonMateriales",
+					"parent": "parentTarget",
+					"controlId": "parentNavContainer",
+					"transition": "slide"
+				},
+				"rtChMantenimientoCostLogTarget": {
+					"viewPath": "cbc.co.simulador_costos.view.LogisticCost",
+					"viewName": "AdmonLogisticCost",
+					"parent": "parentTarget",
+					"controlId": "parentNavContainer",
+					"transition": "slide"
+				},
+				"rtCCOGSTarget": {
+					"viewPath": "cbc.co.simulador_costos.view.COGS",
+					"viewName": "COGS",
+					"parent": "parentTarget",
+					"controlId": "parentNavContainer",
+					"transition": "slide"
+				},
+				"rtChVisualizacionTarget": {
+					"viewPath": "cbc.co.simulador_costos.view.Reportes",
+					"viewName": "Reportes",
+					"parent": "parentTarget",
+					"controlId": "parentNavContainer",
+					"transition": "slide"
+				},
+				"rtChrtChVolumenTarget": {
+					"viewPath": "cbc.co.simulador_costos.view.COGS",
+					"viewName": "COGS",
 					"parent": "parentTarget",
 					"controlId": "parentNavContainer",
 					"transition": "slide"
