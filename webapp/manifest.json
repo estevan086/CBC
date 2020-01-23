@@ -68,6 +68,9 @@
 				"type": "sap.ui.model.json.JSONModel",
 				"uri": "Invoices.json"
 			},
+			"LogisticCost": {
+				"type": "sap.ui.model.json.JSONModel"
+			},
 			"ModelSimulador": {
 				"type": "sap.ui.model.odata.v2.ODataModel",
 				"settings": {
@@ -96,6 +99,10 @@
 				"home": {
 					"pattern": "",
 					"target": "parentTarget"
+				},
+				"home2": {
+					"pattern": "home",
+					"target": "homeTarget"
 				},
 				"rtChCommodities": {
 					"pattern": "rtChCommodities",
@@ -128,17 +135,14 @@
 			},
 			"targets": {
 				"parentTarget": {
-					"viewName": "ShellBarWithSplitApp",
-					"viewLevel": 1
+					"viewName": "ShellBarWithSplitApp"
 				},
-				"childTarget0": {
-					"viewPath": "demo.view.children",
-					"viewName": "Empty",
+				"homeTarget": {
+					"viewName": "Home",
 					"parent": "parentTarget",
 					"controlId": "parentNavContainer",
 					"controlAggregation": "pages",
-					"transition": "flip",
-					"viewLevel": 2
+					"transition": "slide"
 				},
 				"rtChCommoditiesTarget": {
 					"viewPath": "cbc.co.simulador_costos.view.DataDefault.Commodities",
@@ -146,62 +150,49 @@
 					"parent": "parentTarget",
 					"controlId": "parentNavContainer",
 					"controlAggregation": "pages",
-					"transition": "slide",
-					"viewLevel": 3
+					"transition": "slide"
 				},
 				"rtChFromuladoraTarget": {
 					"viewPath": "cbc.co.simulador_costos.view.Utilities",
 					"viewName": "Formuladora",
 					"parent": "parentTarget",
 					"controlId": "parentNavContainer",
-					"transition": "flip",
-					"controlAggregation": "pages",
-					"viewLevel": 4
+					"transition": "flip"
 				},
 				"rtChIDCommoditiesTarget": {
 					"viewPath": "cbc.co.simulador_costos.view.DataDefault.Commodities",
 					"viewName": "AdminIDCommodities",
 					"parent": "parentTarget",
 					"controlId": "parentNavContainer",
-					"transition": "flip",
-					"controlAggregation": "pages",
-					"viewLevel": 4
+					"transition": "flip"
 				},
 				"rtChMaterialesTarget": {
 					"viewPath": "cbc.co.simulador_costos.view.DataDefault.Materiales",
 					"viewName": "AdminMateriales",
 					"parent": "parentTarget",
 					"controlId": "parentNavContainer",
-					"transition": "slide",
-					"controlAggregation": "pages",
-					"viewLevel": 3
+					"transition": "slide"
 				},
 				"rtChMantenimientoCommoditiesTarget": {
 					"viewPath": "cbc.co.simulador_costos.view.Commodities",
 					"viewName": "Commodities",
 					"parent": "parentTarget",
 					"controlId": "parentNavContainer",
-					"transition": "slide",
-					"controlAggregation": "pages",
-					"viewLevel": 3
+					"transition": "slide"
 				},
 				"rtChCostosLogisticosTarget": {
 					"viewPath": "cbc.co.simulador_costos.view.DataDefault.LogisticCost",
 					"viewName": "AdminLogisticCost",
 					"parent": "parentTarget",
 					"controlId": "parentNavContainer",
-					"transition": "slide",
-					"controlAggregation": "pages",
-					"viewLevel": 3
+					"transition": "slide"
 				},
 				"rtChUsersTarget": {
 					"viewPath": "cbc.co.simulador_costos.view.Admon",
 					"viewName": "Users",
 					"parent": "parentTarget",
 					"controlId": "parentNavContainer",
-					"transition": "slide",
-					"controlAggregation": "pages",
-					"viewLevel": 3
+					"transition": "slide"
 				},
 				"notFound": {
 					"viewName": "Parent",

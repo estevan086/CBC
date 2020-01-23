@@ -1,14 +1,68 @@
-<edmx:Edmx xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx"
-	xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:sap="http://www.sap.com/Protocols/SAPData" Version="1.0">
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx"
+	xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:sap="http://www.sap.com/Protocols/SAPData">
 	<edmx:DataServices m:DataServiceVersion="2.0">
-		<Schema xmlns="http://schemas.microsoft.com/ado/2008/09/edm" Namespace="Z_SIMULADOR_SRV" xml:lang="es" sap:schema-version="1">
+		<Schema Namespace="Z_SIMULADOR_SRV" xml:lang="es" sap:schema-version="1" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+			<EntityType Name="Subscription" sap:semantics="subscriptions" sap:content-version="1">
+				<Key><PropertyRef Name="ID"/></Key><Property Name="ID" Type="Edm.String" Nullable="false" MaxLength="32" sap:label="Ab.-ID" sap:creatable="false" sap:updatable="false"
+					sap:filterable="false"/><Property Name="user" Type="Edm.String" MaxLength="12" m:FC_TargetPath="SyndicationAuthorName" m:FC_KeepInContent="false"
+					sap:label="Usuario" sap:creatable="false" sap:filterable="false"/><Property Name="updated" Type="Edm.DateTime" Precision="0" m:FC_TargetPath="SyndicationUpdated" m:FC_KeepInContent="false"
+					sap:label="Cronomarcador" sap:creatable="false" sap:filterable="false"/><Property Name="title" Type="Edm.String" MaxLength="255" m:FC_TargetPath="SyndicationTitle" m:FC_KeepInContent="false" sap:label="Titel"
+					sap:filterable="false"/><Property Name="deliveryAddress" Type="Edm.String" sap:label="Lieferadresse" sap:filterable="false"/><Property Name="persistNotifications" Type="Edm.Boolean" sap:label="Benachr. persist." sap:filterable="false"/><Property Name="collection" Type="Edm.String" MaxLength="40" sap:label="Sammlung" sap:filterable="false"/><Property Name="filter" Type="Edm.String" sap:label="Filter" sap:filterable="false"/><Property Name="select" Type="Edm.String" MaxLength="255" sap:label="Markieren" sap:filterable="false"/><Property Name="changeType" Type="Edm.String" MaxLength="30" sap:label="Änderungsart"/></EntityType>
+			<EntityType Name="Notification" sap:semantics="notifications" sap:content-version="1">
+				<Key><PropertyRef Name="ID"/></Key><Property Name="ID" Type="Edm.String" Nullable="false" MaxLength="32" sap:label="Benachr-ID"/><Property Name="collection" Type="Edm.String" MaxLength="40" sap:label="Sammlung"/><Property Name="title" Type="Edm.String" m:FC_TargetPath="SyndicationTitle" m:FC_KeepInContent="false" sap:label="Benachr.text"/><Property Name="updated" Type="Edm.DateTime" Precision="0" m:FC_TargetPath="SyndicationUpdated" m:FC_KeepInContent="false"
+					sap:label="Cronomarcador"/><Property Name="changeType" Type="Edm.String" MaxLength="30" sap:label="Änderungsart"/><Property Name="entriesOfInterest" Type="Edm.Int32" sap:label="Anzahl Einträge"/><Property Name="recipient" Type="Edm.String" MaxLength="112" sap:label="Empfänger" sap:creatable="false" sap:updatable="false"/></EntityType>
+			<EntityType Name="unidadesMedida" sap:content-version="1">
+				<Key><PropertyRef Name="Mandt"/><PropertyRef Name="Spras"/><PropertyRef Name="Msehi"/></Key><Property Name="Mandt" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="Mandante" sap:creatable="false"
+					sap:updatable="false"/><Property Name="Spras" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:label="Idioma" sap:creatable="false"
+					sap:updatable="false"/><Property Name="Msehi" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="Un.medida int." sap:creatable="false"
+					sap:updatable="false" sap:semantics="unit-of-measure"/><Property Name="Mseh3" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="Comercial" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Mseh6" Type="Edm.String" Nullable="false" MaxLength="6" sap:unicode="false" sap:label="Técnico" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Mseht" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Texto UM" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Msehl" Type="Edm.String" Nullable="false" MaxLength="30" sap:unicode="false" sap:label="Ud.medida txt.1"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/></EntityType>
+			<EntityType Name="materialDefatult" sap:content-version="1">
+				<Key><PropertyRef Name="Material"/><PropertyRef Name="CompCode"/><PropertyRef Name="Plant"/><PropertyRef Name="BaseUom"/><PropertyRef Name="Currency"/></Key><Property Name="Material" Type="Edm.String" Nullable="false" MaxLength="18" sap:unicode="false" sap:label="" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="yfotrcost" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Fórmula Otros Costos"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="CompCode" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Plant" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="BaseUom" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false" sap:semantics="unit-of-measure"/><Property Name="Currency" Type="Edm.String" Nullable="false" MaxLength="5" sap:unicode="false" sap:label="" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false" sap:semantics="currency-code"/><Property Name="Recordmode" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="Modo reg." sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="catgoria" Type="Edm.String" Nullable="false" MaxLength="5" sap:unicode="false" sap:label="" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="subcateg" Type="Edm.String" Nullable="false" MaxLength="5" sap:unicode="false" sap:label="" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="familia" Type="Edm.String" Nullable="false" MaxLength="9" sap:unicode="false" sap:label="" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="ysubfamil" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:label="" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Fiscyear" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Fiscvarnt" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:label="" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Fiscper3" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="NetWeight" Type="Edm.Decimal" Nullable="false" Precision="17" Scale="3" sap:unicode="false" sap:unit="UnitOfWt" sap:label=""
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="UnitOfWt" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false" sap:semantics="unit-of-measure"/><Property Name="commodit" Type="Edm.String" Nullable="false" MaxLength="5" sap:unicode="false" sap:label="" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Incoterms" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="preprodc" Type="Edm.Decimal" Nullable="false" Precision="17" Scale="3" sap:unicode="false" sap:label=""
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="costconv" Type="Edm.Decimal" Nullable="false" Precision="17" Scale="3" sap:unicode="false" sap:label=""
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="costadic" Type="Edm.Decimal" Nullable="false" Precision="17" Scale="3" sap:unicode="false" sap:label=""
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="costenv" Type="Edm.Decimal" Nullable="false" Precision="17" Scale="3" sap:unicode="false" sap:label="" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="costmat" Type="Edm.Decimal" Nullable="false" Precision="17" Scale="3" sap:unicode="false" sap:label="" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="otrocost" Type="Edm.Decimal" Nullable="false" Precision="17" Scale="3" sap:unicode="false" sap:label=""
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="ptransf" Type="Edm.Decimal" Nullable="false" Precision="17" Scale="3" sap:unicode="false" sap:label="" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="costrans" Type="Edm.Decimal" Nullable="false" Precision="17" Scale="3" sap:unicode="false" sap:label=""
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="ppremisa" Type="Edm.Decimal" Nullable="false" Precision="17" Scale="3" sap:unicode="false" sap:label=""
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/></EntityType>
+			<EntityType Name="categorialogistica" sap:content-version="1">
+				<Key><PropertyRef Name="CatCosLo"/></Key><Property Name="CatCosLo" Type="Edm.String" Nullable="false" MaxLength="5" sap:unicode="false" sap:label="" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="PerResp" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:label="" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Date0" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:label="" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="TxtMd" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/></EntityType>
 			<EntityType Name="test" sap:content-version="1">
-				<Key><PropertyRef Name="output"/></Key><Property Name="output" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false"
+				<Key><PropertyRef Name="output"/></Key><Property Name="output" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="" sap:creatable="false" sap:updatable="false"
 					sap:sortable="false" sap:filterable="false"/></EntityType>
 			<EntityType Name="maestroCentros" sap:content-version="1">
 				<Key><PropertyRef Name="Plant"/><PropertyRef Name="Objvers"/></Key><Property Name="Plant" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Centro" sap:creatable="false"
 					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Objvers" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="Versión" sap:creatable="false"
-					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Changed" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Changed" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="" sap:creatable="false" sap:updatable="false"
 					sap:sortable="false" sap:filterable="false"/><Property Name="Altitude" Type="Edm.Decimal" Nullable="false" Precision="17" Scale="3" sap:unicode="false" sap:label="Altitud geográfica"
 					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Bpartner" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:creatable="false" sap:updatable="false"
 					sap:sortable="false" sap:filterable="false"/><Property Name="Country" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="País" sap:creatable="false"
@@ -28,10 +82,10 @@
 					sap:sortable="false" sap:filterable="false"/><Property Name="Region" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:creatable="false" sap:updatable="false"
 					sap:sortable="false" sap:filterable="false"/><Property Name="RtArea" Type="Edm.String" Nullable="false" MaxLength="6" sap:unicode="false" sap:creatable="false" sap:updatable="false"
 					sap:sortable="false" sap:filterable="false"/><Property Name="RtCustpl" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:creatable="false" sap:updatable="false"
-					sap:sortable="false" sap:filterable="false"/><Property Name="RtLbldatf" Type="Edm.DateTime" Nullable="false" Precision="7" sap:unicode="false" sap:creatable="false"
-					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="RtLbldatt" Type="Edm.DateTime" Nullable="false" Precision="7" sap:unicode="false" sap:creatable="false"
-					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="RtLcldat" Type="Edm.DateTime" Nullable="false" Precision="7" sap:unicode="false" sap:creatable="false" sap:updatable="false"
-					sap:sortable="false" sap:filterable="false"/><Property Name="RtLopdat" Type="Edm.DateTime" Nullable="false" Precision="7" sap:unicode="false" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/><Property Name="RtLbldatf" Type="Edm.DateTime" Precision="7" sap:unicode="false" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/><Property Name="RtLbldatt" Type="Edm.DateTime" Precision="7" sap:unicode="false" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/><Property Name="RtLcldat" Type="Edm.DateTime" Precision="7" sap:unicode="false" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/><Property Name="RtLopdat" Type="Edm.DateTime" Precision="7" sap:unicode="false" sap:creatable="false" sap:updatable="false"
 					sap:sortable="false" sap:filterable="false"/><Property Name="Salesorg" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:creatable="false" sap:updatable="false"
 					sap:sortable="false" sap:filterable="false"/><Property Name="SalesDist" Type="Edm.String" Nullable="false" MaxLength="6" sap:unicode="false" sap:creatable="false" sap:updatable="false"
 					sap:sortable="false" sap:filterable="false"/><Property Name="Srcid" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="ID de fuente datos"
@@ -46,22 +100,59 @@
 					sap:sortable="false" sap:filterable="false"/><Property Name="RmaVtweg" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:creatable="false" sap:updatable="false"
 					sap:sortable="false" sap:filterable="false"/></EntityType>
 			<EntityType Name="paises" sap:content-version="1">
-				<Key><PropertyRef Name="Country"/></Key><Property Name="Country" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="País" sap:creatable="false"
-					sap:updatable="false"/><Property Name="Langu" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:label="Idioma" sap:creatable="false"
-					sap:updatable="false" sap:sortable="false"/><Property Name="Txtsh" Type="Edm.String" Nullable="false" MaxLength="20" sap:unicode="false" sap:label="Descripción breve"
+				<Key><PropertyRef Name="Pais"/></Key><Property Name="Pais" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="País" sap:creatable="false"
+					sap:updatable="false"/><Property Name="Idioma" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:label="Idioma" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false"/><Property Name="Descripcion" Type="Edm.String" Nullable="false" MaxLength="20" sap:unicode="false" sap:label="Descripción breve"
 					sap:creatable="false" sap:updatable="false"/></EntityType>
 			<EntityType Name="detailCommodities" sap:content-version="1">
-				<Key><PropertyRef Name="IdCommoditie"/><PropertyRef Name="Sociedad"/><PropertyRef Name="Centro"/><PropertyRef Name="UnidadMedida"/><PropertyRef Name="Moneda"/><PropertyRef Name="Formula"/><PropertyRef Name="Mes"/><PropertyRef Name="Year"/></Key><Property Name="IdCommoditie" Type="Edm.String" Nullable="false" MaxLength="5" sap:unicode="false" sap:creatable="false"
-					sap:updatable="false"/><Property Name="Sociedad" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:creatable="false" sap:updatable="false"/><Property Name="Centro" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:creatable="false" sap:updatable="false"/><Property Name="UnidadMedida" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:creatable="false"
-					sap:updatable="false" sap:semantics="unit-of-measure"/><Property Name="Moneda" Type="Edm.String" Nullable="false" MaxLength="5" sap:unicode="false" sap:creatable="false" sap:updatable="false"
-					sap:semantics="currency-code"/><Property Name="Formula" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:creatable="false" sap:updatable="false"/><Property Name="Mes" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:creatable="false" sap:updatable="false"/><Property Name="Year" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:creatable="false" sap:updatable="false"/><Property Name="Recordmode" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:creatable="false" sap:updatable="false"
-					sap:sortable="false"/><Property Name="PrecioMaterial" Type="Edm.Decimal" Nullable="false" Precision="18" Scale="3" sap:unicode="false" sap:unit="Moneda"
-					sap:creatable="false" sap:updatable="false" sap:sortable="false"/><Property Name="OtrosCostos" Type="Edm.Decimal" Nullable="false" Precision="17" Scale="3" sap:unicode="false" sap:creatable="false"
-					sap:updatable="false" sap:sortable="false"/></EntityType>
-			<EntityContainer Name="Z_SIMULADOR_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx"><EntitySet Name="testSet" EntityType="Z_SIMULADOR_SRV.test" sap:creatable="false" sap:updatable="false" sap:deletable="false"
+				<Key><PropertyRef Name="IdCommoditie"/><PropertyRef Name="Sociedad"/><PropertyRef Name="Centro"/><PropertyRef Name="UnidadMedida"/><PropertyRef Name="Moneda"/><PropertyRef Name="Mes"/><PropertyRef Name="Year"/></Key><Property Name="Formula" Type="Edm.String" MaxLength="10" sap:unicode="false" sap:label="Fórmula Otros Costos" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="IdCommoditie" Type="Edm.String" Nullable="false" MaxLength="5" sap:unicode="false" sap:label="" sap:creatable="false"
+					sap:updatable="false"/><Property Name="Sociedad" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="" sap:creatable="false"
+					sap:updatable="false"/><Property Name="Centro" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="" sap:creatable="false"
+					sap:updatable="false"/><Property Name="UnidadMedida" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="" sap:creatable="false"
+					sap:updatable="false" sap:semantics="unit-of-measure"/><Property Name="Moneda" Type="Edm.String" Nullable="false" MaxLength="5" sap:unicode="false" sap:label="" sap:creatable="false"
+					sap:updatable="false" sap:semantics="currency-code"/><Property Name="Mes" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="" sap:creatable="false"
+					sap:updatable="false"/><Property Name="Year" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="" sap:creatable="false"
+					sap:updatable="false"/><Property Name="Recordmode" Type="Edm.String" MaxLength="1" sap:unicode="false" sap:label="Modo reg." sap:creatable="false"
+					sap:updatable="false" sap:sortable="false"/><Property Name="PrecioMaterial" Type="Edm.Decimal" Precision="18" Scale="3" sap:unicode="false" sap:unit="Moneda" sap:label=""
+					sap:creatable="false" sap:updatable="false" sap:sortable="false"/><Property Name="OtrosCostos" Type="Edm.Decimal" Precision="17" Scale="3" sap:unicode="false" sap:label="" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false"/><NavigationProperty Name="headerCommodities" Relationship="Z_SIMULADOR_SRV.AsdetailCommodities" FromRole="ToRole_AsdetailCommodities"
+					ToRole="FromRole_AsdetailCommodities"/></EntityType>
+			<EntityType Name="headerCommodities" sap:content-version="1">
+				<Key><PropertyRef Name="IdCommoditie"/></Key><Property Name="IdCommoditie" Type="Edm.String" Nullable="false" MaxLength="5" sap:unicode="false" sap:label=""/><Property Name="Descripcion" Type="Edm.String" MaxLength="20" sap:unicode="false" sap:label="" sap:creatable="false" sap:updatable="false"/><NavigationProperty Name="detailCommoditiesSet" Relationship="Z_SIMULADOR_SRV.AsdetailCommodities" FromRole="FromRole_AsdetailCommodities"
+					ToRole="ToRole_AsdetailCommodities"/></EntityType>
+			<EntityType Name="codigocostologistico" sap:content-version="1">
+				<Key><PropertyRef Name="CostLog"/></Key><Property Name="CostLog" Type="Edm.String" Nullable="false" MaxLength="5" sap:unicode="false" sap:label="" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Recordmode" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="CatCoslLo" Type="Edm.String" Nullable="false" MaxLength="5" sap:unicode="false" sap:label="" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="PerResp" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:label="" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Date0" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:label="" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="TxtMd" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/></EntityType>
+			<EntityType Name="costologistico" sap:content-version="1">
+				<Key><PropertyRef Name="CostLog"/></Key><Property Name="CostLog" Type="Edm.String" Nullable="false" MaxLength="5" sap:unicode="false" sap:label="" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/></EntityType>
+			<Association Name="AsdetailCommodities" sap:content-version="1"><End Type="Z_SIMULADOR_SRV.headerCommodities" Multiplicity="1" Role="FromRole_AsdetailCommodities"/><End Type="Z_SIMULADOR_SRV.detailCommodities" Multiplicity="*" Role="ToRole_AsdetailCommodities"/>
+				<ReferentialConstraint>
+					<Principal Role="FromRole_AsdetailCommodities"><PropertyRef Name="IdCommoditie"/></Principal>
+					<Dependent Role="ToRole_AsdetailCommodities"><PropertyRef Name="IdCommoditie"/></Dependent>
+				</ReferentialConstraint>
+			</Association>
+			<EntityContainer Name="Z_SIMULADOR_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx"><EntitySet Name="SubscriptionCollection" EntityType="Z_SIMULADOR_SRV.Subscription" sap:content-version="1"/><EntitySet Name="NotificationCollection" EntityType="Z_SIMULADOR_SRV.Notification" sap:creatable="false" sap:updatable="false"
+				sap:deletable="false" sap:addressable="false" sap:content-version="1"/><EntitySet Name="unidadesMedidaSet" EntityType="Z_SIMULADOR_SRV.unidadesMedida" sap:creatable="false" sap:updatable="false"
+				sap:deletable="false" sap:pageable="false" sap:content-version="1"/><EntitySet Name="materialDefatultSet" EntityType="Z_SIMULADOR_SRV.materialDefatult" sap:creatable="false" sap:updatable="false"
+				sap:deletable="false" sap:pageable="false" sap:content-version="1"/><EntitySet Name="categorialogisticaSet" EntityType="Z_SIMULADOR_SRV.categorialogistica" sap:creatable="false" sap:updatable="false"
+				sap:deletable="false" sap:pageable="false" sap:content-version="1"/><EntitySet Name="testSet" EntityType="Z_SIMULADOR_SRV.test" sap:creatable="false" sap:updatable="false" sap:deletable="false"
 				sap:pageable="false" sap:addressable="false" sap:content-version="1"/><EntitySet Name="maestroCentrosSet" EntityType="Z_SIMULADOR_SRV.maestroCentros" sap:creatable="false" sap:updatable="false"
 				sap:deletable="false" sap:searchable="true" sap:pageable="false" sap:content-version="1"/><EntitySet Name="paisesSet" EntityType="Z_SIMULADOR_SRV.paises" sap:creatable="false" sap:updatable="false" sap:deletable="false"
-				sap:pageable="false" sap:content-version="1"/><EntitySet Name="detailCommoditiesSet" EntityType="Z_SIMULADOR_SRV.detailCommodities" sap:creatable="false" sap:updatable="false"
-				sap:deletable="false" sap:pageable="false" sap:content-version="1"/></EntityContainer><atom:link xmlns:atom="http://www.w3.org/2005/Atom" rel="self" href="./sap/Z_SIMULADOR_SRV/$metadata"/><atom:link xmlns:atom="http://www.w3.org/2005/Atom" rel="latest-version" href="./sap/Z_SIMULADOR_SRV/$metadata"/></Schema>
+				sap:searchable="true" sap:pageable="false" sap:content-version="1"/><EntitySet Name="detailCommoditiesSet" EntityType="Z_SIMULADOR_SRV.detailCommodities" sap:creatable="false" sap:updatable="false"
+				sap:deletable="false" sap:searchable="true" sap:pageable="false" sap:content-version="1"/><EntitySet Name="headerCommoditiesSet" EntityType="Z_SIMULADOR_SRV.headerCommodities" sap:searchable="true" sap:pageable="false"
+				sap:content-version="1"/><EntitySet Name="codigocostologisticoSet" EntityType="Z_SIMULADOR_SRV.codigocostologistico" sap:creatable="false" sap:updatable="false"
+				sap:deletable="false" sap:pageable="false" sap:content-version="1"/><EntitySet Name="costologisticoSet" EntityType="Z_SIMULADOR_SRV.costologistico" sap:creatable="false" sap:updatable="false"
+				sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+				<AssociationSet Name="AsdetailCommoditiesSet" Association="Z_SIMULADOR_SRV.AsdetailCommodities" sap:creatable="false" sap:updatable="false"
+					sap:deletable="false" sap:content-version="1"><End EntitySet="headerCommoditiesSet" Role="FromRole_AsdetailCommodities"/><End EntitySet="detailCommoditiesSet" Role="ToRole_AsdetailCommodities"/></AssociationSet>
+			</EntityContainer><atom:link rel="self" href="https://sapfioridq:8003/sap/opu/odata/sap/Z_SIMULADOR_SRV/$metadata" xmlns:atom="http://www.w3.org/2005/Atom"/><atom:link rel="latest-version" href="https://sapfioridq:8003/sap/opu/odata/sap/Z_SIMULADOR_SRV/$metadata"
+				xmlns:atom="http://www.w3.org/2005/Atom"/></Schema>
 	</edmx:DataServices>
 </edmx:Edmx>

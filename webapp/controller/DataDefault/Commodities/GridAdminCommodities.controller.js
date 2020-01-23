@@ -27,6 +27,13 @@ sap.ui.define([
 
 	return Controller.extend("cbc.co.simulador_costos.controller.DataDefault.Commodities.GridAdminCommodities", {
 
+		onAfterRendering: function () {
+			
+			const table = this.byId("tblCommodities");
+	       table.getColumns().map((col, index) => table.autoResizeColumn(index));
+			
+		},
+		
 		onInit: function () {
 
 			// set explored app's demo model on this sample
@@ -46,8 +53,18 @@ sap.ui.define([
 		},
 		
 		onMyRoutePatternMatched: function (event) {
+			
+			var oTable = this.getView().byId('tblCommodities');
+			
+			// for (var i = 0; i < table.getColumns().length; i++) {
+			// 	table.autoResizeColumn(i);
+			// }
+			
+		//	oTable.getColumns().map((col, index) => oTable.autoResizeColumn(index));
+			
 			this.fnConsultaDetalleCommodities(); 
 		},
+		
 
 		fnConsultaDetalleCommodities:  function (event) {
 			// your code when the view is about to be displayed ..
@@ -68,6 +85,14 @@ sap.ui.define([
 
 			if (oRead.tipo === "S") {
 				this.oDataDetalleCommodities = oRead.datos.results;
+				var obj = this.oDataDetalleCommodities;
+				//Object.keys(obj).map(k => obj[k] = obj[k].trim());
+				
+				// Object.keys(obj).map(function(key, index) {
+				//   //obj[key] *= 2;
+				//   obj[key] = obj[key].trim();
+				// });
+
 			} else {
 				MessageBox.error(oRead.msjs, null, "Mensaje del sistema", "OK", null);
 			}
@@ -84,8 +109,20 @@ sap.ui.define([
 			var oTablaDetalleCommodities = this.byId("tblCommodities");
 			var oModel2 = new sap.ui.model.json.JSONModel(oDataDetalleCommodities);
 			oTablaDetalleCommodities.setModel(oModel2);
+			
+			var columnCount = oTablaDetalleCommodities.getColumns().length;
+			for (var indx = 0; indx < columnCount; indx++) {
+				oTablaDetalleCommodities._aExtensions[0].doAutoResizeColumn(indx);
+			}
+			
 
 		},
+		
+		
+		onAutoResizeColumnsBtnPress: function() {
+	      const table = this.byId("tblCommodities");
+	      table.getColumns().map((col, index) => table.autoResizeColumn(index));
+	    },
 
 		switchState: function (sKey) {
 			var oTable = this.byId("tblCommoditiesui");
