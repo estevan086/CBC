@@ -3,7 +3,7 @@
 	"sap.app": {
 		"id": "cbc.co.simulador_costos",
 		"type": "application",
-		"i18n": "i18n/i18n.properties",
+		"i18n": "i18n/i18n.properties", 
 		"title": "{{appTitle}}",
 		"description": "{{appDescription}}",
 		"applicationVersion": {
@@ -191,6 +191,10 @@
 				"rtChVolumen": {
 					"pattern": "rtChVolumen",
 					"target": "rtHomeTarget"
+				}, 
+				"rtChAdminCL": {
+					"pattern": "rtChAdminCL",
+					"target": "rtChAdminCLTarget"
 				}
 			},
 			"targets": {
@@ -357,6 +361,13 @@
 				"rtChrtChVolumenTarget": {
 					"viewPath": "cbc.co.simulador_costos.view.COGS",
 					"viewName": "COGS",
+					"parent": "parentTarget",
+					"controlId": "parentNavContainer",
+					"transition": "slide"
+				},
+				"rtChAdminCLTarget": {
+					"viewPath": "cbc.co.simulador_costos.view.DataDefault.LogisticCost",
+					"viewName": "AdminIDLogisticCost",
 					"parent": "parentTarget",
 					"controlId": "parentNavContainer",
 					"transition": "slide"
