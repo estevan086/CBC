@@ -104,6 +104,10 @@
 					"pattern": "home",
 					"target": "homeTarget"
 				},
+				"rtHome": {
+					"pattern": "rtHome",
+					"target": "rtHomeTarget"
+				},
 				"rtChCommodities": {
 					"pattern": "rtChCommodities",
 					"target": "rtChCommoditiesTarget"
@@ -142,6 +146,15 @@
 					"viewName": "ShellBarWithSplitApp"
 				},
 				"homeTarget": {
+					"viewPath": "cbc.co.simulador_costos.view",
+					"viewName": "Home",
+					"parent": "parentTarget",
+					"controlId": "parentNavContainer",
+					"controlAggregation": "pages",
+					"transition": "slide"
+				},
+				"rtHomeTarget": {
+					"viewPath": "cbc.co.simulador_costos.view",
 					"viewName": "Home",
 					"parent": "parentTarget",
 					"controlId": "parentNavContainer",

@@ -21,12 +21,19 @@ sap.ui.define([
 	StandardListItem, ButtonType, MessageBox, RowSettings, CoreLibrary) {
 	"use strict";
 
-	this.updatedRecords = [];
+	var updatedRecords = [];
 	var that = this;
 	var MessageType = CoreLibrary.MessageType;
 
 	return Controller.extend("cbc.co.simulador_costos.controller.DataDefault.Commodities.GridAdminCommodities", {
 
+		onAfterRendering: function () {
+			
+			const table = this.byId("tblCommodities");
+	       table.getColumns().map((col, index) => table.autoResizeColumn(index));
+			
+		},
+		
 		onInit: function () {
 
 			// set explored app's demo model on this sample
@@ -44,8 +51,22 @@ sap.ui.define([
 			myRoute.attachPatternMatched(this.onMyRoutePatternMatched, this);
 
 		},
-
+		
 		onMyRoutePatternMatched: function (event) {
+			
+			var oTable = this.getView().byId('tblCommodities');
+			
+			// for (var i = 0; i < table.getColumns().length; i++) {
+			// 	table.autoResizeColumn(i);
+			// }
+			
+		//	oTable.getColumns().map((col, index) => oTable.autoResizeColumn(index));
+			
+			this.fnConsultaDetalleCommodities(); 
+		},
+		
+
+		fnConsultaDetalleCommodities:  function (event) {
 			// your code when the view is about to be displayed ..
 
 			//	var json = this.initSampleDataModel();
@@ -64,6 +85,14 @@ sap.ui.define([
 
 			if (oRead.tipo === "S") {
 				this.oDataDetalleCommodities = oRead.datos.results;
+				var obj = this.oDataDetalleCommodities;
+				//Object.keys(obj).map(k => obj[k] = obj[k].trim());
+				
+				// Object.keys(obj).map(function(key, index) {
+				//   //obj[key] *= 2;
+				//   obj[key] = obj[key].trim();
+				// });
+
 			} else {
 				MessageBox.error(oRead.msjs, null, "Mensaje del sistema", "OK", null);
 			}
@@ -80,8 +109,20 @@ sap.ui.define([
 			var oTablaDetalleCommodities = this.byId("tblCommodities");
 			var oModel2 = new sap.ui.model.json.JSONModel(oDataDetalleCommodities);
 			oTablaDetalleCommodities.setModel(oModel2);
+			
+			var columnCount = oTablaDetalleCommodities.getColumns().length;
+			for (var indx = 0; indx < columnCount; indx++) {
+				oTablaDetalleCommodities._aExtensions[0].doAutoResizeColumn(indx);
+			}
+			
 
 		},
+		
+		
+		onAutoResizeColumnsBtnPress: function() {
+	      const table = this.byId("tblCommodities");
+	      table.getColumns().map((col, index) => table.autoResizeColumn(index));
+	    },
 
 		switchState: function (sKey) {
 			var oTable = this.byId("tblCommoditiesui");
@@ -169,7 +210,7 @@ sap.ui.define([
 			// oEntidad.Mes = oRowData.Mes;
 			// oEntidad.Year = oRowData.Year;
 
-			that.updatedRecords.push(oEntidad);
+			updatedRecords.push(oEntidad);
 
 			MessageToast.show("Puedes comenzar a " + (oItem.getText() || oItem.getType()) + " el ID " + oRowData.IdCommoditie);
 
@@ -193,9 +234,9 @@ sap.ui.define([
 				detailCommoditiesSet: []
 			};
 
-			for (var i = 0; i < that.updatedRecords.length; i++) {
+			for (var i = 0; i < updatedRecords.length; i++) {
 
-				var CurrentRow = that.updatedRecords[i];
+				var CurrentRow = updatedRecords[i];
 
 				var oTempRow = oTable.getModel().getData().lstItemsCommodities[CurrentRow.RowPath];
 
@@ -227,6 +268,8 @@ sap.ui.define([
 						actions: [MessageBox.Action.OK],
 						onClose: function (oAction) {
 							if (oAction === sap.m.MessageBox.Action.OK) {
+								
+								updatedRecords=[];
 								return;
 							}
 						}
@@ -430,7 +473,7 @@ sap.ui.define([
 			//this.generateTile();
 		},
 
-	CargaMasiva: function (JsonValue) {
+		CargaMasiva: function (JsonValue) {
 
 			var sServiceUrl = this.getView().getModel("ModelSimulador").sServiceUrl,
 				oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true),
@@ -463,7 +506,7 @@ sap.ui.define([
 			}
 
 			var oCreate = this.fnCreateEntity(oModelService, "/headerCommoditiesSet", oEntidad);
-
+			that = this;
 			if (oCreate.tipo === 'S') {
 
 				MessageBox.show(
@@ -473,6 +516,8 @@ sap.ui.define([
 						actions: [MessageBox.Action.OK],
 						onClose: function (oAction) {
 							if (oAction === sap.m.MessageBox.Action.OK) {
+								
+								that.fnConsultaDetalleCommodities(); 
 								return;
 							}
 						}
@@ -495,7 +540,6 @@ sap.ui.define([
 			}
 
 		},
-
 
 		SetRowoDetail: function (oValue) {
 			var oDetail = {

@@ -21,7 +21,7 @@
 				</m:items>
 			</m:FlexBox>
 			<Table id="tblCommodities" rows="{/lstItemsCommodities}" selectionMode="Single" visibleRowCount="7" rowActionCount="1"
-				class="sapUiSizeCompact">
+				 class="sapUiSizeCondensed" enableColumnFreeze="true">
 				<extension>
 					<m:OverflowToolbar>
 						<m:content>
@@ -33,79 +33,92 @@
 								change="handleUpload"/>
 							<m:Button icon="sap-icon://factory" type="Emphasized" text="Administrar Commodities" tooltip="Crear Commodities"
 								press="onGoToIdCommoditieTable"/>
+								<m:Button
+					              type="Emphasized"
+					              text="Auto Resize Columns"
+					              press=".onAutoResizeColumnsBtnPress"
+					            />
 							<!--<m:Button icon="sap-icon://edit" type="Emphasized" text="Editar Version Default" tooltip="Version Default" press="showFormEditCommoditie"/>-->
 						</m:content>
 					</m:OverflowToolbar>
 				</extension>
 				<columns>
-					<Column filterProperty="IdCommoditie">
+					<Column width="5rem" filterProperty="IdCommoditie">
 						<m:Label text="ID Commoditie"/>
 						<template>
 							<m:Text text="{IdCommoditie}" wrapping="false"/>
 						</template>
 					</Column>
-					<Column>
+					<Column width="11rem" filterProperty="Descripcion" > 
 						<m:Label text="Descripcion"/>
 						<template>
 							<m:Text text="{Descripcion}" wrapping="false"/>
 						</template>
 					</Column>
-					<Column>
+					<Column width="5rem" filterProperty="Sociedad">
 						<m:Label text="Sociedad"/>
 						<template>
 							<!--<m:TextField text="{CDEF_SOCIEDAD}" editable="false"/>-->
-							<m:Input value="{Sociedad}" editable="false"/>
+							<m:Input value="{Sociedad}" editable="false" />
 							<!--<m:Text text="{CDEF_SOCIEDAD}" editable="false" visible="false"/>-->
 						</template>
 					</Column>
-					<Column>
+					<Column width="5rem" filterProperty="Centro">
+						<m:Label text="Centro"/>
+						<template>
+							<!--<m:TextField text="{CDEF_SOCIEDAD}" editable="false"/>-->
+							<m:Input value="{Centro}" editable="false" />
+							<!--<m:Text text="{CDEF_SOCIEDAD}" editable="false" visible="false"/>-->
+						</template>
+					</Column>
+					<Column width="5rem" filterProperty="Moneda" >
 						<m:Label text="Moneda"/>
 						<template>
 							<m:Input value="{Moneda}" editable="false"/>
 						</template>
 					</Column>
-					<Column>
+					<Column width="5rem" >
 						<m:Label text="Unidad Medida"/>
 						<template>
 							<m:Input value="{UnidadMedida}" editable="false"/>
 						</template>
 					</Column>
-					<Column>
+					<Column width="7rem" >
 						<m:Label text="Precio"/>
 						<template>
 							<m:Input value="{PrecioMaterial}" editable="false"/>
 						</template>
 					</Column>
-					<Column>
+					<Column width="7rem" >
 						<m:Label text="Otros Costos"/>
 						<template>
 							<m:Input value="{OtrosCostos}" editable="false"/>
 						</template>
 					</Column>
-					<Column width="14rem">
+					<Column width="10rem" >
 						<m:Label text="Formula"/>
 						<template>
-							<m:Text text="{Formula}" wrapping="true"/>
+							<m:Text text="{Formula}" wrapping="false"/>
 						</template>
 					</Column>
-					<Column width="4rem" hAlign="Center">
+					<Column width="3rem"  hAlign="Center">
 						<template>
 							<m:Button icon="sap-icon://puzzle" press="showCalculator"/>
 						</template>
 					</Column>
-					<Column>
+					<Column width="4rem" >
 						<m:Label text="Periodo"/>
 						<template>
 							<m:Text text="{Year}" wrapping="false"/>
 						</template>
 					</Column>
-					<Column>
+					<Column width="3rem" >
 						<m:Label text="Mes"/>
 						<template>
 							<m:Text text="{Mes}" wrapping="false"/>
 						</template>
 					</Column>
-					<Column visible="false">
+					<Column  visible="false">
 						<m:Label text="CDEF_EDIT_FLAG"/>
 						<template>
 							<m:Text text="{CDEF_EDIT_FLAG}" wrapping="false"/>
