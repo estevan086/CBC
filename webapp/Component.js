@@ -26,10 +26,10 @@ sap.ui.define([
 			this.setModel(oModel);
 
 			// set i18n model
-			var i18nModel = new ResourceModel({
+			/*var i18nModel = new ResourceModel({
 				bundleName : "cbc.co.simulador_costos.i18n.i18n"
 			});
-			this.setModel(i18nModel, "i18n");
+			this.setModel(i18nModel, "i18n");*/
 		// set dialog
 		//	this._helloDialog = new HelloDialog(this.getRootControl());
 			

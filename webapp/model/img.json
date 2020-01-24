@@ -3,8 +3,8 @@
 	
 	},
 	"images": [
-		"../webapp/css/images/cbcImgLogo.jpg",
-		"../webapp/css/images/ImgCbc2.PNG",
-		"../webapp/css/images/ImgCbc3.PNG"
+		"/css/images/cbcImgLogo.jpg",
+		"/css/images/ImgCbc2.PNG",
+		"/css/images/ImgCbc3.PNG"
 	]
 }
