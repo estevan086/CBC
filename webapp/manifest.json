@@ -152,7 +152,7 @@
 				},
 				"rtChUndMedida": {
 					"pattern": "rtChUndMedida",
-					"target": "rtChUndMedidaTarget"
+					"target": "rtHomeTarget"
 				},
 				"rtChPeriodo": {
 					"pattern": "rtChPeriodo",
