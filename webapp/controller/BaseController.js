@@ -435,7 +435,7 @@ sap.ui.define([
 		 * @param {object} oColumns Estructura de la tabla
 		 * @param {string} pPath Path del modelo
 		 */
-		dataExport: function (oModel, oColumns, pPath = "/") {
+		cvsDataExport: function (oModel, oColumns, pPath = "/") {
 
 			var oExport = new Export({
 

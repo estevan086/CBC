@@ -259,7 +259,7 @@ sap.ui.define([
 				});
 			});
 
-			this.dataExport(oModel, columns);
+			this.cvsDataExport(oModel, columns);
 
 		},
 		onImportCvsFile: function (oEvent) {
@@ -272,7 +272,7 @@ sap.ui.define([
 				reader.onload = function (evt) {
 					var strCSV = evt.target.result; //string in CSV 
 					var oImportData = that.csv_to_Json(strCSV, ";");
-					var oModel = that.getView().getModel("LogisticCost"),
+					var 
 						oLogistiCost = [],
 						oLogistiCostLine = {};
 
