@@ -7,8 +7,10 @@ sap.ui.define([
 	"sap/m/Button",
 	"sap/m/MessageToast",
 	"sap/m/Text",
-	"sap/m/MessageBox"
-], function (Controller, History, Dialog, Button, MessageToast, Text, MessageBox) {
+	"sap/m/MessageBox",
+	"sap/ui/core/util/Export",
+	"sap/ui/core/util/ExportTypeCSV"
+], function (Controller, History, Dialog, Button, MessageToast, Text, MessageBox, Export, ExportTypeCSV) {
 	"use strict";
 
 	return Controller.extend("cbc.co.simulador_costos.controller.BaseController", {
@@ -383,6 +385,12 @@ sap.ui.define([
 
 			return promise;
 		},
+
+		/**
+		 * Mostrar mensajes de error
+		 * @public
+		 * @param {object} oParams Parametros del OData
+		 */
 		showGeneralError: function (oParams) {
 			oParams = jQuery.extend({
 				message: "",
@@ -420,13 +428,44 @@ sap.ui.define([
 				actions: sap.m.MessageBox.Action.CLOSE
 			});
 		},
-		csv_to_Json: function (csv) {
-			var lines = csv.split("\n");
+		/**
+		 * Exportar a CSV
+		 * @public
+		 * @param {object} JSON oModel Modelo de la tabla
+		 * @param {object} oColumns Estructura de la tabla
+		 * @param {string} pPath Path del modelo
+		 */
+		dataExport: function (oModel, oColumns, pPath = "/") {
+
+			var oExport = new Export({
+
+				exportType: new ExportTypeCSV({
+					separatorChar: ";"
+				}),
+
+				models: oModel,
+
+				rows: {
+					path: pPath
+				},
+				columns: oColumns
+			});
+
+			oExport.saveFile().catch(function (oError) {
+				this.showGeneralError({
+					oDataError: oError
+				});
+			}).then(function () {
+				oExport.destroy();
+			});
+		},
+		csv_to_Json: function (pCsv, pSeparator) {
+			var lines = pCsv.split("\n");
 			var result = [];
-			var headers = lines[0].split(",");
+			var headers = lines[0].split(pSeparator);
 			for (var i = 1; i < lines.length; i++) {
 				var obj = {};
-				var currentline = lines[i].split(",");
+				var currentline = lines[i].split(pSeparator);
 				for (var j = 0; j < headers.length; j++) {
 					obj[headers[j]] = currentline[j];
 				}
@@ -434,7 +473,7 @@ sap.ui.define([
 			}
 			var oStringResult = JSON.stringify(result);
 			var oFinalResult = JSON.parse(oStringResult.replace(/\\r/g, "")); //OBJETO JSON para guardar
-			
+
 			return oFinalResult;
 		}
 
