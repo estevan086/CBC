@@ -44,15 +44,15 @@ html[dir="rtl"] .myAppDemoWT .myCustomButton.sapMBtn {
 	background : #fafafa !important;
 }
 
-.sapMBtnInner{
+.sapUiTableCell .sapMBtnInner{
 	border: none !important;
 }
 
-.sapMInputBaseContentWrapper{
+.sapUiTableCell .sapMInputBaseContentWrapper{
 	border: none !important;
 }
 
-.sapMInputBaseInner{
+.sapUiTableCell .sapMInputBaseInner {
 	background: white !important;
 }
 

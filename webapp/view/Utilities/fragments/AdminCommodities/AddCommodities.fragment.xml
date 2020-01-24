@@ -5,26 +5,23 @@
 	xmlns:mvc="sap.ui.core.mvc"
 	xmlns:html="http://www.w3.org/1999/xhtml" 
 	xmlns:l="sap.ui.layout">
-
-	<m:Dialog id="dialogAdd" title="Crear commoditie" >
-		<m:VBox id="vbox1" class="sapUiSmallMargin">
-			<f:SimpleForm id="simpleform1"
-				columnsM="2"
-				columnsL="2"
-				columnsXL="2">
-						<f:content>
-							<m:Label id="label1" text="ID"/>
-							<m:Input id="inputId"  name="txtID"/>
-							<m:Label id="label2" text="Nombre"/>
-							<m:Input id="inputDesc" name="txtName"/>
-						</f:content>
-					</f:SimpleForm>
+	<m:Dialog id="dialogAdd" title="{i18n>CrearCMID}">
+		<m:VBox id="vbxAddCM" >
+			<f:SimpleForm id="fmAddCM" columnsM="2" columnsL="2" columnsXL="2">
+				<f:content>
+					<m:Label text="ID" labelFor="inpId"/>
+					<m:Input id="inpId" name="txtID" type="Text" value="COM_" enabled="false"  />
+					<m:Label text="Descripción"/>
+					<m:Input id="inpDesc" name="txtName" required="true" value="{Commodities>/TxtDesc}" />
+				</f:content>
+			</f:SimpleForm>
 		</m:VBox>
-	<m:beginButton>
-         <m:Button id="btnsave" icon="sap-icon://save"  text="save" tooltip="save" press="AddCommoditie"/>
-    </m:beginButton>
-	<m:endButton>
-         <m:Button id="btncancel" icon="sap-icon://decline" text="cancel" tooltip="cancel"  press="fnCloseFragment"/>
-    </m:endButton>
+		<m:beginButton>
+			<m:Button id="btnsave" icon="sap-icon://save" text="{i18n>Guardar}" tooltip="{i18n>Guardar}" press="AddCommoditie"/>
+		</m:beginButton>
+		<m:endButton>
+			<m:Button id="btncancel" icon="sap-icon://decline" text="{i18n>Cancelar}" tooltip="{i18n>Cancelar}" press="fnCloseFragment"/>
+		</m:endButton>
 	</m:Dialog>
+	
 </c:FragmentDefinition>

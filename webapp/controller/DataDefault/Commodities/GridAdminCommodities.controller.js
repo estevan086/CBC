@@ -273,7 +273,7 @@ sap.ui.define([
 				navigated: "{CDEF_NAV_FLAG}"
 			}));
 
-			sap.ui.getCore().applyChanges();
+			//sap.ui.getCore().applyChanges();
 
 			var oEntidad = {};
 			oEntidad.RowPath = oEvent.getSource().getBindingContext().sPath.split('/')[2];;

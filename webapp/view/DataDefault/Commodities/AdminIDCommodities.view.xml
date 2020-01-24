@@ -1,51 +1,45 @@
 <mvc:View xmlns="sap.m" xmlns:layout="sap.ui.layout" xmlns:mvc="sap.ui.core.mvc" xmlns:ui="sap.ui.table"
 	controllerName="cbc.co.simulador_costos.controller.DataDefault.Commodities.AdminIDCommodities">
-	<App>
-		<pages>
-			<Page showHeader="true" enableScrolling="false" class="sapUiContentPadding" showNavButton="true" navButtonPress="onBack">
-				<content>
-					<ui:Table id="tblCommodities" rows="{/COMMODITIES}" selectionMode="None" visibleRowCount="10">
-						<ui:extension>
-							<OverflowToolbar>
-								<content>
-									<Title id="title" text="Commodities"/>
-									<ToolbarSpacer/>
-									<Button icon="sap-icon://factory" type="Emphasized" text="Crear Commodities" tooltip="Crear Commodities"
-										press="showFormAddCommoditie"/>
-									<Button icon="sap-icon://save" type="Emphasized" text="Guardar Commodities" tooltip="Guardar Commodities"
-									press="saveCommodities"/>
-								</content>
-							</OverflowToolbar>
-						</ui:extension>
-						<ui:columns>
-							<ui:Column>
-								<Label text="ICDEF_IDCOMMODITIES"/>
-								<ui:template>
-									<Text text="{CDEF_IDCOMMODITIES}" wrapping="false"/>
-								</ui:template>
-							</ui:Column>
-							<ui:Column>
-								<Label text="CDEF_COMMODITIE"/>
-								<ui:template>
-									<Input value="{CDEF_COMMODITIE}" editable="false"/>
-								</ui:template>
-							</ui:Column>
-						</ui:columns>
-						<ui:rowActionTemplate>
-							<ui:RowAction>
-								<ui:items>
-									<ui:RowActionItem type="Navigation" text="Editar" press="handleEditPress" icon="sap-icon://edit"></ui:RowActionItem>
-								</ui:items>
-							</ui:RowAction>
-							<ui:RowAction>
-								<ui:items>
-									<ui:RowActionItem type="Navigation" text="Eliminar" press="handleDeletePress" icon="sap-icon://delete"></ui:RowActionItem>
-								</ui:items>
-							</ui:RowAction>
-						</ui:rowActionTemplate>
-					</ui:Table>
-				</content>
-			</Page>
-		</pages>
-	</App>
+	<Page showHeader="true" enableScrolling="false" class="sapUiContentPadding" showNavButton="true" navButtonPress="onBack">
+		<content>
+			<ui:Table id="tblCommodities" rows="{Commodities>/CodCommodities}" selectionMode="None" visibleRowCount="10" rowActionCount="2">
+				<ui:extension>
+					<OverflowToolbar>
+						<content>
+							<Title id="title" text="Commodities"/>
+							<ToolbarSpacer/>
+							<Button icon="sap-icon://factory" type="Emphasized" text="Crear Commodities" tooltip="Crear Commodities" press="showFormAddCommoditie"/>
+							<!--<Button icon="sap-icon://save" type="Emphasized" text="Guardar Commodities" tooltip="Guardar Commodities" press="saveCommodities"/>-->
+						</content>
+					</OverflowToolbar>
+				</ui:extension>
+				<ui:columns>
+					<ui:Column>
+						<Label text="Id Commoditie"/>
+						<ui:template>
+							<Text text="{Commodities>IdCommoditie}" wrapping="false"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column>
+						<Label text="Descripcion"/>
+						<ui:template>
+							<Input id="txtDescGrid" value="{Commodities>Descripcion}" editable="false"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="4rem" hAlign="Center">
+						<ui:template>
+							<Button tooltip="Editar" icon="sap-icon://edit" press="handleEditPress"/>
+						</ui:template>
+					</ui:Column>
+				</ui:columns>
+				<ui:rowActionTemplate>
+					<ui:RowAction>
+						<ui:items>
+							<ui:RowActionItem type="Navigation" text="Eliminar" press="handleDeletePress" icon="sap-icon://delete"></ui:RowActionItem>
+						</ui:items>
+					</ui:RowAction>
+				</ui:rowActionTemplate>
+			</ui:Table>
+		</content>
+	</Page>
 </mvc:View>
