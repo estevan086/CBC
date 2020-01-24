@@ -6,8 +6,11 @@ sap.ui.define([
 	"sap/m/Dialog",
 	"sap/m/Button",
 	"sap/m/MessageToast",
-	"sap/m/Text"
-], function(Controller, History, Dialog, Button, MessageToast, Text) {
+	"sap/m/Text",
+	"sap/m/MessageBox",
+	"sap/ui/core/util/Export",
+	"sap/ui/core/util/ExportTypeCSV"
+], function (Controller, History, Dialog, Button, MessageToast, Text, MessageBox, Export, ExportTypeCSV) {
 	"use strict";
 
 	return Controller.extend("cbc.co.simulador_costos.controller.BaseController", {
@@ -16,7 +19,7 @@ sap.ui.define([
 		 * @public
 		 * @returns {sap.ui.core.routing.Router} the router for this component
 		 */
-		getRouter: function() {
+		getRouter: function () {
 			return this.getOwnerComponent().getRouter();
 		},
 
@@ -26,7 +29,7 @@ sap.ui.define([
 		 * @param {string} sName the model name
 		 * @returns {sap.ui.model.Model} the model instance
 		 */
-		getModel: function(sName) {
+		getModel: function (sName) {
 			return this.getView().getModel(sName);
 		},
 
@@ -37,7 +40,7 @@ sap.ui.define([
 		 * @param {string} sName the model name
 		 * @returns {sap.ui.mvc.View} the view instance
 		 */
-		setModel: function(oModel, sName) {
+		setModel: function (oModel, sName) {
 			return this.getView().setModel(oModel, sName);
 		},
 
@@ -46,7 +49,7 @@ sap.ui.define([
 		 * @public
 		 * @returns {sap.ui.model.resource.ResourceModel} the resourceModel of the component
 		 */
-		getResourceBundle: function() {
+		getResourceBundle: function () {
 			return this.getOwnerComponent().getModel("i18n").getResourceBundle();
 		},
 
@@ -56,7 +59,7 @@ sap.ui.define([
 		 * If not, it will replace the current entry of the browser history with the master route.
 		 * @public
 		 */
-		onNavBack: function() {
+		onNavBack: function () {
 			var sPreviousHash = History.getInstance().getPreviousHash();
 			//	oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation");
 
@@ -72,7 +75,7 @@ sap.ui.define([
 		@public
 		Esta función es usada para abrir un diálogo cuando el usuario lo requiere
 		*/
-		f_crear_fargment: function(data) {
+		f_crear_fargment: function (data) {
 			if (!this._valueHelpDialog) {
 				this._valueHelpDialog = sap.ui.xmlfragment(data, this);
 				this.getView().addDependent(this._valueHelpDialog);
@@ -81,7 +84,6 @@ sap.ui.define([
 			this._valueHelpDialog.open();
 		},
 
-
 		/**
 		 * Consumir servicio READ
 		 * @public
@@ -89,15 +91,15 @@ sap.ui.define([
 		 * @param {string} pEntidad Nombre de la entidad a consumir
 		 * @param {object} pFilters Objeto con los filtros definidos
 		 */
-		fnReadEntity: function(pModelo, pEntidad, pFilters) {
+		fnReadEntity: function (pModelo, pEntidad, pFilters) {
 			var vMensaje = null;
 			var oMensaje = {};
 
-			var fnSucess = function(data, response) {
+			var fnSucess = function (data, response) {
 				oMensaje.tipo = "S";
 				oMensaje.datos = data;
 			};
-			var fnError = function(e) {
+			var fnError = function (e) {
 				vMensaje = JSON.parse(e.response.body);
 				vMensaje = vMensaje.error.message.value;
 
@@ -109,7 +111,7 @@ sap.ui.define([
 
 			return oMensaje;
 		},
-		
+
 		/**
 		 * Obtener sólo Un registro de la Entidad
 		 * @public
@@ -117,15 +119,15 @@ sap.ui.define([
 		 * @param {string} pEntidad Nombre de la entidad a consumir
 		 * @param {object} pFilters Objeto con los filtros definidos
 		 */
-		fnGetEntity: function(pModelo, pEntidad, pFilters) {
+		fnGetEntity: function (pModelo, pEntidad, pFilters) {
 			var vMensaje = null;
 			var oMensaje = {};
 
-			var fnSucess = function(data, response) {
+			var fnSucess = function (data, response) {
 				oMensaje.tipo = "S";
 				oMensaje.datos = response;
 			};
-			var fnError = function(e) {
+			var fnError = function (e) {
 				vMensaje = JSON.parse(e.response.body);
 				vMensaje = vMensaje.error.message.value;
 
@@ -143,23 +145,23 @@ sap.ui.define([
 		 * @public
 		 * @param {string} pFragment es Ruta.NombreFragment a abrir
 		 */
-		fnOpenDialog: function(sRutaFragment) {
+		fnOpenDialog: function (sRutaFragment) {
 			this.oFragment = new Object();
 			this.oFragment.view = null;
 
 			this.fnLoadDialog(sRutaFragment, this.oFragment);
 			this.oFragment.view.open();
 		},
-		
+
 		/**
 		 * Cerrar el fragment
 		 * @public
 		 */
-		fnCloseFragment: function() {
+		fnCloseFragment: function () {
 			this.fnCloseDialog(this.oFragment);
 			delete this.oFragment;
 		},
-		
+
 		/**
 		 * Instanciar Fragment.
 		 * @public
@@ -167,7 +169,7 @@ sap.ui.define([
 		 * @param {object} objFragment Objeto global contenedor del fragment
 		 * @returns {object}
 		 */
-		fnLoadDialog: function(sRutaFragment, objFragment) {
+		fnLoadDialog: function (sRutaFragment, objFragment) {
 			if (objFragment.view) {
 				return;
 			}
@@ -181,10 +183,10 @@ sap.ui.define([
 		 * @public
 		 * @param {object} objFragment Objeto global contenedor del fragment
 		 */
-		fnCloseDialog: function(objFragment) {
+		fnCloseDialog: function (objFragment) {
 			objFragment.view.destroy();
 		},
-		
+
 		/**
 		 * Consumir servicio CREATE.
 		 * @public
@@ -193,15 +195,15 @@ sap.ui.define([
 		 * @param {object} pDatoEndidad hace referencia a los dato a enviar a la entidad
 		 * @returns {string} mensaje
 		 */
-		fnCreateEntity: function(pModelo, pEntidad, pDatoEndidad) {
+		fnCreateEntity: function (pModelo, pEntidad, pDatoEndidad) {
 			var vMensaje = null;
 			var oMensaje = {};
 
-			var fnSucess = function(data, response) {
+			var fnSucess = function (data, response) {
 				oMensaje.tipo = "S";
 				oMensaje.datos = data;
 			};
-			var fnError = function(e) {
+			var fnError = function (e) {
 				vMensaje = JSON.parse(e.response.body);
 				vMensaje = vMensaje.error.message.value;
 
@@ -212,7 +214,7 @@ sap.ui.define([
 			pModelo.create(pEntidad, pDatoEndidad, null, fnSucess, fnError, false);
 
 			return oMensaje;
-		},		
+		},
 
 		/**
 		 * Dialogo de confirmación
@@ -225,7 +227,9 @@ sap.ui.define([
 			var dialog = new Dialog({
 				title: 'Confirmación',
 				type: 'Message',
-				content: new Text({ text: p_text_msj }),
+				content: new Text({
+					text: p_text_msj
+				}),
 				beginButton: new Button({
 					text: 'Si',
 					press: [null, p_funcion_si, p_obj_contexto]
@@ -234,14 +238,14 @@ sap.ui.define([
 					text: 'No',
 					press: [null, p_funcion_no, p_obj_contexto]
 				}),
-				afterClose: function() {
+				afterClose: function () {
 					dialog.destroy();
 				}
 			});
 			//dialog.open();
 			return dialog;
 		},
-	
+
 		/**
 		 * Consumir servicio UPDATE.
 		 * @public
@@ -250,23 +254,23 @@ sap.ui.define([
 		 * @param {object} pDatoEndidad hace referencia a los dato a enviar a la entidad
 		 * @returns {string} mensaje
 		 */
-		fnUpdateEntity: function(pModelo, pEntidad, pDatoEndidad) {
+		fnUpdateEntity: function (pModelo, pEntidad, pDatoEndidad) {
 			var vMensaje = null;
 			var oMensaje = {};
 
-			var fnSucess = function(data, response) {
+			var fnSucess = function (data, response) {
 				oMensaje.tipo = "S";
 				oMensaje.response = response;
 				oMensaje.datos = data;
 			};
-			var fnError = function(e) {
+			var fnError = function (e) {
 				vMensaje = JSON.parse(e.response.body);
 				vMensaje = vMensaje.error.message.value;
 
 				oMensaje.tipo = "E";
 				oMensaje.msjs = vMensaje;
 			};
-			
+
 			pModelo.update(pEntidad, pDatoEndidad, null, fnSucess, fnError, false);
 
 			return oMensaje;
@@ -280,35 +284,35 @@ sap.ui.define([
 		 * @param {object} pDatoEndidad hace referencia a los dato a enviar a la entidad
 		 * @returns {string} mensaje
 		 */
-		fnRemoveEntity: function(pModelo, pEntidad) {
+		fnRemoveEntity: function (pModelo, pEntidad) {
 			var vMensaje = null;
 			var oMensaje = {};
 
-			var fnSucess = function(data, response) {
+			var fnSucess = function (data, response) {
 				oMensaje.tipo = "S";
 				oMensaje.response = response;
 			};
-			var fnError = function(e) {
+			var fnError = function (e) {
 				vMensaje = JSON.parse(e.response.body);
 				vMensaje = vMensaje.error.message.value;
 
 				oMensaje.tipo = "E";
 				oMensaje.msjs = vMensaje;
 			};
-			
+
 			pModelo.remove(pEntidad, null, fnSucess, fnError, false);
 
 			return oMensaje;
 		},
 
-		formatDate: function(v) {
+		formatDate: function (v) {
 			jQuery.sap.require("sap.ui.core.format.DateFormat");
 			var oDateFormat = sap.ui.core.format.DateFormat.getDateTimeInstance({
 				pattern: "dd-MM-YYYY"
 			});
 			return oDateFormat.format(new Date(v));
 		},
-		
+
 		/**
 		 * Consumir servicio CREATE.
 		 * @public
@@ -317,19 +321,19 @@ sap.ui.define([
 		 * @param {object} pDatoEndidad hace referencia a los dato a enviar a la entidad
 		 * @returns {string} mensaje
 		 */
-		fnCreateEntityAsy: function(pModelo, pEntidad, pDatoEndidad, pTpRequest) {
-			
+		fnCreateEntityAsy: function (pModelo, pEntidad, pDatoEndidad, pTpRequest) {
+
 			var vMensaje = null;
 			var oMensaje = {};
 			// var sociedadPromise = new Promise();
 			var promise = jQuery.Deferred();
 
-			var fnSucess = function(data, response) {
+			var fnSucess = function (data, response) {
 				oMensaje.tipo = "S";
 				oMensaje.datos = data;
 				promise.resolve(oMensaje);
 			};
-			var fnError = function(e) {
+			var fnError = function (e) {
 				vMensaje = JSON.parse(e.response.body);
 				vMensaje = vMensaje.error.message.value;
 
@@ -338,13 +342,18 @@ sap.ui.define([
 				promise.reject(vMensaje);
 			};
 
-			pModelo.create(pEntidad,pDatoEndidad, { context: null, success: fnSucess, error: fnError, async: pTpRequest });
+			pModelo.create(pEntidad, pDatoEndidad, {
+				context: null,
+				success: fnSucess,
+				error: fnError,
+				async: pTpRequest
+			});
 
 			// return oMensaje;
-			return promise;			
-			
+			return promise;
+
 		},
-		
+
 		/**
 		 * Consumir servicio READ
 		 * @public
@@ -352,18 +361,18 @@ sap.ui.define([
 		 * @param {string} pEntidad Nombre de la entidad a consumir
 		 * @param {object} pFilters Objeto con los filtros definidos
 		 */
-		fnReadEntityAsyn: function(pModelo, pEntidad, pFilters, pTpRequest) {
+		fnReadEntityAsyn: function (pModelo, pEntidad, pFilters, pTpRequest) {
 			var vMensaje = null;
 			var oMensaje = {};
 			// var sociedadPromise = new Promise();
 			var promise = jQuery.Deferred();
 
-			var fnSucess = function(data, response) {
+			var fnSucess = function (data, response) {
 				oMensaje.tipo = "S";
 				oMensaje.datos = data;
 				promise.resolve(oMensaje);
 			};
-			var fnError = function(e) {
+			var fnError = function (e) {
 				vMensaje = JSON.parse(e.response.body);
 				vMensaje = vMensaje.error.message.value;
 
@@ -373,10 +382,101 @@ sap.ui.define([
 			};
 
 			pModelo.read(pEntidad, null, pFilters, pTpRequest, fnSucess, fnError);
-			
+
 			return promise;
-		}		
-		
+		},
+
+		/**
+		 * Mostrar mensajes de error
+		 * @public
+		 * @param {object} oParams Parametros del OData
+		 */
+		showGeneralError: function (oParams) {
+			oParams = jQuery.extend({
+				message: "",
+				additionalData: "",
+				oDataError: "",
+				title: "",
+				onClose: function () {}
+			}, oParams);
+			var sMessage = "",
+				sAditionalData = "";
+			if (oParams.message) {
+				sMessage = oParams.message;
+			} else {
+				sMessage = this.getResourceBundle().getText("technicalError");
+			}
+			if (oParams.additionalData) {
+				sAditionalData = oParams.additionalData;
+			}
+			if (oParams.oDataError) {
+				try {
+					var oResponse = jQuery.parseJSON(oParams.oDataError.responseText);
+					sAditionalData = oResponse.error.message.value;
+				} catch (oException) {
+					sAditionalData = oParams.oDataError;
+				}
+			}
+			jQuery.sap.log.error(sMessage);
+			jQuery.sap.log.error(sAditionalData);
+			var sTitleBox = oParams.title ? oParams.title : this.getResourceBundle().getText("errorTitleMessageBox");
+			MessageBox.show(sMessage, {
+				icon: sap.m.MessageBox.Icon.ERROR,
+				title: sTitleBox,
+				onClose: oParams.onClose,
+				details: sAditionalData,
+				actions: sap.m.MessageBox.Action.CLOSE
+			});
+		},
+		/**
+		 * Exportar a CSV
+		 * @public
+		 * @param {object} JSON oModel Modelo de la tabla
+		 * @param {object} oColumns Estructura de la tabla
+		 * @param {string} pPath Path del modelo
+		 */
+		dataExport: function (oModel, oColumns, pPath = "/") {
+
+			var oExport = new Export({
+
+				exportType: new ExportTypeCSV({
+					separatorChar: ";"
+				}),
+
+				models: oModel,
+
+				rows: {
+					path: pPath
+				},
+				columns: oColumns
+			});
+
+			oExport.saveFile().catch(function (oError) {
+				this.showGeneralError({
+					oDataError: oError
+				});
+			}).then(function () {
+				oExport.destroy();
+			});
+		},
+		csv_to_Json: function (pCsv, pSeparator) {
+			var lines = pCsv.split("\n");
+			var result = [];
+			var headers = lines[0].split(pSeparator);
+			for (var i = 1; i < lines.length; i++) {
+				var obj = {};
+				var currentline = lines[i].split(pSeparator);
+				for (var j = 0; j < headers.length; j++) {
+					obj[headers[j]] = currentline[j];
+				}
+				result.push(obj);
+			}
+			var oStringResult = JSON.stringify(result);
+			var oFinalResult = JSON.parse(oStringResult.replace(/\\r/g, "")); //OBJETO JSON para guardar
+
+			return oFinalResult;
+		}
+
 	});
 
 });

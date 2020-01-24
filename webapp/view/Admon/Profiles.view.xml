@@ -1,0 +1,50 @@
+<mvc:View xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" controllerName="cbc.co.simulador_costos.controller.Admon.Profiles" height="100%">
+	<Page title="{i18n>profilesViewTitle}">
+		<headerContent>
+			<!--<Button icon="sap-icon://action" tooltip="Share" id="button2"/>-->
+		</headerContent>
+		<content>
+			<Table id="tblProfiles" noDataText="{i18n>profilesNoDataFound}" busyIndicatorDelay="{viewModel>/delay}" growing="true" growingThreshold="30"
+				updateFinished=".onUpdateFinished" items="{ModelSimulador>/perfilesSet}">
+				<headerToolbar>
+					<OverflowToolbar>
+						<content>
+							<Title text="{viewModel>/tableTitle}"/>
+						</content>
+					</OverflowToolbar>
+				</headerToolbar>
+				<items>
+					<ColumnListItem type="Navigation">
+						<cells>
+							<Text text="{ModelSimulador>IdProfile}"/>
+							<Text text="Row 1 Cell 2" id="text1"/>
+							<Text text="Row 1 Cell 3" id="text2"/></cells>
+					</ColumnListItem>
+				</items>
+				<columns>
+					<Column>
+						<header>
+							<Label text="{i18n>profilesProfileHeader}"/>
+						</header>
+					</Column>
+					<Column>
+						<header>
+							<Label text="{i18n>profilesModuleHeader}"/>
+						</header>
+					</Column>
+					<Column>
+						<header>
+							<Label text="{i18n>profilesSubmoduleHeader}"/>
+						</header>
+					</Column>
+				</columns>
+			</Table>
+		</content>
+		<footer>
+			<OverflowToolbar>
+				<ToolbarSpacer/>
+				<Button type="Accept" text="{i18n>Crear}" icon="sap-icon://add" tooltip="{i18n>profilesCreateNew}"/>
+			</OverflowToolbar>
+		</footer>
+	</Page>
+</mvc:View>
