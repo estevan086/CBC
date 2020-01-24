@@ -182,13 +182,16 @@ sap.ui.define([
 		
 		
 		onChange: function(oEvent){
+			
 			var oItem = oEvent.getParameter("selectedItem");
+			var oTableCommodities = this.byId("tblCommodities");
 			var oItemObject = oItem.getBindingContext().getObject();
-			var oSupplier = oItemObject.Supplier;
+			var oUnidadSeleccionada= oItemObject.Msehi;
 			var oTableItem = oEvent.getSource().getParent();
 			var oTableItemObject = oTableItem.getBindingContext().getObject();
-			oTableItemObject.Supplier = oSupplier;
-			sap.ui.getCore().getModel().refresh();
+			oTableItemObject.UnidadMedida = oUnidadSeleccionada;
+			oTableCommodities.getModel().refresh();
+			
 		},
 		
 		onAutoResizeColumnsBtnPress: function() {

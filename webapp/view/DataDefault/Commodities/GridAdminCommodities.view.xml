@@ -120,16 +120,17 @@
 							<!--<m:Input value="{UnidadMedida}" editable="false"/>-->
 							<m:ComboBox
 								id="idComboBoxUnidadesMedida"
+								selectionChange="onChange"
 								showSecondaryValues= "true"
 								filterSecondaryValues= "true"
-								value="{/comboBoxValueUM}"
-								selectedKey="{/comboBoxKeyUM}"
+								value="{UnidadMedida}"
+								selectedKey="{UnidadMedida}"
 								items="{
 									path: '/LstUnidadesMedida',
 									sorter: { path: 'Msehl' }
 								}"
 								>
-								<c:ListItem key="{Msehi}" text="{Msehl}" additionalText="{Msehi}"/>
+								<c:ListItem key="{Msehl}" text="{Msehi}" additionalText="{Msehl}"/>
 							</m:ComboBox>
 						</template>
 					</Column>
