@@ -27,7 +27,7 @@
 				icon="sap-icon://date-time"
 				iconColor="Neutral"
 				text="Tiempo">
-				<mvc:XMLView viewName="cbc.co.simulador_costos.view.Admon.CreateParameters.Tiempo"/>
+				<!--<mvc:XMLView viewName="cbc.co.simulador_costos.view.Admon.Periodo"/>-->
 			</IconTabFilter>
 			<IconTabFilter
 				icon="sap-icon://travel-expense"

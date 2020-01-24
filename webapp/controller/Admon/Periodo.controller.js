@@ -9,10 +9,10 @@ sap.ui.define([
 	"sap/ui/model/FilterOperator"
 ], function(Controller, JSONModel, MessageToast, DateFormat, library, Filter, FilterOperator){
 	"use strict";
-	return Controller.extend("cbc.co.simulador_costos.controller.Admon.CreateParameters.MasterSap", {
+	return Controller.extend("cbc.co.simulador_costos.controller.Admon.Periodo", {
 
 		onInit : function() {
-			var obj = {
+		/*	var obj = {
 				"Date": [
 					{
 						"Name": ""
@@ -23,7 +23,7 @@ sap.ui.define([
 			var json = new JSONModel(obj);
 			// Setting json to current view....
 				//var json = new sap.ui.model.json.JSONModel("model/products.json");
-			this.getView().setModel(json);
+			this.getView().setModel(json);*/
 		},
 		
 		CreateDate : function(oEvent) {
