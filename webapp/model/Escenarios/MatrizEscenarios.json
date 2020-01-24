@@ -1,0 +1,19 @@
+{
+	"Tipos": [{
+		"key": "Real",
+		"value": "Real"
+	},{
+		"key": "AOP",
+		"value": "AOP"
+	},{
+		"key": "Forecast",
+		"value": "Forecast"
+	}],
+	"Matriz": [{
+		"modulo": "Materiales"
+	},{
+		"modulo": "Volúmenes"
+	},{
+		"modulo": "Costos Logísticos"
+	}]
+}
