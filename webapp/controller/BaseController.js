@@ -459,6 +459,13 @@ sap.ui.define([
 				oExport.destroy();
 			});
 		},
+		isInitialNum: function (pNumber, pDecSeparator = ".") {
+			if ( pNumber !== undefined ) {
+				 pNumber = pNumber.replace(pDecSeparator, "").replace(new RegExp("0", "g"), "").trim();
+			}
+			
+			return pNumber;
+		},
 		csv_to_Json: function (pCsv, pSeparator) {
 			var lines = pCsv.split("\n");
 			var result = [];

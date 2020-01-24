@@ -4,7 +4,7 @@
 	<m:ObjectHeader binding="{/ProductCollection/0}" title="{i18n>CostosLogisticos}" condensed="true"
 		number="{ parts:[{path:'Price'},{path:'CurrencyCode'}], type: 'sap.ui.model.type.Currency', formatOptions: {showMeasure: false} }"
 		numberUnit="{CurrencyCode}"/>
-	<m:Page showHeader="false" enableScrolling="false" class="sapUiContentPadding">
+	<m:Page showHeader="false" enableScrolling="false" class="sapUiContentPadding" busy="{modelView>/busy}" >
 		<m:content>
 			<m:FlexBox height="auto" alignItems="Start" justifyContent="Start">
 				<m:items>

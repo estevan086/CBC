@@ -10,7 +10,13 @@ sap.ui.define([
 	return BaseController.extend("cbc.co.simulador_costos.controller.DataDefault.LogisticCost.GridLogisticCost", {
 
 		onInit: function () {
-
+			
+			var oModelV = new JSONModel({
+				busy: true,
+				Bezei: ""
+			});
+			this.setModel(oModelV, "modelView");
+			
 			var oUploader = this.getView().byId("fileUploader");
 			oUploader.oBrowse.setText("Importar");
 			oUploader.oFilePath.setVisible(false);
@@ -30,12 +36,13 @@ sap.ui.define([
 		},
 		getLogisticCostValoration: function () {
 			var oModel = this.getView().getModel("ModelSimulador");
+			
+			this.getModel("modelView").setProperty("/busy", true);
 			oModel.read("/costologisticoSet", {
 				success: function (oData, response) {
 					var data = new sap.ui.model.json.JSONModel({
 						LogisticCostValoration: oData.results
 					});
-
 					this.getOwnerComponent().setModel(data, "LogisticCost");
 					this.getLogisticCostData();
 				}.bind(this),
@@ -43,17 +50,20 @@ sap.ui.define([
 					this.showGeneralError({
 						oDataError: oError
 					});
-					//this.getModel("modelView").setProperty("/busy", false);
+					this.getModel("modelView").setProperty("/busy", false);
 				}
 			});
 		},
 		getLogisticCostData: function () {
 			var oModel = this.getView().getModel("ModelSimulador");
+			this.getModel("modelView").setProperty("/busy", true);
+			
 			oModel.read("/codigocostologisticoSet", {
 				success: function (oData, response) {
 					var data = this.getView().getModel("LogisticCost");
 					data.setProperty("/CodLogisticCost", oData.results);
 					this.tableCreate();
+					this.getModel("modelView").setProperty("/busy", false);
 				}.bind(this),
 				error: function (oError) {
 					this.showGeneralError({
@@ -66,7 +76,8 @@ sap.ui.define([
 		tableCreate: function () {
 			var oModel = this.getView().getModel("LogisticCost"),
 				costData = oModel.getProperty("/CodLogisticCost"),
-				costValoration = oModel.getProperty("/LogisticCostValoration");
+				costValoration = oModel.getProperty("/LogisticCostValoration"),
+				that = this;
 			//Crear columnas dinamicas
 			var _columnData = [{
 				columnName: "Material",
@@ -102,7 +113,7 @@ sap.ui.define([
 				enabled: false
 			}, {
 				columnName: "CantEst",
-				label: "Cnt. Estandar",
+				label: "Cnat Estandar",
 				enabled: true
 			}];
 			//agrega columnas dinamicas
@@ -131,13 +142,13 @@ sap.ui.define([
 			//guardamos las columnas
 			this.columnData = _columnData;
 
-			var material = "";
-			var oMaterial = [],
+			var material = "",
+				oMaterial = [],
 				modelStructure;
 			//guardamos la estructura de la tabla inicial
 			this.initModelStructure = modelStructure = costValoration[1];
 
-			//agrega propiedades(columnas) al json
+			//agrega propiedades(columnas) a json
 			costData.forEach(function (oValue2, j) {
 				modelStructure[oValue2.CostLog] = "";
 			});
@@ -146,16 +157,21 @@ sap.ui.define([
 
 				if (material !== oValue.Material) {
 					modelStructure = oValue;
+					
+					modelStructure.CantEst = that.isInitialNum(oValue.CantEst) === "" ? "" : oValue.CantEst;
+					modelStructure.CostTotal = that.isInitialNum(oValue.CostTotal) === "" ? "" : oValue.CostTotal;
+					modelStructure.CostUnid = that.isInitialNum(oValue.CostUnid) === "" ? "" : oValue.CostUnid;
+					
 					oMaterial.push(modelStructure);
 				}
 				if (oValue.CostLog !== "") {
-					modelStructure[oValue.CostLog] = oValue.VCostLog;
+					modelStructure[oValue.CostLog] = that.isInitialNum(oValue.VCostLog) === "" ? "" : oValue.VCostLog;
 				}
 				material = oValue.Material;
 			});
 
 			oModel.setProperty("/LogisticCostValoration", oMaterial);
-
+			//agregar columnas y datos a tabla
 			var oTable = this.getView().byId("tblLogicCost");
 			var oTableModel = new sap.ui.model.json.JSONModel();
 
@@ -192,7 +208,9 @@ sap.ui.define([
 				costData = oModelLocal.getProperty("/CodLogisticCost"),
 				modelStructure = {},
 				data = [];
-
+				
+			this.getModel("modelView").setProperty("/busy", true);	
+			//Convertir columnas de costos logistico en filas para ser almacenadas
 			costValorationTable.forEach(function (oValue, i) {
 
 				costData.forEach(function (oLogisticCost, j) {
@@ -206,7 +224,9 @@ sap.ui.define([
 					modelStructure.Fiscper3 = oValue.Fiscper3;
 					modelStructure.CompCode = oValue.CompCode;
 					modelStructure.CostLog = oLogisticCost.CostLog;
-					modelStructure.CantEst = oValue.CantEst;
+					if (oValue.CantEst !== "") {
+						modelStructure.CantEst = oValue.CantEst;
+					}
 
 					if (oValue[oLogisticCost.CostLog]) {
 						modelStructure.VCostLog = oValue[oLogisticCost.CostLog];
@@ -270,24 +290,24 @@ sap.ui.define([
 			if (oFile && window.FileReader) {
 				var reader = new FileReader();
 				reader.onload = function (evt) {
-					var strCSV = evt.target.result; //string in CSV 
-					var oImportData = that.csv_to_Json(strCSV, ";");
-					var 
+					var strCSV = evt.target.result,
+						oClValues = {},
+						oImportData = that.csv_to_Json(strCSV, ";"),
 						oLogistiCost = [],
 						oLogistiCostLine = {};
 
 					oImportData.forEach(function (oValue, i) {
 						oLogistiCostLine = {};
 						that.columnData.forEach(function (oColumn, j) {
-							if (oImportData[i][oColumn.label.toString()]) {
-								oLogistiCostLine[oColumn.columnName] = oImportData[i][oColumn.label.toString()];
-							}
+							oClValues = Object.values(oImportData[i]);
+							oLogistiCostLine[oColumn.columnName] = that.isInitialNum(oClValues[j]) === "" ? "" : oClValues[j];
 						});
 						oLogistiCost.push(oLogistiCostLine);
 					});
-
+					//Actualiza modelo
 					that.getView().getModel("LogisticCost").setProperty("/LogisticCostValoration", oLogistiCost);
-
+					//Recrea Tabla
+					that.tableCreate();
 				};
 				reader.readAsText(oFile);
 			}
