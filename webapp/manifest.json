@@ -142,11 +142,11 @@
 				},
 				"rtChUndMedida": {
 					"pattern": "rtChUndMedida",
-					"target": "rtHomeTarget"
+					"target": "rtChUndMedidaTarget"
 				},
 				"rtChPeriodo": {
 					"pattern": "rtChPeriodo",
-					"target": "rtHomeTarget"
+					"target": "rtChPeriodoTarget"
 				},
 				"rtChAdminLogistica": {
 					"pattern": "rtChAdminLogistica",
@@ -283,7 +283,7 @@
 				},
 				"rtChPeriodoTarget": {
 					"viewPath": "cbc.co.simulador_costos.view.Admon",
-					"viewName": "CreateParameters",
+					"viewName": "Periodo",
 					"parent": "parentTarget",
 					"controlId": "parentNavContainer",
 					"transition": "slide"
