@@ -5,7 +5,7 @@
 		numberUnit="{CurrencyCode}"/>
 	<Page showHeader="false" enableScrolling="false" class="sapUiContentPadding">
 		<content>
-			<ui:Table id="tblLogisticcCost" rows="{LogisticCost>/CodLogisticCost}" selectionMode="None" visibleRowCount="10" rowActionCount="1"
+			<ui:Table id="tblPeriodo" rows="{}" selectionMode="None" visibleRowCount="10" rowActionCount="1"
 				class="sapUiSizeCompact">
 				<ui:extension>
 					<OverflowToolbar>
