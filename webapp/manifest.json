@@ -160,7 +160,7 @@
 				},
 				"rtChAdminLogistica": {
 					"pattern": "rtChAdminLogistica",
-					"target": "rtHomeTarget"
+					"target": "rtChAdminLogisticaTarget"
 				},
 				"rtChTypeChange": {
 					"pattern": "rtChTypeChange",
@@ -308,8 +308,8 @@
 					"transition": "slide"
 				},
 				"rtChAdminLogisticaTarget": {
-					"viewPath": "cbc.co.simulador_costos.view.Admon",
-					"viewName": "CreateParameters",
+					"viewPath": "cbc.co.simulador_costos.view.Admon.CreateParameters",
+					"viewName": "Logistica",
 					"parent": "parentTarget",
 					"controlId": "parentNavContainer",
 					"transition": "slide"

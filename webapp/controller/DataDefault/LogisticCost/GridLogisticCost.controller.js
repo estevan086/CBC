@@ -10,13 +10,13 @@ sap.ui.define([
 	return BaseController.extend("cbc.co.simulador_costos.controller.DataDefault.LogisticCost.GridLogisticCost", {
 
 		onInit: function () {
-			
+
 			var oModelV = new JSONModel({
 				busy: true,
 				Bezei: ""
 			});
 			this.setModel(oModelV, "modelView");
-			
+
 			var oUploader = this.getView().byId("fileUploader");
 			oUploader.oBrowse.setText("Importar");
 			oUploader.oFilePath.setVisible(false);
@@ -36,9 +36,14 @@ sap.ui.define([
 		},
 		getLogisticCostValoration: function () {
 			var oModel = this.getView().getModel("ModelSimulador");
-			
+
 			this.getModel("modelView").setProperty("/busy", true);
+
 			oModel.read("/costologisticoSet", {
+				urlParameters: {
+					$skip: 1,
+					$top: 5
+				},
 				success: function (oData, response) {
 					var data = new sap.ui.model.json.JSONModel({
 						LogisticCostValoration: oData.results
@@ -57,7 +62,7 @@ sap.ui.define([
 		getLogisticCostData: function () {
 			var oModel = this.getView().getModel("ModelSimulador");
 			this.getModel("modelView").setProperty("/busy", true);
-			
+
 			oModel.read("/codigocostologisticoSet", {
 				success: function (oData, response) {
 					var data = this.getView().getModel("LogisticCost");
@@ -76,8 +81,8 @@ sap.ui.define([
 		tableCreate: function () {
 			var oModel = this.getView().getModel("LogisticCost"),
 				costData = oModel.getProperty("/CodLogisticCost"),
-				costValoration = oModel.getProperty("/LogisticCostValoration"),
-				that = this;
+				costValoration = oModel.getProperty("/LogisticCostValoration");
+
 			//Crear columnas dinamicas
 			var _columnData = [{
 				columnName: "Material",
@@ -93,12 +98,22 @@ sap.ui.define([
 				enabled: false
 			}, {
 				columnName: "Fiscyear",
-				label: "Año",
+				label: "A\u00F1o",
 				enabled: false
 			}, {
 				columnName: "Fiscvarnt",
 				label: "Mes",
 				enabled: false
+			}, {
+				columnName: "Fiscper3",
+				label: "Fiscper3",
+				enabled: false,
+				visible: false
+			}, {
+				columnName: "CompCode",
+				label: "Sociedad",
+				enabled: false,
+				visible: false
 			}, {
 				columnName: "Incoterms",
 				label: "Incoterms",
@@ -113,7 +128,7 @@ sap.ui.define([
 				enabled: false
 			}, {
 				columnName: "CantEst",
-				label: "Cnat Estandar",
+				label: "Cant Estandar",
 				enabled: true
 			}];
 			//agrega columnas dinamicas
@@ -142,32 +157,43 @@ sap.ui.define([
 			//guardamos las columnas
 			this.columnData = _columnData;
 
-			var material = "",
-				oMaterial = [],
-				modelStructure;
-			//guardamos la estructura de la tabla inicial
-			this.initModelStructure = modelStructure = costValoration[1];
-
+			var oMaterial = [],
+				modelStructure = {};
+			
 			//agrega propiedades(columnas) a json
 			costData.forEach(function (oValue2, j) {
 				modelStructure[oValue2.CostLog] = "";
 			});
-
+			
+			//Convierte estructura de tabla, asignando valores de filas en columnas relacionadas por la clave de la tabla Material
 			costValoration.forEach(function (oValue, i) {
 
-				if (material !== oValue.Material) {
-					modelStructure = oValue;
-					
-					modelStructure.CantEst = that.isInitialNum(oValue.CantEst) === "" ? "" : oValue.CantEst;
-					modelStructure.CostTotal = that.isInitialNum(oValue.CostTotal) === "" ? "" : oValue.CostTotal;
-					modelStructure.CostUnid = that.isInitialNum(oValue.CostUnid) === "" ? "" : oValue.CostUnid;
-					
+				if ( oMaterial.find(x => x.Material === oValue.Material) === undefined || oMaterial.find(x => x.Plant === oValue.Plant) === undefined ||
+					 oMaterial.find(x => x.Fiscyear === oValue.Fiscyear) === undefined || oMaterial.find(x => x.Version === oValue.Version) === undefined ||
+					 oMaterial.find(x => x.Fiscvarnt === oValue.Fiscvarnt) === undefined || oMaterial.find(x => x.Fiscper3 === oValue.Fiscper3) === undefined ||
+					 oMaterial.find(x => x.CompCode === oValue.CompCode) === undefined ) {
+
+					modelStructure = oValue; //asigna datos generales
+
+					modelStructure.CantEst = oValue.CantEst;
+					modelStructure.CostTotal = oValue.CostTotal;
+					modelStructure.CostUnid = oValue.CostUnid;
+
+					for (var j = 0; j < costValoration.length; j++) {
+
+						if (costValoration[j].Material === costValoration[i].Material && costValoration[j].Plant === costValoration[i].Plant &&
+							costValoration[j].Fiscyear === costValoration[i].Fiscyear && costValoration[j].Version === costValoration[i].Version &&
+							costValoration[j].Fiscvarnt === costValoration[i].Fiscvarnt && costValoration[j].Fiscper3 === costValoration[i].Fiscper3 &&
+							costValoration[j].CompCode === costValoration[i].CompCode) {
+
+							if (costValoration[j].CostLog !== "") {
+								modelStructure[costValoration[j].CostLog] = costValoration[j].VCostLog;
+							}
+						}
+					}
+
 					oMaterial.push(modelStructure);
 				}
-				if (oValue.CostLog !== "") {
-					modelStructure[oValue.CostLog] = that.isInitialNum(oValue.VCostLog) === "" ? "" : oValue.VCostLog;
-				}
-				material = oValue.Material;
 			});
 
 			oModel.setProperty("/LogisticCostValoration", oMaterial);
@@ -186,12 +212,12 @@ sap.ui.define([
 				var columnName = oContext.getObject().columnName;
 				return new sap.ui.table.Column({
 					label: oContext.getObject().label,
+					visible: oContext.getObject().visible,
 					filterProperty: oContext.getObject().enabled === false ? columnName : "",
 					template: oContext.getObject().enabled === false ? new sap.m.Text(columnName, {
 						text: "{" + columnName + "}",
 						wrapping: false
 					}) : new sap.m.Input(columnName, {
-						key: "text",
 						value: "{" + columnName + "}",
 						enabled: oContext.getObject().enabled
 					})
@@ -208,8 +234,8 @@ sap.ui.define([
 				costData = oModelLocal.getProperty("/CodLogisticCost"),
 				modelStructure = {},
 				data = [];
-				
-			this.getModel("modelView").setProperty("/busy", true);	
+
+			this.getModel("modelView").setProperty("/busy", true);
 			//Convertir columnas de costos logistico en filas para ser almacenadas
 			costValorationTable.forEach(function (oValue, i) {
 
@@ -287,6 +313,8 @@ sap.ui.define([
 			var that = this,
 				oFile = oEvent.getParameter("files")[0];
 
+			this.getModel("modelView").setProperty("/busy", true);
+
 			if (oFile && window.FileReader) {
 				var reader = new FileReader();
 				reader.onload = function (evt) {
@@ -308,6 +336,7 @@ sap.ui.define([
 					that.getView().getModel("LogisticCost").setProperty("/LogisticCostValoration", oLogistiCost);
 					//Recrea Tabla
 					that.tableCreate();
+					that.getModel("modelView").setProperty("/busy", false);
 				};
 				reader.readAsText(oFile);
 			}

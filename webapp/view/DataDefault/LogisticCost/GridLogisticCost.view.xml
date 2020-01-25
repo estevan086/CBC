@@ -12,7 +12,7 @@
 					<m:Button icon="sap-icon://upload-to-cloud" text="{i18n>Publicar}" tooltip="{i18n>Publicar}" press="PublicVersionCommodities"/>
 				</m:items>
 			</m:FlexBox>
-			<Table id="tblLogicCost" selectionMode="None" visibleRowCount="10" class="sapUiSizeCondensed" enableColumnFreeze="true">
+			<Table id="tblLogicCost" selectionMode="None" visibleRowCount="10"  enableColumnFreeze="true" >
 				<extension>
 					<m:OverflowToolbar>
 						<m:content>

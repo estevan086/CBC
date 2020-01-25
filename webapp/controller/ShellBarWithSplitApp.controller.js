@@ -52,7 +52,7 @@ sap.ui.define([
 						"title": "Periodos",
 						"key": "rtChPeriodo"
 					}, {
-						"title": "Logística",
+						"title": "Log\u00EDstica",
 						"key": "rtChAdminLogistica"
 					}, {
 						"title": "Perfiles",
@@ -99,11 +99,11 @@ sap.ui.define([
 						"key": "rtChMantenimientoMateriales"
 					}]
 				}, {
-					"title": "Costos Logístico",
+					"title": "Costos Log&iqute&stico",
 					"icon": "sap-icon://travel-expense",
 					"expanded": false,
 					"items": [{
-						"title": "Mantenimiento Costos Logístico",
+						"title": "Mantenimiento Costos Log\u00EDstico",
 						"key": "rtChMantenimientoCostLog"
 					}]
 				}, {
