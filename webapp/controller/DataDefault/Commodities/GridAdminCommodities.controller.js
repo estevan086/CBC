@@ -50,23 +50,12 @@ sap.ui.define([
 			
 			var oTable = this.getView().byId('tblCommodities');
 			
-			// for (var i = 0; i < table.getColumns().length; i++) {
-			// 	table.autoResizeColumn(i);
-			// }
-			
-		//	oTable.getColumns().map((col, index) => oTable.autoResizeColumn(index));
-			
 			this.fnConsultaDetalleCommodities(); 
 		},
 		
 
 		fnConsultaDetalleCommodities:  function (event) {
-			// your code when the view is about to be displayed ..
-
-			//	var json = this.initSampleDataModel();
-			//	this.getView().setModel(json);
 			
-		//	var oPanel = this.getView().getParent().getParent();
 			var oPanel = this.getView();
 			oPanel.setBusy(true);
 
@@ -104,31 +93,20 @@ sap.ui.define([
 			}
 
 			oDataDetalleCommodities.lstItemsCommodities = this.oDataDetalleCommodities;
+			$.each(oDataDetalleCommodities.lstItemsCommodities, function (i, o) {
+				this.editable = false;
+				this.highlight = "None";
+			});
+			
 			var oTablaDetalleCommodities = this.byId("tblCommodities");
 			var oModel2 = new sap.ui.model.json.JSONModel(oDataDetalleCommodities);
 			oTablaDetalleCommodities.setModel(oModel2);
 			
-			this.onGetUnidadesMedida();
+			//Obtiene Sociedades
+			this.GetSociedades();
 			
-			
-			for (var i = 0; i < oTablaDetalleCommodities.getModel().getData().lstItemsCommodities.length; i++) {
-
-				if (oTablaDetalleCommodities.getRows()[i] !== undefined) {
-					//Sociedad
-					oTablaDetalleCommodities.getRows()[i].getCells()[2].setProperty("editable", false);
-					//Moneda
-					oTablaDetalleCommodities.getRows()[i].getCells()[3].setProperty("editable", false);
-					//Unidad de Medida
-					oTablaDetalleCommodities.getRows()[i].getCells()[4].setProperty("editable", false);
-					//Precio
-					oTablaDetalleCommodities.getRows()[i].getCells()[5].setProperty("editable", false);
-					//Otros Costos
-					oTablaDetalleCommodities.getRows()[i].getCells()[6].setProperty("editable", false);
-				} else {
-					break;
-				}
-			}
-			
+			//Obtiene Unidades de Medida
+			this.GetUnidadesMedida();
 			
 			oPanel.setBusy(false);
 			
@@ -139,7 +117,7 @@ sap.ui.define([
 			
 		},
 		
-		onGetUnidadesMedida: function() {
+		GetUnidadesMedida: function() {
 			
 			//Url Servicio
 			var oModel = this.getOwnerComponent().getModel("ModelSimulador");
@@ -168,27 +146,71 @@ sap.ui.define([
 				};
 			}
 
-		//	oDataUnidadesMedida.lstItemsUnidadesMedida = this.oDataUnidadesMedida;
 			var oTableCommodities = this.byId("tblCommodities");
 			oTableCommodities.getModel().setProperty("/LstUnidadesMedida", this.oDataUnidadesMedida);
-			
-		//	var oComboBoxUM = this.getView().byId("idComboBoxUnidadesMedida");
-		//	oComboBoxUM.setModel().("/comboBoxValueUM", );
-		
-		//	oComboBoxUM.setModel().setProperty("/comboBoxKeyUM", "");
 			oTableCommodities.getModel().refresh(); 
 			
 		},	
 		
+		GetSociedades: function() {
+			
+			//Url Servicio
+			var oModel = this.getOwnerComponent().getModel("ModelSimulador");
+			var sServiceUrl = oModel.sServiceUrl;
+
+			//Definir modelo del servicio web
+			var oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true);
+			//Definir filtro
+
+			//Leer datos del ERP
+			var oRead = this.fnReadEntity(oModelService, "/maestroCentrosSet", null);
+
+			if (oRead.tipo === "S") {
+				this.oDataSociedades = oRead.datos.results;
+			//	var obj = this.oDataUnidadesMedida;
+
+			} else {
+				MessageBox.error(oRead.msjs, null, "Mensaje del sistema", "OK", null);
+			}
+
+			var oDataUnidadesMedida = "";
+			//SI el modelo NO existe, se crea.
+			if (!oDataUnidadesMedida) {
+				oDataUnidadesMedida = {
+					lstItemsUnidadesMedida: []
+				};
+			}
+
+			var oTableCommodities = this.byId("tblCommodities");
+			oTableCommodities.getModel().setProperty("/LstSociedades", this.oDataSociedades);
+			oTableCommodities.getModel().refresh(); 
+			
+		},	
 		
-		onChange: function(oEvent){
+		onChangeSociedades: function(oEvent){
+			
 			var oItem = oEvent.getParameter("selectedItem");
+			var oTableCommodities = this.byId("tblCommodities");
 			var oItemObject = oItem.getBindingContext().getObject();
-			var oSupplier = oItemObject.Supplier;
+			var oSociedadSeleccionada= oItemObject.Compcodeplant;
 			var oTableItem = oEvent.getSource().getParent();
 			var oTableItemObject = oTableItem.getBindingContext().getObject();
-			oTableItemObject.Supplier = oSupplier;
-			sap.ui.getCore().getModel().refresh();
+			oTableItemObject.Sociedad = oSociedadSeleccionada;
+			oTableCommodities.getModel().refresh();
+			
+		},
+		
+		onChangeUM: function(oEvent){
+			
+			var oItem = oEvent.getParameter("selectedItem");
+			var oTableCommodities = this.byId("tblCommodities");
+			var oItemObject = oItem.getBindingContext().getObject();
+			var oUnidadSeleccionada= oItemObject.Msehi;
+			var oTableItem = oEvent.getSource().getParent();
+			var oTableItemObject = oTableItem.getBindingContext().getObject();
+			oTableItemObject.UnidadMedida = oUnidadSeleccionada;
+			oTableCommodities.getModel().refresh();
+			
 		},
 		
 		onAutoResizeColumnsBtnPress: function() {
@@ -224,63 +246,20 @@ sap.ui.define([
 
 			var oTable = this.byId("tblCommodities");
 			var oRowData = oEvent.getSource().getBindingContext().getProperty();
-
-			var oRowEdited = oRow;
-
-			//this.byId("tblCommodities").getRows()[3].getCells()[3].mProperties.editable = "true";
-
+			
 			for (var i = 0; i < oTable.getModel().getData().lstItemsCommodities.length; i++) {
-
-				if (oTable.getRows()[i] !== undefined) {
-					oTable.getRows()[i].getBindingContext().getProperty().CDEF_EDIT_FLAG = "None";
-					oTable.getRows()[i].getBindingContext().getProperty().CDEF_NAV_FLAG = false;
-
-					//Sociedad
-					oTable.getRows()[i].getCells()[2].setProperty("editable", false);
-					//Moneda
-					oTable.getRows()[i].getCells()[3].setProperty("editable", false);
-					//Unidad de Medida
-					oTable.getRows()[i].getCells()[4].setProperty("editable", false);
-					//Precio
-					oTable.getRows()[i].getCells()[5].setProperty("editable", false);
-					//Otros Costos
-					oTable.getRows()[i].getCells()[6].setProperty("editable", false);
-				} else {
-					break;
-				}
+				var oObj = oTable.getModel().getData().lstItemsCommodities[i];
+				oObj.editable = false;
+				oObj.highlight = "None";
 			}
-
-			//Sociedad
-			oRowEdited.getCells()[2].setProperty("editable", true);
-			//Moneda
-			oRowEdited.getCells()[3].setProperty("editable", true);
-			//Unidad de Medida
-			oRowEdited.getCells()[4].setProperty("editable", true);
-			//Precio
-			oRowEdited.getCells()[5].setProperty("editable", true);
-			//Otros Costos
-			oRowEdited.getCells()[6].setProperty("editable", true);
-
-			oRowData.CDEF_EDIT_FLAG = "Information";
-
-			oRowData.CDEF_NAV_FLAG = true;
-
-			oTable.setRowSettingsTemplate(new RowSettings({
-				highlight: "{CDEF_EDIT_FLAG}",
-				navigated: "{CDEF_NAV_FLAG}"
-			}));
-
-			sap.ui.getCore().applyChanges();
-
+			oTable.getModel().setProperty(oEvent.getSource().getBindingContext().getPath() + "/editable", true);
+			oTable.getModel().setProperty(oEvent.getSource().getBindingContext().getPath() + "/highlight", "Information");
+			oTable.getModel().setProperty(oEvent.getSource().getBindingContext().getPath() + "/navigated", true);
+ 
 			var oEntidad = {};
-			oEntidad.RowPath = oEvent.getSource().getBindingContext().sPath.split('/')[2];;
-			// oEntidad.IdCommoditie = oRowData.IdCommoditie;
-			// oEntidad.Sociedad = oRowData.Sociedad;
-			// oEntidad.Centro = oRowData.Centro;
-			// oEntidad.UnidadMedida = oRowData.UnidadMedida;
-			// oEntidad.Moneda = oRowData.Moneda;
-			// oEntidad.Mes = oRowData.Mes;
-			// oEntidad.Year = oRowData.Year;
+			var oPath = oEvent.getSource().getBindingContext().sPath;
+			
+			oEntidad.RowPath = oPath.split("/")[2];
 
 			updatedRecords.push(oEntidad);
 

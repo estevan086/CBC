@@ -148,11 +148,7 @@
 				},
 				"rtChCentros": {
 					"pattern": "rtChCentros",
-					"target": "rtHomeTarget"
-				},
-				"rtChUndMedida": {
-					"pattern": "rtChUndMedida",
-					"target": "rtHomeTarget"
+					"target": "rtChCentrosTarget"
 				},
 				"rtChPeriodo": {
 					"pattern": "rtChPeriodo",
@@ -289,13 +285,6 @@
 				"rtChCentrosTarget": {
 					"viewPath": "cbc.co.simulador_costos.view.Admon",
 					"viewName": "Centros",
-					"parent": "parentTarget",
-					"controlId": "parentNavContainer",
-					"transition": "slide"
-				},
-				"rtChUndMedidaTarget": {
-					"viewPath": "cbc.co.simulador_costos.view.Admon",
-					"viewName": "CreateParameters",
 					"parent": "parentTarget",
 					"controlId": "parentNavContainer",
 					"transition": "slide"

@@ -31,8 +31,19 @@ sap.ui.define([
 			// var json = this.initSampleDataModel();
 			// // Setting json to current view....
 			// this.getView().setModel(json);
-
+			
+			var oUploader = this.getView().byId("fileUploader");
+			oUploader.oBrowse.setText("Importar");
+			oUploader.oFilePath.setVisible(false);
+			oUploader.addEventDelegate({
+				onAfterRendering: function () {
+					this.setFileType(['csv']);
+				}
+			}, oUploader);			
+			
 			this.loadModel();
+			this.loadModelCommoditie();
+			// this.editCellsTable(false);
 
 			// var fnPress = this.handleActionPress.bind(this);
 			// var fnfrPress = this.frmLogisticPress.bind(this);
@@ -1064,6 +1075,132 @@ sap.ui.define([
 
 			}
 
+		},
+
+		/**
+		 * Load model data in Combobox Commoditie
+		 * @function
+		 * @param 
+		 * @private
+		 */
+		loadModelCommoditie: function (event) {
+			var sServiceUrl = "",
+				oModelService = "",
+				aListData = [];
+
+			sServiceUrl = this.getOwnerComponent().getModel("ModelSimulador").sServiceUrl;
+			oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true);
+
+			//Leer datos del ERP
+			var oRead = this.fnReadEntity(oModelService, "/headerCommoditiesSet", null);
+
+			if (oRead.tipo === "S") {
+				aListData = oRead.datos.results;
+			} else {
+				MessageBox.error(oRead.msjs, null, "Mensaje del sistema", "OK", null);
+				return;
+			}
+
+			// this.mapDataComboboxCommoditie(aListData);
+			this.loadModelComboBoxCommoditie(aListData);
+		},
+
+		/**
+		 * Map Data ComboBox Commoditie
+		 * @function
+		 * @param 
+		 * @private
+		 */
+		mapDataComboboxCommoditie: function (p_listCommoditie) {
+
+			var oComboBox = this.getView().byId("idComboBoxUnidadesMedida"),
+				oModelCombo = {},
+				lstCommodite = {
+					LstCommodite: []
+				};
+
+			lstCommodite.LstCommodite = p_listCommoditie;
+
+			oModelCombo = new sap.ui.model.json.JSONModel(lstCommodite);
+
+			oComboBox.setModel(oModelCombo);
+		},
+		
+		/**
+		 * load model comboBox Commoditie
+		 * @function
+		 * @param 
+		 * @private
+		 */
+		loadModelComboBoxCommoditie: function (p_listCommoditie) {
+
+			var oTable = this.byId("tblMaterial");
+			oTable.getModel().setProperty("/LstCommodite", p_listCommoditie);
+			oTable.getModel().refresh(true); 			
+
+		},		
+
+		onChange: function (oEvent) {
+			var oItem = oEvent.getParameter("selectedItem");
+			var oTableCommodities = this.byId("tblMaterial");
+			var oItemObject = oItem.getBindingContext().getObject();
+			var oUnidadSeleccionada= oItemObject.IdCommoditie;
+			var oTableItem = oEvent.getSource().getParent();
+			var oTableItemObject = oTableItem.getBindingContext().getObject();
+			oTableItemObject.MDEF_COMMODITIE = oUnidadSeleccionada;
+			oTableCommodities.getModel().refresh();			
+			
+		},
+		
+		/**
+		 * Upload file
+		 * @function
+		 * @param 
+		 * @private
+		 */		
+		handleUpload: function (oEvent) {
+			var oFile = oEvent.getParameter("files")[0];
+			if (oFile && window.FileReader) {
+				var reader = new FileReader();
+				reader.onload = function (evt) {
+					var strCSV = evt.target.result; //string in CSV 
+					// that.csvJSON(strCSV);
+				};
+				reader.readAsText(oFile);
+			}
+		},
+		
+		/**
+		 * Edit cells table
+		 * @function
+		 * @param 
+		 * @private
+		 */
+		editCellsTable: function (p_EditValue) {
+			var oTable = {};
+			
+			oTable = this.byId("tblMaterial");
+
+			for (var i = 0; i < oTable.getModel().getData().MATERIAL.length; i++) {
+
+				if (oTable.getRows()[i] !== undefined) {
+					oTable.getRows()[i].getCells()[6].setProperty("editable", p_EditValue);
+					oTable.getRows()[i].getCells()[7].setProperty("editable", p_EditValue);
+					oTable.getRows()[i].getCells()[8].setProperty("editable", p_EditValue);
+					oTable.getRows()[i].getCells()[9].setProperty("editable", p_EditValue);
+					oTable.getRows()[i].getCells()[10].setProperty("editable", p_EditValue);
+					oTable.getRows()[i].getCells()[11].setProperty("editable", p_EditValue);
+					oTable.getRows()[i].getCells()[12].setProperty("editable", p_EditValue);
+					oTable.getRows()[i].getCells()[13].setProperty("editable", p_EditValue);
+					oTable.getRows()[i].getCells()[14].setProperty("editable", p_EditValue);
+					oTable.getRows()[i].getCells()[15].setProperty("editable", p_EditValue);
+					oTable.getRows()[i].getCells()[16].setProperty("editable", p_EditValue);
+					oTable.getRows()[i].getCells()[17].setProperty("editable", p_EditValue);
+					oTable.getRows()[i].getCells()[18].setProperty("editable", p_EditValue);					
+				} else {
+					break;
+				}
+			}			
 		}
 
 	});

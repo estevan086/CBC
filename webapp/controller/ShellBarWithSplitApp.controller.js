@@ -45,10 +45,7 @@ sap.ui.define([
 					"items": [{
 						"title": "Centros",
 						"key": "rtChCentros"
-					}, {
-						"title": "Unidad de Medida",
-						"key": "rtChUndMedida"
-					}, {
+					},  {
 						"title": "Periodos",
 						"key": "rtChPeriodo"
 					}, {
