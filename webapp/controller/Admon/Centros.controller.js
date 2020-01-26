@@ -19,7 +19,7 @@ sap.ui.define([
 
 		GetSociedades: function () {
 
-			var oModel = this.getOwnerComponent().getModel("ModelSimulador");
+			/*var oModel = this.getOwnerComponent().getModel("ModelSimulador");
 			var sServiceUrl = oModel.sServiceUrl;
 
 			//Definir modelo del servicio web
@@ -44,28 +44,23 @@ sap.ui.define([
 			}
 
 			var oCbx = this.byId("idComboBoxSociedad");
-			oCbx.getModel().setProperty("/LstSociedades", this.oDataSociedades);
-			
+			oCbx.getModel().setProperty("/LstSociedades", this.oDataSociedades);*/
+
+			/*	var oCbx3 = this.byId("idComboBoxSociedad3");
+				oCbx3.getView().setModel(oModel);*/
+
 			//oCbx.getModel().refresh();
+			
+			this.getcen();
 		},
 
-		onChangeSociedadessss: function (oEvent) {
-
-			var oItem = oEvent.getParameter("selectedItem");
-			var oCbx = this.byId("idComboBoxSociedad");
-			var oItemObject = oItem.getBindingContext().getObject();
-			var oSociedadSeleccionada = oItemObject.Compcodeplant;
-			var oTableItem = oEvent.getSource().getParent();
-			var oTableItemObject = oTableItem.getBindingContext().getObject();
-			oTableItemObject.Sociedad = oSociedadSeleccionada;
-			oCbx.getModel().refresh();
-
-			/*	var oModel = this.getView().getModel("ModelSimulador");
-			oModel.read("/periodoSet", {
+		getcen: function(){
+		var oModel = this.getView().getModel("ModelSimulador");
+			oModel.read("/centroSet", {
 				success: function (oData, response) {
 					var data = new sap.ui.model.json.JSONModel();
-					data.setProperty("/CodPeriodos", oData.results);
-					this.getOwnerComponent().setModel(data, "Periodos");
+					data.setProperty("/CodCentros", oData.results);
+					this.getOwnerComponent().setModel(data, "Centros");
 				}.bind(this),
 				error: function (oError) {
 					this.showGeneralError({
@@ -73,7 +68,26 @@ sap.ui.define([
 					});
 					this.getModel("modelView").setProperty("/busy", false);
 				}
-			});*/
+			});	
+		},
+		onChangeSociedad: function (oEvent) {
+			var oItem = oEvent.getParameter("selectedItem");
+			var oItemObject = oItem.getBindingContext().getObject();
+			var oSociedadSeleccionada = oItemObject.CompCode;
+			var oModel = this.getView().getModel("ModelSimulador");
+			oModel.read("/centroSet", {
+				success: function (oData, response) {
+					var data = new sap.ui.model.json.JSONModel();
+					data.setProperty("/CodCentros", oData.results);
+					this.getOwnerComponent().setModel(data, "Centros");
+				}.bind(this),
+				error: function (oError) {
+					this.showGeneralError({
+						oDataError: oError
+					});
+					this.getModel("modelView").setProperty("/busy", false);
+				}
+			});
 
 		},
 
