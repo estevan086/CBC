@@ -10,7 +10,7 @@
 							<Title id="title" text="{i18n>CostosLogisticos}"/>
 							<ToolbarSpacer/>
 							<Button icon="sap-icon://factory" type="Emphasized" text="{i18n>Crear}" tooltip="Crear" press="showFormAddLC"/>
-							<Button icon="sap-icon://save" type="Emphasized" text="{i18n>Guardar}" tooltip="Guardar" press="onSaveLogisticCost"/>
+							<Button icon="sap-icon://save" type="Emphasized" text="{i18n>Guardar}" tooltip="Guardar" press="onUpdateLogisticCost"/>
 						</content>
 					</OverflowToolbar>
 				</ui:extension>

@@ -76,7 +76,7 @@ sap.ui.define([
 						"title": "Materiales",
 						"key": "rtChMateriales"
 					}, {
-						"title": "Costos Logísticos",
+						"title": "Costos Log\u00EDsticos",
 						"key": "rtChCostosLogisticos"
 					}]
 				}, {
@@ -96,7 +96,7 @@ sap.ui.define([
 						"key": "rtChMantenimientoMateriales"
 					}]
 				}, {
-					"title": "Costos Log&iqute&stico",
+					"title": "Costos Log\u00EDstico",
 					"icon": "sap-icon://travel-expense",
 					"expanded": false,
 					"items": [{

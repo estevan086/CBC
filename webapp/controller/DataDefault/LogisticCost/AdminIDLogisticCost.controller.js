@@ -36,17 +36,19 @@ sap.ui.define([
 			oModel.read("/codigocostologisticoSet", {
 				success: function (oData, response) {
 					var data = new sap.ui.model.json.JSONModel(),
+						oTable = this.getView().byId("tblLogisticcCost"),
 						dataRet = [];
 
 					this.getModel("modelView").setProperty("/busy", false);
 
 					oData.results.forEach(function (oValue) {
-						oValue.enabled = true;
+						oValue.enabled = false;
 						dataRet.push(oValue);
 					});
 
 					data.setProperty("/CodLogisticCost", dataRet);
 					this.getOwnerComponent().setModel(data, "LogisticCost");
+					oTable.setModel(this.getModel("LogisticCost"));
 
 				}.bind(this),
 				error: function (oError) {
@@ -58,7 +60,55 @@ sap.ui.define([
 			});
 		},
 		showFormAddLC: function (oEvent) {
+			this.getModel("LogisticCost").getProperty("/").CatCosLo = "";
+			this.getModel("LogisticCost").getProperty("/").CostLog = "";
+			this.getModel("LogisticCost").getProperty("/").TxtMd = "";
+
 			this.fnOpenDialog("cbc.co.simulador_costos.view.Utilities.fragments.AdminLogisticCost.AddLogisticCost");
+		},
+		onUpdateLogisticCost: function (oEvent) {
+			var oModel = this.getModel("LogisticCost"),
+				oCodLogisticCost = oModel.getProperty("/CodLogisticCost"),
+				oValue = oCodLogisticCost.find(x => x.enabled === true);
+			//esperar por la ultima peticion al servidor
+			if (oValue !== undefined) {
+				oCodLogisticCost.find(x => x.enabled === true).enabled = false;
+				this.updateLogisticCost({
+					CostLog: oValue.CostLog,
+					CatCosLo: oValue.CatCosLo,
+					TxtMd: oValue.TxtMd
+				}, oCodLogisticCost.find(x => x.enabled === true) !== undefined ? true : false);
+			}
+
+		},
+		updateLogisticCost: function (oDataLc, pLast = false) {
+			var oModel = this.getView().getModel("ModelSimulador");
+
+			this.getModel("modelView").setProperty("/busy", true);
+
+			//Crea el CL
+			oModel.create("/codigocostologisticoSet", {
+				CostLog: oDataLc.CostLog,
+				CatCosLo: oDataLc.CatCosLo,
+				TxtMd: oDataLc.TxtMd
+			}, {
+				success: function (oData, oResponse) {
+					if (pLast === false) {
+						MessageToast.show(this.getView().getModel("i18n").getResourceBundle().getText("NotificacionModificacionOk"));
+						this.getLogisticCostData();
+					}else{
+						this.onUpdateLogisticCost();
+					}
+				}.bind(this),
+				error: function (oError) {
+					this.getModel("modelView").setProperty("/busy", false);
+					if (pLast === false) {
+						this.showGeneralError({
+							oDataError: oError
+						});
+					}
+				}.bind(this)
+			});
 		},
 		onSaveLogisticCost: function (oEvent) {
 			var oModel = this.getView().getModel("ModelSimulador"),
@@ -94,8 +144,18 @@ sap.ui.define([
 
 			oModel.remove("/codigocostologisticoSet('" + oRow.getCells()[0].getText() + "')", {
 				success: function (oData, oResponse) {
-					//MessageToast.show(oData.Vbeln);
-					this.getLogisticCostData();
+					if (oData === undefined) {
+						this.getModel("modelView").setProperty("/busy", false);
+						var oMessage = JSON.parse(oResponse.headers["sap-message"]);
+
+						this.showGeneralError({
+							message: oMessage.message,
+							title: this.getResourceBundle().getText("ErrorBorrado")
+						});
+
+					} else {
+						this.getLogisticCostData();
+					}
 				}.bind(this),
 				error: function (oError) {
 					this.showGeneralError({
@@ -107,14 +167,11 @@ sap.ui.define([
 		},
 		onEditLC: function (oEvent) {
 			var index = oEvent.getSource().getParent().getIndex(),
+				oTable = this.getView().byId("tblLogisticcCost"),
 				oCodLogisticCost = this.getModel("LogisticCost").getProperty("/CodLogisticCost");
-				
-				oCodLogisticCost[index].enabled = true;
-				
-				this.getModel("LogisticCost").getProperty("/").CatCosLo = oCodLogisticCost[index].CatCosLo;
-				this.getModel("LogisticCost").getProperty("/").CostLog = oCodLogisticCost[index].CostLog;
-				this.getModel("LogisticCost").getProperty("/").TxtMd = oCodLogisticCost[index].TxtMd;
-				
+
+			oCodLogisticCost[index].enabled = true;
+			oTable.getModel().refresh();
 		}
 	});
 

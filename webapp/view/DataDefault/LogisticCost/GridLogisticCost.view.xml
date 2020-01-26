@@ -12,10 +12,11 @@
 					<m:Button icon="sap-icon://upload-to-cloud" text="{i18n>Publicar}" tooltip="{i18n>Publicar}" press="PublicVersionCommodities"/>
 				</m:items>
 			</m:FlexBox>
-			<Table id="tblLogicCost" selectionMode="None" visibleRowCount="10"  enableColumnFreeze="true" >
+			<Table id="tblLogicCost" selectionMode="None"  enableColumnFreeze="true" class="sapUiSizeCompact" visibleRowCount="5" ariaLabelledBy="title" >
 				<extension>
 					<m:OverflowToolbar>
 						<m:content>
+							<m:SearchField id="sfMaterial" width="30%" search="onFilterLogisticCost" placeholder="{i18n>MatPlant}"/>
 							<m:ToolbarSpacer/>
 							<m:Button icon="sap-icon://sys-next-page" text="{i18n>Exportar}" tooltip="{i18n>Exportar}" press="onDataExport" />
 							<u:FileUploader id="fileUploader" name="myFileUpload" icon="sap-icon://sys-prev-page" tooltip="{i18n>Importar}" change="onImportCvsFile"/>

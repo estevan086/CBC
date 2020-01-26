@@ -36,18 +36,19 @@ sap.ui.define([
 			oModel.read("/categorialogisticaSet", {
 				success: function (oData, response) {
 					var dataRet = [],
+						oTable = this.getView().byId("tblLogisticCategories"),
 						data = new sap.ui.model.json.JSONModel();
-					
+
 					this.getModel("modelView").setProperty("/busy", false);
 
 					oData.results.forEach(function (oValue) {
-						oValue.enabled = true;
+						oValue.enabled = false;
 						dataRet.push(oValue);
 					});
 
 					data.setProperty("/Items", dataRet);
-					
 					this.getOwnerComponent().setModel(data, "LogisticCategories");
+					oTable.setModel(this.getModel("LogisticCategories"));
 
 				}.bind(this),
 				error: function (oError) {
@@ -60,6 +61,47 @@ sap.ui.define([
 		},
 		showFormAddLC: function (oEvent) {
 			this.fnOpenDialog("cbc.co.simulador_costos.view.Utilities.fragments.AddLogisticCategorie");
+		},
+		onUpdateLogisticCat: function (oEvent) {
+			var oModel = this.getModel("LogisticCategories"),
+				oCodLogisticCat = oModel.getProperty("/Items"),
+				oValue = oCodLogisticCat.find(x => x.enabled === true);
+			//esperar por la ultima peticion al servidor
+			if (oValue !== undefined) {
+				oCodLogisticCat.find(x => x.enabled === true).enabled = false;
+				this.updateLogisticCat({
+					CatCosLo: oValue.CatCosLo,
+					TxtMd: oValue.TxtMd
+				}, oCodLogisticCat.find(x => x.enabled === true) !== undefined ? true : false);
+			}
+		},
+		updateLogisticCat: function (oDataLc, pLast = false) {
+			var oModel = this.getView().getModel("ModelSimulador");
+
+			this.getModel("modelView").setProperty("/busy", true);
+
+			//Crea el CL
+			oModel.create("/categorialogisticaSet", {
+				CatCosLo: oDataLc.CatCosLo,
+				TxtMd: oDataLc.TxtMd
+			}, {
+				success: function (oData, oResponse) {
+					if (pLast === false) {
+						MessageToast.show(this.getView().getModel("i18n").getResourceBundle().getText("NotificacionModificacionOk"));
+						this.getLogisticCatData();
+					}else{
+						this.onUpdateLogisticCat();
+					}
+				}.bind(this),
+				error: function (oError) {
+					this.getModel("modelView").setProperty("/busy", false);
+					if (pLast === false) {
+						this.showGeneralError({
+							oDataError: oError
+						});
+					}
+				}.bind(this)
+			});
 		},
 		onSaveLogisticCat: function (oEvent) {
 			var oModel = this.getView().getModel("ModelSimulador"),
@@ -94,7 +136,18 @@ sap.ui.define([
 
 			oModel.remove("/categorialogisticaSet('" + oRow.getCells()[0].getText() + "')", {
 				success: function (oData, oResponse) {
-					this.getLogisticCatData();
+					if (oData === undefined) {
+						this.getModel("modelView").setProperty("/busy", false);
+						var oMessage = JSON.parse(oResponse.headers["sap-message"]);
+
+						this.showGeneralError({
+							message: oMessage.message,
+							title: this.getResourceBundle().getText("ErrorBorrado")
+						});
+
+					} else {
+						this.getLogisticCatData();
+					}
 				}.bind(this),
 				error: function (oError) {
 					this.showGeneralError({
@@ -106,12 +159,11 @@ sap.ui.define([
 		},
 		onEditLC: function (oEvent) {
 			var index = oEvent.getSource().getParent().getIndex(),
-				oLogisticCat = this.getModel("LogisticCategories").getProperty("/Items");
+				oTable = this.getView().byId("tblLogisticCategories"),
+				oCodLogisticCost = this.getModel("LogisticCategories").getProperty("/Items");
 
-			oLogisticCat[index].enabled = true;
-
-			this.getModel("LogisticCost").getProperty("/").CatCosLo = oLogisticCat[index].CatCosLo;
-			this.getModel("LogisticCost").getProperty("/").TxtMd = oLogisticCat[index].TxtMd;
+			oCodLogisticCost[index].enabled = true;
+			oTable.getModel().refresh();
 
 		}
 

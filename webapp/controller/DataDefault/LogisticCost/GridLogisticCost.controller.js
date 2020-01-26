@@ -3,10 +3,12 @@ sap.ui.define([
 	"cbc/co/simulador_costos/controller/BaseController",
 	"sap/ui/model/json/JSONModel",
 	"sap/m/MessageToast",
-	"sap/ui/model/Filter"
-], function (BaseController, JSONModel, MessageToast, Filter) {
+	"sap/ui/model/Filter",
+	"sap/ui/model/FilterOperator"
+], function (BaseController, JSONModel, MessageToast, Filter, FilterOperator) {
 	"use strict";
-
+	const cDefaultNumValue = "0,000";
+	
 	return BaseController.extend("cbc.co.simulador_costos.controller.DataDefault.LogisticCost.GridLogisticCost", {
 
 		onInit: function () {
@@ -34,28 +36,38 @@ sap.ui.define([
 			this.getLogisticCostValoration();
 
 		},
-		getLogisticCostValoration: function () {
-			var oModel = this.getView().getModel("ModelSimulador");
+		getLogisticCostValoration: function (oFilter, pExport) {
+			var oModel = this.getView().getModel("ModelSimulador"),
+				that = this,
+				top = (oFilter || pExport) ? 0 : 500;
 
 			this.getModel("modelView").setProperty("/busy", true);
+			this.pExport = pExport;
 
 			oModel.read("/costologisticoSet", {
 				urlParameters: {
-					$skip: 1,
-					$top: 5
+					$skip: 0,
+					$top: top
 				},
+				filters: oFilter,
 				success: function (oData, response) {
 					var data = new sap.ui.model.json.JSONModel({
 						LogisticCostValoration: oData.results
 					});
-					this.getOwnerComponent().setModel(data, "LogisticCost");
-					this.getLogisticCostData();
+					if (this.pExport === undefined) {
+						this.getOwnerComponent().setModel(data, "LogisticCost");
+						this.getLogisticCostData();
+					} else {
+						this.setModel(data, "DataExport");
+						this.onDataExport(undefined, true);
+						this.getModel("modelView").setProperty("/busy", false);
+					}
 				}.bind(this),
 				error: function (oError) {
-					this.showGeneralError({
+					that.getModel("modelView").setProperty("/busy", false);
+					that.showGeneralError({
 						oDataError: oError
 					});
-					this.getModel("modelView").setProperty("/busy", false);
 				}
 			});
 		},
@@ -159,25 +171,28 @@ sap.ui.define([
 
 			var oMaterial = [],
 				modelStructure = {};
-			
+
 			//agrega propiedades(columnas) a json
 			costData.forEach(function (oValue2, j) {
 				modelStructure[oValue2.CostLog] = "";
 			});
-			
+
 			//Convierte estructura de tabla, asignando valores de filas en columnas relacionadas por la clave de la tabla Material
 			costValoration.forEach(function (oValue, i) {
 
-				if ( oMaterial.find(x => x.Material === oValue.Material) === undefined || oMaterial.find(x => x.Plant === oValue.Plant) === undefined ||
-					 oMaterial.find(x => x.Fiscyear === oValue.Fiscyear) === undefined || oMaterial.find(x => x.Version === oValue.Version) === undefined ||
-					 oMaterial.find(x => x.Fiscvarnt === oValue.Fiscvarnt) === undefined || oMaterial.find(x => x.Fiscper3 === oValue.Fiscper3) === undefined ||
-					 oMaterial.find(x => x.CompCode === oValue.CompCode) === undefined ) {
+				if (oMaterial.find(x => x.Material === oValue.Material) === undefined || oMaterial.find(x => x.Plant === oValue.Plant) ===
+					undefined ||
+					oMaterial.find(x => x.Fiscyear === oValue.Fiscyear) === undefined || oMaterial.find(x => x.Version === oValue.Version) ===
+					undefined ||
+					oMaterial.find(x => x.Fiscvarnt === oValue.Fiscvarnt) === undefined || oMaterial.find(x => x.Fiscper3 === oValue.Fiscper3) ===
+					undefined ||
+					oMaterial.find(x => x.CompCode === oValue.CompCode) === undefined) {
 
 					modelStructure = oValue; //asigna datos generales
 
-					modelStructure.CantEst = oValue.CantEst;
-					modelStructure.CostTotal = oValue.CostTotal;
-					modelStructure.CostUnid = oValue.CostUnid;
+					modelStructure.CantEst = oValue.CantEst.toString().replace(".", ",");
+					modelStructure.CostTotal = oValue.CostTotal.toString().replace(".", ",");
+					modelStructure.CostUnid = oValue.CostUnid.toString().replace(".", ",");
 
 					for (var j = 0; j < costValoration.length; j++) {
 
@@ -187,7 +202,7 @@ sap.ui.define([
 							costValoration[j].CompCode === costValoration[i].CompCode) {
 
 							if (costValoration[j].CostLog !== "") {
-								modelStructure[costValoration[j].CostLog] = costValoration[j].VCostLog;
+								modelStructure[costValoration[j].CostLog] = costValoration[j].VCostLog !== undefined ? costValoration[j].VCostLog.toString().replace(".", ",") : cDefaultNumValue;
 							}
 						}
 					}
@@ -212,6 +227,7 @@ sap.ui.define([
 				var columnName = oContext.getObject().columnName;
 				return new sap.ui.table.Column({
 					label: oContext.getObject().label,
+					width: "11rem",
 					visible: oContext.getObject().visible,
 					filterProperty: oContext.getObject().enabled === false ? columnName : "",
 					template: oContext.getObject().enabled === false ? new sap.m.Text(columnName, {
@@ -236,6 +252,7 @@ sap.ui.define([
 				data = [];
 
 			this.getModel("modelView").setProperty("/busy", true);
+			this.getView().byId("sfMaterial").setValue("");
 			//Convertir columnas de costos logistico en filas para ser almacenadas
 			costValorationTable.forEach(function (oValue, i) {
 
@@ -251,11 +268,11 @@ sap.ui.define([
 					modelStructure.CompCode = oValue.CompCode;
 					modelStructure.CostLog = oLogisticCost.CostLog;
 					if (oValue.CantEst !== "") {
-						modelStructure.CantEst = oValue.CantEst;
+						modelStructure.CantEst = oValue.CantEst.toString().replace(",", ".");
 					}
 
 					if (oValue[oLogisticCost.CostLog]) {
-						modelStructure.VCostLog = oValue[oLogisticCost.CostLog];
+						modelStructure.VCostLog = oValue[oLogisticCost.CostLog].toString().replace(",", ".");
 					}
 
 					data.push(modelStructure);
@@ -287,25 +304,31 @@ sap.ui.define([
 			this.fnOpenDialog("cbc.co.simulador_costos.view.Utilities.fragments.AdminLogisticCost.AddMaterialLogisticCost");
 		},
 
-		onDataExport: function () {
+		onDataExport: function (oEvent, pExport) {
 
-			var oModelLocal = this.getView().getModel("LogisticCost"),
-				oModel = new sap.ui.model.json.JSONModel(oModelLocal.getProperty("/LogisticCostValoration")),
-				columns = [];
+			var oModelLocal = this.getView().getModel("DataExport");
 
-			//recupera columnas creadas dinamicamente
-			this.columnData.forEach(function (oValue, i) {
-				columns.push({
-					name: oValue.label,
-					template: {
-						content: {
-							path: oValue.columnName
+			if (pExport) {
+				var oModel = new sap.ui.model.json.JSONModel(oModelLocal.getProperty("/LogisticCostValoration")),
+					columns = [];
+					
+				//recupera columnas creadas dinamicamente
+				this.columnData.forEach(function (oValue, i) {
+					columns.push({
+						name: oValue.label,
+						template: {
+							content: {
+								path: oValue.columnName
+							}
 						}
-					}
+					});
 				});
-			});
 
-			this.cvsDataExport(oModel, columns);
+				this.cvsDataExport(oModel, columns);
+				this.getView().getModel("DataExport").setProperty("/LogisticCostValoration", []);
+			} else {
+				this.getLogisticCostValoration(undefined, true);
+			}
 
 		},
 		onImportCvsFile: function (oEvent) {
@@ -328,7 +351,8 @@ sap.ui.define([
 						oLogistiCostLine = {};
 						that.columnData.forEach(function (oColumn, j) {
 							oClValues = Object.values(oImportData[i]);
-							oLogistiCostLine[oColumn.columnName] = that.isInitialNum(oClValues[j]) === "" ? "" : oClValues[j];
+							//asignar valor del costo
+							oLogistiCostLine[oColumn.columnName] = that.isInitialNum(oClValues[j]) !== undefined ? oClValues[j].toString().replace(".", ",") : cDefaultNumValue;
 						});
 						oLogistiCost.push(oLogistiCostLine);
 					});
@@ -341,6 +365,20 @@ sap.ui.define([
 				reader.readAsText(oFile);
 			}
 
+		},
+		onFilterLogisticCost: function (oEvent) {
+			var sQuery = oEvent.getParameter('query'),
+				aFilter = [];
+
+			if (sQuery) {
+				aFilter.push(new Filter("Material", FilterOperator.Contains, sQuery));
+				aFilter.push(new Filter("Plant", FilterOperator.Contains, sQuery));
+				// Create a filter which contains our name and 'publ' filter
+				this.getLogisticCostValoration(aFilter);
+			} else {
+				// Use empty filter to show all list items
+				this.getLogisticCostValoration();
+			}
 		}
 	});
 
