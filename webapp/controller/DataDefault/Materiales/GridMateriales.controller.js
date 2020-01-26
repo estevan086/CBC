@@ -977,8 +977,8 @@ sap.ui.define([
 						MDEF_FAMILIA: value.Txtfam,
 						MDEF_IDSUFAMILIA: value.ysubfamil,
 						MDEF_SUBFAMILIA: value.Txtsubfam,
-						MDEF_PERIODO: "",
-						MDEF_MES: ""
+						MDEF_PERIODO: value.yfiscyear,
+						MDEF_MES: value.yfiscper3
 					};
 
 				aList.MATERIAL.push(oMaterial);
