@@ -104,11 +104,11 @@
 							<!--<m:ToggleButton icon="sap-icon://complete" tooltip="Show available products only" press="toggleAvailabilityFilter"-->
 							<!--	pressed="{ui>/availabilityFilterOn}"/>-->
 							<!--<m:ToggleButton icon="sap-icon://grid" tooltip="Enable / Disable Cell Filter Functionality" pressed="{ui>/cellFilterOn}"/>-->
-							<m:Button icon="sap-icon://decline" text="Limpiar Filtro" tooltip="Clear all filters" press="clearAllFilters"/>
+							<m:Button icon="sap-icon://eraser" text="" tooltip="Clear all filters" press="clearAllFilters"/>
 							<!--<m:ToolbarSeparator/>-->
 							<m:SearchField placeholder="Filter" value="{ui>/globalFilter}" liveChange="filterGloballySup" width="15rem"/>
 							<m:ToolbarSpacer/>
-							<m:Button icon="sap-icon://sys-next-page" text="Exportar" tooltip="Exportar version de material"/>
+							<m:Button icon="sap-icon://sys-next-page" text="Exportar" tooltip="Exportar version de material" press="onDataExport"/>
 							<u:FileUploader id="fileUploader" name="myFileUpload" icon="sap-icon://sys-prev-page" tooltip="Importar version de commoditie"
 								change="handleUpload"/>
 							<m:Button icon="sap-icon://factory" type="Emphasized" text="Administrar material" tooltip="Crear Material" press="onGoToIdCommoditieTable"/>
@@ -162,7 +162,7 @@
 							<m:Text text="{MDEF_PESOMATERIAL}" wrapping="false"/>
 						</template>
 					</Column>
-					<Column autoResizable="true" width="5rem" filterProperty="MDEF_COMMODITIE">
+					<Column autoResizable="true" width="10rem" filterProperty="MDEF_COMMODITIE">
 						<m:Label text="Commoditie"/>
 						<template>
 							<!--<m:Text text="{MDEF_COMMODITIE}" wrapping="false"/>-->
@@ -177,42 +177,42 @@
 						<m:Label text="Precio Productivo"/>
 						<template>
 							<!--<m:Text text="{MDEF_PRECIOPRODUCTIVO}" wrapping="false"/>-->
-							<m:Input value="{MDEF_PRECIOPRODUCTIVO}" editable="false"/>
+							<m:Input value="{MDEF_PRECIOPRODUCTIVO}" type="Number" editable="false" change="onChangeCostoMaterial"/>
 						</template>
 					</Column>
 					<Column autoResizable="true" width="5rem" filterProperty="MDEF_COSTOCONVERSION">
 						<m:Label text="Costo Conversión"/>
 						<template>
 							<!--<m:Text text="{MDEF_COSTOCONVERSION}" wrapping="false"/>-->
-							<m:Input value="{MDEF_COSTOCONVERSION}" editable="false"/>
+							<m:Input value="{MDEF_COSTOCONVERSION}" type="Number" editable="false" change="onChangeCostoMaterial"/>
 						</template>
 					</Column>
 					<Column autoResizable="true" width="5rem" filterProperty="MDEF_COSTOADICIONAL">
 						<m:Label text="Costo Adicional"/>
 						<template>
 							<!--<m:Text text="{MDEF_COSTOADICIONAL}" wrapping="false"/>-->
-							<m:Input value="{MDEF_COSTOADICIONAL}" editable="false"/>
+							<m:Input value="{MDEF_COSTOADICIONAL}" type="Number" editable="false" change="onChangeCostoMaterial"/>
 						</template>
 					</Column>
 					<Column autoResizable="true" width="5rem" filterProperty="MDEF_COSTOENVIO">
 						<m:Label text="Costo Envio"/>
 						<template>
 							<!--<m:Text text="{MDEF_COSTOENVIO}" wrapping="false"/>-->
-							<m:Input value="{MDEF_COSTOENVIO}" editable="false"/>
+							<m:Input value="{MDEF_COSTOENVIO}" type="Number" editable="false" change="onChangeCostoMaterial"/>
 						</template>
 					</Column>
 					<Column autoResizable="true" width="5rem" filterProperty="MDEF_ICOTERM">
 						<m:Label text="Icoterm"/>
 						<template>
 							<!--<m:Text text="{MDEF_ICOTERM}" wrapping="false"/>-->
-							<m:Input value="{MDEF_ICOTERM}" editable="false"/>
+							<m:Input value="{MDEF_ICOTERM}" editable="false" change="onChangeCostoMaterial"/>
 						</template>
 					</Column>
 					<Column autoResizable="true" width="5rem" filterProperty="MDEF_COSTOMATERIAL">
 						<m:Label text="Costo Material"/>
 						<template>
 							<!--<m:Text text="{MDEF_COSTOMATERIAL}" wrapping="false"/>-->
-							<m:Input value="{MDEF_COSTOMATERIAL}" editable="false"/>
+							<m:Input value="{MDEF_COSTOMATERIAL}" type="Number" editable="false" change="onChangeCostoMaterial"/>
 						</template>
 					</Column>
 					<Column autoResizable="true" width="5rem" filterProperty="MDEF_FORMULAOTROSCOSTOS">
@@ -231,28 +231,28 @@
 						<m:Label text="Otros Costos"/>
 						<template>
 							<!--<m:Text text="{MDEF_OTROSCOSTOS}" wrapping="false"/>-->
-							<m:Input value="{MDEF_OTROSCOSTOS}" editable="false"/>
+							<m:Input value="{MDEF_OTROSCOSTOS}" type="Number" editable="false" change="onChangeCostoMaterial"/>
 						</template>
 					</Column>
 					<Column autoResizable="true" width="5rem" filterProperty="MDEF_PCTRANSFERENCIA">
-						<m:Label text="PCTrasnferencia"/>
+						<m:Label text="%Trasnferencia"/>
 						<template>
 							<!--<m:Text text="{MDEF_%TRANSFERENCIA}" wrapping="false"/>-->
-							<m:Input value="{MDEF_PCTRANSFERENCIA}" editable="false"/>
+							<m:Input value="{MDEF_PCTRANSFERENCIA}" type="Number" editable="false" change="onChangePorcentajeTransferencia"/>
 						</template>
 					</Column>
 					<Column autoResizable="true" width="5rem" filterProperty="MDEF_COSTOTRANSFERENCIA">
 						<m:Label text="Costo Transferencia"/>
 						<template>
 							<!--<m:Text text="{MDEF_COSTOTRANSFERENCIA}" wrapping="false"/>-->
-							<m:Input value="{MDEF_COSTOTRANSFERENCIA}" editable="false"/>
+							<m:Input value="{MDEF_COSTOTRANSFERENCIA}" type="Number" editable="false" change="onChangeCostoMaterial"/>
 						</template>
 					</Column>
 					<Column autoResizable="true" width="5rem" filterProperty="MDEF_PRECIOPREMISA">
 						<m:Label text="Precio Premisa"/>
 						<template>
 							<!--<m:Text text="{MDEF_PRECIOPREMISA}" wrapping="false"/>-->
-							<m:Input value="{MDEF_PRECIOPREMISA}" editable="false"/>
+							<m:Input value="{MDEF_PRECIOPREMISA}" type="Number" editable="false"/>
 						</template>
 					</Column>
 					<Column autoResizable="true" width="5rem" filterProperty="MDEF_IDCATEGORIA">
