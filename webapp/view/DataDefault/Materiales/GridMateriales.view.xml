@@ -96,7 +96,7 @@
 					<m:Button icon="sap-icon://upload-to-cloud" text="Publicar" tooltip="Publicar version de commoditie"/>
 				</m:items>
 			</m:FlexBox>
-			<Table id="tblMaterial" rows="{/MATERIAL}" selectionMode="None" visibleRowCount="7" rowActionCount="1" class="sapUiSizeCompact">
+			<Table id="tblMaterial" enableColumnFreeze="true" rows="{/MATERIAL}" selectionMode="None" visibleRowCount="7" rowActionCount="1" class="sapUiSizeCompact">
 				<extension>
 					<m:OverflowToolbar>
 						<m:content>
