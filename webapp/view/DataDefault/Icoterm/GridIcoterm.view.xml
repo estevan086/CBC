@@ -5,7 +5,7 @@
 		numberUnit="{CurrencyCode}"/>
 	<Page showHeader="false" enableScrolling="false" class="sapUiContentPadding" busy="{modelView>/busy}">
 		<content>
-			<ui:Table id="tblPeriodo" rows="{Icoterm>/CodIcoterm}" selectionMode="None" visibleRowCount="10" rowActionCount="2" class="sapUiSizeCompact">
+			<ui:Table id="tblIcoterm" rows="{Icoterm>/CodIcoterm}" selectionMode="None" visibleRowCount="10" rowActionCount="2" class="sapUiSizeCompact">
 				<ui:extension>
 					<OverflowToolbar>
 						<content>

@@ -1,41 +1,39 @@
-<mvc:View controllerName="cbc.co.simulador_costos.controller.Admon.Centros" xmlns:html="http://www.w3.org/1999/xhtml"
-	xmlns:mvc="sap.ui.core.mvc" displayBlock="true" xmlns:ui="sap.ui.table" xmlns:m="sap.m" xmlns:u="sap.ui.unified" xmlns:c="sap.ui.core"
-	xmlns:l="sap.ui.layout" height="100%">
-	<m:ObjectHeader binding="{/ProductCollection/0}" title="Administracion - Centros" condensed="true"
+<mvc:View controllerName="cbc.co.simulador_costos.controller.Admon.Centros" xmlns:core="sap.ui.core"
+	xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:ui="sap.ui.table" height="100%">
+	<ObjectHeader binding="{/ProductCollection/0}" title="Centros" condensed="true"
 		number="{ parts:[{path:'Price'},{path:'CurrencyCode'}], type: 'sap.ui.model.type.Currency', formatOptions: {showMeasure: false} }"
-		numberUnit="{CurrencyCode}"></m:ObjectHeader>
-	<m:Page showHeader="false" enableScrolling="false" class="sapUiContentPadding">
-		<m:content>
+		numberUnit="{CurrencyCode}"/>
+	<Page showHeader="false" enableScrolling="false" class="sapUiContentPadding" busy="{modelView>/busy}">
+		<content>
 			<ui:Table id="tblCentros" rows="{Centros>/CodCentros}" selectionMode="None" visibleRowCount="10" rowActionCount="1" class="sapUiSizeCompact">
 				<ui:extension>
-					<m:OverflowToolbar>
-						<m:content>
-							<m:Label text="Sociedad"/>
-							<m:ComboBox id="idComboBoxSociedad" selectionChange="onChangeSociedad" showSecondaryValues="true" filterSecondaryValues="true"  
+					<OverflowToolbar>
+						<content>
+						<Label text="Sociedad"/>
+							<ComboBox id="idComboBoxSociedad" selectionChange="onChangeSociedad" showSecondaryValues="true" filterSecondaryValues="true"  
 								items="{ path: '/LstSociedades', sorter: { path: 'CompCodePlant' } }">
-								<c:ListItem key="{CompCodePlant}" text="{DescCompCodePlant}" additionalText="{CompCodePlant}"/>
-							</m:ComboBox>
-							<m:ToolbarSpacer/>
-							<m:Button icon="sap-icon://save" type="Emphasized" text="{i18n>Guardar}" tooltip="Crear Centros"/>
-						</m:content>
-					</m:OverflowToolbar>
+								<core:ListItem key="{CompCodePlant}" text="{DescCompCodePlant}" additionalText="{CompCodePlant}"/>
+							</ComboBox>
+							<ToolbarSpacer/>
+							<Button icon="sap-icon://save" type="Emphasized" text="{i18n>Guardar}" tooltip="Crear Centros"/>
+						</content>
+					</OverflowToolbar>
 				</ui:extension>
 				<ui:columns>
 					<ui:Column filterProperty="PlantDesc">
-						<m:Label text="Centro"/>
+						<Label text="Centro"/>
 						<ui:template>
-							<m:Text id="txtCentro" text="{Centros>/PlantDesc}" wrapping="false"/>
+							<Text text="{Centros>PlantDesc}" wrapping="false"/>
 						</ui:template>
 					</ui:Column>
 					<ui:Column filterProperty="Flag">
-						<m:Label text="Activo"/>
+						<Label text="Descripcion"/>
 						<ui:template>
-							<m:Text id="txtCentro2" text="{Centros>/Flag}" wrapping="false"/>
-							<!--<m:CheckBox id="chkStatus"  text="{Centros>/Flag}" />-->
+							<CheckBox id="cbxStatusCentro" selected="false" wrapping="false"/>
 						</ui:template>
 					</ui:Column>
 				</ui:columns>
 			</ui:Table>
-		</m:content>
-	</m:Page>
+		</content>
+	</Page>
 </mvc:View>
