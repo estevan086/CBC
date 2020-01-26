@@ -110,7 +110,7 @@
 							<m:ToolbarSpacer/>
 							<m:Button icon="sap-icon://sys-next-page" text="Exportar" tooltip="Exportar version de material" press="onDataExport"/>
 							<u:FileUploader id="fileUploader" name="myFileUpload" icon="sap-icon://sys-prev-page" tooltip="Importar version de commoditie"
-								change="handleUpload"/>
+								change="handleUpload"/> 
 							<m:Button icon="sap-icon://factory" type="Emphasized" text="Administrar material" tooltip="Crear Material" press="onGoToIdCommoditieTable"/>
 							<!--<m:Button icon="sap-icon://edit" type="Emphasized" text="Editar Version" tooltip="Version" press="showFormEditCommoditie"/>-->
 						</m:content>

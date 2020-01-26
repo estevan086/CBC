@@ -1181,16 +1181,45 @@ sap.ui.define([
 		 * @private
 		 */
 		handleUpload: function (oEvent) {
-			var oFile = oEvent.getParameter("files")[0];
+			var oFile = oEvent.getParameter("files")[0],
+			that = this;
+			
 			if (oFile && window.FileReader) {
 				var reader = new FileReader();
 				reader.onload = function (evt) {
 					var strCSV = evt.target.result; //string in CSV 
-					// that.csvJSON(strCSV);
+					that.csvJSON(strCSV);
 				};
 				reader.readAsText(oFile);
 			}
 		},
+		
+		/**
+		 * Get json file
+		 * @function
+		 * @param 
+		 * @private
+		 */		
+		csvJSON: function (csv) {
+			var lines = csv.split("\n");
+			var result = [];
+			var headers = lines[0].split(",");
+			for (var i = 1; i < lines.length; i++) {
+				var obj = {};
+				var currentline = lines[i].split(",");
+				for (var j = 0; j < headers.length; j++) {
+					obj[headers[j]] = currentline[j];
+				}
+				result.push(obj);
+			}
+			var oStringResult = JSON.stringify(result);
+			var oFinalResult = JSON.parse(oStringResult.replace(/\\r/g, "")); //OBJETO JSON para guardar
+			//MessageToast.show(oStringResult);
+			// this.CargaMasiva(oFinalResult);
+			//return result; //JavaScript object
+			//sap.ui.getCore().getModel().setProperty("/", oFinalResult);
+			//this.generateTile();
+		},		
 
 		/**
 		 * Edit cells table
