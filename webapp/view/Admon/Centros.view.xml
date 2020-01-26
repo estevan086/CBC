@@ -12,9 +12,8 @@
 						<m:content>
 							<!--<Title id="title" text="{i18n>Periodos}"/>-->
 							<m:Label text="Sociedad"/>
-							<m:ComboBox id="idComboBoxSociedad" showSecondaryValues="true" filterSecondaryValues="true" value="{/comboBoxValueSociedad}"
-								selectedKey="{/comboBoxKeySociedad}" items="{ path: '/Sociedades', sorter: { path: 'text' } }">
-								<c:ListItem key="{key}" text="{text}" additionalText="{key}"/>
+							<m:ComboBox id="idComboBoxSociedad"  showSecondaryValues="true" filterSecondaryValues="true"
+								>
 							</m:ComboBox>
 							<m:ToolbarSpacer/>
 							<m:Button icon="sap-icon://save" type="Emphasized" text="{i18n>Guardar}" tooltip="Crear Centros"/>
