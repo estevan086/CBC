@@ -1,34 +1,47 @@
-<mvc:View
-	controllerName="cbc.co.simulador_costos.controller.Manufactura.Manufactura"
-	height="100%"
-	xmlns:l="sap.ui.layout"
-	xmlns:mvc="sap.ui.core.mvc"
-	xmlns:core="sap.ui.core"
-	xmlns="sap.m">
-		<Toolbar class="sapNocolor">
-			<Title text="Carga de Manufactura" level="H2"/>
-			<ToolbarSpacer/>
-			<Title text="" level="H2"/>
-			<ToolbarSpacer/>
-			<Button icon="sap-icon://message-information" press=".onOpenDialog" ariaLabelledBy="editButtonLabel"/>
-		</Toolbar>
-		<IconTabBar
-		id="idIconTabBarSeparatorNoIcon"
-		expanded="true"
-		class="sapUiResponsiveContentPadding">
-		<items>
-			<IconTabFilter
-				icon="sap-icon://upload"
-				iconColor="Neutral"
-				text="Cargar">
-			</IconTabFilter>
-			<IconTabFilter
-				icon="sap-icon://edit"
-				iconColor="Neutral"
-				text="Editar">
-				<mvc:XMLView viewName="cbc.co.simulador_costos.view.InvoiceList"/>
-			</IconTabFilter>
-		</items>
-	</IconTabBar>
-	
+<mvc:View controllerName="cbc.co.simulador_costos.controller.Manufactura.Manufactura" xmlns="sap.m" xmlns:l="sap.ui.layout"
+	xmlns:mvc="sap.ui.core.mvc" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core">
+	<ObjectHeader binding="{/ProductCollection/0}" title="Carga BW" condensed="true"
+		number="{ parts:[{path:'Price'},{path:'CurrencyCode'}], type: 'sap.ui.model.type.Currency', formatOptions: {showMeasure: false} }"
+		numberUnit="{CurrencyCode}"/>
+	<Page  showHeader="false" enableScrolling="false" class="sapUiContentPadding">
+		<content>
+			<VBox class="sapUiSmallMargin">
+				<f:SimpleForm id="SimpleFormChange480_12120Dual" editable="true" layout="ResponsiveGridLayout" title="" labelSpanXL="4" labelSpanL="4"
+					labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2"
+					columnsL="2" columnsM="2" singleContainerFullSize="false">
+					<f:content>
+						<Label text="Tipo de carga"/>
+						<ComboBox id="cbxTypeLoad" selectionChange="onChangeSociedad" showSecondaryValues="true" filterSecondaryValues="true"
+							items="{ path: '/LstSociedades', sorter: { path: 'CompCodePlant' } }">
+							<core:ListItem key="{CompCodePlant}" text="{DescCompCodePlant}" additionalText="{CompCodePlant}"/>
+						</ComboBox>
+						<Label text="Version del sistema"/>
+						<ComboBox id="cbxVersionSistema" selectionChange="onChangeSociedad" showSecondaryValues="true" filterSecondaryValues="true"
+							items="{ path: '/LstSociedades', sorter: { path: 'CompCodePlant' } }">
+							<core:ListItem key="{CompCodePlant}" text="{DescCompCodePlant}" additionalText="{CompCodePlant}"/>
+						</ComboBox>
+						<Label text="Tipo de archivo"/>
+						<Select id="cbxTypeFile" selectedKey="{}">
+							<items>
+								<core:Item text="Real" key="0"/>
+								<core:Item text="AOP" key="1"/>
+								<core:Item text="Forecast" key="2"/>
+							</items>
+						</Select>
+						<Label text="Nombre de version"/>
+						<Input value="{}"></Input>
+						<ComboBox id="cbxPeriodo" selectionChange="onChangeSociedad" showSecondaryValues="true" filterSecondaryValues="true"
+							items="{ path: '/LstSociedades', sorter: { path: 'CompCodePlant' } }">
+							<core:ListItem key="{CompCodePlant}" text="{DescCompCodePlant}" additionalText="{CompCodePlant}"/>
+						</ComboBox>
+						<Label text="Descripcion"/>
+						<TextArea value=""></TextArea>
+						<Label text="ID" labelFor="inpId"/>
+						<Input id="inpId" name="txtID" type="Text" value="ICO_" enabled="false"/>
+						<Button icon="sap-icon://upload-to-cloud" type="Emphasized" text="Cargar" tooltip="Cargar Archivo"/>
+					</f:content>
+				</f:SimpleForm>
+			</VBox>
+		</content>
+	</Page>
 </mvc:View>

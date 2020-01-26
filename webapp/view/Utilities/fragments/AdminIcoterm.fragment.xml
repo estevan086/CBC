@@ -1,53 +1,26 @@
-<core:FragmentDefinition 
-	xmlns="sap.m"
+<c:FragmentDefinition id="fragmentAddCommoditie"
+	xmlns:m="sap.m"
 	xmlns:f="sap.ui.layout.form" 
-	xmlns:core="sap.ui.core" 
+	xmlns:c="sap.ui.core" 
 	xmlns:mvc="sap.ui.core.mvc"
 	xmlns:html="http://www.w3.org/1999/xhtml" 
 	xmlns:l="sap.ui.layout">
-
-	<Dialog title="Crear Icoterm" >
-		<VBox class="sapUiSmallMargin">
-		<f:Form editable="true">
-			<f:layout>
-				<f:ResponsiveGridLayout
-					labelSpanXL="3"
-					labelSpanL="3"
-					labelSpanM="3"
-					labelSpanS="12"
-					adjustLabelSpan="false"
-					emptySpanXL="4"
-					emptySpanL="4"
-					emptySpanM="4"
-					emptySpanS="0"
-					columnsXL="1"
-					columnsL="1"
-					columnsM="1"
-					singleContainerFullSize="false" />
-			</f:layout>
-			<f:formContainers>
-				<f:FormContainer>
-					<f:formElements>
-						<f:FormElement label="ID">
-							<f:fields>
-								<Input  name="txtID"/>
-							</f:fields>
-						</f:FormElement>
-						<f:FormElement label="Icoterm">
-							<f:fields>
-								<Input  name="txtIcoterm"/>
-							</f:fields>
-						</f:FormElement>
-					</f:formElements>
-				</f:FormContainer>
-			</f:formContainers>
-		</f:Form>
-	</VBox>
-	<beginButton>
-         <Button icon="sap-icon://save"  text="save" tooltip="save" press="closeDialog"/>
-    </beginButton>
-	<endButton>
-         <Button icon="sap-icon://decline" text="cancel" tooltip="cancel"  press="closeDialog"/>
-    </endButton>
-	</Dialog>
-</core:FragmentDefinition>
+	<m:Dialog id="dialogAdd" title="{Crear Icoterm}">
+		<m:VBox id="vbxAddCM">
+			<f:SimpleForm id="fmAddCM" columnsM="2" columnsL="2" columnsXL="2">
+				<f:content>
+					<m:Label text="ID" labelFor="inpId"/>
+					<m:Input id="inpId" name="txtID" type="Text" value="ICO_" enabled="false"/>
+					<m:Label text="Descripción"/>
+					<m:Input id="inpDesc" name="txtName" required="true" value="{Icoterm>/TxtDesc}"/>
+				</f:content>
+			</f:SimpleForm>
+		</m:VBox>
+		<m:beginButton>
+			<m:Button id="btnsave" icon="sap-icon://save" text="{i18n>Guardar}" tooltip="{i18n>Guardar}" press="AddIcoterm"/>
+		</m:beginButton>
+		<m:endButton>
+			<m:Button id="btncancel" icon="sap-icon://decline" text="{i18n>Cancelar}" tooltip="{i18n>Cancelar}" press="fnCloseFragment"/>
+		</m:endButton>
+	</m:Dialog>
+</c:FragmentDefinition>

@@ -27,12 +27,6 @@
 							<m:Text id="txtCentro" text="{Centros>/PlantDesc}" wrapping="false"/>
 						</ui:template>
 					</ui:Column>
-					<ui:Column filterProperty="Period">
-						<Label text="Mes"/>
-						<ui:template>
-							<Text text="{Periodos>Period}" wrapping="false"/>
-						</ui:template>
-					</ui:Column>
 					<ui:Column filterProperty="Flag">
 						<m:Label text="Activo"/>
 						<ui:template>

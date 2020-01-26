@@ -1,62 +1,48 @@
-<mvc:View
-	controllerName="cbc.co.simulador_costos.controller.DataDefault.Icoterm.GridIcoterm"
-	xmlns:html="http://www.w3.org/1999/xhtml" 
-	xmlns:mvc="sap.ui.core.mvc" 
-	displayBlock="true"
-	xmlns="sap.ui.table" 
-	xmlns:m="sap.m" 
-	xmlns:u="sap.ui.unified" 
-	xmlns:c="sap.ui.core"
-    height="100%">
-	<m:ObjectHeader binding="{/ProductCollection/0}" title="Datos Default - Icoterm" condensed="true"
+<mvc:View controllerName="cbc.co.simulador_costos.controller.DataDefault.Icoterm.GridIcoterm" xmlns:core="sap.ui.core"
+	xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:ui="sap.ui.table" height="100%">
+	<ObjectHeader binding="{/ProductCollection/0}" title="Datos Default - Icoterm" condensed="true"
 		number="{ parts:[{path:'Price'},{path:'CurrencyCode'}], type: 'sap.ui.model.type.Currency', formatOptions: {showMeasure: false} }"
-		numberUnit="{CurrencyCode}">
-		<m:ObjectAttribute text="{WeightMeasure} {WeightUnit} {Width} x {Depth} x {Height} {DimUnit}"/>
-	</m:ObjectHeader>
-	 <m:App>
-	   <m:pages>
-		<m:Page
-			showHeader="false"
-			enableScrolling="false"
-			class="sapUiContentPadding">
-			<m:content>
-				<Table id="tblIcoterm"
-					rows="{/ICOTERM}"
-					selectionMode="None"
-					visibleRowCount="12">
-					<extension>
-							<m:OverflowToolbar>
-								<m:content>
-									<m:Title id="title" text="Icoterm"/>
-									<m:ToolbarSpacer/>
-									<m:Button icon="sap-icon://sys-next-page" text="Exportar" tooltip="Exportar Icoterm"/>
-									<m:Button icon="sap-icon://sys-prev-page" text="Importar" tooltip="Importar Icoterm"/>
-									<m:Button icon="sap-icon://factory" text="Crear Icoterm" tooltip="Crear Icoterm" press="showFormAddCommoditie"/>
-									<m:Button icon="sap-icon://save" text="Guardar" tooltip="Guardar" press="saveVersionCommodities"/>
-								</m:content>
-							</m:OverflowToolbar>
-						</extension>
-					<columns>
-						<Column width="15%">
-							<m:Label text="ID" />
-							<template>
-								<m:Text text="{ID}" wrapping="false" />
-							</template>
-						</Column>
-						<Column
-							id="ColumnICOTERM"
-							width="15%"
-							showSortMenuEntry="false"
-							sortProperty="ICOTERM">
-							<m:Label text="Descripción" />
-							<template>
-								<m:Text text="{ICOTERM}" wrapping="false" />
-							</template>
-						</Column>
-					</columns>
-				</Table>
-			</m:content>
-		</m:Page>
-	  </m:pages>
-	 </m:App>
+		numberUnit="{CurrencyCode}"/>
+	<Page showHeader="false" enableScrolling="false" class="sapUiContentPadding" busy="{modelView>/busy}">
+		<content>
+			<ui:Table id="tblPeriodo" rows="{Icoterm>/CodIcoterm}" selectionMode="None" visibleRowCount="10" rowActionCount="2" class="sapUiSizeCompact">
+				<ui:extension>
+					<OverflowToolbar>
+						<content>
+							<!--<Title id="title" text="{i18n>Periodos}"/>-->
+							<ToolbarSpacer/>
+							<Button icon="sap-icon://factory" type="Emphasized" text="{i18n>Crear}" tooltip="Crear Icoterm" press="showFormAddIcoterm"/>
+							<!--<Button icon="sap-icon://save" type="Emphasized" text="Guardar" tooltip="Guardar" press="saveIcoterm"/>-->
+						</content>
+					</OverflowToolbar>
+				</ui:extension>
+				<ui:columns>
+					<ui:Column filterProperty="idIcoterm">
+						<Label text="Icoterm"/>
+						<ui:template>
+							<Text text="{Icoterm>idIcoterm}" wrapping="false"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column filterProperty="DescIcoterm">
+						<Label text="Descripcion"/>
+						<ui:template>
+							<Input id="txtDescGrid" value="{Icoterm>DescIcoterm}" editable="false"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="4rem" hAlign="Center">
+						<ui:template>
+							<Button tooltip="Editar" icon="sap-icon://edit" press="handleEditPress"/>
+						</ui:template>
+					</ui:Column>
+				</ui:columns>
+				<ui:rowActionTemplate>
+					<ui:RowAction>
+						<ui:items>
+							<ui:RowActionItem type="Navigation" text="Eliminar" press="handleDeletePress" icon="sap-icon://delete"></ui:RowActionItem>
+						</ui:items>
+					</ui:RowAction>
+				</ui:rowActionTemplate>
+			</ui:Table>
+		</content>
+	</Page>
 </mvc:View>

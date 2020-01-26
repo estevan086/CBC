@@ -19,7 +19,7 @@ sap.ui.define([
 
 		GetSociedades: function () {
 
-			/*var oModel = this.getOwnerComponent().getModel("ModelSimulador");
+			var oModel = this.getOwnerComponent().getModel("ModelSimulador");
 			var sServiceUrl = oModel.sServiceUrl;
 
 			//Definir modelo del servicio web
@@ -44,7 +44,7 @@ sap.ui.define([
 			}
 
 			var oCbx = this.byId("idComboBoxSociedad");
-			oCbx.getModel().setProperty("/LstSociedades", this.oDataSociedades);*/
+			oCbx.getModel().setProperty("/LstSociedades", this.oDataSociedades);
 
 			/*	var oCbx3 = this.byId("idComboBoxSociedad3");
 				oCbx3.getView().setModel(oModel);*/

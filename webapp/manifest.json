@@ -196,7 +196,7 @@
 				},
 				"rtChVolumen": {
 					"pattern": "rtChVolumen",
-					"target": "rtHomeTarget"
+					"target": "rtChVolumenTarget"
 				},
 				"rtChAdminCL": {
 					"pattern": "rtChAdminCL",
@@ -366,9 +366,9 @@
 					"controlId": "parentNavContainer",
 					"transition": "slide"
 				},
-				"rtChrtChVolumenTarget": {
-					"viewPath": "cbc.co.simulador_costos.view.COGS",
-					"viewName": "COGS",
+				"rtChVolumenTarget": {
+					"viewPath": "cbc.co.simulador_costos.view.Manufactura",
+					"viewName": "Manufactura",
 					"parent": "parentTarget",
 					"controlId": "parentNavContainer",
 					"transition": "slide"
