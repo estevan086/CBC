@@ -6,14 +6,14 @@
 		numberUnit="{CurrencyCode}"></m:ObjectHeader>
 	<m:Page showHeader="false" enableScrolling="false" class="sapUiContentPadding">
 		<m:content>
-			<ui:Table id="tblCentros" rows="{}" selectionMode="None" visibleRowCount="10" rowActionCount="1" class="sapUiSizeCompact">
+			<ui:Table id="tblCentros" rows="{Centros>/CodCentros}" selectionMode="None" visibleRowCount="10" rowActionCount="1" class="sapUiSizeCompact">
 				<ui:extension>
 					<m:OverflowToolbar>
 						<m:content>
-							<!--<Title id="title" text="{i18n>Periodos}"/>-->
 							<m:Label text="Sociedad"/>
-							<m:ComboBox id="idComboBoxSociedad"  showSecondaryValues="true" filterSecondaryValues="true"
-								>
+							<m:ComboBox id="idComboBoxSociedad" selectionChange="onChangeSociedad" showSecondaryValues="true" filterSecondaryValues="true"  
+								items="{ path: '/LstSociedades', sorter: { path: 'CompCodePlant' } }">
+								<c:ListItem key="{CompCodePlant}" text="{DescCompCodePlant}" additionalText="{CompCodePlant}"/>
 							</m:ComboBox>
 							<m:ToolbarSpacer/>
 							<m:Button icon="sap-icon://save" type="Emphasized" text="{i18n>Guardar}" tooltip="Crear Centros"/>
@@ -21,16 +21,17 @@
 					</m:OverflowToolbar>
 				</ui:extension>
 				<ui:columns>
-					<ui:Column>
+					<ui:Column filterProperty="PlantDesc">
 						<m:Label text="Centro"/>
 						<ui:template>
-							<m:Text id="txtCentro" text="{centro}" wrapping="false"/>
+							<m:Text id="txtCentro" text="{Centros>/PlantDesc}" wrapping="false"/>
 						</ui:template>
 					</ui:Column>
-					<ui:Column>
+					<ui:Column filterProperty="Flag">
 						<m:Label text="Activo"/>
 						<ui:template>
-							<m:CheckBox id="chkStatus" text=""/>
+							<m:Text id="txtCentro2" text="{Centros>/Flag}" wrapping="false"/>
+							<!--<m:CheckBox id="chkStatus"  text="{Centros>/Flag}" />-->
 						</ui:template>
 					</ui:Column>
 				</ui:columns>

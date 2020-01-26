@@ -24,7 +24,7 @@
 							<Text text="{Periodos>Year}" wrapping="false"/>
 						</ui:template>
 					</ui:Column>
-					<ui:Column filterProperty="Year">
+					<ui:Column filterProperty="Period">
 						<Label text="Mes"/>
 						<ui:template>
 							<Text text="{Periodos>Period}" wrapping="false"/>

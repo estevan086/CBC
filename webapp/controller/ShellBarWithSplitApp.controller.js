@@ -64,7 +64,7 @@ sap.ui.define([
 						"title": "Mantenimiento Tipo Cambio",
 						"key": "rtChTypeChange"
 					}, {
-						"title": "Crear Icoterm",
+						"title": "Icoterm",
 						"key": "rtChCreateIcoterm"
 					}, {
 						"title": "Copiar Versiones",
@@ -104,11 +104,11 @@ sap.ui.define([
 						"key": "rtChCostosLogisticos?version=true"
 					}]
 				}, {
-					"title": "Volumen",
-					"icon": "sap-icon://machine",
+					"title": "Carga BW",
+					"icon": "sap-icon://upload-to-cloud",
 					"expanded": false,
 					"items": [{
-						"title": "Carga Volumen",
+						"title": "Carga BW",
 						"key": "rtChVolumen"
 					}]
 				}, {
