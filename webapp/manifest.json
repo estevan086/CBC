@@ -139,7 +139,7 @@
 					"target": "rtChMantenimientoCommoditiesTarget"
 				},
 				"rtChCostosLogisticos": {
-					"pattern": "rtChCostosLogisticos",
+					"pattern": "rtChCostosLogisticos/{version}",
 					"target": "rtChCostosLogisticosTarget"
 				},
 				"rtChProfiles": {
@@ -181,10 +181,6 @@
 				"rtChMantenimientoMateriales": {
 					"pattern": "rtChMantenimientoMateriales",
 					"target": "rtChMantenimientoMaterialesTarget"
-				},
-				"rtChMantenimientoCostLog": {
-					"pattern": "rtChMantenimientoCostLog",
-					"target": "rtChMantenimientoCostLogTarget"
 				},
 				"rtCCOGS": {
 					"pattern": "rtCCOGS",
@@ -341,13 +337,6 @@
 				"rtChMantenimientoMaterialesTarget": {
 					"viewPath": "cbc.co.simulador_costos.view.Materiales",
 					"viewName": "AdmonMateriales",
-					"parent": "parentTarget",
-					"controlId": "parentNavContainer",
-					"transition": "slide"
-				},
-				"rtChMantenimientoCostLogTarget": {
-					"viewPath": "cbc.co.simulador_costos.view.LogisticCost",
-					"viewName": "AdmonLogisticCost",
 					"parent": "parentTarget",
 					"controlId": "parentNavContainer",
 					"transition": "slide"

@@ -4,18 +4,39 @@ sap.ui.define([
 	"sap/ui/model/json/JSONModel",
 	"sap/m/MessageToast",
 	"sap/ui/model/Filter",
-	"sap/ui/model/FilterOperator"
-], function (BaseController, JSONModel, MessageToast, Filter, FilterOperator) {
+	"sap/ui/model/FilterOperator",
+	"sap/ui/core/message/Message",
+	"sap/ui/core/MessageType"
+], function (BaseController, JSONModel, MessageToast, Filter, FilterOperator, Message, MessageType) {
 	"use strict";
 	const cDefaultNumValue = "0,000";
-	
+
 	return BaseController.extend("cbc.co.simulador_costos.controller.DataDefault.LogisticCost.GridLogisticCost", {
 
 		onInit: function () {
 
+			var oMessageManager, oView;
+
+			oView = this.getView();
+
+			// set message model
+			oMessageManager = sap.ui.getCore().getMessageManager();
+			oView.setModel(oMessageManager.getMessageModel(), "message");
+
+			// or just do it for the whole view
+			oMessageManager.registerObject(oView, true);
+
+			var oMessage = new Message({
+				message: "My generated error message",
+				type: MessageType.Error,
+				target: "/Dummy",
+				processor: this.getView().getModel()
+			});
+			sap.ui.getCore().getMessageManager().addMessages(oMessage);
+
 			var oModelV = new JSONModel({
-				busy: true,
-				Bezei: ""
+				busy: false,
+				version: false
 			});
 			this.setModel(oModelV, "modelView");
 
@@ -31,10 +52,30 @@ sap.ui.define([
 			var myRoute = this.getOwnerComponent().getRouter().getRoute("rtChCostosLogisticos");
 			myRoute.attachPatternMatched(this.onMyRoutePatternMatched, this);
 		},
+		//################ Private APIs ###################
+		onMessagePopoverPress: function (oEvent) {
+			this._getMessagePopover().openBy(oEvent.getSource());
+		},
+		_getMessagePopover: function () {
+			// create popover lazily (singleton)
+			if (!this._oMessagePopover) {
+				this._oMessagePopover = sap.ui.xmlfragment(this.getView().getId(),
+					"cbc.co.simulador_costos.view.Utilities.fragments.MessagePopover", this);
+				this.getView().addDependent(this._oMessagePopover);
+			}
+			return this._oMessagePopover;
+		},
 		onMyRoutePatternMatched: function (event) {
 			//Cargar datos
 			this.getLogisticCostValoration();
-
+			var oVModel = this.getModel("modelView");
+			oVModel.version = event.getParameter("arguments").version;
+			
+			if (event.getParameter("arguments").version === "true") {
+				this.getView().byId("btnAdmin").setVisible(false);
+			}else{
+				this.getView().byId("btnAdmin").setVisible(true);
+			}
 		},
 		getLogisticCostValoration: function (oFilter, pExport) {
 			var oModel = this.getView().getModel("ModelSimulador"),
@@ -113,14 +154,10 @@ sap.ui.define([
 				label: "A\u00F1o",
 				enabled: false
 			}, {
-				columnName: "Fiscvarnt",
-				label: "Mes",
-				enabled: false
-			}, {
 				columnName: "Fiscper3",
-				label: "Fiscper3",
+				label: "Periodo",
 				enabled: false,
-				visible: false
+				visible: true
 			}, {
 				columnName: "CompCode",
 				label: "Sociedad",
@@ -184,8 +221,7 @@ sap.ui.define([
 					undefined ||
 					oMaterial.find(x => x.Fiscyear === oValue.Fiscyear) === undefined || oMaterial.find(x => x.Version === oValue.Version) ===
 					undefined ||
-					oMaterial.find(x => x.Fiscvarnt === oValue.Fiscvarnt) === undefined || oMaterial.find(x => x.Fiscper3 === oValue.Fiscper3) ===
-					undefined ||
+					oMaterial.find(x => x.Fiscper3 === oValue.Fiscper3) === undefined ||
 					oMaterial.find(x => x.CompCode === oValue.CompCode) === undefined) {
 
 					modelStructure = oValue; //asigna datos generales
@@ -198,11 +234,12 @@ sap.ui.define([
 
 						if (costValoration[j].Material === costValoration[i].Material && costValoration[j].Plant === costValoration[i].Plant &&
 							costValoration[j].Fiscyear === costValoration[i].Fiscyear && costValoration[j].Version === costValoration[i].Version &&
-							costValoration[j].Fiscvarnt === costValoration[i].Fiscvarnt && costValoration[j].Fiscper3 === costValoration[i].Fiscper3 &&
+							costValoration[j].Fiscper3 === costValoration[i].Fiscper3 &&
 							costValoration[j].CompCode === costValoration[i].CompCode) {
 
 							if (costValoration[j].CostLog !== "") {
-								modelStructure[costValoration[j].CostLog] = costValoration[j].VCostLog !== undefined ? costValoration[j].VCostLog.toString().replace(".", ",") : cDefaultNumValue;
+								modelStructure[costValoration[j].CostLog] = costValoration[j].VCostLog !== undefined ? costValoration[j].VCostLog.toString()
+									.replace(".", ",") : cDefaultNumValue;
 							}
 						}
 					}
@@ -263,7 +300,6 @@ sap.ui.define([
 					modelStructure.Material = oValue.Material;
 					modelStructure.Plant = oValue.Plant;
 					modelStructure.Fiscyear = oValue.Fiscyear;
-					modelStructure.Fiscvarnt = oValue.Fiscvarnt;
 					modelStructure.Fiscper3 = oValue.Fiscper3;
 					modelStructure.CompCode = oValue.CompCode;
 					modelStructure.CostLog = oLogisticCost.CostLog;
@@ -311,7 +347,7 @@ sap.ui.define([
 			if (pExport) {
 				var oModel = new sap.ui.model.json.JSONModel(oModelLocal.getProperty("/LogisticCostValoration")),
 					columns = [];
-					
+
 				//recupera columnas creadas dinamicamente
 				this.columnData.forEach(function (oValue, i) {
 					columns.push({
@@ -352,7 +388,8 @@ sap.ui.define([
 						that.columnData.forEach(function (oColumn, j) {
 							oClValues = Object.values(oImportData[i]);
 							//asignar valor del costo
-							oLogistiCostLine[oColumn.columnName] = that.isInitialNum(oClValues[j]) !== undefined ? oClValues[j].toString().replace(".", ",") : cDefaultNumValue;
+							oLogistiCostLine[oColumn.columnName] = that.isInitialNum(oClValues[j]) !== undefined ? oClValues[j].toString().replace(".",
+								",") : cDefaultNumValue;
 						});
 						oLogistiCost.push(oLogistiCostLine);
 					});
@@ -365,6 +402,13 @@ sap.ui.define([
 				reader.readAsText(oFile);
 			}
 
+		},
+		onCostEmpty: function (oEvent) {
+			var aFilter = [];
+
+			aFilter.push(new Filter("CostTotal", FilterOperator.EQ, "0.000"));
+
+			this.getLogisticCostValoration(aFilter);
 		},
 		onFilterLogisticCost: function (oEvent) {
 			var sQuery = oEvent.getParameter('query'),
