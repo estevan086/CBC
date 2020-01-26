@@ -22,19 +22,31 @@
 						</ui:template>
 					</ui:Column>
 					<ui:Column>
-						<Label text="Descripción"/>
+						<Label text="Descripci&oacute&n"/>
 						<ui:template>
-							<Input value="{LogisticCost>TxtMd}" enabled="{LogisticCost>enabled}" />
+							<Input value="{LogisticCost>TxtMd}" enabled="{LogisticCost>enabled}"/>
 						</ui:template>
 					</ui:Column>
 					<ui:Column>
 						<Label text="Categoria Logistica"/>
 						<ui:template>
-							<ComboBox items="{ModelSimulador>/categorialogisticaSet}" selectedKey="{LogisticCost>CatCosLo}" enabled="{LogisticCost>enabled}"  >
+							<ComboBox items="{ModelSimulador>/categorialogisticaSet}" selectedKey="{LogisticCost>CatCosLo}" enabled="{LogisticCost>enabled}">
 								<items>
 									<core:ListItem key="{ModelSimulador>CatCosLo}" text="{ModelSimulador>TxtMd}"/>
 								</items>
 							</ComboBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column>
+						<Label text="Fecha"/>
+						<ui:template>
+							<Text text="{LogisticCost>Date0}" wrapping="false"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column>
+						<Label text="Responsable"/>
+						<ui:template>
+							<Text text="{LogisticCost>PerResp}" wrapping="false"/>
 						</ui:template>
 					</ui:Column>
 					<ui:Column width="4rem" hAlign="Center">

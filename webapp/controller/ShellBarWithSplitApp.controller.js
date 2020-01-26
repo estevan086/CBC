@@ -77,7 +77,7 @@ sap.ui.define([
 						"key": "rtChMateriales"
 					}, {
 						"title": "Costos Log\u00EDsticos",
-						"key": "rtChCostosLogisticos"
+						"key": "rtChCostosLogisticos?version=false"
 					}]
 				}, {
 					"title": "Commodities",
@@ -101,7 +101,7 @@ sap.ui.define([
 					"expanded": false,
 					"items": [{
 						"title": "Mantenimiento Costos Log\u00EDstico",
-						"key": "rtChMantenimientoCostLog"
+						"key": "rtChCostosLogisticos?version=true"
 					}]
 				}, {
 					"title": "Volumen",
@@ -155,9 +155,23 @@ sap.ui.define([
 		onItemSelect: function (oEvent) {
 
 			var router = this.getOwnerComponent().getRouter(),
-				sKey = oEvent.getParameter("item").getProperty("key");
+				sKey = oEvent.getParameter("item").getProperty("key"),
+				params = {},
+				aParams = {},
+				sParams,
+				sValue;
+			//descomponer parametros para enviar
+			if(sKey.toString().indexOf("?") > 0){
+				sParams = sKey.toString().substring(sKey.toString().indexOf("?"), sKey.toString().length);
+				sKey = sKey.toString().replace(sParams, "");
+				aParams = sParams.split("=");
+				sValue = aParams[1];
+				sParams = aParams[0].toString().replace("?", "");
+				params[sParams] = sValue;
+			}
+				
 			//if (this._isPageInNavContainer(sKey)) {
-			router.navTo(sKey);
+			router.navTo(sKey, params);
 			/*} else {
 				this._addPageToNavContainer(sKey);
 				router.navTo(sKey);
