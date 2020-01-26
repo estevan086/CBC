@@ -38,7 +38,7 @@ sap.ui.define([
 					"expanded": false,
 					"key": "rtHome"
 				}, {
-					"title": "Administración",
+					"title": "Administracion",
 					"icon": "sap-icon://employee",
 					"expanded": false,
 					"key": "rtAdministracion",
@@ -49,7 +49,7 @@ sap.ui.define([
 						"title": "Periodos",
 						"key": "rtChPeriodo"
 					}, {
-						"title": "Log\u00EDstica",
+						"title": "Logistica",
 						"key": "rtChAdminLogistica"
 					}, {
 						"title": "Perfiles",
@@ -124,7 +124,7 @@ sap.ui.define([
 						//	"key": "rtChControlEs"
 						//},
 						{
-							"title": "Administración Escenarios",
+							"title": "Administracion Escenarios",
 							"key": "rtChAdmonEs"
 						}
 					]
@@ -141,7 +141,7 @@ sap.ui.define([
 					"icon": "sap-icon://pie-chart",
 					"expanded": false,
 					"items": [{
-						"title": "Visualización",
+						"title": "Visualizacion",
 						"key": "rtChVisualizacion"
 					}]
 				}]

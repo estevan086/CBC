@@ -1,55 +1,82 @@
 jQuery.sap.require("cbc.co.simulador_costos.Formatter");
-sap.ui.define([
-	"sap/ui/core/mvc/Controller",
-	"sap/ui/model/json/JSONModel",
-	"sap/m/MessageToast",
-	"sap/ui/core/format/DateFormat",
-	"sap/ui/table/library",
-	"sap/ui/model/Filter",
-	"sap/ui/model/FilterOperator"
-], function(Controller, JSONModel, MessageToast, DateFormat, library, Filter, FilterOperator){
+sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core/routing/History", "sap/ui/core/library",
+	"sap/ui/model/json/JSONModel", "sap/m/MessageToast",
+	"sap/ui/table/RowSettings"
+], function (Controller, History, CoreLibrary, JSONModel, MessageToast, RowSettings) {
 	"use strict";
 	return Controller.extend("cbc.co.simulador_costos.controller.Admon.Periodo", {
 
-		onInit : function() {
-		/*	var obj = {
-				"Date": [
-					{
-						"Name": ""
+		onInit: function () {
+
+			var oModelV = new JSONModel({
+				busy: true,
+				Bezei: ""
+			});
+			this.setModel(oModelV, "modelView");
+
+			var myRoute = this.getOwnerComponent().getRouter().getRoute("rtChPeriodo");
+			myRoute.attachPatternMatched(this.onMyRoutePatternMatched, this);
+		},
+
+		onMyRoutePatternMatched: function (event) {
+			this.GetPeriodos();
+		},
+
+		GetPeriodos: function () {
+			var oModel = this.getView().getModel("ModelSimulador");
+			oModel.read("/periodoSet", {
+				success: function (oData, response) {
+					var data = new sap.ui.model.json.JSONModel();
+					data.setProperty("/CodPeriodos", oData.results);
+					this.getOwnerComponent().setModel(data, "Periodos");
+					this.getModel("modelView").setProperty("/busy", false);
+				}.bind(this),
+				error: function (oError) {
+					this.showGeneralError({
+						oDataError: oError
+					});
+					this.getModel("modelView").setProperty("/busy", false);
+				}
+			});
+		},
+
+		CreateDate: function (oEvent) {
+			/*	var oModel = this.getView().getModel("ModelSimulador"),
+					oModelLocal = this.getView().getModel("Periodos"),
+					data = oModelLocal.getProperty("/");*/
+			this.getModel("modelView").setProperty("/busy", true);
+			var sServiceUrl = this.getView().getModel("ModelSimulador").sServiceUrl,
+				oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true);
+
+			var ValDate = this.byId("txtDate").getValue();
+			var msn = "";
+			if (ValDate !== "") {
+				for (var i = 1; i <= 12; i++) {
+					var oEntidad = {};
+					oEntidad.Year = ValDate;
+					oEntidad.Period = i >= 10 ? i.toString() : "0" + i.toString();
+
+					var oCreate = this.fnCreateEntity(oModelService, "/periodoSet", oEntidad);
+				
+					if (oCreate.tipo === "S") {
+						if (oCreate.datos.Msj !== "" && oCreate.datos.Msj !== undefined) {
+							msn = "fail";
+						}
+					} else {
+						msn = "fail";
 					}
-				]
-			};
-			// set explored app's demo model on this sample
-			var json = new JSONModel(obj);
-			// Setting json to current view....
-				//var json = new sap.ui.model.json.JSONModel("model/products.json");
-			this.getView().setModel(json);*/
-		},
-		
-		CreateDate : function(oEvent) {
-			var ValDate = this.byId("txtDate").getValue();
-			var oData = '{ "Date" : [';
-			for (var i = 1; i <= 12; i++) {
-			  var ii = i < 10 ? '0' + i.toString() : i.toString();	
-			  oData += '{ "Name":"'+ ValDate + "/" + ii +'" }';
-			  oData = i < 12 ? oData + ',' : oData; 
+				}
+				if (msn == "") {
+					MessageToast.show(this.getView().getModel("i18n").getResourceBundle().getText("NotificacionGuardarOk"));
+					this.GetPeriodos();
+				} else {
+					MessageToast.show("Fail");
+				}
+			} else {
+				MessageToast.show("el campo periodo esta vacio");
 			}
-			oData = oData +  ']}';
-			var obj = $.parseJSON(oData);
-			var json = new sap.ui.model.json.JSONModel(obj);
-			this.getView().setModel(json);
-		},
-		
-		ValidateSave: function(){
-			var ValDate = this.byId("txtDate").getValue();
-			if(ValDate === "" || ValDate.toString().indexOf("_") !== -1 ){
-				MessageToast.show(ValDate + " Numero no valido");
-			}
-			else{
-				MessageToast.show("Registro Ok");
-			}
-			
+			//this.getModel("modelView").setProperty("/busy", false);
 		}
-		
+
 	});
 });

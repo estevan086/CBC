@@ -3,9 +3,9 @@
 	<ObjectHeader binding="{/ProductCollection/0}" title="{i18n>Periodos}" condensed="true"
 		number="{ parts:[{path:'Price'},{path:'CurrencyCode'}], type: 'sap.ui.model.type.Currency', formatOptions: {showMeasure: false} }"
 		numberUnit="{CurrencyCode}"/>
-	<Page showHeader="false" enableScrolling="false" class="sapUiContentPadding">
+	<Page showHeader="false" enableScrolling="false" class="sapUiContentPadding" busy="{modelView>/busy}">
 		<content>
-			<ui:Table id="tblPeriodo" rows="{}" selectionMode="None" visibleRowCount="10" rowActionCount="1"
+			<ui:Table id="tblPeriodo" rows="{Periodos>/CodPeriodos}" selectionMode="None" visibleRowCount="10" rowActionCount="1"
 				class="sapUiSizeCompact">
 				<ui:extension>
 					<OverflowToolbar>
@@ -13,21 +13,21 @@
 							<!--<Title id="title" text="{i18n>Periodos}"/>-->
 							<ToolbarSpacer/>
 							<MaskInput id="txtDate" mask="9999" placeholderSymbol="_" placeholder="Agregar Periodo"/>
-							<Button icon="sap-icon://calendar" type="Emphasized" text="{i18n>Crear}" tooltip="Crear Periodo"/>
+							<Button icon="sap-icon://calendar" type="Emphasized" text="{i18n>Crear}" tooltip="Crear Periodo" press="CreateDate"/>
 						</content>
 					</OverflowToolbar>
 				</ui:extension>
 				<ui:columns>
-					<ui:Column>
+					<ui:Column filterProperty="Year">
 						<Label text="Año"/>
 						<ui:template>
-							<Text text="{Periodo}" wrapping="false"/>
+							<Text text="{Periodos>Year}" wrapping="false"/>
 						</ui:template>
 					</ui:Column>
-					<ui:Column>
+					<ui:Column filterProperty="Year">
 						<Label text="Mes"/>
 						<ui:template>
-							<Text text="{Mes}" wrapping="false"/>
+							<Text text="{Periodos>Period}" wrapping="false"/>
 						</ui:template>
 					</ui:Column>
 				</ui:columns>

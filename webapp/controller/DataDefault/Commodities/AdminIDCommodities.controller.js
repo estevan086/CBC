@@ -45,10 +45,7 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 						this.getMasterCommodities();
 					}.bind(this),
 					error: function (oError) {
-						this.showGeneralError({
-							oDataError: oError
-						});
-						this.getModel("modelView").setProperty("/busy", false);
+						MessageToast.show(oError.responseText);
 					}.bind(this)
 				});
 			};
@@ -96,8 +93,8 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 		handleDeletePress: function (oEvent, Data) {
 			var oModel = this.getView().getModel("ModelSimulador");
 			oModel.create("/headerCommoditiesUpdate", {
-				IdCommoditie: this.getParent().getCells()[0].getText(),
-				Descripcion: this.getParent().getCells()[1].getValue(),
+				IdCommoditie: oEvent.getSource().getParent().getParent().getCells()[0].getText(),
+				Descripcion: oEvent.getSource().getParent().getParent().getCells()[1].getValue(),
 				status: "0"
 			}, {
 				success: function (oData, oResponse) {
