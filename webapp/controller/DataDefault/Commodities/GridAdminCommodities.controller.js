@@ -1,3 +1,10 @@
+/*global history */
+
+//Almacena las promesas lanzadas
+var vPromiseUM = {
+	UM: ""
+};
+
 jQuery.sap.require("cbc.co.simulador_costos.Formatter");
 sap.ui.define([
 	"cbc/co/simulador_costos/controller/BaseController",
@@ -15,10 +22,11 @@ sap.ui.define([
 	"sap/m/ButtonType",
 	'sap/m/MessageBox',
 	"sap/ui/table/RowSettings",
-	"sap/ui/core/library"
+	"sap/ui/core/library",
+	"sap/ui/core/EventBus"
 
 ], function (Controller, JSONModel, MessageToast, Fragment, DateFormat, library, Filter, FilterOperator, Button, Dialog, List,
-	StandardListItem, ButtonType, MessageBox, RowSettings, CoreLibrary) {
+	StandardListItem, ButtonType, MessageBox, RowSettings, CoreLibrary, EventBus) {
 	"use strict";
 
 	var updatedRecords = [];
@@ -30,7 +38,11 @@ sap.ui.define([
 		
 		onInit: function () {
 
-			// set explored app's demo model on this sample
+			// var oModelV = new JSONModel({
+			// 	busy: true,
+			// 	Bezei: ""
+			// });
+			// this.setModel(oModelV, "modelView");
 
 			var oUploader = this.getView().byId("fileUploader");
 			oUploader.oBrowse.setText("Importar");
@@ -105,6 +117,9 @@ sap.ui.define([
 			//Obtiene Sociedades
 			this.GetSociedades();
 			
+			//Obtiene Monedas
+		//	this.GetMonedas();
+			
 			//Obtiene Unidades de Medida
 			this.GetUnidadesMedida();
 			
@@ -116,6 +131,69 @@ sap.ui.define([
 			// }, 5000);
 			
 		},
+		
+		GetSociedades: function() {
+			
+			//Url Servicio
+			var oModel = this.getOwnerComponent().getModel("ModelSimulador");
+			var sServiceUrl = oModel.sServiceUrl;
+
+			//Definir modelo del servicio web
+			var oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true);
+			//Definir filtro
+
+			//Leer datos del ERP
+			var oRead = this.fnReadEntity(oModelService, "/centroSet", null);
+
+			if (oRead.tipo === "S") {
+				this.oDataSociedades = oRead.datos.results;
+			//	var obj = this.oDataUnidadesMedida;
+			
+				this.oDataSociedades = this.oDataSociedades.filter( function(item) {
+				    return !(item.CompCode === "");
+				});
+
+				$.each(this.oDataSociedades, function (i, o) {
+					this.editable = false;
+					this.highlight = "None";
+				});
+
+			} else {
+				MessageBox.error(oRead.msjs, null, "Mensaje del sistema", "OK", null);
+			}
+
+			var oTableCommodities = this.byId("tblCommodities");
+			oTableCommodities.getModel().setProperty("/LstSociedades", this.oDataSociedades);
+			oTableCommodities.getModel().refresh(); 
+			
+		},	
+		
+		GetMonedas: function() {
+			
+			//Url Servicio
+			var oModel = this.getOwnerComponent().getModel("ModelSimulador");
+			var sServiceUrl = oModel.sServiceUrl;
+
+			//Definir modelo del servicio web
+			var oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true);
+			//Definir filtro
+
+			//Leer datos del ERP
+			var oRead = this.fnReadEntity(oModelService, "/monedasSet", null);
+
+			if (oRead.tipo === "S") {
+				this.oDataMonedas = oRead.datos.results;
+			//	var obj = this.oDataUnidadesMedida;
+
+			} else {
+				MessageBox.error(oRead.msjs, null, "Mensaje del sistema", "OK", null);
+			}
+
+			var oTableCommodities = this.byId("tblCommodities");
+			oTableCommodities.getModel().setProperty("/LstMonedas", this.oDataMonedas);
+			oTableCommodities.getModel().refresh(); 
+		
+		},	
 		
 		GetUnidadesMedida: function() {
 			
@@ -138,64 +216,53 @@ sap.ui.define([
 				MessageBox.error(oRead.msjs, null, "Mensaje del sistema", "OK", null);
 			}
 
-			var oDataUnidadesMedida = "";
-			//SI el modelo NO existe, se crea.
-			if (!oDataUnidadesMedida) {
-				oDataUnidadesMedida = {
-					lstItemsUnidadesMedida: []
-				};
-			}
-
 			var oTableCommodities = this.byId("tblCommodities");
 			oTableCommodities.getModel().setProperty("/LstUnidadesMedida", this.oDataUnidadesMedida);
 			oTableCommodities.getModel().refresh(); 
 			
 		},	
 		
-		GetSociedades: function() {
-			
-			//Url Servicio
+		/**
+		 * Obtener procesos
+		 * @public
+		 */
+		fnObtenerUnidadesMedidaAsyn: function() {
+				//Url Servicio
 			var oModel = this.getOwnerComponent().getModel("ModelSimulador");
 			var sServiceUrl = oModel.sServiceUrl;
+				//Definir modelo del servicio web
+			var	oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true);
 
-			//Definir modelo del servicio web
-			var oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true);
-			//Definir filtro
-
-			//Leer datos del ERP
-			var oRead = this.fnReadEntity(oModelService, "/maestroCentrosSet", null);
-
-			if (oRead.tipo === "S") {
-				this.oDataSociedades = oRead.datos.results;
-			//	var obj = this.oDataUnidadesMedida;
-
-			} else {
-				MessageBox.error(oRead.msjs, null, "Mensaje del sistema", "OK", null);
+			if (!vPromiseUM.UM) {
+				vPromiseUM.UM = this.fnReadEntityAsyn(oModelService, "/unidadesMedidaSet", null, true);
 			}
-
-			var oDataUnidadesMedida = "";
-			//SI el modelo NO existe, se crea.
-			if (!oDataUnidadesMedida) {
-				oDataUnidadesMedida = {
-					lstItemsUnidadesMedida: []
-				};
-			}
-
-			var oTableCommodities = this.byId("tblCommodities");
-			oTableCommodities.getModel().setProperty("/LstSociedades", this.oDataSociedades);
-			oTableCommodities.getModel().refresh(); 
-			
-		},	
+		},
 		
-		onChangeSociedades: function(oEvent){
+		onChangeSociedad: function(oEvent){
 			
 			var oItem = oEvent.getParameter("selectedItem");
 			var oTableCommodities = this.byId("tblCommodities");
 			var oItemObject = oItem.getBindingContext().getObject();
-			var oSociedadSeleccionada= oItemObject.Compcodeplant;
+			 
 			var oTableItem = oEvent.getSource().getParent();
 			var oTableItemObject = oTableItem.getBindingContext().getObject();
-			oTableItemObject.Sociedad = oSociedadSeleccionada;
+			oTableItemObject.Sociedad = oItemObject.Compcode;
+			oTableItemObject.Centro   = oItemObject.Plant;
+			//oTableItemObject.Moneda   = 'COP';
+			oTableItemObject.Moneda   = oItemObject.Currency;
+			oTableCommodities.getModel().refresh();
+			
+		},
+		
+		onChangeMoneda: function(oEvent){
+			
+			var oItem = oEvent.getParameter("selectedItem");
+			var oTableCommodities = this.byId("tblCommodities");
+			var oItemObject = oItem.getBindingContext().getObject();
+			var oMonedaSeleccionada= oItemObject.Msehi;
+			var oTableItem = oEvent.getSource().getParent();
+			var oTableItemObject = oTableItem.getBindingContext().getObject();
+			oTableItemObject.Moneda = oMonedaSeleccionada;
 			oTableCommodities.getModel().refresh();
 			
 		},
@@ -292,7 +359,8 @@ sap.ui.define([
 				var oTempRow = oTable.getModel().getData().lstItemsCommodities[CurrentRow.RowPath];
 
 				oDetail = {
-					Formula: oTempRow.Formula,
+					IdFormula: oTempRow.IdFormula,
+					TxtFormula: oTempRow.TxtFormula,
 					IdCommoditie: oTempRow.IdCommoditie,
 					Sociedad: oTempRow.Sociedad,
 					Centro: oTempRow.Centro,
@@ -621,9 +689,26 @@ sap.ui.define([
 			var oRowData = oEvent.getSource().getBindingContext().getProperty();
 			var oItem = oEvent.getSource();
 			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+			
+			
+			var oData = {
+			 	oIdCommoditie: oRowData.IdCommoditie,
+				 oIdFormula: oRowData.IdFormula,
+				 oTxtFormula: oRowData.TxtFormula
+			};
 
+			
+			//Navigation to the Detail Form
+			//app.to(page,"rtChFromuladora");
+			//var eventBus = sap.ui.getCore().getEventBus();
+			const bus = this.getOwnerComponent().getEventBus();
+			// 1. ChannelName, 2. EventName, 3. the data
+			bus.publish("GridAdminFormuladoraChannel", "onNavigateEvent", oData );
+			
 			oRouter.navTo("rtChFromuladora", {
-				oRowPath: oRowData.IdCommoditie
+				oIdCommoditie: oRowData.IdCommoditie
+		     	//oIdFormula: oRowData.IdFormula
+	    		// oTxtFormula: oRowData.TxtFormula
 			});
 
 		},

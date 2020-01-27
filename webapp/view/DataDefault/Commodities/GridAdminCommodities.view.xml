@@ -55,46 +55,49 @@
 							<m:Text text="{Descripcion}" wrapping="false"/>
 						</template>
 					</Column>
-					<Column width="6rem" filterProperty="Sociedad">
+					<Column width="7rem" filterProperty="Sociedad">
 						<m:Label text="Sociedad"/>
 						<template>
 							<!--<m:TextField text="{CDEF_SOCIEDAD}" editable="false"/>-->
 							<!--<m:Input value="{Sociedad}" editable="false" />-->
 							<m:ComboBox id="idComboBoxSociedad" selectionChange="onChangeSociedad" showSecondaryValues="true" filterSecondaryValues="true"
-								value="{Sociedad}" selectedKey="{Sociedad}" editable="{editable}" items="{ path: '/LstSociedades', sorter: { path: 'CompCodePlant' } }">
-								<c:ListItem key="{CompCodePlant}" text="{DescCompCodePlant}" additionalText="{CompCodePlant}"/>
+								value="{Sociedad}" selectedKey="{Sociedad}" editable="{editable}" items="{ path: '/LstSociedades', templateShareable:true}">
+								<c:ListItem key="{CompCode}" text="{CompCode}-{CompDesc}" additionalText="{Plant}-{PlantDesc}-{Currency}"/>
 							</m:ComboBox>
 							<!--<m:Text text="{CDEF_SOCIEDAD}" editable="false" visible="false"/>-->
 						</template>
 					</Column>
-					<Column width="5rem" filterProperty="Centro">
+					<Column width="6rem" filterProperty="Centro">
 						<m:Label text="Centro"/>
 						<template>
-							<!--<m:TextField text="{CDEF_SOCIEDAD}" editable="false"/>-->
+							<m:Text text="{Centro}" wrapping="false"/>
+						
 							<!--<m:Input value="{Centro}" editable="false" />-->
-							<m:ComboBox id="idComboBoxCentros" showSecondaryValues="true" filterSecondaryValues="true" value="{/comboBoxValueCentro}"
-								selectedKey="{/comboBoxKeyCentro}" editable="{editable}" items="{ path: '/Centros', sorter: { path: 'text' } }">
-								<c:ListItem key="{key}" text="{text}" additionalText="{key}"/>
-							</m:ComboBox>
+							<!--<m:ComboBox id="idComboBoxCentros" showSecondaryValues="true" filterSecondaryValues="true" value="{Centro}"-->
+							<!--	selectedKey="{Centro}" editable="{editable}" items="{ path: '/Centros', sorter: { path: 'text' } }">-->
+							<!--	<c:ListItem key="{key}" text="{text}" additionalText="{key}"/>-->
+							<!--</m:ComboBox>-->
 							<!--<m:Text text="{CDEF_SOCIEDAD}" editable="false" visible="false"/>-->
 						</template>
 					</Column>
-					<Column width="5rem" filterProperty="Moneda">
+					<Column width="6rem" filterProperty="Moneda">
 						<m:Label text="Moneda"/>
 						<template>
+							<m:Text text="{Moneda}" wrapping="false"/>
 							<!--<m:Input value="{Moneda}" editable="false"/>-->
-							<m:ComboBox id="idComboBoxMoneda" showSecondaryValues="true" filterSecondaryValues="true" value="{/comboBoxValueMoneda}"
-								selectedKey="{/comboBoxKeyMoneda}" editable="{editable}" items="{ path: '/Monedas', sorter: { path: 'text' } }">
-								<c:ListItem key="{key}" text="{text}" additionalText="{key}"/>
-							</m:ComboBox>
+							<!--<m:ComboBox id="idComboBoxMoneda" selectionChange="onChangeMoneda" showSecondaryValues="true" filterSecondaryValues="true"-->
+							<!--	value="{Moneda}" selectedKey="{Moneda}" editable="{editable}"-->
+							<!--	items="{ path: '/LstMonedas', sorter: { path: 'Ktext' } }">-->
+							<!--	<c:ListItem key="{Waers}" text="{Waers}" additionalText="{Ktext}"/>-->
+							<!--</m:ComboBox>-->
 						</template>
 					</Column>
-					<Column width="5rem">
+					<Column width="6rem">
 						<m:Label text="Unidad Medida"/>
 						<template>
-							<m:ComboBox id="idComboBoxUnidadesMedida" selectionChange="onChange" showSecondaryValues="true" filterSecondaryValues="true"
-								value="{UnidadMedida}" selectedKey="{UnidadMedida}" editable="{editable}" items="{ path: '/LstUnidadesMedida', sorter: { path: 'Msehl' } }">
-								<c:ListItem key="{Msehl}" text="{Msehi}" additionalText="{Msehl}"/>
+							<m:ComboBox id="idComboBoxUnidadesMedida" selectionChange="onChangeUM" showSecondaryValues="true" filterSecondaryValues="true"
+								value="{UnidadMedida}" selectedKey="{UnidadMedida}" editable="{editable}" items="{ path: '/LstUnidadesMedida', sorter: { path: 'Msehl' }, templateShareable:true }">
+								<c:ListItem key="{Msehi}" text="{Msehi}" additionalText="{Msehl}"/>
 							</m:ComboBox>
 						</template>
 					</Column>
@@ -113,10 +116,10 @@
 					<Column width="10rem">
 						<m:Label text="Formula"/>
 						<template>
-							<m:Text text="{Formula}" wrapping="false"/>
+							<m:Input value="{TxtFormula}" editable="{editable}"/>
 						</template>
 					</Column>
-					<Column width="3rem" hAlign="Center">
+					<Column width="4rem" hAlign="Center">
 						<template>
 							<m:Button icon="sap-icon://puzzle" press="showCalculator"/>
 						</template>
