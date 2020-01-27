@@ -34,7 +34,7 @@ sap.ui.define([
 			//Definir filtro
 
 			//Leer datos del ERP
-			var oRead = this.fnReadEntity(oModelService, "/maestroCentrosSet", null);
+			var oRead = this.fnReadEntity(oModelService, "/sociedadSet", null);
 
 			if (oRead.tipo === "S") {
 				this.oDataSociedades = oRead.datos.results;

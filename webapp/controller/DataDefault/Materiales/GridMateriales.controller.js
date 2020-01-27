@@ -25,6 +25,7 @@ sap.ui.define([
 	this.updatedRecords = [];
 	var that = this;
 	var SortOrder = library.SortOrder;
+	this.detailCommodite = [];
 
 	return Controller.extend("cbc.co.simulador_costos.controller.DataDefault.Materiales.GridMateriales", {
 
@@ -45,6 +46,7 @@ sap.ui.define([
 
 			this.loadModel();
 			this.loadModelCommoditie();
+			this.loadModelCommoditieDetail();
 			// this.editCellsTable(false);
 
 			// var fnPress = this.handleActionPress.bind(this);
@@ -1170,6 +1172,33 @@ sap.ui.define([
 			var oTableItem = oEvent.getSource().getParent();
 			var oTableItemObject = oTableItem.getBindingContext().getObject();
 			oTableItemObject.MDEF_COMMODITIE = oUnidadSeleccionada;
+
+			var oCommodite = this.detailCommodite.filter(result => result.IdCommoditie === oTableItemObject.MDEF_COMMODITIE && result.Year === oTableItemObject.MDEF_PERIODO &&
+				result.Mes === oTableItemObject.MDEF_MES && result.Sociedad === oTableItemObject.MDEF_SOCIEDAD && result.Centro ===
+				oTableItemObject.MDEF_CENTRO);
+
+			if (oCommodite.length > 0) {
+				var precio = this.executeFormula(oTableItemObject, oCommodite[0]);
+				oTableItemObject.MDEF_PRECIOPRODUCTIVO = Number(precio);
+			}
+			
+			//Realizar calculos
+			oTableItemObject.MDEF_COSTOMATERIAL =
+				Number(oTableItemObject.MDEF_PRECIOPRODUCTIVO) +
+				Number(oTableItemObject.MDEF_COSTOCONVERSION) +
+				Number(oTableItemObject.MDEF_COSTOADICIONAL) +
+				Number(oTableItemObject.MDEF_COSTOENVIO);
+
+			oTableItemObject.MDEF_COSTOTRANSFERENCIA =
+				(Number(oTableItemObject.MDEF_COSTOMATERIAL) +
+					Number(oTableItemObject.MDEF_OTROSCOSTOS)) *
+				Number(oTableItemObject.MDEF_PCTRANSFERENCIA);
+
+			oTableItemObject.MDEF_PRECIOPREMISA =
+				Number(oTableItemObject.MDEF_COSTOMATERIAL) +
+				Number(oTableItemObject.MDEF_OTROSCOSTOS) +
+				Number(oTableItemObject.MDEF_COSTOTRANSFERENCIA);			
+
 			oTableCommodities.getModel().refresh();
 
 		},
@@ -1598,6 +1627,74 @@ sap.ui.define([
 				);
 
 			}
+
+		},
+
+		/**
+		 * Load model data in Commoditie Detail
+		 * @function
+		 * @param 
+		 * @private
+		 */
+		loadModelCommoditieDetail: function (event) {
+			var sServiceUrl = "",
+				oModelService = "",
+				aListData = [];
+
+			sServiceUrl = this.getOwnerComponent().getModel("ModelSimulador").sServiceUrl;
+			oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true);
+
+			//Leer datos del ERP
+			var oRead = this.fnReadEntity(oModelService, "/detailCommoditiesSet", null);
+
+			if (oRead.tipo === "S") {
+				aListData = oRead.datos.results;
+			} else {
+				MessageBox.error(oRead.msjs, null, "Mensaje del sistema", "OK", null);
+				return;
+			}
+
+			this.detailCommodite = aListData;
+		},
+
+		/**
+		 * Ejecutar formula commodite
+		 * @function
+		 * @param 
+		 * @private
+		 */
+		executeFormula: function (pMaterial, pCommodite) {
+			var vFormula = "",
+				vPatron = "";
+
+			vFormula = pCommodite.TxtFormula;
+
+			//Reemplazar precio
+			vPatron = '/Precio/gi';
+			vFormula = vFormula.replace(eval(vPatron), pCommodite.PrecioMaterial);
+
+			//Reemplazar otros costos
+			vPatron = '/OtrosCostos/gi';
+			vFormula = vFormula.replace(eval(vPatron), pCommodite.OtrosCostos);
+
+			//Reemplazar peso material 
+			vPatron = '/PesoMaterial/gi';
+			vFormula = vFormula.replace(eval(vPatron), pMaterial.MDEF_PESOMATERIAL);
+
+			MessageBox.show(
+				'Formula aplicada\n' + pCommodite.TxtFormula + '\n\n' + vFormula, {
+					icon: MessageBox.Icon.SUCCESS,
+					title: "Exito",
+					actions: [MessageBox.Action.OK],
+					onClose: function (oAction) {
+						// if (oAction === sap.m.MessageBox.Action.OK) {
+							
+						// }
+					}
+				}
+			);
+			
+			return eval(vFormula);
 
 		}
 

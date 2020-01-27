@@ -33,7 +33,7 @@ sap.ui.define([
 
 			var oDataModel = new sap.ui.model.json.JSONModel(data);
 
-			var oTitle = "Id Commoditie:" + this.oIdCommoditie + " - Id Formula: " + this.oIdFormula;
+			var oTitle = "Id Commoditie:" + this.oIdCommoditie ;
 
 			var oBuilder = this.getView().byId("builder");
 
@@ -60,7 +60,7 @@ sap.ui.define([
 
 			this.oTxtFormula = decodeURIComponent(this.oTxtFormula);
 
-			var oTitle = "Id Commoditie:" + this.oIdCommoditie + " - Id Formula:" + this.oIdFormula;
+			var oTitle = "Id Commoditie:" + this.oIdCommoditie;
 
 			var oModel = new JSONModel();
 			

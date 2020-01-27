@@ -14,11 +14,11 @@ sap.ui.define([
 		onInit: function () {
 
 			var toolPage = this.byId("toolPage");
-			toolPage.setSideExpanded(!toolPage.getSideExpanded());
+			toolPage.setSideExpanded(toolPage.getSideExpanded());
 
 			var showValueHelp = function () {
 				var toolPageCurrent = this.getParent().byId("toolPage");
-				toolPageCurrent.setSideExpanded(!toolPageCurrent.getSideExpanded());
+				toolPageCurrent.setSideExpanded(toolPageCurrent.getSideExpanded());
 			};
 
 			toolPage.attachBrowserEvent("dblclick", showValueHelp);

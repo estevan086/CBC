@@ -106,7 +106,7 @@
 			"helpUrl": "http://eslint.org/docs/rules/constructor-super"
 		},
 		"no-eval": {
-			"severity": "error",
+			"severity": "warning",
 			"category": "Best Practices",
 			"helpUrl": "http://eslint.org/docs/rules/no-eval"
 		},

@@ -11,8 +11,8 @@
 						<content>
 						<Label text="Sociedad"/>
 							<ComboBox id="idComboBoxSociedad" selectionChange="onChangeSociedad" showSecondaryValues="true" filterSecondaryValues="true"  
-								items="{ path: '/LstSociedades', sorter: { path: 'CompCodePlant' } }">
-								<core:ListItem key="{CompCodePlant}" text="{DescCompCodePlant}" additionalText="{CompCodePlant}"/>
+								items="{ path: '/LstSociedades', sorter: { path: 'CompCode' } }">
+								<core:ListItem key="{CompCode}" text="{CompDesc}" additionalText="{CompCode}"/>
 							</ComboBox>
 							<ToolbarSpacer/>
 							<Button icon="sap-icon://save" type="Emphasized" text="{i18n>Guardar}" tooltip="Crear Centros" press="UpdateCentros"/>

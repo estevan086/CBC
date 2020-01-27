@@ -1,32 +1,137 @@
-<mvc:View
-	height="100%"
-	controllerName="cbc.co.simulador_costos.controller.Escenarios.MatrizEsc.AddEsc"
-	xmlns:l="sap.ui.layout"
-	xmlns:core="sap.ui.core"
-	xmlns:mvc="sap.ui.core.mvc"
-	xmlns="sap.m">
-	<l:VerticalLayout
-		class="sapUiContentPadding"
-		width="100%">
-		<Label text="MultiInput" width="100%" labelFor="multiInput"/>
-		<MultiInput width="40%"
-			id="multiInput"
-			suggestionItems="{
-				path: '/ProductCollection',
-				sorter: { path: 'Name' }
-			}"
-			valueHelpRequest="handleValueHelp">
-			<core:Item key="{ProductId}" text="{Name}" />
-		</MultiInput>
-		<Label text="ts as tokens" width="100%" labelFor="multiInput2"/>
-		<MultiInput width="40%"
-			id="multiInput2"
-			suggestionItems="{
-				path: '/ProductCollection',
-				sorter: { path: 'Name' }
-			}"
-			valueHelpRequest="handleValueHelp">
-			<core:Item key="{ProductId}" text="{Name}" />
-		</MultiInput>
-	</l:VerticalLayout>
+<mvc:View height="100%" controllerName="cbc.co.simulador_costos.controller.Escenarios.MatrizEsc.AddEsc" xmlns:l="sap.ui.layout"
+	xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:f="sap.ui.layout.form" xmlns:t="sap.ui.table">
+	<Page>
+		<content>
+			<Wizard id="EscenarioWizard" complete="onCompletedHandler" class="sapUiResponsivePadding--header sapUiResponsivePadding--content">
+				<WizardStep id="SceneStep" nextStep="MatrixSceneStep" title="Crear" icon="sap-icon://cart">
+					<f:Form editable="true">
+						<f:formContainers>
+							<f:FormContainer title="Crear escenario">
+								<f:formElements>
+									<f:FormElement label="ID Escenario">
+										<f:fields>
+											<Input enabled="false"/>
+										</f:fields>
+									</f:FormElement>
+									<f:FormElement label="Nombre Escenario">
+										<f:fields>
+											<Input required="true"/>
+										</f:fields>
+									</f:FormElement>
+									<f:FormElement label="Descripción Escenario">
+										<f:fields>
+											<TextArea rows="2"/>
+										</f:fields>
+									</f:FormElement>
+									<f:FormElement>
+										<f:label>
+											<Label text="Tipo" required="true"/>
+										</f:label>
+										<f:fields>
+											<Select items="{Escenarios>/Tipos}">
+												<core:Item key="{Escenarios>key}" text="{Escenarios>value}"/>
+											</Select>
+										</f:fields>
+									</f:FormElement>
+								</f:formElements>
+							</f:FormContainer>
+						</f:formContainers>
+						<f:layout>
+							<f:ResponsiveGridLayout/>
+						</f:layout>
+					</f:Form>
+				</WizardStep>
+				<WizardStep id="MatrixSceneStep" nextStep="ValidationSceneStep" title="Matriz" icon="sap-icon://money-bills">
+					<t:Table rows="{Escenarios>/Matriz}" selectionMode="None" visibleRowCount="3">
+						<t:extension>
+							<OverflowToolbar>
+								<Title text="Crear matriz de escenarios"/>
+							</OverflowToolbar>
+						</t:extension>
+						<t:columns>
+							<t:Column width="11rem">
+								<Label text="Módulo"/>
+								<t:template>
+									<Text text="{Escenarios>modulo}" wrapping="false"/>
+								</t:template>
+							</t:Column>
+							<t:Column width="11rem">
+								<Label text="Enero"/>
+								<t:template>
+									<Select selectedKey="{Escenarios>enero}"/>
+								</t:template>
+							</t:Column>
+							<t:Column width="11rem">
+								<Label text="Febrero"/>
+								<t:template>
+									<Select selectedKey="{Escenarios>febrero}"/>
+								</t:template>
+							</t:Column>
+							<t:Column width="11rem">
+								<Label text="Marzo"/>
+								<t:template>
+									<Select selectedKey="{Escenarios>marzo}"/>
+								</t:template>
+							</t:Column>
+							<t:Column width="11rem">
+								<Label text="Abril"/>
+								<t:template>
+									<Select selectedKey="{Escenarios>abril}"/>
+								</t:template>
+							</t:Column>
+							<t:Column width="11rem">
+								<Label text="Mayo"/>
+								<t:template>
+									<Select selectedKey="{Escenarios>mayo}"/>
+								</t:template>
+							</t:Column>
+							<t:Column width="11rem">
+								<Label text="Junio"/>
+								<t:template>
+									<Select selectedKey="{Escenarios>junio}"/>
+								</t:template>
+							</t:Column>
+							<t:Column width="11rem">
+								<Label text="Julio"/>
+								<t:template>
+									<Select selectedKey="{Escenarios>julio}"/>
+								</t:template>
+							</t:Column>
+							<t:Column width="11rem">
+								<Label text="Agosto"/>
+								<t:template>
+									<Select selectedKey="{Escenarios>agosto}"/>
+								</t:template>
+							</t:Column>
+							<t:Column width="11rem">
+								<Label text="Septiembre"/>
+								<t:template>
+									<Select selectedKey="{Escenarios>septiembre}"/>
+								</t:template>
+							</t:Column>
+							<t:Column width="11rem">
+								<Label text="Octubre"/>
+								<t:template>
+									<Select selectedKey="{Escenarios>octubre}"/>
+								</t:template>
+							</t:Column>
+							<t:Column width="11rem">
+								<Label text="Noviembre"/>
+								<t:template>
+									<Select selectedKey="{Escenarios>noviembre}"/>
+								</t:template>
+							</t:Column>
+							<t:Column width="11rem">
+								<Label text="Diciembre"/>
+								<t:template>
+									<Select selectedKey="{Escenarios>diciembre}"/>
+								</t:template>
+							</t:Column>
+						</t:columns>
+					</t:Table>
+				</WizardStep>
+				<WizardStep id="ValidationSceneStep" title="Validación" icon="sap-icon://credit-card"></WizardStep>
+			</Wizard>
+		</content>
+	</Page>
 </mvc:View>
