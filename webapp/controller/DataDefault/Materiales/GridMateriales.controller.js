@@ -25,6 +25,7 @@ sap.ui.define([
 	this.updatedRecords = [];
 	var that = this;
 	var SortOrder = library.SortOrder;
+	this.detailCommodite = [];
 
 	return Controller.extend("cbc.co.simulador_costos.controller.DataDefault.Materiales.GridMateriales", {
 
@@ -45,6 +46,7 @@ sap.ui.define([
 
 			this.loadModel();
 			this.loadModelCommoditie();
+			this.loadModelCommoditieDetail();
 			// this.editCellsTable(false);
 
 			// var fnPress = this.handleActionPress.bind(this);
@@ -1170,6 +1172,11 @@ sap.ui.define([
 			var oTableItem = oEvent.getSource().getParent();
 			var oTableItemObject = oTableItem.getBindingContext().getObject();
 			oTableItemObject.MDEF_COMMODITIE = oUnidadSeleccionada;
+
+			var oCommodite = this.detailCommodite.filter(result => result.IdCommoditie === oTableItemObject.MDEF_COMMODITIE && result.Year === oTableItemObject.MDEF_PERIODO &&
+				result.Mes === oTableItemObject.MDEF_MES && result.Sociedad === oTableItemObject.MDEF_SOCIEDAD && result.Centro ===
+				oTableItemObject.MDEF_CENTRO);
+
 			oTableCommodities.getModel().refresh();
 
 		},
@@ -1599,6 +1606,33 @@ sap.ui.define([
 
 			}
 
+		},
+
+		/**
+		 * Load model data in Commoditie Detail
+		 * @function
+		 * @param 
+		 * @private
+		 */
+		loadModelCommoditieDetail: function (event) {
+			var sServiceUrl = "",
+				oModelService = "",
+				aListData = [];
+
+			sServiceUrl = this.getOwnerComponent().getModel("ModelSimulador").sServiceUrl;
+			oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true);
+
+			//Leer datos del ERP
+			var oRead = this.fnReadEntity(oModelService, "/detailCommoditiesSet", null);
+
+			if (oRead.tipo === "S") {
+				aListData = oRead.datos.results;
+			} else {
+				MessageBox.error(oRead.msjs, null, "Mensaje del sistema", "OK", null);
+				return;
+			}
+
+			this.detailCommodite = aListData;
 		}
 
 	});
