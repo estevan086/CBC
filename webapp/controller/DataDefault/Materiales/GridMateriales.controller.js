@@ -1523,16 +1523,16 @@ sap.ui.define([
 				}
 
 				oDetail = {
-					Txtmd: oTempRow.Material,
+					// Txtmd: oTempRow.Material,
 					Material: oTempRow.IDMaterial,
 					CompCode: oTempRow.Sociedad,
 					Plant: oTempRow.Centro,
 					BaseUom: oTempRow.Unidad_Medida,
 					Currency: oTempRow.Moneda,
-					Txtsubfam: oTempRow.Subfamilia,
-					Txtfam: oTempRow.Familia,
-					Txtsubcat: oTempRow.Subcategoria,
-					Txtcat: oTempRow.Categoria,
+					// Txtsubfam: oTempRow.Subfamilia,
+					// Txtfam: oTempRow.Familia,
+					// Txtsubcat: oTempRow.Subcategoria,
+					// Txtcat: oTempRow.Categoria,
 					// Recordmode: oTempRow.MDEF_IDMATERIAL,
 					catgoria: oTempRow.IDCategoria,
 					subcateg: oTempRow.IDSubcategoria,
