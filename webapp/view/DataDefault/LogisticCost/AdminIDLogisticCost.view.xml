@@ -22,7 +22,7 @@
 						</ui:template>
 					</ui:Column>
 					<ui:Column>
-						<Label text="Descripci&oacute&n"/>
+						<Label text="{i18n>Descripcion}"/>
 						<ui:template>
 							<Input value="{LogisticCost>TxtMd}" enabled="{LogisticCost>enabled}"/>
 						</ui:template>
