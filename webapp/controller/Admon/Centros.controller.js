@@ -56,17 +56,9 @@ sap.ui.define([
 
 			var oChx = this.byId("chxStatusCentro");
 			var GetValueEdited = function (oEvent) {
-			/*	var oEntidad = {};
-				var oPath = oEvent.getSource().getBindingContext().sPath;
-
-				oEntidad.RowPath = oPath.split("/")[2];
-
-				updatedRecords.push(oEntidad);*/
+				
 			};
 			oChx.attachBrowserEvent("click", GetValueEdited);
-
-			/*var oColumn = this.getView().byId('hideColumn');
-			oColumn.setVisible(false);*/
 		},
 
 		onChangeSociedad: function (oEvent) {
@@ -111,81 +103,6 @@ sap.ui.define([
 		},
 
 		UpdateCentros: function (oEvent) {
-
-			var oCommodities = [];
-
-			var oTable = this.byId("tblCommodities");
-
-			//var oSave = this.fnCreateEntity(oModelService, "/headerCommoditiesSet", that.updatedRecords);
-
-			var sServiceUrl = this.getView().getModel("ModelSimulador").sServiceUrl,
-				oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true),
-				oEntidad = {},
-				oDetail = {};
-
-			oEntidad = {
-				IdCommoditie: '1111',
-				Descripcion: 'Prueba',
-				detailCommoditiesSet: []
-			};
-
-			for (var i = 0; i < updatedRecords.length; i++) {
-
-				var CurrentRow = updatedRecords[i];
-
-				var oTempRow = oTable.getModel().getData().lstItemsCommodities[CurrentRow.RowPath];
-
-				oDetail = {
-					Formula: oTempRow.Formula,
-					IdCommoditie: oTempRow.IdCommoditie,
-					Sociedad: oTempRow.Sociedad,
-					Centro: oTempRow.Centro,
-					UnidadMedida: oTempRow.UnidadMedida,
-					Moneda: oTempRow.Moneda,
-					Mes: oTempRow.Mes,
-					Year: oTempRow.Year,
-					PrecioMaterial: oTempRow.PrecioMaterial,
-					OtrosCostos: oTempRow.OtrosCostos
-						// Recordmode: '1'
-				};
-
-				oEntidad.detailCommoditiesSet.push(oDetail);
-			}
-
-			var oCreate = this.fnCreateEntity(oModelService, "/headerCommoditiesSet", oEntidad);
-
-			if (oCreate.tipo === 'S') {
-
-				MessageBox.show(
-					'Datos guardados correctamente', {
-						icon: MessageBox.Icon.SUCCESS,
-						title: "Exito",
-						actions: [MessageBox.Action.OK],
-						onClose: function (oAction) {
-							if (oAction === sap.m.MessageBox.Action.OK) {
-
-								updatedRecords = [];
-								return;
-							}
-						}
-					}
-				);
-
-			} else if (oCreate.tipo === 'E') {
-
-				MessageBox.show(
-					oCreate.msjs, {
-						icon: MessageBox.Icon.ERROR,
-						title: "Error"
-							// actions: [MessageBox.Action.YES, MessageBox.Action.NO],
-							// onClose: function (oAction) {
-							// 	/ * do something * /
-							// }
-					}
-				);
-
-			}
-
 			MessageBox.show(
 				'Datos guardados correctamente', {
 					icon: MessageBox.Icon.SUCCESS,
