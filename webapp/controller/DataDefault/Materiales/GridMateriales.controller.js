@@ -1182,8 +1182,8 @@ sap.ui.define([
 		 */
 		handleUpload: function (oEvent) {
 			var oFile = oEvent.getParameter("files")[0],
-			that = this;
-			
+				that = this;
+
 			if (oFile && window.FileReader) {
 				var reader = new FileReader();
 				reader.onload = function (evt) {
@@ -1193,13 +1193,13 @@ sap.ui.define([
 				reader.readAsText(oFile);
 			}
 		},
-		
+
 		/**
 		 * Get json file
 		 * @function
 		 * @param 
 		 * @private
-		 */		
+		 */
 		csvJSON: function (csv) {
 			var lines = csv.split("\n");
 			var result = [];
@@ -1215,11 +1215,11 @@ sap.ui.define([
 			var oStringResult = JSON.stringify(result);
 			var oFinalResult = JSON.parse(oStringResult.replace(/\\r/g, "")); //OBJETO JSON para guardar
 			//MessageToast.show(oStringResult);
-			// this.CargaMasiva(oFinalResult);
+			this.cargaMasiva(oFinalResult);
 			//return result; //JavaScript object
 			//sap.ui.getCore().getModel().setProperty("/", oFinalResult);
 			//this.generateTile();
-		},		
+		},
 
 		/**
 		 * Edit cells table
@@ -1492,6 +1492,113 @@ sap.ui.define([
 			}).then(function () {
 				oExport.destroy();
 			});
+		},
+
+		/**
+		 * Upload data file
+		 * @function
+		 * @param 
+		 * @private
+		 */
+		cargaMasiva: function (JsonValue) {
+
+			var sServiceUrl = this.getView().getModel("ModelSimulador").sServiceUrl,
+				oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true),
+				oEntidad = {},
+				oDetail = {},
+				oCreate = {};
+
+			oEntidad = {
+				Material: '1111',
+				Descrip: 'Save',
+				materialDefatultSet: []
+			};
+
+			for (var i = 0; i < JsonValue.length; i++) {
+
+				var oTempRow = JsonValue[i];
+
+				if (oTempRow.Commoditie === undefined) {
+					continue;
+				}
+
+				oDetail = {
+					Txtmd: oTempRow.Material,
+					Material: oTempRow.IDMaterial,
+					CompCode: oTempRow.Sociedad,
+					Plant: oTempRow.Centro,
+					BaseUom: oTempRow.Unidad_Medida,
+					Currency: oTempRow.Moneda,
+					Txtsubfam: oTempRow.Subfamilia,
+					Txtfam: oTempRow.Familia,
+					Txtsubcat: oTempRow.Subcategoria,
+					Txtcat: oTempRow.Categoria,
+					// Recordmode: oTempRow.MDEF_IDMATERIAL,
+					catgoria: oTempRow.IDCategoria,
+					subcateg: oTempRow.IDSubcategoria,
+					yfamilia: oTempRow.IDFamilia,
+					ysubfamil: oTempRow.IDSubfamilia,
+					Fiscyear: oTempRow.Periodo,
+					// Fiscvarnt: oTempRow.MDEF_IDMATERIAL,
+					Fiscper3: oTempRow.Mes,
+					NetWeight: oTempRow.Peso_Material,
+					// UnitOfWt: oTempRow.MDEF_IDMATERIAL,
+					commodit: oTempRow.Commoditie.toString(),
+					Incoterms: oTempRow.Icoterm.toString(),
+					fotrcost: oTempRow.FormulaOtrosCostos.toString(),
+					// Version: oTempRow.MDEF_IDMATERIAL,
+					// estado: oTempRow.MDEF_IDMATERIAL,
+					// Date0: oTempRow.MDEF_IDMATERIAL,
+					// usuario: oTempRow.MDEF_IDMATERIAL,
+					preprodc: oTempRow.Precio_Productivo.toString(),
+					costconv: oTempRow.Costo_Conversión.toString(),
+					costadic: oTempRow.Costo_Adicional.toString(),
+					costenv: oTempRow.Costo_Envio.toString(),
+					costmat: oTempRow.Costo_Material.toString(),
+					otrocost: oTempRow.Otros_Costos.toString(),
+					ptransf: oTempRow.PTrasnferencia.toString(),
+					costrans: oTempRow.Costo_Transferencia.toString(),
+					ppremisa: oTempRow.Precio_Premisa.toString()
+
+				};
+
+				oEntidad.materialDefatultSet.push(oDetail);
+			}
+
+			oCreate = this.fnCreateEntity(oModelService, "/materialsaveSet", oEntidad);
+
+			that = this;
+			if (oCreate.tipo === 'S') {
+
+				MessageBox.show(
+					'Datos importados correctamente', {
+						icon: MessageBox.Icon.SUCCESS,
+						title: "Exito",
+						actions: [MessageBox.Action.OK],
+						onClose: function (oAction) {
+							if (oAction === sap.m.MessageBox.Action.OK) {
+								// that.fnConsultaDetalleCommodities(); 
+								return;
+							}
+						}
+					}
+				);
+
+			} else if (oCreate.tipo === 'E') {
+
+				MessageBox.show(
+					oCreate.msjs, {
+						icon: MessageBox.Icon.ERROR,
+						title: "Error"
+							// actions: [MessageBox.Action.YES, MessageBox.Action.NO],
+							// onClose: function (oAction) {
+							// 	/ * do something * /
+							// }
+					}
+				);
+
+			}
+
 		}
 
 	});
