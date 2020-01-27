@@ -55,8 +55,24 @@ sap.ui.define([
 			this.getModel("modelView").setProperty("/busy", false);
 
 			var oChx = this.byId("chxStatusCentro");
+
 			var GetValueEdited = function (oEvent) {
-				
+				var oEntry = {};
+				/*oEntry.CompCode = this.getParent().getCells()[2].getText().split(";")[0];
+				oEntry.Plant = this.getParent().getCells()[2].getText().split(";")[1];*/
+				oEntry.Flag = this.getParent().getCells()[1].getSelected() == false ? "X" : "";//se envia al contrario por que toma el valor antes del click
+
+				oModel.update("/centroSet(CompCode='" + this.getParent().getCells()[2].getText().split(";")[0] + "',Plant='" + this.getParent().getCells()[
+						2].getText().split(";")[1] + "')",
+					oEntry, {
+						refreshAfterChange:false,
+						success: function (oData, oResponse) {
+							MessageToast.show(this.getView().getModel("i18n").getResourceBundle().getText("NotificacionGuardarOk"));
+						}.bind(this),
+						error: function (oError) {
+							MessageToast.show(oError.responseText);
+						}.bind(this)
+					});
 			};
 			oChx.attachBrowserEvent("click", GetValueEdited);
 		},
@@ -72,8 +88,15 @@ sap.ui.define([
 				value1: oItemObject.CompCode
 			});
 
+			var filterFlag = new sap.ui.model.Filter({
+				path: "Flag",
+				operator: sap.ui.model.FilterOperator.EQ,
+				value1: "1"
+			});
+
 			var filtersArray = new Array();
 			filtersArray.push(filterCompCode);
+			filtersArray.push(filterFlag);
 
 			var oModel = this.getView().getModel("ModelSimulador");
 			oModel.read("/centroSet", {
@@ -84,8 +107,9 @@ sap.ui.define([
 					//data.setProperty("/CodCentros", oData.results);
 
 					for (var i = 0; i < oData.results.length; i++) {
+						oData.results[i].PlantDesc = oData.results[i].Plant + " - " + oData.results[i].PlantDesc;
 						oData.results[i].Flag = oData.results[i].Flag == "1" ? true : false;
-						oData.results[i].oRow = oData.results[i];
+						oData.results[i].oKey = oData.results[i].CompCode + ";" + oData.results[i].Plant;
 					}
 					data.setProperty("/CodCentros", oData.results);
 					this.getOwnerComponent().setModel(data, "Centros");

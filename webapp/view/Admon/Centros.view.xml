@@ -27,7 +27,7 @@
 						</ui:template>
 					</ui:Column>
 					<ui:Column filterProperty="Flag">
-						<Label text="Descripcion"/>
+						<Label text="Estado"/>
 						<ui:template>
 							<CheckBox id="chxStatusCentro" selected="{Centros>Flag}" wrapping="false"/>
 						</ui:template>
@@ -35,7 +35,7 @@
 					<ui:Column width="1rem" id="hideColumn" filterProperty="Flag">
 						<Label text=""/>
 						<ui:template>
-								<Text text="{Centros>oRow}" wrapping="false"/>
+								<Text text="{Centros>oKey}" wrapping="false"/>
 						</ui:template>
 					</ui:Column>
 				</ui:columns>
