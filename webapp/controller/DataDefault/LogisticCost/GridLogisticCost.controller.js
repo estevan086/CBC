@@ -405,9 +405,10 @@ sap.ui.define([
 		},
 		onCostEmpty: function (oEvent) {
 			var aFilter = [];
-
+			
+			this.getView().byId("sfMaterial").setValue("");
+			
 			aFilter.push(new Filter("CostTotal", FilterOperator.EQ, "0.000"));
-
 			this.getLogisticCostValoration(aFilter);
 		},
 		onFilterLogisticCost: function (oEvent) {

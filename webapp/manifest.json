@@ -40,7 +40,13 @@
 		},
 		"fullWidth": true,
 		"flexEnabled": false,
-		"supportedThemes": ["sap_belize_hcb", "sap_belize_hcw", "sap_belize", "sap_belize_plus", "sap_fiori_3", "sap_fiori_3_hcb",
+		"supportedThemes": [
+			"sap_belize_hcb",
+			"sap_belize_hcw",
+			"sap_belize",
+			"sap_belize_plus",
+			"sap_fiori_3",
+			"sap_fiori_3_hcb",
 			"sap_fiori_3_hcw"
 		]
 	},
@@ -95,9 +101,11 @@
 			}
 		},
 		"resources": {
-			"css": [{
-				"uri": "css/style.css"
-			}]
+			"css": [
+				{
+					"uri": "css/style.css"
+				}
+			]
 		},
 		"contentDensities": {
 			"compact": true,
