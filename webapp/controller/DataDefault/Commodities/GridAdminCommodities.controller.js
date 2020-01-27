@@ -692,7 +692,7 @@ sap.ui.define([
 			
 			
 			var oData = {
-			 	oIdCommoditie: oRowData.IdCommoditie,
+			 	 oIdCommoditie: oRowData.IdCommoditie,
 				 oIdFormula: oRowData.IdFormula,
 				 oTxtFormula: oRowData.TxtFormula
 			};
@@ -700,15 +700,22 @@ sap.ui.define([
 			
 			//Navigation to the Detail Form
 			//app.to(page,"rtChFromuladora");
-			//var eventBus = sap.ui.getCore().getEventBus();
-			const bus = this.getOwnerComponent().getEventBus();
+			var bus = sap.ui.getCore().getEventBus();
+			//const bus = this.getOwnerComponent().getEventBus();
 			// 1. ChannelName, 2. EventName, 3. the data
 			bus.publish("GridAdminFormuladoraChannel", "onNavigateEvent", oData );
 			
+		//	oRowData.TxtFormula = oRowData.TxtFormula.replace('/', '\\/');
+			oRowData.TxtFormula = encodeURIComponent(oRowData.TxtFormula);
+			
+			oRowData.TxtFormula = (oRowData.TxtFormula === "") ? "0" :oRowData.TxtFormula;
+			
 			oRouter.navTo("rtChFromuladora", {
-				oIdCommoditie: oRowData.IdCommoditie
-		     	//oIdFormula: oRowData.IdFormula
-	    		// oTxtFormula: oRowData.TxtFormula
+				oRowPath: oRowData.IdCommoditie,
+		     	oIdFormula: oRowData.IdFormula,
+	    		oTxt: oRowData.TxtFormula,
+	    		oYear: oRowData.Year,
+	    		oMes: oRowData.Mes
 			});
 
 		},

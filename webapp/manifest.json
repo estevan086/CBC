@@ -131,7 +131,7 @@
 					"target": "rtChCommoditiesTarget"
 				},
 				"rtChFromuladora": {
-					"pattern": "rtChFromuladora/{oRowPath}",
+					"pattern": "rtChFromuladora/{oRowPath}/oIdFormula{oIdFormula}/oTxt{oTxt}/oYear{oYear}/oMes{oMes}",
 					"target": "rtChFromuladoraTarget"
 				},
 				"rtChIDCommodities": {
