@@ -3,76 +3,106 @@ sap.ui.define([
 	"sap/ui/model/json/JSONModel",
 	"sap/ui/core/routing/History",
 	"sap/m/MessageToast",
-	"sap/ui/core/EventBus"
-], function (Controller, JSONModel, History, MessageToast, EventBus) {
+	"sap/ui/core/EventBus",
+	"sap/m/MessageBox"
+], function (Controller, JSONModel, History, MessageToast, EventBus, MessageBox) {
 	"use strict";
 
 	var oPageController = Controller.extend("cbc.co.simulador_costos.controller.Utilities.Formuladora", {
 
-			onInit: function () {
-				//var oModel = new JSONModel(jQuery.sap.getModulePath("cbc.co.simulador_costos", "/dataFormuladora.json"));
+		onInit: function () {
+			//var oModel = new JSONModel(jQuery.sap.getModulePath("cbc.co.simulador_costos", "/dataFormuladora.json"));
 
-				var oModel = new JSONModel();
-				jQuery.ajax("model/dataFormuladora.json", {
-					dataType: "json",
-					success: function (oData) {
-						oModel.setData(oData);
-					},
-					error: function () {
-						jQuery.sap.log.error("failed to load json");
-					}
-				});
+			var myRoute = this.getOwnerComponent().getRouter().getRoute("rtChFromuladora");
+			myRoute.attachPatternMatched(this.onMyRoutePatternMatched, this);
 
-				this.getView().setModel(oModel);
-				this._oBuilder = this.getView().byId("builder");
-
-				this._oModelSettings = new JSONModel({
-					layoutType: "VisualOnly",
-					showInputToolbar: false,
-					allowComparison: false,
-					allowComparisonOperators: false,
-					allowLogical: false,
-					readOnly: false
-				});
-				this.getView().setModel(this._oModelSettings, "settings");
-
-				this._oBuilder.setShowInputToolbar(true);
-
-				var myRoute = this.getOwnerComponent().getRouter().getRoute("rtChFromuladora");
-				myRoute.attachPatternMatched(this.onMyRoutePatternMatched, this);
-
-				//var eventBus = sap.ui.getCore().getEventBus();
-				const bus = this.getOwnerComponent().getEventBus();
-				// 1. ChannelName, 2. EventName, 3. Function to be executed, 4. Listener
-				bus.subscribe("GridAdminFormuladoraChannel", "onNavigateEvent", this.onDataReceived, this);
+			var bus = sap.ui.getCore().getEventBus();
+			//const bus = this.getOwnerComponent().getEventBus();
+			// 1. ChannelName, 2. EventName, 3. Function to be executed, 4. Listener
+			bus.subscribe("GridAdminFormuladoraChannel", "onNavigateEvent", this.onDataReceived, this);
 
 		},
 
 		onDataReceived: function (channel, event, data) {
 			// do something with the data (bind to model)
 			//console.log(JSON.stringify(data));
-			
+
 			this.oIdCommoditie = data.oIdCommoditie;
 			this.oIdFormula = data.oIdFormula;
 			this.oTxtFormula = data.oTxtFormula;
 
+			var oDataModel = new sap.ui.model.json.JSONModel(data);
+
 			var oTitle = "Id Commoditie:" + this.oIdCommoditie + " - Id Formula: " + this.oIdFormula;
 
-			this.getView().byId("builder").setProperty("title", oTitle);
-				this.getView().byId("builder").setProperty("expression", this.oTxtFormula);
-			
+			var oBuilder = this.getView().byId("builder");
+
+			this.getOwnerComponent().setModel(oDataModel, "Formuladora");
+
+			//	oBuilder.setProperty("title", oTitle);
+			//	oBuilder.setProperty("expression", this.oTxtFormula);
+
+			//disabledDefaultTokens="abs;sqrt;roundup;rounddown;round"
+			// oBuilder.getModel().setProperty("title", oTitle);	
+			// oBuilder.getModel().setProperty("expr", this.oTxtFormula);
+			// oBuilder.getModel().refresh(); 
+
 		},
 
 		onMyRoutePatternMatched: function (event) {
 			// your code when the view is about to be displayed ..
-		
-		// 	this.oIdCommoditie = event.getParameter("arguments").oIdCommoditie;
-		// 	this.oIdFormula = event.getParameter("arguments").oIdFormula;
-		// //	this.oTxtFormula = event.getParameter("arguments").oTxtFormula;
 
-		// 	var oTitle = "Id Commoditie:" + this.oIdCommoditie + "-";
+			this.oIdCommoditie = event.getParameter("arguments").oRowPath;
+			this.oIdFormula = event.getParameter("arguments").oIdFormula;
+			this.oTxtFormula = event.getParameter("arguments").oTxt;
+			this.oYear = event.getParameter("arguments").oYear;
+			this.oMes = event.getParameter("arguments").oMes;
 
-		// 	this.getView().byId("builder").setProperty("title", oTitle);
+			this.oTxtFormula = decodeURIComponent(this.oTxtFormula);
+
+			var oTitle = "Id Commoditie:" + this.oIdCommoditie + " - Id Formula:" + this.oIdFormula;
+
+			var oModel = new JSONModel();
+			
+			var oCalcData = {
+				"expression": this.oTxtFormula,
+				"title": oTitle,
+				"showToolbar": false,
+				"variables": [
+					
+					{
+						"key": "Precio",
+						"label": "Precio"
+					},
+					{
+						"key": "OtrosCostos",
+						"label": "Otros Costos"
+					},
+					{
+						"key": "PesoMaterial",
+						"label": "Peso Material"
+					}
+					
+				]
+			};
+
+			oModel.setData(oCalcData);
+			
+			this.getView().setModel(oModel);
+			
+			this._oBuilder = this.getView().byId("builder");
+
+			this._oModelSettings = new JSONModel({
+				layoutType: "VisualOnly",
+				showInputToolbar: false,
+				allowComparison: false,
+				allowComparisonOperators: false,
+				allowLogical: false,
+				readOnly: false
+			});
+			this.getView().setModel(this._oModelSettings, "settings");
+
+			this._oBuilder.setShowInputToolbar(true);
 
 		},
 
@@ -93,29 +123,77 @@ sap.ui.define([
 		saveFormula: function (oEvent) {
 			var oModel = this.getView().getModel("ModelSimulador"),
 				oBuilder = this.getView().byId("builder"),
-				oBuilderData = oBuilder.getProperty("expression");
-			//		oModelLocal = this.getView().getModel("Commodities"),
-			//	data = oModelLocal.getProperty("/");
+				oBuilderData = oBuilder.getProperty("expression"),
+				sServiceUrl = this.getView().getModel("ModelSimulador").sServiceUrl,
+				oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true),	
+		    	oEntidad = {};
 
-			//Crea el Commoditie
-			oModel.create("/formuladoraSet", {
+			oEntidad = {
 				IdCommoditie: this.oIdCommoditie,
-				FotrCost: this.oIdFormula,
-				Txtlg: oBuilderData
-			}, {
-				success: function (oData, oResponse) {
-					MessageToast.show(this.getView().getModel("i18n").getResourceBundle().getText("NotificacionGuardarOk"));
-					//	this.getMasterCommodities();
-				}.bind(this),
-				error: function (oError) {
-					this.showGeneralError({
-						oDataError: oError
-					});
-				//	this.getModel("modelView").setProperty("/busy", false);
-				}.bind(this)
-			});
+				Fotrcost: this.oIdFormula,
+				Txtlg: oBuilderData,
+				Year: this.oYear,
+				Mes: this.oMes
+			};
+			
+			
+			//Crea el Commoditie
+			
+			var oCreate = this.fnCreateEntity(oModelService, "/formuladoraSet", oEntidad);
 
-		//	this.fnCloseFragment(oEvent);
+			if (oCreate.tipo === 'S') {
+				this.oIdFormula = oCreate.datos.Fotrcost;
+				var oTitle = "Id Commoditie:" + this.oIdCommoditie + " - Id Formula:" + this.oIdFormula;
+				oBuilder.getModel().setProperty("title", oTitle);	
+				
+				MessageBox.show(
+					'Datos guardados correctamente', {
+						icon: MessageBox.Icon.SUCCESS,
+						title: "Exito",
+						actions: [MessageBox.Action.OK],
+						onClose: function (oAction) {
+							if (oAction === sap.m.MessageBox.Action.OK) {
+								return;
+							}
+						}
+					}
+				);
+
+			} else if (oCreate.tipo === 'E') {
+
+				MessageBox.show(
+					oCreate.msjs, {
+						icon: MessageBox.Icon.ERROR,
+						title: "Error"
+							// actions: [MessageBox.Action.YES, MessageBox.Action.NO],
+							// onClose: function (oAction) {
+							// 	/ * do something * /
+							// }
+					}
+				);
+
+			}
+			
+			
+			
+			// oModel.create("/formuladoraSet", {
+			// 	IdCommoditie: this.oIdCommoditie,
+			// 	FotrCost: this.oIdFormula,
+			// 	Txtlg: oBuilderData
+			// }, {
+			// 	success: function (oData, oResponse) {
+			// 		MessageToast.show(this.getView().getModel("i18n").getResourceBundle().getText("NotificacionGuardarOk"));
+			// 		//	this.getMasterCommodities();
+			// 	}.bind(this),
+			// 	error: function (oError) {
+			// 		this.showGeneralError({
+			// 			oDataError: oError
+			// 		});
+			// 		//	this.getModel("modelView").setProperty("/busy", false);
+			// 	}.bind(this)
+			// });
+
+			//	this.fnCloseFragment(oEvent);
 		},
 
 		layoutTypeChanged: function (oEvent) {
@@ -154,5 +232,5 @@ sap.ui.define([
 		}
 	});
 
-return oPageController;
+	return oPageController;
 });
