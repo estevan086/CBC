@@ -1,209 +1,39 @@
-<!--<mvc:View-->
-<!--	controllerName="cbc.co.simulador_costos.controller.Admon.Centros"-->
-<!--	xmlns:html="http://www.w3.org/1999/xhtml" -->
-<!--	xmlns:mvc="sap.ui.core.mvc" -->
-<!--	displayBlock="true"-->
-<!--	xmlns="sap.ui.table" -->
-<!--	xmlns:m="sap.m" -->
-<!--	xmlns:u="sap.ui.unified" -->
-<!--	xmlns:c="sap.ui.core"-->
-<!--	xmlns:l="sap.ui.layout"-->
-<!--    height="100%">-->
-<!--	<m:Toolbar id="toolbar1" class="sapNocolor">-->
-<!--			<m:Title id="title1" text="Administracion de Centros" level="H2"/>-->
-<!--			<m:ToolbarSpacer id="toolbarspacer1"/>-->
-<!--			<m:Title text="" level="H2"/>-->
-<!--			<m:ToolbarSpacer/>-->
-<!--			<m:Button icon="sap-icon://message-information" press=".onOpenDialog" ariaLabelledBy="editButtonLabel"/>-->
-<!--	</m:Toolbar>-->
-<!--	 <m:App>-->
-<!--	   <m:pages>-->
-<!--		<m:Page-->
-<!--			showHeader="false"-->
-<!--			enableScrolling="false"-->
-<!--			class="sapUiContentPadding">-->
-<!--			<m:content>-->
-				
-<!--			<l:VerticalLayout-->
-<!--				class="sapUiContentPadding"-->
-<!--				width="100%">-->
-<!--				</l:VerticalLayout>-->
-<!--				<Table id="tblCentros"-->
-<!--					rows="{/CENTRO}"-->
-<!--					selectionMode="None"-->
-<!--					visibleRowCount="12">-->
-<!--					<toolbar>-->
-<!--						<m:OverflowToolbar>-->
-<!--							<m:content>-->
-<!--								<m:Title id="title" text="Centros" />-->
-<!--								<m:ToolbarSpacer/>-->
-<!--								<m:Button-->
-<!--									text="Agregar Centro"-->
-<!--									icon="sap-icon://add"-->
-<!--									tooltip="add item"-->
-<!--									press="showFormAdd"/>-->
-<!--								<m:Button-->
-<!--									icon="sap-icon://sort"-->
-<!--									tooltip="Sort Categories"-->
-<!--									press="sortCategories"/>-->
-<!--								<m:Button-->
-<!--									icon="sap-icon://decline"-->
-<!--									tooltip="Clear all sortings"-->
-<!--									press="clearAllSortings"/>-->
-<!--								<m:SearchField-->
-<!--									placeholder="Filter"-->
-<!--									value="{ui>/globalFilter}"-->
-<!--									search="filterGlobally"-->
-<!--									width="15rem"/>-->
-<!--									<m:Button	icon="sap-icon://download" press="onDataExport" />-->
-<!--							</m:content>-->
-<!--						</m:OverflowToolbar>-->
-<!--					</toolbar>-->
-<!--					<columns>-->
-<!--						<Column width="11rem">-->
-<!--							<m:Label text="Cod. Centro" />-->
-<!--							<template>-->
-<!--								<m:Text text="{Ce.}" wrapping="false" />-->
-<!--							</template>-->
-<!--						</Column>-->
-<!--						<Column width="11rem">-->
-<!--							<m:Label text="Centro" />-->
-<!--							<template>-->
-<!--								<m:Text text="{CENTRO}" wrapping="false" />-->
-<!--							</template>-->
-<!--						</Column>-->
-<!--						<Column width="11rem">-->
-<!--							<m:Label text="Nombre" />-->
-<!--							<template>-->
-<!--								<m:Text text="{Nombre 2}" wrapping="false" />-->
-<!--							</template>-->
-<!--						</Column>-->
-<!--						<Column width="11rem">-->
-<!--							<m:Label text="Cod. Pais" />-->
-<!--							<template>-->
-<!--								<m:Text text="{COD PAIS}" wrapping="false" />-->
-<!--							</template>-->
-<!--						</Column>-->
-<!--						<Column width="11rem">-->
-<!--							<m:Label text="Pais" />-->
-<!--							<template>-->
-<!--								<m:Text text="{PAIS}" wrapping="false" />-->
-<!--							</template>-->
-<!--						</Column>-->
-<!--						<Column width="11rem">-->
-<!--							<m:Label text="Cod. Sociedad" />-->
-<!--							<template>-->
-<!--								<m:Text text="{SOCIEDAD}" wrapping="false" />-->
-<!--							</template>-->
-<!--						</Column></columns>-->
-<!--				</Table>-->
-<!--			</m:content>-->
-<!--		</m:Page>-->
-<!--	  </m:pages>-->
-<!--	 </m:App>-->
-<!--</mvc:View>-->
-
-<mvc:View
-	controllerName="cbc.co.simulador_costos.controller.Admon.Centros"
-	xmlns:html="http://www.w3.org/1999/xhtml" 
-	xmlns:mvc="sap.ui.core.mvc" 
-	displayBlock="true"
-	xmlns="sap.ui.table" 
-	xmlns:m="sap.m" 
-	xmlns:u="sap.ui.unified" 
-	xmlns:c="sap.ui.core"
-	xmlns:l="sap.ui.layout"
-    height="100%">
-	<m:Toolbar id="toolbar1" class="sapNocolor">
-			<m:Title id="title1" text="Administracion de Centros" level="H2"/>
-			<m:ToolbarSpacer id="toolbarspacer1"/>
-			<m:Title text="" level="H2"/>
-			<m:ToolbarSpacer/>
-			<m:Button icon="sap-icon://message-information" press=".onOpenDialog" ariaLabelledBy="editButtonLabel"/>
-	</m:Toolbar>
-	 <m:App>
-	   <m:pages>
-		<m:Page
-			showHeader="false"
-			enableScrolling="false"
-			class="sapUiContentPadding">
-			<m:content>
-				
-			<l:VerticalLayout
-				class="sapUiContentPadding"
-				width="100%">
-				</l:VerticalLayout>
-				<Table id="tblCentros"
-					rows="{/CENTRO}"
-					selectionMode="None"
-					visibleRowCount="12">
-					<toolbar>
-						<m:OverflowToolbar>
-							<m:content>
-								<m:Title id="title" text="Centros" />
-								<m:ToolbarSpacer/>
-								<m:Button
-									text="Agregar Centro"
-									icon="sap-icon://add"
-									tooltip="add item"
-									press="showFormAdd"/>
-								<m:Button
-									icon="sap-icon://sort"
-									tooltip="Sort Categories"
-									press="sortCategories"/>
-								<m:Button
-									icon="sap-icon://decline"
-									tooltip="Clear all sortings"
-									press="clearAllSortings"/>
-								<m:SearchField
-									placeholder="Filter"
-									value="{ui>/globalFilter}"
-									search="filterGlobally"
-									width="15rem"/>
-									<m:Button	icon="sap-icon://download" press="onDataExport" />
-							</m:content>
-						</m:OverflowToolbar>
-					</toolbar>
-					<columns>
-						<Column width="11rem">
-							<m:Label text="Cod. Centro" />
-							<template>
-								<m:Text text="{Ce.}" wrapping="false" />
-							</template>
-						</Column>
-						<Column width="11rem">
-							<m:Label text="Centro" />
-							<template>
-								<m:Text text="{CENTRO}" wrapping="false" />
-							</template>
-						</Column>
-						<Column width="11rem">
-							<m:Label text="Nombre" />
-							<template>
-								<m:Text text="{Nombre 2}" wrapping="false" />
-							</template>
-						</Column>
-						<Column width="11rem">
-							<m:Label text="Cod. Pais" />
-							<template>
-								<m:Text text="{COD PAIS}" wrapping="false" />
-							</template>
-						</Column>
-						<Column width="11rem">
-							<m:Label text="Pais" />
-							<template>
-								<m:Text text="{PAIS}" wrapping="false" />
-							</template>
-						</Column>
-						<Column width="11rem">
-							<m:Label text="Cod. Sociedad" />
-							<template>
-								<m:Text text="{SOCIEDAD}" wrapping="false" />
-							</template>
-						</Column></columns>
-				</Table>
-			</m:content>
-		</m:Page>
-	  </m:pages>
-	 </m:App>
+<mvc:View controllerName="cbc.co.simulador_costos.controller.Admon.Centros" xmlns:core="sap.ui.core"
+	xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:ui="sap.ui.table" height="100%">
+	<ObjectHeader binding="{/ProductCollection/0}" title="Centros" condensed="true"
+		number="{ parts:[{path:'Price'},{path:'CurrencyCode'}], type: 'sap.ui.model.type.Currency', formatOptions: {showMeasure: false} }"
+		numberUnit="{CurrencyCode}"/>
+	<Page showHeader="false" enableScrolling="false" class="sapUiContentPadding" busy="{modelView>/busy}">
+		<content>
+			<ui:Table id="tblCentros" rows="{Centros>/CodCentros}" selectionMode="None" visibleRowCount="10" rowActionCount="1" class="sapUiSizeCompact">
+				<ui:extension>
+					<OverflowToolbar>
+						<content>
+						<Label text="Sociedad"/>
+							<ComboBox id="idComboBoxSociedad" selectionChange="onChangeSociedad" showSecondaryValues="true" filterSecondaryValues="true"  
+								items="{ path: '/LstSociedades', sorter: { path: 'CompCodePlant' } }">
+								<core:ListItem key="{CompCodePlant}" text="{DescCompCodePlant}" additionalText="{CompCodePlant}"/>
+							</ComboBox>
+							<ToolbarSpacer/>
+							<Button icon="sap-icon://save" type="Emphasized" text="{i18n>Guardar}" tooltip="Crear Centros"/>
+						</content>
+					</OverflowToolbar>
+				</ui:extension>
+				<ui:columns>
+					<ui:Column filterProperty="PlantDesc">
+						<Label text="Centro"/>
+						<ui:template>
+							<Text text="{Centros>PlantDesc}" wrapping="false"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column filterProperty="Flag">
+						<Label text="Descripcion"/>
+						<ui:template>
+							<CheckBox id="cbxStatusCentro" selected="false" wrapping="false"/>
+						</ui:template>
+					</ui:Column>
+				</ui:columns>
+			</ui:Table>
+		</content>
+	</Page>
 </mvc:View>

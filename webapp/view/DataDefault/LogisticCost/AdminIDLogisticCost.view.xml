@@ -1,54 +1,68 @@
 <mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:ui="sap.ui.table"
 	controllerName="cbc.co.simulador_costos.controller.DataDefault.LogisticCost.AdminIDLogisticCost" xmlns:html="http://www.w3.org/1999/xhtml">
-	<App>
-		<pages>
-			<Page title="{i18n>CrearLC}" showNavButton="true" navButtonPress="onNavBack">
-				<content>
-					<ui:Table id="tblLogisticcCost" rows="{LogisticCost>/CodLogisticCost}" selectionMode="None" visibleRowCount="10" rowActionCount="1" class="sapUiSizeCompact" >
-						<ui:extension>
-							<OverflowToolbar>
-								<content>
-									<Title id="title" text="{i18n>CostosLogisticos}"/>
-									<ToolbarSpacer/>
-									<Button icon="sap-icon://factory" type="Emphasized" text="{i18n>Crear}" tooltip="Crear" press="showFormAddLC"/>
-								</content>
-							</OverflowToolbar>
-						</ui:extension>
-						<ui:columns>
-							<ui:Column>
-								<Label text="ID"/>
-								<ui:template>
-									<Text text="{LogisticCost>CostLog}" wrapping="false"/>
-								</ui:template>
-							</ui:Column>
-							<ui:Column>
-								<Label text="Descripción"/>
-								<ui:template>
-									<Text text="{LogisticCost>TxtMd}" wrapping="false"/>
-								</ui:template>
-							</ui:Column>
-							<ui:Column>
-								<Label text="Categoria Logistica"/>
-								<ui:template>
-									<Text text="{LogisticCost>CatCosLo}" wrapping="false"/>
-								</ui:template>
-							</ui:Column>
-							<ui:Column width="4rem" hAlign="Center">
-								<ui:template>
-									<Button tooltip="Editar" icon="sap-icon://edit" press="onEditLC"/>
-								</ui:template>
-							</ui:Column>
-						</ui:columns>
-						<ui:rowActionTemplate>
-							<ui:RowAction>
-								<ui:items>
-									<ui:RowActionItem type="Navigation" text="Eliminar" press="onDeleteLC" icon="sap-icon://delete"></ui:RowActionItem>
-								</ui:items>
-							</ui:RowAction>
-						</ui:rowActionTemplate>
-					</ui:Table>
-				</content>
-			</Page>
-		</pages>
-	</App>
+	<Page title="{i18n>CrearLC}" showNavButton="true" navButtonPress="onNavBack" busy="{modelView>/busy}">
+		<content>
+			<ui:Table id="tblLogisticcCost" rows="{LogisticCost>/CodLogisticCost}" selectionMode="None" visibleRowCount="10" rowActionCount="1"
+				class="sapUiSizeCompact">
+				<ui:extension>
+					<OverflowToolbar>
+						<content>
+							<Title id="title" text="{i18n>CostosLogisticos}"/>
+							<ToolbarSpacer/>
+							<Button icon="sap-icon://factory" type="Emphasized" text="{i18n>Crear}" tooltip="Crear" press="showFormAddLC"/>
+							<Button icon="sap-icon://save" type="Emphasized" text="{i18n>Guardar}" tooltip="Guardar" press="onUpdateLogisticCost"/>
+						</content>
+					</OverflowToolbar>
+				</ui:extension>
+				<ui:columns>
+					<ui:Column>
+						<Label text="ID"/>
+						<ui:template>
+							<Text text="{LogisticCost>CostLog}" wrapping="false"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column>
+						<Label text="{i18n>Descripcion}"/>
+						<ui:template>
+							<Input value="{LogisticCost>TxtMd}" enabled="{LogisticCost>enabled}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column>
+						<Label text="Categoria Logistica"/>
+						<ui:template>
+							<ComboBox items="{ModelSimulador>/categorialogisticaSet}" selectedKey="{LogisticCost>CatCosLo}" enabled="{LogisticCost>enabled}">
+								<items>
+									<core:ListItem key="{ModelSimulador>CatCosLo}" text="{ModelSimulador>TxtMd}"/>
+								</items>
+							</ComboBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column>
+						<Label text="Fecha"/>
+						<ui:template>
+							<Text text="{LogisticCost>Date0}" wrapping="false"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column>
+						<Label text="Responsable"/>
+						<ui:template>
+							<Text text="{LogisticCost>PerResp}" wrapping="false"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="4rem" hAlign="Center">
+						<ui:template>
+							<Button tooltip="Editar" icon="sap-icon://edit" press="onEditLC"/>
+						</ui:template>
+					</ui:Column>
+				</ui:columns>
+				<ui:rowActionTemplate >
+					<ui:RowAction>
+						<ui:items>
+							<ui:RowActionItem type="Navigation" text="Eliminar" press="onDeleteLC" icon="sap-icon://delete"></ui:RowActionItem>
+						</ui:items>
+					</ui:RowAction>
+				</ui:rowActionTemplate>
+			</ui:Table>
+		</content>
+	</Page>
 </mvc:View>

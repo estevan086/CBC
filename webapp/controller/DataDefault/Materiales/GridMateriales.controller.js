@@ -14,15 +14,18 @@ sap.ui.define([
 	"sap/m/StandardListItem",
 	"sap/m/ButtonType",
 	'sap/ui/core/Fragment',
-	'sap/m/MessageBox'
+	'sap/m/MessageBox',
+	'sap/ui/core/util/Export',
+	'sap/ui/core/util/ExportTypeCSV'
 
 ], function (Controller, JSONModel, MessageToast, DateFormat, library, Filter, FilterOperator, Button, Dialog, List, StandardListItem,
-	ButtonType, Fragment, MessageBox) {
+	ButtonType, Fragment, MessageBox, Export, ExportTypeCSV) {
 	"use strict";
 
 	this.updatedRecords = [];
 	var that = this;
 	var SortOrder = library.SortOrder;
+	this.detailCommodite = [];
 
 	return Controller.extend("cbc.co.simulador_costos.controller.DataDefault.Materiales.GridMateriales", {
 
@@ -32,7 +35,19 @@ sap.ui.define([
 			// // Setting json to current view....
 			// this.getView().setModel(json);
 
+			var oUploader = this.getView().byId("fileUploader");
+			oUploader.oBrowse.setText("Importar");
+			oUploader.oFilePath.setVisible(false);
+			oUploader.addEventDelegate({
+				onAfterRendering: function () {
+					this.setFileType(['csv']);
+				}
+			}, oUploader);
+
 			this.loadModel();
+			this.loadModelCommoditie();
+			this.loadModelCommoditieDetail();
+			// this.editCellsTable(false);
 
 			// var fnPress = this.handleActionPress.bind(this);
 			// var fnfrPress = this.frmLogisticPress.bind(this);
@@ -693,18 +708,32 @@ sap.ui.define([
 			// oRowEdited.getCells().filter(result => result.mProperties.value).map(cell => cell.setProperty("editable", true));
 
 			// oRowEdited.getCells()[6].setProperty("editable", true);
+			//Columna commoditie
 			oRowEdited.getCells()[7].setProperty("editable", true);
+			//Columna precio productivo
 			oRowEdited.getCells()[8].setProperty("editable", true);
+			//Columna costo conversión
 			oRowEdited.getCells()[9].setProperty("editable", true);
+			//Columna costo adicional
 			oRowEdited.getCells()[10].setProperty("editable", true);
+			//Columna costo envio
 			oRowEdited.getCells()[11].setProperty("editable", true);
+			//Columna icoterm
 			oRowEdited.getCells()[12].setProperty("editable", true);
-			oRowEdited.getCells()[13].setProperty("editable", true);
+			//Columna costo material
+			// oRowEdited.getCells()[13].setProperty("editable", true);
+			//Columna formula
 			oRowEdited.getCells()[14].setProperty("editable", true);
-			oRowEdited.getCells()[15].setProperty("editable", true);
+			//Columna icono formula
+			// oRowEdited.getCells()[15].setProperty("editable", true);
+			//Columna otros costos
 			oRowEdited.getCells()[16].setProperty("editable", true);
+			//Columna % Transferencia
 			oRowEdited.getCells()[17].setProperty("editable", true);
-			oRowEdited.getCells()[18].setProperty("editable", true);
+			//Columna costo transferencia
+			// oRowEdited.getCells()[18].setProperty("editable", true);
+			//Columna costo precio premisa
+			// oRowEdited.getCells()[19].setProperty("editable", true);
 
 			MessageToast.show("Editar Material " + oRowEdited.getCells()[0].getProperty("text"));
 
@@ -930,18 +959,18 @@ sap.ui.define([
 						MDEF_UMD: value.BaseUom,
 						MDEF_MONEDA: value.Currency,
 						MDEF_PESOMATERIAL: value.NetWeight,
-						MDEF_COMMODITIE: "",
-						MDEF_PRECIOPRODUCTIVO: "",
-						MDEF_COSTOCONVERSION: "",
-						MDEF_COSTOADICIONAL: "",
-						MDEF_COSTOENVIO: "",
-						MDEF_ICOTERM: "",
-						MDEF_COSTOMATERIAL: "",
-						MDEF_FORMULAOTROSCOSTOS: "",
-						MDEF_OTROSCOSTOS: "",
-						MDEF_PCTRANSFERENCIA: "",
-						MDEF_COSTOTRANSFERENCIA: "",
-						MDEF_PRECIOPREMISA: "",
+						MDEF_COMMODITIE: value.commodit,
+						MDEF_PRECIOPRODUCTIVO: value.preprodc,
+						MDEF_COSTOCONVERSION: value.costconv,
+						MDEF_COSTOADICIONAL: value.costadic,
+						MDEF_COSTOENVIO: value.costenv,
+						MDEF_ICOTERM: value.Incoterms,
+						MDEF_COSTOMATERIAL: value.costmat,
+						MDEF_FORMULAOTROSCOSTOS: value.fotrcost,
+						MDEF_OTROSCOSTOS: value.otrocost,
+						MDEF_PCTRANSFERENCIA: value.ptransf,
+						MDEF_COSTOTRANSFERENCIA: value.costrans,
+						MDEF_PRECIOPREMISA: value.ppremisa,
 						MDEF_IDCATEGORIA: value.catgoria,
 						MDEF_CATEGORIA: value.Txtcat,
 						MDEF_IDSUBCATEGORIA: value.subcateg,
@@ -950,8 +979,8 @@ sap.ui.define([
 						MDEF_FAMILIA: value.Txtfam,
 						MDEF_IDSUFAMILIA: value.ysubfamil,
 						MDEF_SUBFAMILIA: value.Txtsubfam,
-						MDEF_PERIODO: "",
-						MDEF_MES: ""
+						MDEF_PERIODO: value.yfiscyear,
+						MDEF_MES: value.yfiscper3
 					};
 
 				aList.MATERIAL.push(oMaterial);
@@ -1010,22 +1039,22 @@ sap.ui.define([
 					Fiscper3: oTempRow.MDEF_MES,
 					NetWeight: oTempRow.MDEF_PESOMATERIAL,
 					// UnitOfWt: oTempRow.MDEF_IDMATERIAL,
-					commodit: oTempRow.MDEF_COMMODITIE,
-					Incoterms: oTempRow.MDEF_ICOTERM,
-					fotrcost: oTempRow.MDEF_FORMULAOTROSCOSTOS,
+					commodit: oTempRow.MDEF_COMMODITIE.toString(),
+					Incoterms: oTempRow.MDEF_ICOTERM.toString(),
+					fotrcost: oTempRow.MDEF_FORMULAOTROSCOSTOS.toString(),
 					// Version: oTempRow.MDEF_IDMATERIAL,
 					// estado: oTempRow.MDEF_IDMATERIAL,
 					// Date0: oTempRow.MDEF_IDMATERIAL,
 					// usuario: oTempRow.MDEF_IDMATERIAL,
-					preprodc: oTempRow.MDEF_PRECIOPRODUCTIVO,
-					costconv: oTempRow.MDEF_COSTOCONVERSION,
-					costadic: oTempRow.MDEF_COSTOADICIONAL,
-					costenv: oTempRow.MDEF_COSTOENVIO,
-					costmat: oTempRow.MDEF_COSTOMATERIAL,
-					otrocost: oTempRow.MDEF_OTROSCOSTOS,
-					ptransf: oTempRow.MDEF_PCTRANSFERENCIA,
-					costrans: oTempRow.MDEF_COSTOTRANSFERENCIA,
-					ppremisa: oTempRow.MDEF_PRECIOPREMISA
+					preprodc: oTempRow.MDEF_PRECIOPRODUCTIVO.toString(),
+					costconv: oTempRow.MDEF_COSTOCONVERSION.toString(),
+					costadic: oTempRow.MDEF_COSTOADICIONAL.toString(),
+					costenv: oTempRow.MDEF_COSTOENVIO.toString(),
+					costmat: oTempRow.MDEF_COSTOMATERIAL.toString(),
+					otrocost: oTempRow.MDEF_OTROSCOSTOS.toString(),
+					ptransf: oTempRow.MDEF_PCTRANSFERENCIA.toString(),
+					costrans: oTempRow.MDEF_COSTOTRANSFERENCIA.toString(),
+					ppremisa: oTempRow.MDEF_PRECIOPREMISA.toString()
 
 				};
 
@@ -1063,6 +1092,609 @@ sap.ui.define([
 				);
 
 			}
+
+		},
+
+		/**
+		 * Load model data in Combobox Commoditie
+		 * @function
+		 * @param 
+		 * @private
+		 */
+		loadModelCommoditie: function (event) {
+			var sServiceUrl = "",
+				oModelService = "",
+				aListData = [];
+
+			sServiceUrl = this.getOwnerComponent().getModel("ModelSimulador").sServiceUrl;
+			oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true);
+
+			//Leer datos del ERP
+			var oRead = this.fnReadEntity(oModelService, "/headerCommoditiesSet", null);
+
+			if (oRead.tipo === "S") {
+				aListData = oRead.datos.results;
+			} else {
+				MessageBox.error(oRead.msjs, null, "Mensaje del sistema", "OK", null);
+				return;
+			}
+
+			// this.mapDataComboboxCommoditie(aListData);
+			this.loadModelComboBoxCommoditie(aListData);
+		},
+
+		/**
+		 * Map Data ComboBox Commoditie
+		 * @function
+		 * @param 
+		 * @private
+		 */
+		mapDataComboboxCommoditie: function (p_listCommoditie) {
+
+			var oComboBox = this.getView().byId("idComboBoxUnidadesMedida"),
+				oModelCombo = {},
+				lstCommodite = {
+					LstCommodite: []
+				};
+
+			lstCommodite.LstCommodite = p_listCommoditie;
+
+			oModelCombo = new sap.ui.model.json.JSONModel(lstCommodite);
+
+			oComboBox.setModel(oModelCombo);
+		},
+
+		/**
+		 * load model comboBox Commoditie
+		 * @function
+		 * @param 
+		 * @private
+		 */
+		loadModelComboBoxCommoditie: function (p_listCommoditie) {
+
+			var oTable = this.byId("tblMaterial");
+			oTable.getModel().setProperty("/LstCommodite", p_listCommoditie);
+			oTable.getModel().refresh(true);
+
+		},
+
+		/**
+		 * select Commoditie combobox
+		 * @function
+		 * @param 
+		 * @private
+		 */
+		onChange: function (oEvent) {
+			var oItem = oEvent.getParameter("selectedItem");
+			var oTableCommodities = this.byId("tblMaterial");
+			var oItemObject = oItem.getBindingContext().getObject();
+			var oUnidadSeleccionada = oItemObject.IdCommoditie;
+			var oTableItem = oEvent.getSource().getParent();
+			var oTableItemObject = oTableItem.getBindingContext().getObject();
+			oTableItemObject.MDEF_COMMODITIE = oUnidadSeleccionada;
+
+			var oCommodite = this.detailCommodite.filter(result => result.IdCommoditie === oTableItemObject.MDEF_COMMODITIE && result.Year === oTableItemObject.MDEF_PERIODO &&
+				result.Mes === oTableItemObject.MDEF_MES && result.Sociedad === oTableItemObject.MDEF_SOCIEDAD && result.Centro ===
+				oTableItemObject.MDEF_CENTRO);
+
+			if (oCommodite.length > 0) {
+				var precio = this.executeFormula(oTableItemObject, oCommodite[0]);
+				oTableItemObject.MDEF_PRECIOPRODUCTIVO = Number(precio);
+			}
+			
+			//Realizar calculos
+			oTableItemObject.MDEF_COSTOMATERIAL =
+				Number(oTableItemObject.MDEF_PRECIOPRODUCTIVO) +
+				Number(oTableItemObject.MDEF_COSTOCONVERSION) +
+				Number(oTableItemObject.MDEF_COSTOADICIONAL) +
+				Number(oTableItemObject.MDEF_COSTOENVIO);
+
+			oTableItemObject.MDEF_COSTOTRANSFERENCIA =
+				(Number(oTableItemObject.MDEF_COSTOMATERIAL) +
+					Number(oTableItemObject.MDEF_OTROSCOSTOS)) *
+				Number(oTableItemObject.MDEF_PCTRANSFERENCIA);
+
+			oTableItemObject.MDEF_PRECIOPREMISA =
+				Number(oTableItemObject.MDEF_COSTOMATERIAL) +
+				Number(oTableItemObject.MDEF_OTROSCOSTOS) +
+				Number(oTableItemObject.MDEF_COSTOTRANSFERENCIA);			
+
+			oTableCommodities.getModel().refresh();
+
+		},
+
+		/**
+		 * Upload file
+		 * @function
+		 * @param 
+		 * @private
+		 */
+		handleUpload: function (oEvent) {
+			var oFile = oEvent.getParameter("files")[0],
+				that = this;
+
+			if (oFile && window.FileReader) {
+				var reader = new FileReader();
+				reader.onload = function (evt) {
+					var strCSV = evt.target.result; //string in CSV 
+					that.csvJSON(strCSV);
+				};
+				reader.readAsText(oFile);
+			}
+		},
+
+		/**
+		 * Get json file
+		 * @function
+		 * @param 
+		 * @private
+		 */
+		csvJSON: function (csv) {
+			var lines = csv.split("\n");
+			var result = [];
+			var headers = lines[0].split(",");
+			for (var i = 1; i < lines.length; i++) {
+				var obj = {};
+				var currentline = lines[i].split(",");
+				for (var j = 0; j < headers.length; j++) {
+					obj[headers[j]] = currentline[j];
+				}
+				result.push(obj);
+			}
+			var oStringResult = JSON.stringify(result);
+			var oFinalResult = JSON.parse(oStringResult.replace(/\\r/g, "")); //OBJETO JSON para guardar
+			//MessageToast.show(oStringResult);
+			this.cargaMasiva(oFinalResult);
+			//return result; //JavaScript object
+			//sap.ui.getCore().getModel().setProperty("/", oFinalResult);
+			//this.generateTile();
+		},
+
+		/**
+		 * Edit cells table
+		 * @function
+		 * @param 
+		 * @private
+		 */
+		editCellsTable: function (p_EditValue) {
+			var oTable = {};
+
+			oTable = this.byId("tblMaterial");
+
+			for (var i = 0; i < oTable.getModel().getData().MATERIAL.length; i++) {
+
+				if (oTable.getRows()[i] !== undefined) {
+					oTable.getRows()[i].getCells()[6].setProperty("editable", p_EditValue);
+					oTable.getRows()[i].getCells()[7].setProperty("editable", p_EditValue);
+					oTable.getRows()[i].getCells()[8].setProperty("editable", p_EditValue);
+					oTable.getRows()[i].getCells()[9].setProperty("editable", p_EditValue);
+					oTable.getRows()[i].getCells()[10].setProperty("editable", p_EditValue);
+					oTable.getRows()[i].getCells()[11].setProperty("editable", p_EditValue);
+					oTable.getRows()[i].getCells()[12].setProperty("editable", p_EditValue);
+					oTable.getRows()[i].getCells()[13].setProperty("editable", p_EditValue);
+					oTable.getRows()[i].getCells()[14].setProperty("editable", p_EditValue);
+					oTable.getRows()[i].getCells()[15].setProperty("editable", p_EditValue);
+					oTable.getRows()[i].getCells()[16].setProperty("editable", p_EditValue);
+					oTable.getRows()[i].getCells()[17].setProperty("editable", p_EditValue);
+					oTable.getRows()[i].getCells()[18].setProperty("editable", p_EditValue);
+				} else {
+					break;
+				}
+			}
+		},
+
+		/**
+		 * Obtener costo material
+		 * @function
+		 * @param 
+		 * @private
+		 */
+		onChangeCostoMaterial: function (oEvent) {
+			var value = oEvent.getSource().getValue(),
+				oValueItem = oEvent.getSource().getBindingContext().getObject();
+
+			oValueItem.MDEF_COSTOMATERIAL =
+				Number(oValueItem.MDEF_PRECIOPRODUCTIVO) +
+				Number(oValueItem.MDEF_COSTOCONVERSION) +
+				Number(oValueItem.MDEF_COSTOADICIONAL) +
+				Number(oValueItem.MDEF_COSTOENVIO);
+
+			oValueItem.MDEF_COSTOTRANSFERENCIA =
+				(Number(oValueItem.MDEF_COSTOMATERIAL) +
+					Number(oValueItem.MDEF_OTROSCOSTOS)) *
+				Number(oValueItem.MDEF_PCTRANSFERENCIA);
+
+			oValueItem.MDEF_PRECIOPREMISA =
+				Number(oValueItem.MDEF_COSTOMATERIAL) +
+				Number(oValueItem.MDEF_OTROSCOSTOS) +
+				Number(oValueItem.MDEF_COSTOTRANSFERENCIA);
+		},
+
+		/**
+		 * Obtener costo transferencia
+		 * @function
+		 * @param 
+		 * @private
+		 */
+		onChangePorcentajeTransferencia: function (oEvent) {
+			var value = oEvent.getSource().getValue(),
+				oValueItem = oEvent.getSource().getBindingContext().getObject();
+
+			oValueItem.MDEF_PCTRANSFERENCIA =
+				Number(oValueItem.MDEF_PCTRANSFERENCIA) / 100;
+
+			oValueItem.MDEF_COSTOMATERIAL =
+				Number(oValueItem.MDEF_PRECIOPRODUCTIVO) +
+				Number(oValueItem.MDEF_COSTOCONVERSION) +
+				Number(oValueItem.MDEF_COSTOADICIONAL) +
+				Number(oValueItem.MDEF_COSTOENVIO);
+
+			oValueItem.MDEF_COSTOTRANSFERENCIA =
+				(Number(oValueItem.MDEF_COSTOMATERIAL) +
+					Number(oValueItem.MDEF_OTROSCOSTOS)) *
+				Number(oValueItem.MDEF_PCTRANSFERENCIA);
+
+			oValueItem.MDEF_PRECIOPREMISA =
+				Number(oValueItem.MDEF_COSTOMATERIAL) +
+				Number(oValueItem.MDEF_OTROSCOSTOS) +
+				Number(oValueItem.MDEF_COSTOTRANSFERENCIA);
+		},
+
+		/**
+		 * Export file
+		 * @function
+		 * @param 
+		 * @private
+		 */
+		onDataExport: function (oEvent) {
+			var oTable = {};
+			oTable = this.byId("tblMaterial");
+
+			var oExport = new Export({
+
+				// Type that will be used to generate the content. Own ExportType's can be created to support other formats
+				exportType: new ExportTypeCSV({
+					separatorChar: ";"
+				}),
+
+				// Pass in the model created above
+				models: oTable.getModel(),
+
+				// binding information for the rows aggregation
+				rows: {
+					path: "/MATERIAL"
+				},
+
+				// column definitions with column name and binding info for the content
+
+				columns: [{
+					name: "IDMaterial",
+					template: {
+						content: "{MDEF_IDMATERIAL}"
+					}
+				}, {
+					name: "Material",
+					template: {
+						content: "{MDEF_MATERIAL}"
+					}
+				}, {
+					name: "Sociedad",
+					template: {
+						content: "{MDEF_SOCIEDAD}"
+					}
+				}, {
+					name: "Centro",
+					template: {
+						content: "{MDEF_CENTRO}"
+					}
+				}, {
+					name: "Unidad Medida",
+					template: {
+						content: "{MDEF_UMD}"
+					}
+				}, {
+					name: "Moneda",
+					template: {
+						content: "{MDEF_MONEDA}"
+					}
+				}, {
+					name: "Peso Material",
+					template: {
+						content: "{MDEF_PESOMATERIAL}"
+					}
+				}, {
+					name: "Commoditie",
+					template: {
+						content: "{MDEF_COMMODITIE}"
+					}
+				}, {
+					name: "Precio Productivo",
+					template: {
+						content: "{MDEF_PRECIOPRODUCTIVO}"
+					}
+				}, {
+					name: "Costo Conversión",
+					template: {
+						content: "{MDEF_COSTOCONVERSION}"
+					}
+				}, {
+					name: "Costo Adicional",
+					template: {
+						content: "{MDEF_COSTOADICIONAL}"
+					}
+				}, {
+					name: "Costo Envio",
+					template: {
+						content: "{MDEF_COSTOENVIO}"
+					}
+				}, {
+					name: "Icoterm",
+					template: {
+						content: "{MDEF_ICOTERM}"
+					}
+				}, {
+					name: "Costo Material",
+					template: {
+						content: "{MDEF_COSTOMATERIAL}"
+					}
+				}, {
+					name: "FormulaOtrosCostos",
+					template: {
+						content: "{MDEF_FORMULAOTROSCOSTOS}"
+					}
+				}, {
+					name: "Otros Costos",
+					template: {
+						content: "{MDEF_OTROSCOSTOS}"
+					}
+				}, {
+					name: "%Trasnferencia",
+					template: {
+						content: "{MDEF_PCTRANSFERENCIA}"
+					}
+				}, {
+					name: "Costo Transferencia",
+					template: {
+						content: "{MDEF_COSTOTRANSFERENCIA}"
+					}
+				}, {
+					name: "Precio Premisa",
+					template: {
+						content: "{MDEF_PRECIOPREMISA}"
+					}
+				}, {
+					name: "IDCategoria",
+					template: {
+						content: "{MDEF_IDCATEGORIA}"
+					}
+				}, {
+					name: "Categoria",
+					template: {
+						content: "{MDEF_CATEGORIA}"
+					}
+				}, {
+					name: "IDSubcategoria",
+					template: {
+						content: "{MDEF_IDSUBCATEGORIA}"
+					}
+				}, {
+					name: "Subcategoria",
+					template: {
+						content: "{MDEF_SUBCATEGORIA}"
+					}
+				}, {
+					name: "IDFamilia",
+					template: {
+						content: "{MDEF_IDFAMILIA}"
+					}
+				}, {
+					name: "Familia",
+					template: {
+						content: "{MDEF_FAMILIA}"
+					}
+				}, {
+					name: "IDSubfamilia",
+					template: {
+						content: "{MDEF_IDSUFAMILIA}"
+					}
+				}, {
+					name: "Subfamilia",
+					template: {
+						content: "{MDEF_SUBFAMILIA}"
+					}
+				}, {
+					name: "Periodo",
+					template: {
+						content: "{MDEF_PERIODO}"
+					}
+				}, {
+					name: "Mes",
+					template: {
+						content: "{MDEF_MES}"
+					}
+				}]
+			});
+
+			// download exported file
+			oExport.saveFile().catch(function (oError) {
+				MessageBox.error("Error when downloading data. Browser might not be supported!\n\n" + oError);
+			}).then(function () {
+				oExport.destroy();
+			});
+		},
+
+		/**
+		 * Upload data file
+		 * @function
+		 * @param 
+		 * @private
+		 */
+		cargaMasiva: function (JsonValue) {
+
+			var sServiceUrl = this.getView().getModel("ModelSimulador").sServiceUrl,
+				oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true),
+				oEntidad = {},
+				oDetail = {},
+				oCreate = {};
+
+			oEntidad = {
+				Material: '1111',
+				Descrip: 'Save',
+				materialDefatultSet: []
+			};
+
+			for (var i = 0; i < JsonValue.length; i++) {
+
+				var oTempRow = JsonValue[i];
+
+				if (oTempRow.Commoditie === undefined) {
+					continue;
+				}
+
+				oDetail = {
+					// Txtmd: oTempRow.Material,
+					Material: oTempRow.IDMaterial,
+					CompCode: oTempRow.Sociedad,
+					Plant: oTempRow.Centro,
+					BaseUom: oTempRow.Unidad_Medida,
+					Currency: oTempRow.Moneda,
+					// Txtsubfam: oTempRow.Subfamilia,
+					// Txtfam: oTempRow.Familia,
+					// Txtsubcat: oTempRow.Subcategoria,
+					// Txtcat: oTempRow.Categoria,
+					// Recordmode: oTempRow.MDEF_IDMATERIAL,
+					catgoria: oTempRow.IDCategoria,
+					subcateg: oTempRow.IDSubcategoria,
+					yfamilia: oTempRow.IDFamilia,
+					ysubfamil: oTempRow.IDSubfamilia,
+					Fiscyear: oTempRow.Periodo,
+					// Fiscvarnt: oTempRow.MDEF_IDMATERIAL,
+					Fiscper3: oTempRow.Mes,
+					NetWeight: oTempRow.Peso_Material,
+					// UnitOfWt: oTempRow.MDEF_IDMATERIAL,
+					commodit: oTempRow.Commoditie.toString(),
+					Incoterms: oTempRow.Icoterm.toString(),
+					fotrcost: oTempRow.FormulaOtrosCostos.toString(),
+					// Version: oTempRow.MDEF_IDMATERIAL,
+					// estado: oTempRow.MDEF_IDMATERIAL,
+					// Date0: oTempRow.MDEF_IDMATERIAL,
+					// usuario: oTempRow.MDEF_IDMATERIAL,
+					preprodc: oTempRow.Precio_Productivo.toString(),
+					costconv: oTempRow.Costo_Conversión.toString(),
+					costadic: oTempRow.Costo_Adicional.toString(),
+					costenv: oTempRow.Costo_Envio.toString(),
+					costmat: oTempRow.Costo_Material.toString(),
+					otrocost: oTempRow.Otros_Costos.toString(),
+					ptransf: oTempRow.PTrasnferencia.toString(),
+					costrans: oTempRow.Costo_Transferencia.toString(),
+					ppremisa: oTempRow.Precio_Premisa.toString()
+
+				};
+
+				oEntidad.materialDefatultSet.push(oDetail);
+			}
+
+			oCreate = this.fnCreateEntity(oModelService, "/materialsaveSet", oEntidad);
+
+			that = this;
+			if (oCreate.tipo === 'S') {
+
+				MessageBox.show(
+					'Datos importados correctamente', {
+						icon: MessageBox.Icon.SUCCESS,
+						title: "Exito",
+						actions: [MessageBox.Action.OK],
+						onClose: function (oAction) {
+							if (oAction === sap.m.MessageBox.Action.OK) {
+								// that.fnConsultaDetalleCommodities(); 
+								return;
+							}
+						}
+					}
+				);
+
+			} else if (oCreate.tipo === 'E') {
+
+				MessageBox.show(
+					oCreate.msjs, {
+						icon: MessageBox.Icon.ERROR,
+						title: "Error"
+							// actions: [MessageBox.Action.YES, MessageBox.Action.NO],
+							// onClose: function (oAction) {
+							// 	/ * do something * /
+							// }
+					}
+				);
+
+			}
+
+		},
+
+		/**
+		 * Load model data in Commoditie Detail
+		 * @function
+		 * @param 
+		 * @private
+		 */
+		loadModelCommoditieDetail: function (event) {
+			var sServiceUrl = "",
+				oModelService = "",
+				aListData = [];
+
+			sServiceUrl = this.getOwnerComponent().getModel("ModelSimulador").sServiceUrl;
+			oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true);
+
+			//Leer datos del ERP
+			var oRead = this.fnReadEntity(oModelService, "/detailCommoditiesSet", null);
+
+			if (oRead.tipo === "S") {
+				aListData = oRead.datos.results;
+			} else {
+				MessageBox.error(oRead.msjs, null, "Mensaje del sistema", "OK", null);
+				return;
+			}
+
+			this.detailCommodite = aListData;
+		},
+
+		/**
+		 * Ejecutar formula commodite
+		 * @function
+		 * @param 
+		 * @private
+		 */
+		executeFormula: function (pMaterial, pCommodite) {
+			var vFormula = "",
+				vPatron = "";
+
+			vFormula = pCommodite.TxtFormula;
+
+			//Reemplazar precio
+			vPatron = '/Precio/gi';
+			vFormula = vFormula.replace(eval(vPatron), pCommodite.PrecioMaterial);
+
+			//Reemplazar otros costos
+			vPatron = '/OtrosCostos/gi';
+			vFormula = vFormula.replace(eval(vPatron), pCommodite.OtrosCostos);
+
+			//Reemplazar peso material 
+			vPatron = '/PesoMaterial/gi';
+			vFormula = vFormula.replace(eval(vPatron), pMaterial.MDEF_PESOMATERIAL);
+
+			MessageBox.show(
+				'Formula aplicada\n' + pCommodite.TxtFormula + '\n\n' + vFormula, {
+					icon: MessageBox.Icon.SUCCESS,
+					title: "Exito",
+					actions: [MessageBox.Action.OK],
+					onClose: function (oAction) {
+						// if (oAction === sap.m.MessageBox.Action.OK) {
+							
+						// }
+					}
+				}
+			);
+			
+			return eval(vFormula);
 
 		}
 

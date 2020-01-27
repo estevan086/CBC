@@ -1,7 +1,6 @@
 <mvc:View controllerName="cbc.co.simulador_costos.controller.DataDefault.Commodities.GridAdminCommodities"
 	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:mvc="sap.ui.core.mvc" displayBlock="true" xmlns="sap.ui.table" xmlns:m="sap.m"
-	xmlns:u="sap.ui.unified" xmlns:c="sap.ui.core" xmlns:f="sap.ui.layout.form" xmlns:tnt="sap.tnt" height="100%"
-	busyIndicatorDelay="0">
+	xmlns:u="sap.ui.unified" xmlns:c="sap.ui.core" xmlns:f="sap.ui.layout.form" xmlns:tnt="sap.tnt" height="100%" busyIndicatorDelay="0">
 	<!--<m:Toolbar class="sapNocolor">-->
 	<!--<m:Title text="Datos Default - Commodities" level="H2"/>-->
 	<!--	<m:ToolbarSpacer/>-->
@@ -22,7 +21,7 @@
 				</m:items>
 			</m:FlexBox>
 			<Table id="tblCommodities" rows="{/lstItemsCommodities}" selectionMode="Single" visibleRowCount="7" rowActionCount="1"
-				 class="sapUiSizeCompact" enableColumnFreeze="true">
+				class="sapUiSizeCompact" enableColumnFreeze="true">
 				<extension>
 					<m:OverflowToolbar>
 						<m:content>
@@ -35,10 +34,10 @@
 							<m:Button icon="sap-icon://factory" type="Emphasized" text="Administrar Commodities" tooltip="Crear Commodities"
 								press="onGoToIdCommoditieTable"/>
 							<!--	<m:Button-->
-					  <!--            type="Emphasized"-->
-					  <!--            text="Auto Resize Columns"-->
-					  <!--            press=".onAutoResizeColumnsBtnPress"-->
-					  <!--          />-->
+							<!--            type="Emphasized"-->
+							<!--            text="Auto Resize Columns"-->
+							<!--            press=".onAutoResizeColumnsBtnPress"-->
+							<!--          />-->
 							<!--<m:Button icon="sap-icon://edit" type="Emphasized" text="Editar Version Default" tooltip="Version Default" press="showFormEditCommoditie"/>-->
 						</m:content>
 					</m:OverflowToolbar>
@@ -50,126 +49,94 @@
 							<m:Text text="{IdCommoditie}" wrapping="false"/>
 						</template>
 					</Column>
-					<Column width="11rem" filterProperty="Descripcion" > 
+					<Column width="11rem" filterProperty="Descripcion">
 						<m:Label text="Descripcion"/>
 						<template>
 							<m:Text text="{Descripcion}" wrapping="false"/>
 						</template>
 					</Column>
-					<Column width="6rem" filterProperty="Sociedad">
+					<Column width="7rem" filterProperty="Sociedad">
 						<m:Label text="Sociedad"/>
 						<template>
 							<!--<m:TextField text="{CDEF_SOCIEDAD}" editable="false"/>-->
 							<!--<m:Input value="{Sociedad}" editable="false" />-->
-							<m:ComboBox
-								id="idComboBoxSociedad"
-								showSecondaryValues= "true"
-								filterSecondaryValues= "true"
-								value="{/comboBoxValueSociedad}"
-								selectedKey="{/comboBoxKeySociedad}"
-								items="{
-									path: '/Sociedades',
-									sorter: { path: 'text' }
-								}">
-								<c:ListItem key="{key}" text="{text}" additionalText="{key}"/>
+							<m:ComboBox id="idComboBoxSociedad" selectionChange="onChangeSociedad" showSecondaryValues="true" filterSecondaryValues="true"
+								value="{Sociedad}" selectedKey="{Sociedad}" editable="{editable}" items="{ path: '/LstSociedades', templateShareable:true}">
+								<c:ListItem key="{CompCode}" text="{CompCode}-{CompDesc}" additionalText="{Plant}-{PlantDesc}-{Currency}"/>
 							</m:ComboBox>
 							<!--<m:Text text="{CDEF_SOCIEDAD}" editable="false" visible="false"/>-->
 						</template>
 					</Column>
-					<Column width="5rem" filterProperty="Centro">
+					<Column width="6rem" filterProperty="Centro">
 						<m:Label text="Centro"/>
 						<template>
-							<!--<m:TextField text="{CDEF_SOCIEDAD}" editable="false"/>-->
+							<m:Text text="{Centro}" wrapping="false"/>
+						
 							<!--<m:Input value="{Centro}" editable="false" />-->
-							<m:ComboBox
-								id="idComboBoxCentros"
-								showSecondaryValues= "true"
-								filterSecondaryValues= "true"
-								value="{/comboBoxValueCentro}"
-								selectedKey="{/comboBoxKeyCentro}"
-								items="{
-									path: '/Centros',
-									sorter: { path: 'text' }
-								}">
-								<c:ListItem key="{key}" text="{text}" additionalText="{key}"/>
-							</m:ComboBox>
+							<!--<m:ComboBox id="idComboBoxCentros" showSecondaryValues="true" filterSecondaryValues="true" value="{Centro}"-->
+							<!--	selectedKey="{Centro}" editable="{editable}" items="{ path: '/Centros', sorter: { path: 'text' } }">-->
+							<!--	<c:ListItem key="{key}" text="{text}" additionalText="{key}"/>-->
+							<!--</m:ComboBox>-->
 							<!--<m:Text text="{CDEF_SOCIEDAD}" editable="false" visible="false"/>-->
 						</template>
 					</Column>
-					<Column width="5rem" filterProperty="Moneda" >
+					<Column width="6rem" filterProperty="Moneda">
 						<m:Label text="Moneda"/>
 						<template>
+							<m:Text text="{Moneda}" wrapping="false"/>
 							<!--<m:Input value="{Moneda}" editable="false"/>-->
-							<m:ComboBox
-								id="idComboBoxMoneda"
-								showSecondaryValues= "true"
-								filterSecondaryValues= "true"
-								value="{/comboBoxValueMoneda}"
-								selectedKey="{/comboBoxKeyMoneda}"
-								items="{
-									path: '/Monedas',
-									sorter: { path: 'text' }
-								}">
-								<c:ListItem key="{key}" text="{text}" additionalText="{key}"/>
-							</m:ComboBox>
+							<!--<m:ComboBox id="idComboBoxMoneda" selectionChange="onChangeMoneda" showSecondaryValues="true" filterSecondaryValues="true"-->
+							<!--	value="{Moneda}" selectedKey="{Moneda}" editable="{editable}"-->
+							<!--	items="{ path: '/LstMonedas', sorter: { path: 'Ktext' } }">-->
+							<!--	<c:ListItem key="{Waers}" text="{Waers}" additionalText="{Ktext}"/>-->
+							<!--</m:ComboBox>-->
 						</template>
 					</Column>
-					<Column width="5rem" >
+					<Column width="6rem">
 						<m:Label text="Unidad Medida"/>
 						<template>
-							<!--<m:Input value="{UnidadMedida}" editable="false"/>-->
-							<m:ComboBox
-								id="idComboBoxUnidadesMedida"
-								selectionChange="onChange"
-								showSecondaryValues= "true"
-								filterSecondaryValues= "true"
-								value="{UnidadMedida}"
-								selectedKey="{UnidadMedida}"
-								items="{
-									path: '/LstUnidadesMedida',
-									sorter: { path: 'Msehl' }
-								}"
-								>
-								<c:ListItem key="{Msehl}" text="{Msehi}" additionalText="{Msehl}"/>
+							<m:ComboBox id="idComboBoxUnidadesMedida" selectionChange="onChangeUM" showSecondaryValues="true" filterSecondaryValues="true"
+								value="{UnidadMedida}" selectedKey="{UnidadMedida}" editable="{editable}" items="{ path: '/LstUnidadesMedida', sorter: { path: 'Msehl' }, templateShareable:true }">
+								<c:ListItem key="{Msehi}" text="{Msehi}" additionalText="{Msehl}"/>
 							</m:ComboBox>
 						</template>
 					</Column>
-					<Column width="7rem" >
+					<Column width="7rem">
 						<m:Label text="Precio"/>
 						<template>
-							<m:Input value="{PrecioMaterial}" editable="false"/>
+							<m:Input value="{PrecioMaterial}" editable="{editable}"/>
 						</template>
 					</Column>
-					<Column width="7rem" >
+					<Column width="7rem">
 						<m:Label text="Otros Costos"/>
 						<template>
-							<m:Input value="{OtrosCostos}" editable="false"/>
+							<m:Input value="{OtrosCostos}" editable="{editable}"/>
 						</template>
 					</Column>
-					<Column width="10rem" >
+					<Column width="10rem">
 						<m:Label text="Formula"/>
 						<template>
-							<m:Text text="{Formula}" wrapping="false"/>
+							<m:Input value="{TxtFormula}" editable="{editable}"/>
 						</template>
 					</Column>
-					<Column width="3rem"  hAlign="Center">
+					<Column width="4rem" hAlign="Center">
 						<template>
 							<m:Button icon="sap-icon://puzzle" press="showCalculator"/>
 						</template>
 					</Column>
-					<Column width="4rem" >
+					<Column width="4rem">
 						<m:Label text="Periodo"/>
 						<template>
 							<m:Text text="{Year}" wrapping="false"/>
 						</template>
 					</Column>
-					<Column width="3rem" >
+					<Column width="3rem">
 						<m:Label text="Mes"/>
 						<template>
 							<m:Text text="{Mes}" wrapping="false"/>
 						</template>
 					</Column>
-					<Column  visible="false">
+					<Column visible="false">
 						<m:Label text="CDEF_EDIT_FLAG"/>
 						<template>
 							<m:Text text="{CDEF_EDIT_FLAG}" wrapping="false"/>
@@ -183,9 +150,9 @@
 						</items>
 					</RowAction>
 				</rowActionTemplate>
-				<!--<rowSettingsTemplate>-->
-				<!--	<RowSettings highlight="None"/>-->
-				<!--</rowSettingsTemplate>-->
+				<rowSettingsTemplate>
+					<RowSettings highlight="{highlight}"/>
+				</rowSettingsTemplate>
 			</Table>
 		</m:content>
 		<m:footer>

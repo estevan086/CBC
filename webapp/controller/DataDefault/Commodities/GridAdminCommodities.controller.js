@@ -1,3 +1,10 @@
+/*global history */
+
+//Almacena las promesas lanzadas
+var vPromiseUM = {
+	UM: ""
+};
+
 jQuery.sap.require("cbc.co.simulador_costos.Formatter");
 sap.ui.define([
 	"cbc/co/simulador_costos/controller/BaseController",
@@ -15,10 +22,11 @@ sap.ui.define([
 	"sap/m/ButtonType",
 	'sap/m/MessageBox',
 	"sap/ui/table/RowSettings",
-	"sap/ui/core/library"
+	"sap/ui/core/library",
+	"sap/ui/core/EventBus"
 
 ], function (Controller, JSONModel, MessageToast, Fragment, DateFormat, library, Filter, FilterOperator, Button, Dialog, List,
-	StandardListItem, ButtonType, MessageBox, RowSettings, CoreLibrary) {
+	StandardListItem, ButtonType, MessageBox, RowSettings, CoreLibrary, EventBus) {
 	"use strict";
 
 	var updatedRecords = [];
@@ -30,7 +38,11 @@ sap.ui.define([
 		
 		onInit: function () {
 
-			// set explored app's demo model on this sample
+			// var oModelV = new JSONModel({
+			// 	busy: true,
+			// 	Bezei: ""
+			// });
+			// this.setModel(oModelV, "modelView");
 
 			var oUploader = this.getView().byId("fileUploader");
 			oUploader.oBrowse.setText("Importar");
@@ -50,23 +62,12 @@ sap.ui.define([
 			
 			var oTable = this.getView().byId('tblCommodities');
 			
-			// for (var i = 0; i < table.getColumns().length; i++) {
-			// 	table.autoResizeColumn(i);
-			// }
-			
-		//	oTable.getColumns().map((col, index) => oTable.autoResizeColumn(index));
-			
 			this.fnConsultaDetalleCommodities(); 
 		},
 		
 
 		fnConsultaDetalleCommodities:  function (event) {
-			// your code when the view is about to be displayed ..
-
-			//	var json = this.initSampleDataModel();
-			//	this.getView().setModel(json);
 			
-		//	var oPanel = this.getView().getParent().getParent();
 			var oPanel = this.getView();
 			oPanel.setBusy(true);
 
@@ -104,31 +105,23 @@ sap.ui.define([
 			}
 
 			oDataDetalleCommodities.lstItemsCommodities = this.oDataDetalleCommodities;
+			$.each(oDataDetalleCommodities.lstItemsCommodities, function (i, o) {
+				this.editable = false;
+				this.highlight = "None";
+			});
+			
 			var oTablaDetalleCommodities = this.byId("tblCommodities");
 			var oModel2 = new sap.ui.model.json.JSONModel(oDataDetalleCommodities);
 			oTablaDetalleCommodities.setModel(oModel2);
 			
-			this.onGetUnidadesMedida();
+			//Obtiene Sociedades
+			this.GetSociedades();
 			
+			//Obtiene Monedas
+		//	this.GetMonedas();
 			
-			for (var i = 0; i < oTablaDetalleCommodities.getModel().getData().lstItemsCommodities.length; i++) {
-
-				if (oTablaDetalleCommodities.getRows()[i] !== undefined) {
-					//Sociedad
-					oTablaDetalleCommodities.getRows()[i].getCells()[2].setProperty("editable", false);
-					//Moneda
-					oTablaDetalleCommodities.getRows()[i].getCells()[3].setProperty("editable", false);
-					//Unidad de Medida
-					oTablaDetalleCommodities.getRows()[i].getCells()[4].setProperty("editable", false);
-					//Precio
-					oTablaDetalleCommodities.getRows()[i].getCells()[5].setProperty("editable", false);
-					//Otros Costos
-					oTablaDetalleCommodities.getRows()[i].getCells()[6].setProperty("editable", false);
-				} else {
-					break;
-				}
-			}
-			
+			//Obtiene Unidades de Medida
+			this.GetUnidadesMedida();
 			
 			oPanel.setBusy(false);
 			
@@ -139,7 +132,70 @@ sap.ui.define([
 			
 		},
 		
-		onGetUnidadesMedida: function() {
+		GetSociedades: function() {
+			
+			//Url Servicio
+			var oModel = this.getOwnerComponent().getModel("ModelSimulador");
+			var sServiceUrl = oModel.sServiceUrl;
+
+			//Definir modelo del servicio web
+			var oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true);
+			//Definir filtro
+
+			//Leer datos del ERP
+			var oRead = this.fnReadEntity(oModelService, "/centroSet", null);
+
+			if (oRead.tipo === "S") {
+				this.oDataSociedades = oRead.datos.results;
+			//	var obj = this.oDataUnidadesMedida;
+			
+				this.oDataSociedades = this.oDataSociedades.filter( function(item) {
+				    return !(item.CompCode === "");
+				});
+
+				$.each(this.oDataSociedades, function (i, o) {
+					this.editable = false;
+					this.highlight = "None";
+				});
+
+			} else {
+				MessageBox.error(oRead.msjs, null, "Mensaje del sistema", "OK", null);
+			}
+
+			var oTableCommodities = this.byId("tblCommodities");
+			oTableCommodities.getModel().setProperty("/LstSociedades", this.oDataSociedades);
+			oTableCommodities.getModel().refresh(); 
+			
+		},	
+		
+		GetMonedas: function() {
+			
+			//Url Servicio
+			var oModel = this.getOwnerComponent().getModel("ModelSimulador");
+			var sServiceUrl = oModel.sServiceUrl;
+
+			//Definir modelo del servicio web
+			var oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true);
+			//Definir filtro
+
+			//Leer datos del ERP
+			var oRead = this.fnReadEntity(oModelService, "/monedasSet", null);
+
+			if (oRead.tipo === "S") {
+				this.oDataMonedas = oRead.datos.results;
+			//	var obj = this.oDataUnidadesMedida;
+
+			} else {
+				MessageBox.error(oRead.msjs, null, "Mensaje del sistema", "OK", null);
+			}
+
+			var oTableCommodities = this.byId("tblCommodities");
+			oTableCommodities.getModel().setProperty("/LstMonedas", this.oDataMonedas);
+			oTableCommodities.getModel().refresh(); 
+		
+		},	
+		
+		GetUnidadesMedida: function() {
 			
 			//Url Servicio
 			var oModel = this.getOwnerComponent().getModel("ModelSimulador");
@@ -160,28 +216,58 @@ sap.ui.define([
 				MessageBox.error(oRead.msjs, null, "Mensaje del sistema", "OK", null);
 			}
 
-			var oDataUnidadesMedida = "";
-			//SI el modelo NO existe, se crea.
-			if (!oDataUnidadesMedida) {
-				oDataUnidadesMedida = {
-					lstItemsUnidadesMedida: []
-				};
-			}
-
-		//	oDataUnidadesMedida.lstItemsUnidadesMedida = this.oDataUnidadesMedida;
 			var oTableCommodities = this.byId("tblCommodities");
 			oTableCommodities.getModel().setProperty("/LstUnidadesMedida", this.oDataUnidadesMedida);
-			
-		//	var oComboBoxUM = this.getView().byId("idComboBoxUnidadesMedida");
-		//	oComboBoxUM.setModel().("/comboBoxValueUM", );
-		
-		//	oComboBoxUM.setModel().setProperty("/comboBoxKeyUM", "");
 			oTableCommodities.getModel().refresh(); 
 			
 		},	
 		
+		/**
+		 * Obtener procesos
+		 * @public
+		 */
+		fnObtenerUnidadesMedidaAsyn: function() {
+				//Url Servicio
+			var oModel = this.getOwnerComponent().getModel("ModelSimulador");
+			var sServiceUrl = oModel.sServiceUrl;
+				//Definir modelo del servicio web
+			var	oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true);
+
+			if (!vPromiseUM.UM) {
+				vPromiseUM.UM = this.fnReadEntityAsyn(oModelService, "/unidadesMedidaSet", null, true);
+			}
+		},
 		
-		onChange: function(oEvent){
+		onChangeSociedad: function(oEvent){
+			
+			var oItem = oEvent.getParameter("selectedItem");
+			var oTableCommodities = this.byId("tblCommodities");
+			var oItemObject = oItem.getBindingContext().getObject();
+			 
+			var oTableItem = oEvent.getSource().getParent();
+			var oTableItemObject = oTableItem.getBindingContext().getObject();
+			oTableItemObject.Sociedad = oItemObject.Compcode;
+			oTableItemObject.Centro   = oItemObject.Plant;
+			//oTableItemObject.Moneda   = 'COP';
+			oTableItemObject.Moneda   = oItemObject.Currency;
+			oTableCommodities.getModel().refresh();
+			
+		},
+		
+		onChangeMoneda: function(oEvent){
+			
+			var oItem = oEvent.getParameter("selectedItem");
+			var oTableCommodities = this.byId("tblCommodities");
+			var oItemObject = oItem.getBindingContext().getObject();
+			var oMonedaSeleccionada= oItemObject.Msehi;
+			var oTableItem = oEvent.getSource().getParent();
+			var oTableItemObject = oTableItem.getBindingContext().getObject();
+			oTableItemObject.Moneda = oMonedaSeleccionada;
+			oTableCommodities.getModel().refresh();
+			
+		},
+		
+		onChangeUM: function(oEvent){
 			
 			var oItem = oEvent.getParameter("selectedItem");
 			var oTableCommodities = this.byId("tblCommodities");
@@ -227,63 +313,20 @@ sap.ui.define([
 
 			var oTable = this.byId("tblCommodities");
 			var oRowData = oEvent.getSource().getBindingContext().getProperty();
-
-			var oRowEdited = oRow;
-
-			//this.byId("tblCommodities").getRows()[3].getCells()[3].mProperties.editable = "true";
-
+			
 			for (var i = 0; i < oTable.getModel().getData().lstItemsCommodities.length; i++) {
-
-				if (oTable.getRows()[i] !== undefined) {
-					oTable.getRows()[i].getBindingContext().getProperty().CDEF_EDIT_FLAG = "None";
-					oTable.getRows()[i].getBindingContext().getProperty().CDEF_NAV_FLAG = false;
-
-					//Sociedad
-					oTable.getRows()[i].getCells()[2].setProperty("editable", false);
-					//Moneda
-					oTable.getRows()[i].getCells()[3].setProperty("editable", false);
-					//Unidad de Medida
-					oTable.getRows()[i].getCells()[4].setProperty("editable", false);
-					//Precio
-					oTable.getRows()[i].getCells()[5].setProperty("editable", false);
-					//Otros Costos
-					oTable.getRows()[i].getCells()[6].setProperty("editable", false);
-				} else {
-					break;
-				}
+				var oObj = oTable.getModel().getData().lstItemsCommodities[i];
+				oObj.editable = false;
+				oObj.highlight = "None";
 			}
-
-			//Sociedad
-			oRowEdited.getCells()[2].setProperty("editable", true);
-			//Moneda
-			oRowEdited.getCells()[3].setProperty("editable", true);
-			//Unidad de Medida
-			oRowEdited.getCells()[4].setProperty("editable", true);
-			//Precio
-			oRowEdited.getCells()[5].setProperty("editable", true);
-			//Otros Costos
-			oRowEdited.getCells()[6].setProperty("editable", true);
-
-			oRowData.CDEF_EDIT_FLAG = "Information";
-
-			oRowData.CDEF_NAV_FLAG = true;
-
-			oTable.setRowSettingsTemplate(new RowSettings({
-				highlight: "{CDEF_EDIT_FLAG}",
-				navigated: "{CDEF_NAV_FLAG}"
-			}));
-
-			sap.ui.getCore().applyChanges();
-
+			oTable.getModel().setProperty(oEvent.getSource().getBindingContext().getPath() + "/editable", true);
+			oTable.getModel().setProperty(oEvent.getSource().getBindingContext().getPath() + "/highlight", "Information");
+			oTable.getModel().setProperty(oEvent.getSource().getBindingContext().getPath() + "/navigated", true);
+ 
 			var oEntidad = {};
-			oEntidad.RowPath = oEvent.getSource().getBindingContext().sPath.split('/')[2];;
-			// oEntidad.IdCommoditie = oRowData.IdCommoditie;
-			// oEntidad.Sociedad = oRowData.Sociedad;
-			// oEntidad.Centro = oRowData.Centro;
-			// oEntidad.UnidadMedida = oRowData.UnidadMedida;
-			// oEntidad.Moneda = oRowData.Moneda;
-			// oEntidad.Mes = oRowData.Mes;
-			// oEntidad.Year = oRowData.Year;
+			var oPath = oEvent.getSource().getBindingContext().sPath;
+			
+			oEntidad.RowPath = oPath.split("/")[2];
 
 			updatedRecords.push(oEntidad);
 
@@ -316,7 +359,8 @@ sap.ui.define([
 				var oTempRow = oTable.getModel().getData().lstItemsCommodities[CurrentRow.RowPath];
 
 				oDetail = {
-					Formula: oTempRow.Formula,
+					IdFormula: oTempRow.IdFormula,
+					TxtFormula: oTempRow.TxtFormula,
 					IdCommoditie: oTempRow.IdCommoditie,
 					Sociedad: oTempRow.Sociedad,
 					Centro: oTempRow.Centro,
@@ -645,9 +689,33 @@ sap.ui.define([
 			var oRowData = oEvent.getSource().getBindingContext().getProperty();
 			var oItem = oEvent.getSource();
 			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+			
+			
+			var oData = {
+			 	 oIdCommoditie: oRowData.IdCommoditie,
+				 oIdFormula: oRowData.IdFormula,
+				 oTxtFormula: oRowData.TxtFormula
+			};
 
+			
+			//Navigation to the Detail Form
+			//app.to(page,"rtChFromuladora");
+			var bus = sap.ui.getCore().getEventBus();
+			//const bus = this.getOwnerComponent().getEventBus();
+			// 1. ChannelName, 2. EventName, 3. the data
+			bus.publish("GridAdminFormuladoraChannel", "onNavigateEvent", oData );
+			
+		//	oRowData.TxtFormula = oRowData.TxtFormula.replace('/', '\\/');
+			oRowData.TxtFormula = encodeURIComponent(oRowData.TxtFormula);
+			
+			oRowData.TxtFormula = (oRowData.TxtFormula === "") ? "0" :oRowData.TxtFormula;
+			
 			oRouter.navTo("rtChFromuladora", {
-				oRowPath: oRowData.IdCommoditie
+				oRowPath: oRowData.IdCommoditie,
+		     	oIdFormula: oRowData.IdFormula,
+	    		oTxt: oRowData.TxtFormula,
+	    		oYear: oRowData.Year,
+	    		oMes: oRowData.Mes
 			});
 
 		},

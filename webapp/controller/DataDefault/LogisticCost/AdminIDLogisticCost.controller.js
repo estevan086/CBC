@@ -1,8 +1,9 @@
 sap.ui.define([
 	"cbc/co/simulador_costos/controller/BaseController",
 	"sap/ui/model/Filter",
-	"sap/m/MessageToast"
-], function (BaseController, Filter, MessageToast) {
+	"sap/m/MessageToast",
+	"sap/ui/model/json/JSONModel"
+], function (BaseController, Filter, MessageToast, JSONModel) {
 	"use strict";
 
 	return BaseController.extend("cbc.co.simulador_costos.controller.DataDefault.LogisticCost.AdminIDLogisticCost", {
@@ -14,21 +15,41 @@ sap.ui.define([
 		 */
 		onInit: function () {
 
+			this.setModel(new JSONModel({
+				busy: true,
+				Bezei: ""
+			}), "modelView");
+
 			var myRoute = this.getOwnerComponent().getRouter().getRoute("rtChAdminCL");
 			myRoute.attachPatternMatched(this.onMyRoutePatternMatched, this);
 		},
 		onMyRoutePatternMatched: function (event) {
-		
+
 			this.getLogisticCostData();
 
 		},
 		getLogisticCostData: function () {
 			var oModel = this.getView().getModel("ModelSimulador");
+
+			this.getModel("modelView").setProperty("/busy", true);
+
 			oModel.read("/codigocostologisticoSet", {
 				success: function (oData, response) {
-					var data = new sap.ui.model.json.JSONModel();
-					data.setProperty("/CodLogisticCost", oData.results);
+					var data = new sap.ui.model.json.JSONModel(),
+						oTable = this.getView().byId("tblLogisticcCost"),
+						dataRet = [];
+
+					this.getModel("modelView").setProperty("/busy", false);
+
+					oData.results.forEach(function (oValue) {
+						oValue.enabled = false;
+						dataRet.push(oValue);
+					});
+
+					data.setProperty("/CodLogisticCost", dataRet);
 					this.getOwnerComponent().setModel(data, "LogisticCost");
+					oTable.setModel(this.getModel("LogisticCost"));
+
 				}.bind(this),
 				error: function (oError) {
 					this.showGeneralError({
@@ -39,12 +60,62 @@ sap.ui.define([
 			});
 		},
 		showFormAddLC: function (oEvent) {
+			this.getModel("LogisticCost").getProperty("/").CatCosLo = "";
+			this.getModel("LogisticCost").getProperty("/").CostLog = "";
+			this.getModel("LogisticCost").getProperty("/").TxtMd = "";
+
 			this.fnOpenDialog("cbc.co.simulador_costos.view.Utilities.fragments.AdminLogisticCost.AddLogisticCost");
 		},
-		onAddLC: function (oEvent) {
+		onUpdateLogisticCost: function (oEvent) {
+			var oModel = this.getModel("LogisticCost"),
+				oCodLogisticCost = oModel.getProperty("/CodLogisticCost"),
+				oValue = oCodLogisticCost.find(x => x.enabled === true);
+			//esperar por la ultima peticion al servidor
+			if (oValue !== undefined) {
+				oCodLogisticCost.find(x => x.enabled === true).enabled = false;
+				this.updateLogisticCost({
+					CostLog: oValue.CostLog,
+					CatCosLo: oValue.CatCosLo,
+					TxtMd: oValue.TxtMd
+				}, oCodLogisticCost.find(x => x.enabled === true) !== undefined ? true : false);
+			}
+
+		},
+		updateLogisticCost: function (oDataLc, pLast = false) {
+			var oModel = this.getView().getModel("ModelSimulador");
+
+			this.getModel("modelView").setProperty("/busy", true);
+
+			//Crea el CL
+			oModel.create("/codigocostologisticoSet", {
+				CostLog: oDataLc.CostLog,
+				CatCosLo: oDataLc.CatCosLo,
+				TxtMd: oDataLc.TxtMd
+			}, {
+				success: function (oData, oResponse) {
+					if (pLast === false) {
+						MessageToast.show(this.getView().getModel("i18n").getResourceBundle().getText("NotificacionModificacionOk"));
+						this.getLogisticCostData();
+					}else{
+						this.onUpdateLogisticCost();
+					}
+				}.bind(this),
+				error: function (oError) {
+					this.getModel("modelView").setProperty("/busy", false);
+					if (pLast === false) {
+						this.showGeneralError({
+							oDataError: oError
+						});
+					}
+				}.bind(this)
+			});
+		},
+		onSaveLogisticCost: function (oEvent) {
 			var oModel = this.getView().getModel("ModelSimulador"),
 				oModelLocal = this.getView().getModel("LogisticCost"),
 				data = oModelLocal.getProperty("/");
+
+			this.getModel("modelView").setProperty("/busy", true);
 
 			//Crea el CL
 			oModel.create("/codigocostologisticoSet", {
@@ -62,17 +133,29 @@ sap.ui.define([
 					this.getModel("modelView").setProperty("/busy", false);
 				}.bind(this)
 			});
-			
+
 			this.fnCloseFragment(oEvent);
 		},
-		onDeleteLC: function(oEvent){
+		onDeleteLC: function (oEvent) {
 			var oModel = this.getView().getModel("ModelSimulador"),
 				oRow = oEvent.getParameter("row");
-			
-			oModel.remove("/codigocostologisticoSet('"+oRow.getCells()[0].getText()+"')", {
+
+			this.getModel("modelView").setProperty("/busy", true);
+
+			oModel.remove("/codigocostologisticoSet('" + oRow.getCells()[0].getText() + "')", {
 				success: function (oData, oResponse) {
-					//MessageToast.show(oData.Vbeln);
-					this.getLogisticCostData();
+					if (oData === undefined) {
+						this.getModel("modelView").setProperty("/busy", false);
+						var oMessage = JSON.parse(oResponse.headers["sap-message"]);
+
+						this.showGeneralError({
+							message: oMessage.message,
+							title: this.getResourceBundle().getText("ErrorBorrado")
+						});
+
+					} else {
+						this.getLogisticCostData();
+					}
 				}.bind(this),
 				error: function (oError) {
 					this.showGeneralError({
@@ -82,8 +165,13 @@ sap.ui.define([
 				}.bind(this)
 			});
 		},
-		onEditLC: function(){
-			
+		onEditLC: function (oEvent) {
+			var index = oEvent.getSource().getParent().getIndex(),
+				oTable = this.getView().byId("tblLogisticcCost"),
+				oCodLogisticCost = this.getModel("LogisticCost").getProperty("/CodLogisticCost");
+
+			oCodLogisticCost[index].enabled = true;
+			oTable.getModel().refresh();
 		}
 	});
 

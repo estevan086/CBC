@@ -1,10 +1,5 @@
-<mvc:View xmlns:html="http://www.w3.org/1999/xhtml" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.ui.table" xmlns:m="sap.m"
-	xmlns:u="sap.ui.unified" xmlns:c="sap.ui.core" controllerName="cbc.co.simulador_costos.controller.DataDefault.LogisticCost.GridLogisticCost"
-	displayBlock="true" height="100%">
-	<m:ObjectHeader binding="{/ProductCollection/0}" title="{i18n>CostosLogisticos}" condensed="true"
-		number="{ parts:[{path:'Price'},{path:'CurrencyCode'}], type: 'sap.ui.model.type.Currency', formatOptions: {showMeasure: false} }"
-		numberUnit="{CurrencyCode}"/>
-	<m:Page showHeader="false" enableScrolling="false" class="sapUiContentPadding" busy="{modelView>/busy}" >
+<mvc:View xmlns:html="http://www.w3.org/1999/xhtml" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.ui.table" xmlns:m="sap.m" xmlns:u="sap.ui.unified" xmlns:c="sap.ui.core" controllerName="cbc.co.simulador_costos.controller.DataDefault.LogisticCost.GridLogisticCost" displayBlock="true" height="100%">
+	<m:Page showHeader="true" title="{i18n>CostosLogisticos}" enableScrolling="false" class="sapUiContentPadding" busy="{modelView>/busy}">
 		<m:content>
 			<m:FlexBox height="auto" alignItems="Start" justifyContent="Start">
 				<m:items>
@@ -12,19 +7,26 @@
 					<m:Button icon="sap-icon://upload-to-cloud" text="{i18n>Publicar}" tooltip="{i18n>Publicar}" press="PublicVersionCommodities"/>
 				</m:items>
 			</m:FlexBox>
-			<Table id="tblLogicCost" selectionMode="None" visibleRowCount="10" class="sapUiSizeCondensed" enableColumnFreeze="true">
+			<Table id="tblLogicCost" selectionMode="None" enableColumnFreeze="true" class="sapUiSizeCompact" visibleRowCount="5" ariaLabelledBy="title">
 				<extension>
 					<m:OverflowToolbar>
 						<m:content>
+							<m:SearchField id="sfMaterial" width="30%" search="onFilterLogisticCost" placeholder="{i18n>MatPlant}"/>
+							<m:Button icon="sap-icon://sales-order" text="{i18n>CostEmpty}" tooltip="{i18n>CostEmpty}" press="onCostEmpty"/>
 							<m:ToolbarSpacer/>
-							<m:Button icon="sap-icon://sys-next-page" text="{i18n>Exportar}" tooltip="{i18n>Exportar}" press="onDataExport" />
+							<m:Button icon="sap-icon://sys-next-page" text="{i18n>Exportar}" tooltip="{i18n>Exportar}" press="onDataExport"/>
 							<u:FileUploader id="fileUploader" name="myFileUpload" icon="sap-icon://sys-prev-page" tooltip="{i18n>Importar}" change="onImportCvsFile"/>
-							<m:Button icon="sap-icon://factory" type="Emphasized" text="{i18n>Administrar}" tooltip="{i18n>Administrar}" press="onGotoadminlc"/>
+							<m:Button id="btnAdmin" icon="sap-icon://factory" type="Emphasized" text="{i18n>Administrar}" tooltip="{i18n>Administrar}" press="onGotoadminlc" visible="{modelView>/version}"/>
 							<!--<m:Button icon="sap-icon://list" type="Emphasized" text="{i18n>NuevoMaterial}" tooltip="{i18n>NuevoMaterial}" press="onGotoaddmaterial"/>-->
 						</m:content>
 					</m:OverflowToolbar>
 				</extension>
 			</Table>
 		</m:content>
+		<m:footer>
+			<m:Toolbar id="otbFooter">
+				<m:Button icon="sap-icon://alert" text="{= ${message>/}.length }" visible="{= ${message>/}.length &gt; 0 }" type="Emphasized" press="onMessagePopoverPress"/>
+			</m:Toolbar>
+		</m:footer>
 	</m:Page>
 </mvc:View>

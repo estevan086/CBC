@@ -1,187 +1,93 @@
 jQuery.sap.require("cbc.co.simulador_costos.Formatter");
 sap.ui.define([
-	"sap/ui/core/mvc/Controller",
-	"sap/ui/model/json/JSONModel",
-	"sap/m/MessageToast",
-	"sap/ui/core/format/DateFormat",
-	"sap/ui/table/library",
-	"sap/ui/model/Filter",
-	"sap/ui/model/FilterOperator",
-	'sap/m/TablePersoController',
-	'sap/ui/core/Fragment',
-	'sap/m/Token'
-], function(Controller, JSONModel, MessageToast, DateFormat, library, Filter, FilterOperator, TablePersoController, Fragment, Token) {
+	"cbc/co/simulador_costos/controller/BaseController", "sap/ui/core/routing/History", "sap/ui/core/library",
+	"sap/ui/model/json/JSONModel", "sap/m/MessageToast",
+	"sap/ui/table/RowSettings"
+], function (Controller, History, CoreLibrary, JSONModel, MessageToast, RowSettings) {
 	"use strict";
 	this.YO = this;
 	return Controller.extend("cbc.co.simulador_costos.controller.Admon.Centros", {
-		
-		onInit : function() {
-			// set explored app's demo model on this sample
-			var json = this.initSampleDataModel();
-			// Setting json to current view....
-			// var json = new sap.ui.model.json.JSONModel("model/products.json");
-			this.getView().setModel(json);
-			
-			
-			this.getView().setModel(new JSONModel({
-				filterValue: ""
-			}), "ui");
 
-			this._oTxtFilter = null;
-			this._oFacetFilter = null;
-			
-			var fnPress = this.handleActionPress.bind(this);
+		onInit: function () {
 
-			this.modes = [
-				{
-					key: "NavigationDelete",
-					text: "Navigation & Delete",
-					handler: function(){
-						var oTemplate = new sap.ui.table.RowAction({items: [
-							new sap.ui.table.RowActionItem({type: "Delete", press: fnPress})
-						]});
-						return [1, oTemplate];
-					}
-				}
-			];
-			this.getView().setModel(new JSONModel({items: this.modes}), "modes");
-			this.switchState("NavigationDelete");
+			var oModelV = new JSONModel({
+				busy: true,
+				Bezei: ""
+			});
+			this.setModel(oModelV, "modelView");
+
+			var myRoute = this.getOwnerComponent().getRouter().getRoute("rtChCentros");
+			myRoute.attachPatternMatched(this.onMyRoutePatternMatched, this);
 		},
-	
-		initSampleDataModel : function() {
-			var oModel = new JSONModel();
-			//var oDateFormat = DateFormat.getDateInstance({source: {pattern: "timestamp"}, pattern: "dd/MM/yyyy"});
 
-			jQuery.ajax("model/Data3.json", {
-				dataType: "json",
-				success: function(oData) {
-					var aTemp1 = [];
-					var aTemp2 = [];
-					var aSuppliersData = [];
-					var aCategoryData = [];
-						for (var i = 0; i < oData.CENTRO.length; i++) {
-						var oProduct = oData.CENTRO[i];
-						if (oProduct.PAIS && jQuery.inArray(oProduct.PAIS, aTemp1) < 0) {
-							aTemp1.push(oProduct.PAIS);
-							aSuppliersData.push({Name: oProduct.PAIS});
-						}
-						if (oProduct.SOCIEDAD && jQuery.inArray(oProduct.SOCIEDAD, aTemp2) < 0) {
-							aTemp2.push(oProduct.Category);
-							aCategoryData.push({Name: oProduct.SOCIEDAD});
-						}
-						oProduct.DeliveryDate = (new Date()).getTime() - (i % 10 * 4 * 24 * 60 * 60 * 1000);
-						oProduct.Heavy = oProduct.WeightMeasure > 1000 ? "true" : "false";
-						oProduct.Available = oProduct.Status === "Available" ? true : false;
-					}
+		onMyRoutePatternMatched: function (event) {
+			this.GetSociedades();
+		},
 
+		GetSociedades: function () {
+			var oModel = this.getOwnerComponent().getModel("ModelSimulador");
+			var sServiceUrl = oModel.sServiceUrl;
 
-					oData.Suppliers = aSuppliersData;
-					oData.Categories = aCategoryData;
+			//Definir modelo del servicio web
+			var oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true);
+			//Definir filtro
 
-					oModel.setData(oData);
-				},
-				error: function() {
-					jQuery.sap.log.error("failed to load json");
+			//Leer datos del ERP
+			var oRead = this.fnReadEntity(oModelService, "/maestroCentrosSet", null);
+
+			if (oRead.tipo === "S") {
+				this.oDataSociedades = oRead.datos.results;
+				//	var obj = this.oDataUnidadesMedida;
+
+			}
+
+			var oDataUnidadesMedida = "";
+			//SI el modelo NO existe, se crea.
+			if (!oDataUnidadesMedida) {
+				oDataUnidadesMedida = {
+					lstItemsUnidadesMedida: []
+				};
+			}
+
+			var oCbx = this.byId("idComboBoxSociedad");
+			oCbx.getModel().setProperty("/LstSociedades", this.oDataSociedades);
+			this.getModel("modelView").setProperty("/busy", false);
+		},
+
+		onChangeSociedad: function (oEvent) {
+			this.getModel("modelView").setProperty("/busy", true);
+			var oItem = oEvent.getParameter("selectedItem");
+			var oItemObject = oItem.getBindingContext().getObject();
+
+			var filterCompCode = new sap.ui.model.Filter({
+				path: "CompCode",
+				operator: sap.ui.model.FilterOperator.EQ,
+				value1: oItemObject.CompCode
+			});
+
+			var filtersArray = new Array();
+			filtersArray.push(filterCompCode);
+
+			var oModel = this.getView().getModel("ModelSimulador");
+			oModel.read("/centroSet", {
+				filters: filtersArray,
+				async: true,
+				success: function (oData, response) {
+					var data = new sap.ui.model.json.JSONModel();
+					data.setProperty("/CodCentros", oData.results);
+					this.getOwnerComponent().setModel(data, "Centros");
+					this.getModel("modelView").setProperty("/busy", false);
+				}.bind(this),
+				error: function (oError) {
+					this.getModel("modelView").setProperty("/busy", false);
+					this.showGeneralError({
+						oDataError: oError
+					});
+					this.getModel("modelView").setProperty("/busy", false);
 				}
 			});
 
-			return oModel;
 		},
-		
-		switchState : function(sKey) {
-			var oTable = this.byId("tblCentros");
-			var iCount = 0;
-			var oTemplate = oTable.getRowActionTemplate();
-			if (oTemplate) {
-				oTemplate.destroy();
-				oTemplate = null;
-			}
-
-			for (var i = 0; i < this.modes.length; i++) {
-				if (sKey === this.modes[i].key) {
-					var aRes = this.modes[i].handler();
-					iCount = aRes[0];
-					oTemplate = aRes[1];
-					break;
-				}
-			}
-
-			oTable.setRowActionTemplate(oTemplate);
-			oTable.setRowActionCount(iCount);
-		},
-		
-		handleActionPress : function(oEvent) {
-			var oRow = oEvent.getParameter("row");
-			var oItem = oEvent.getParameter("item");
-			MessageToast.show("Item " + (oItem.getText() || oItem.getType()) + " pressed for product with id " +
-				this.getView().getModel().getProperty("ProductId", oRow.getBindingContext()));
-		},
-		
-		
-		showFormAdd: function() {
-			//this.onPersonalizationDialogPress();
-			this.LogisticaDisplay = sap.ui.xmlfragment("cbc.co.simulador_costos.view.Utilities.fragments.AddCentro", this);
-			this.LogisticaDisplay.open();
-			//this.getOwnerComponent().OpnFrmLogitica();
-		},
-		
-		closeDialog: function() {
-			this.LogisticaDisplay.close();
-		},
-		
-		handleValueHelp: function (oEvent) {
-			var sInputValue = oEvent.getSource().getValue();
-
-			// create value help dialog
-			if (!this._valueHelpDialog) {
-				Fragment.load({
-					id: "valueHelpDialog",
-					name: "cbc.co.simulador_costos.view.Utilities.fragments.Dialog",
-					controller: this
-				}).then(function (oValueHelpDialog) {
-					this._valueHelpDialog = oValueHelpDialog;
-					this.getView().addDependent(this._valueHelpDialog);
-					this._openValueHelpDialog(sInputValue);
-				}.bind(this));
-			} else {
-				this._openValueHelpDialog(sInputValue);
-			}
-		},
-
-		_openValueHelpDialog: function (sInputValue) {
-			// create a filter for the binding
-			this._valueHelpDialog.getBinding("items").filter([new Filter(
-				"CENTRO",
-				FilterOperator.Contains,
-				sInputValue
-			)]);
-
-			// open value help dialog filtered by the input value
-			this._valueHelpDialog.open(sInputValue);
-		},
-
-		_handleValueHelpSearch: function (evt) {
-			var sValue = evt.getParameter("value");
-			var oFilter = new Filter(
-				"CENTRO",
-				FilterOperator.Contains,
-				sValue
-			);
-			evt.getSource().getBinding("items").filter([oFilter]);
-		},
-
-		_handleValueHelpClose: function (evt) {
-			var aSelectedItems = evt.getParameter("selectedItems"),
-				oMultiInput = this.byId("multiInput");
-
-			if (aSelectedItems && aSelectedItems.length > 0) {
-				aSelectedItems.forEach(function (oItem) {
-					oMultiInput.addToken(new Token({
-						text: oItem.getTitle()
-					}));
-				});
-			}
-		}
 
 	});
 

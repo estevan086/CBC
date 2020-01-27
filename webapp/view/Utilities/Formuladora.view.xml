@@ -6,6 +6,7 @@
 				<m:subHeader>
 					<m:OverflowToolbar>
 						<m:Button type="Back" press="onToPage1"/>
+							
 						<!--<m:Label wrapping="true" text="Layout Type:"/>-->
 						<!--<m:content>-->
 						<!--	<m:Select id="layoutType" tooltip="Layout Types" change="layoutTypeChanged" selectedKey="{settings>/layoutType}">-->
@@ -19,9 +20,10 @@
 					</m:OverflowToolbar>
 				</m:subHeader>
 				<m:content>
+					
 					<CalculationBuilder allowStringConstants="true" id="builder" layoutType="{settings>/layoutType}" expression="{/expression}"
 						readOnly="{settings>/readOnly}" allowComparisonOperators="{settings>/allowComparison}" allowLogicalOperators="{settings>/allowLogical}"
-						 title="" variables="{/variables}" disabledDefaultTokens="abs;sqrt;roundup;rounddown;round">
+						 title="{/title}" variables="{/variables}">
 						<variables>
 							<CalculationBuilderVariable key="{key}" group="{group}" label="{label}" items="{path:'items', templateShareable:true}">
 								<items>
@@ -44,6 +46,7 @@
 						<!--	</CalculationBuilderGroup>-->
 						<!--</groups>-->
 					</CalculationBuilder>
+					<m:Button icon="sap-icon://save" type="Emphasized" text="Guardar" tooltip="Guardar Formula" press="saveFormula"/>
 				</m:content>
 			</m:Page>
 		</m:pages>

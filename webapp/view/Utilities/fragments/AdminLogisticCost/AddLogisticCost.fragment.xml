@@ -18,7 +18,7 @@
 			</f:SimpleForm>
 		</m:VBox>
 		<m:beginButton>
-			<m:Button id="btnsave" icon="sap-icon://save" text="{i18n>Guardar}" tooltip="{i18n>Guardar}" press="onAddLC"/>
+			<m:Button id="btnsave" icon="sap-icon://save" text="{i18n>Guardar}" tooltip="{i18n>Guardar}" press="onSaveLogisticCost"/>
 		</m:beginButton>
 		<m:endButton>
 			<m:Button id="btncancel" icon="sap-icon://decline" text="{i18n>Cancelar}" tooltip="{i18n>Cancelar}" press="fnCloseFragment"/>

@@ -38,21 +38,18 @@ sap.ui.define([
 					"expanded": false,
 					"key": "rtHome"
 				}, {
-					"title": "Administración",
+					"title": "Administracion",
 					"icon": "sap-icon://employee",
 					"expanded": false,
 					"key": "rtAdministracion",
 					"items": [{
 						"title": "Centros",
 						"key": "rtChCentros"
-					}, {
-						"title": "Unidad de Medida",
-						"key": "rtChUndMedida"
-					}, {
+					},  {
 						"title": "Periodos",
 						"key": "rtChPeriodo"
 					}, {
-						"title": "Logística",
+						"title": "Logistica",
 						"key": "rtChAdminLogistica"
 					}, {
 						"title": "Perfiles",
@@ -67,7 +64,7 @@ sap.ui.define([
 						"title": "Mantenimiento Tipo Cambio",
 						"key": "rtChTypeChange"
 					}, {
-						"title": "Crear Icoterm",
+						"title": "Icoterm",
 						"key": "rtChCreateIcoterm"
 					}, {
 						"title": "Copiar Versiones",
@@ -79,8 +76,8 @@ sap.ui.define([
 						"title": "Materiales",
 						"key": "rtChMateriales"
 					}, {
-						"title": "Costos Logísticos",
-						"key": "rtChCostosLogisticos"
+						"title": "Costos Log\u00EDsticos",
+						"key": "rtChCostosLogisticos?version=false"
 					}]
 				}, {
 					"title": "Commodities",
@@ -99,19 +96,19 @@ sap.ui.define([
 						"key": "rtChMantenimientoMateriales"
 					}]
 				}, {
-					"title": "Costos Logístico",
+					"title": "Costos Log\u00EDstico",
 					"icon": "sap-icon://travel-expense",
 					"expanded": false,
 					"items": [{
-						"title": "Mantenimiento Costos Logístico",
-						"key": "rtChMantenimientoCostLog"
+						"title": "Mantenimiento Costos Log\u00EDstico",
+						"key": "rtChCostosLogisticos?version=true"
 					}]
 				}, {
-					"title": "Volumen",
-					"icon": "sap-icon://machine",
+					"title": "Carga BW",
+					"icon": "sap-icon://upload-to-cloud",
 					"expanded": false,
 					"items": [{
-						"title": "Carga Volumen",
+						"title": "Carga BW",
 						"key": "rtChVolumen"
 					}]
 				}, {
@@ -127,7 +124,7 @@ sap.ui.define([
 						//	"key": "rtChControlEs"
 						//},
 						{
-							"title": "Administración Escenarios",
+							"title": "Administracion Escenarios",
 							"key": "rtChAdmonEs"
 						}
 					]
@@ -144,7 +141,7 @@ sap.ui.define([
 					"icon": "sap-icon://pie-chart",
 					"expanded": false,
 					"items": [{
-						"title": "Visualización",
+						"title": "Visualizacion",
 						"key": "rtChVisualizacion"
 					}]
 				}]
@@ -158,9 +155,23 @@ sap.ui.define([
 		onItemSelect: function (oEvent) {
 
 			var router = this.getOwnerComponent().getRouter(),
-				sKey = oEvent.getParameter("item").getProperty("key");
+				sKey = oEvent.getParameter("item").getProperty("key"),
+				params = {},
+				aParams = {},
+				sParams,
+				sValue;
+			//descomponer parametros para enviar
+			if(sKey.toString().indexOf("?") > 0){
+				sParams = sKey.toString().substring(sKey.toString().indexOf("?"), sKey.toString().length);
+				sKey = sKey.toString().replace(sParams, "");
+				aParams = sParams.split("=");
+				sValue = aParams[1];
+				sParams = aParams[0].toString().replace("?", "");
+				params[sParams] = sValue;
+			}
+				
 			//if (this._isPageInNavContainer(sKey)) {
-			router.navTo(sKey);
+			router.navTo(sKey, params);
 			/*} else {
 				this._addPageToNavContainer(sKey);
 				router.navTo(sKey);

@@ -32,7 +32,13 @@
 		},
 		"fullWidth": true,
 		"flexEnabled": false,
-		"supportedThemes": ["sap_belize_hcb", "sap_belize_hcw", "sap_belize", "sap_belize_plus", "sap_fiori_3", "sap_fiori_3_hcb",
+		"supportedThemes": [
+			"sap_belize_hcb",
+			"sap_belize_hcw",
+			"sap_belize",
+			"sap_belize_plus",
+			"sap_fiori_3",
+			"sap_fiori_3_hcb",
 			"sap_fiori_3_hcw"
 		]
 	},
@@ -89,9 +95,11 @@
 			}
 		},
 		"resources": {
-			"css": [{
-				"uri": "css/style.css"
-			}]
+			"css": [
+				{
+					"uri": "css/style.css"
+				}
+			]
 		},
 		"contentDensities": {
 			"compact": true,
@@ -117,7 +125,7 @@
 					"target": "rtChCommoditiesTarget"
 				},
 				"rtChFromuladora": {
-					"pattern": "rtChFromuladora/{oRowPath}",
+					"pattern": "rtChFromuladora/{oRowPath}/oIdFormula{oIdFormula}/oTxt{oTxt}/oYear{oYear}/oMes{oMes}",
 					"target": "rtChFromuladoraTarget"
 				},
 				"rtChIDCommodities": {
@@ -133,7 +141,7 @@
 					"target": "rtChMantenimientoCommoditiesTarget"
 				},
 				"rtChCostosLogisticos": {
-					"pattern": "rtChCostosLogisticos",
+					"pattern": "rtChCostosLogisticos/{version}",
 					"target": "rtChCostosLogisticosTarget"
 				},
 				"rtChProfiles": {
@@ -142,11 +150,7 @@
 				},
 				"rtChCentros": {
 					"pattern": "rtChCentros",
-					"target": "rtHomeTarget"
-				},
-				"rtChUndMedida": {
-					"pattern": "rtChUndMedida",
-					"target": "rtHomeTarget"
+					"target": "rtChCentrosTarget"
 				},
 				"rtChPeriodo": {
 					"pattern": "rtChPeriodo",
@@ -154,7 +158,7 @@
 				},
 				"rtChAdminLogistica": {
 					"pattern": "rtChAdminLogistica",
-					"target": "rtHomeTarget"
+					"target": "rtChAdminLogisticaTarget"
 				},
 				"rtChTypeChange": {
 					"pattern": "rtChTypeChange",
@@ -184,10 +188,6 @@
 					"pattern": "rtChMantenimientoMateriales",
 					"target": "rtChMantenimientoMaterialesTarget"
 				},
-				"rtChMantenimientoCostLog": {
-					"pattern": "rtChMantenimientoCostLog",
-					"target": "rtChMantenimientoCostLogTarget"
-				},
 				"rtCCOGS": {
 					"pattern": "rtCCOGS",
 					"target": "rtHomeTarget"
@@ -198,7 +198,7 @@
 				},
 				"rtChVolumen": {
 					"pattern": "rtChVolumen",
-					"target": "rtHomeTarget"
+					"target": "rtChVolumenTarget"
 				},
 				"rtChAdminCL": {
 					"pattern": "rtChAdminCL",
@@ -291,13 +291,6 @@
 					"controlId": "parentNavContainer",
 					"transition": "slide"
 				},
-				"rtChUndMedidaTarget": {
-					"viewPath": "cbc.co.simulador_costos.view.Admon",
-					"viewName": "CreateParameters",
-					"parent": "parentTarget",
-					"controlId": "parentNavContainer",
-					"transition": "slide"
-				},
 				"rtChPeriodoTarget": {
 					"viewPath": "cbc.co.simulador_costos.view.Admon",
 					"viewName": "Periodo",
@@ -306,8 +299,8 @@
 					"transition": "slide"
 				},
 				"rtChAdminLogisticaTarget": {
-					"viewPath": "cbc.co.simulador_costos.view.Admon",
-					"viewName": "CreateParameters",
+					"viewPath": "cbc.co.simulador_costos.view.Admon.CreateParameters",
+					"viewName": "Logistica",
 					"parent": "parentTarget",
 					"controlId": "parentNavContainer",
 					"transition": "slide"
@@ -361,13 +354,6 @@
 					"controlId": "parentNavContainer",
 					"transition": "slide"
 				},
-				"rtChMantenimientoCostLogTarget": {
-					"viewPath": "cbc.co.simulador_costos.view.LogisticCost",
-					"viewName": "AdmonLogisticCost",
-					"parent": "parentTarget",
-					"controlId": "parentNavContainer",
-					"transition": "slide"
-				},
 				"rtCCOGSTarget": {
 					"viewPath": "cbc.co.simulador_costos.view.COGS",
 					"viewName": "COGS",
@@ -382,9 +368,9 @@
 					"controlId": "parentNavContainer",
 					"transition": "slide"
 				},
-				"rtChrtChVolumenTarget": {
-					"viewPath": "cbc.co.simulador_costos.view.COGS",
-					"viewName": "COGS",
+				"rtChVolumenTarget": {
+					"viewPath": "cbc.co.simulador_costos.view.Manufactura",
+					"viewName": "Manufactura",
 					"parent": "parentTarget",
 					"controlId": "parentNavContainer",
 					"transition": "slide"

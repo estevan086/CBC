@@ -1,0 +1,19 @@
+<core:FragmentDefinition id="fragmentAddLogisticCategorie" xmlns:m="sap.m" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core"
+	xmlns:mvc="sap.ui.core.mvc" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:l="sap.ui.layout">
+	<m:Dialog id="dialogAdd" title="{i18n>CatLogistica}">
+		<m:VBox id="vbxAddLC" >
+			<f:SimpleForm id="fmAddLC" columnsM="2" columnsL="2" columnsXL="2">
+				<f:content>
+					<m:Label text="Descripción"/>
+					<m:Input required="true" value="{LogisticCategories>/TxtMd}" />
+				</f:content>
+			</f:SimpleForm>
+		</m:VBox>
+		<m:beginButton>
+			<m:Button id="btnsave" icon="sap-icon://save" text="{i18n>Guardar}" tooltip="{i18n>Guardar}" press="onSaveLogisticCat"/>
+		</m:beginButton>
+		<m:endButton>
+			<m:Button id="btncancel" icon="sap-icon://decline" text="{i18n>Cancelar}" tooltip="{i18n>Cancelar}" press="fnCloseFragment"/>
+		</m:endButton>
+	</m:Dialog>
+</core:FragmentDefinition>

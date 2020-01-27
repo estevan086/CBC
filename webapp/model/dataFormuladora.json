@@ -1,6 +1,6 @@
 {
-	"expression": "((Precio+OtrosCostos)/1000)*PesoMaterial",
-	"title": "{IDCOMMODITIE}",
+	"expression": "",
+	"title": "",
 	"showToolbar": false,
 	"variables": [
 		

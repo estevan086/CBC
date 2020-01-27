@@ -1,70 +1,58 @@
-<mvc:View
-	controllerName="cbc.co.simulador_costos.controller.Admon.CreateParameters.Logistica"
-	xmlns:html="http://www.w3.org/1999/xhtml" 
-	xmlns:mvc="sap.ui.core.mvc" 
-	displayBlock="true"
-	xmlns="sap.ui.table" 
-	xmlns:m="sap.m" 
-	xmlns:u="sap.ui.unified" 
-	xmlns:c="sap.ui.core"
-    height="100%">
-	<m:App>
-		<m:pages>
-			<m:Page
-			showHeader="false"
-			enableScrolling="false"
-			class="sapUiContentPadding">
-			<m:content>
-			<Table id="table1"
-				rows="{/CategoríasLogísticas}"
-				selectionMode="None"
-				visibleRowCount="10">
-					<toolbar>
-					<m:OverflowToolbar>
-						<m:content>
-							<m:Title id="title" text="Categoría Logística" />
-							<m:ToolbarSpacer/>
-							<m:Button
-								icon="sap-icon://add"
-								tooltip="add item"
-								press="frmLogisticPress"/>
-							<m:Button
-								icon="sap-icon://sort"
-								tooltip="Sort Categories"
-								press="sortCategories"/>
-							<m:Button
-								icon="sap-icon://decline"
-								tooltip="Clear all sortings"
-								press="clearAllSortings"/>
-							<m:SearchField
-								placeholder="Filter"
-								value="{ui>/globalFilter}"
-								search="filterGlobally"
-								width="15rem"/>
-						</m:content>
-					</m:OverflowToolbar>
-				</toolbar>
-				<columns>
-					<Column width="11rem">
-						<m:Label text="Nombre" />
-						<template>
-							<m:Text text="{Nombre}" wrapping="false" />
-						</template>
-					</Column>
-					<Column
-						id="categories"
-						width="30%"
-						showSortMenuEntry="false"
-						sortProperty="Category">
-						<m:Label text="Categorías Logísticas" />
-						<template>
-							<m:Text text="{Category}" wrapping="false" />
-						</template>
-					</Column>
-				</columns>
-			</Table>
-			</m:content>
-		</m:Page>
-		</m:pages>
-		</m:App>
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:ui="sap.ui.table"
+	controllerName="cbc.co.simulador_costos.controller.Admon.CreateParameters.Logistica" xmlns:html="http://www.w3.org/1999/xhtml">
+	<Page title="{i18n>CatLogistica}" showNavButton="true" navButtonPress="onNavBack" busy="{modelView>/busy}">
+		<content>
+			<ui:Table id="tblLogisticCategories"  selectionMode="None" visibleRowCount="10" rowActionCount="1" rows="{LogisticCategories>/Items}"
+				class="sapUiSizeCompact">
+				<ui:extension>
+					<OverflowToolbar>
+						<content>
+							<Title id="title" text="{i18n>CatLogistica}"/>
+							<ToolbarSpacer/>
+							<Button icon="sap-icon://factory" type="Emphasized" text="{i18n>Crear}" tooltip="Crear" press="showFormAddLC"/>
+							<Button icon="sap-icon://save" type="Emphasized" text="{i18n>Guardar}" tooltip="Guardar" press="onUpdateLogisticCat"/>
+						</content>
+					</OverflowToolbar>
+				</ui:extension>
+				<ui:columns>
+					<ui:Column>
+						<Label text="Id Categoria Logistica"/>
+						<ui:template>
+							<Text text="{LogisticCategories>CatCosLo}" wrapping="false"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column>
+						<Label text="Descripción"/>
+						<ui:template>
+							<Input value="{LogisticCategories>TxtMd}" enabled="{LogisticCategories>enabled}" />
+						</ui:template>
+					</ui:Column>
+					<ui:Column>
+						<Label text="Fecha"/>
+						<ui:template>
+							<Text text="{LogisticCategories>Date0}"  wrapping="false" />
+						</ui:template>
+					</ui:Column>
+					<ui:Column>
+						<Label text="Responsable"/>
+						<ui:template>
+							<Text text="{LogisticCategories>PerResp}"  wrapping="false" />
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="4rem" hAlign="Center">
+						<ui:template>
+							<Button tooltip="Editar" icon="sap-icon://edit" press="onEditLC"/>
+						</ui:template>
+					</ui:Column>
+				</ui:columns>
+				<ui:rowActionTemplate >
+					<ui:RowAction>
+						<ui:items>
+							<ui:RowActionItem type="Navigation" text="Eliminar" press="onDeleteLC" icon="sap-icon://delete"></ui:RowActionItem>
+						</ui:items>
+					</ui:RowAction>
+				</ui:rowActionTemplate>
+			</ui:Table>
+		</content>
+	</Page>
 </mvc:View>
