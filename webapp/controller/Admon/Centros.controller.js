@@ -26,7 +26,7 @@ sap.ui.define([
 		},
 
 		GetSociedades: function () {
-			var oModel = this.getOwnerComponent().getModel("ModelSimulador");
+			var oModel = this.getModel("ModelSimulador");
 			var sServiceUrl = oModel.sServiceUrl;
 
 			//Definir modelo del servicio web
@@ -55,24 +55,29 @@ sap.ui.define([
 			this.getModel("modelView").setProperty("/busy", false);
 
 			var oChx = this.byId("chxStatusCentro");
+			var oi18n = this.getResourceBundle();
 
 			var GetValueEdited = function (oEvent) {
-				var oEntry = {};
-				/*oEntry.CompCode = this.getParent().getCells()[2].getText().split(";")[0];
-				oEntry.Plant = this.getParent().getCells()[2].getText().split(";")[1];*/
-				oEntry.Flag = this.getParent().getCells()[1].getSelected() == false ? "X" : "";//se envia al contrario por que toma el valor antes del click
+				var oEntry = {
+					CompCode: this.getParent().getCells()[2].getText().split(";")[0],
+					Plant: this.getParent().getCells()[2].getText().split(";")[1],
+					Flag: this.getParent().getCells()[1].getSelected() === false ? "X" : "" //se envia al contrario por que toma el valor antes del click
+				};
 
-				oModel.update("/centroSet(CompCode='" + this.getParent().getCells()[2].getText().split(";")[0] + "',Plant='" + this.getParent().getCells()[
-						2].getText().split(";")[1] + "')",
-					oEntry, {
-						refreshAfterChange:false,
-						success: function (oData, oResponse) {
-							MessageToast.show(this.getView().getModel("i18n").getResourceBundle().getText("NotificacionGuardarOk"));
-						}.bind(this),
-						error: function (oError) {
-							MessageToast.show(oError.responseText);
-						}.bind(this)
-					});
+				var sObjectPath = oModel.createKey("centroSet", {
+					CompCode: this.getParent().getCells()[2].getText().split(";")[0],
+					Plant: this.getParent().getCells()[2].getText().split(";")[1]
+				});
+
+				oModel.update("/" + sObjectPath, oEntry, {
+					refreshAfterChange: false,
+					success: function (oData, oResponse) {
+						MessageToast.show(oi18n.getText("NotificacionGuardarOk"));
+					}.bind(this),
+					error: function (oError) {
+						MessageToast.show(oError.responseText);
+					}.bind(this)
+				});
 			};
 			oChx.attachBrowserEvent("click", GetValueEdited);
 		},
