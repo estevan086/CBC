@@ -1177,6 +1177,32 @@ sap.ui.define([
 				result.Mes === oTableItemObject.MDEF_MES && result.Sociedad === oTableItemObject.MDEF_SOCIEDAD && result.Centro ===
 				oTableItemObject.MDEF_CENTRO);
 
+			// var oCommodite = this.detailCommodite.filter(result => result.Year === "2020" && result.Mes === "01");
+
+			// var oCommodite = this.detailCommodite;
+
+			if (oCommodite.length > 0) {
+				var precio = this.executeFormula(oTableItemObject, oCommodite[0]);
+				oTableItemObject.MDEF_PRECIOPRODUCTIVO = Number(precio);
+			}
+			
+			//Realizar calculos
+			oTableItemObject.MDEF_COSTOMATERIAL =
+				Number(oTableItemObject.MDEF_PRECIOPRODUCTIVO) +
+				Number(oTableItemObject.MDEF_COSTOCONVERSION) +
+				Number(oTableItemObject.MDEF_COSTOADICIONAL) +
+				Number(oTableItemObject.MDEF_COSTOENVIO);
+
+			oTableItemObject.MDEF_COSTOTRANSFERENCIA =
+				(Number(oTableItemObject.MDEF_COSTOMATERIAL) +
+					Number(oTableItemObject.MDEF_OTROSCOSTOS)) *
+				Number(oTableItemObject.MDEF_PCTRANSFERENCIA);
+
+			oTableItemObject.MDEF_PRECIOPREMISA =
+				Number(oTableItemObject.MDEF_COSTOMATERIAL) +
+				Number(oTableItemObject.MDEF_OTROSCOSTOS) +
+				Number(oTableItemObject.MDEF_COSTOTRANSFERENCIA);			
+
 			oTableCommodities.getModel().refresh();
 
 		},
@@ -1633,6 +1659,47 @@ sap.ui.define([
 			}
 
 			this.detailCommodite = aListData;
+		},
+
+		/**
+		 * Ejecutar formula commodite
+		 * @function
+		 * @param 
+		 * @private
+		 */
+		executeFormula: function (pMaterial, pCommodite) {
+			var vFormula = "",
+				vPatron = "";
+
+			vFormula = pCommodite.TxtFormula;
+
+			//Reemplazar precio
+			vPatron = '/Precio/gi';
+			vFormula = vFormula.replace(eval(vPatron), pCommodite.PrecioMaterial);
+
+			//Reemplazar otros costos
+			vPatron = '/OtrosCostos/gi';
+			vFormula = vFormula.replace(eval(vPatron), pCommodite.OtrosCostos);
+
+			//Reemplazar peso material
+			vPatron = '/PesoMaterial/gi';
+			vFormula = vFormula.replace(eval(vPatron), pMaterial.MDEF_PESOMATERIAL);
+
+			MessageBox.show(
+				'Formula aplicada\n' + pCommodite.TxtFormula + '\n\n' + vFormula, {
+					icon: MessageBox.Icon.SUCCESS,
+					title: "Exito",
+					actions: [MessageBox.Action.OK],
+					onClose: function (oAction) {
+						// if (oAction === sap.m.MessageBox.Action.OK) {
+							
+						// }
+					}
+				}
+			);
+			
+			return eval(vFormula);
+
 		}
 
 	});
