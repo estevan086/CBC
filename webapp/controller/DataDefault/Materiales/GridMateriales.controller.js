@@ -1681,7 +1681,7 @@ sap.ui.define([
 			vPatron = '/OtrosCostos/gi';
 			vFormula = vFormula.replace(eval(vPatron), pCommodite.OtrosCostos);
 
-			//Reemplazar peso material
+			//Reemplazar peso material 
 			vPatron = '/PesoMaterial/gi';
 			vFormula = vFormula.replace(eval(vPatron), pMaterial.MDEF_PESOMATERIAL);
 
