@@ -1177,10 +1177,6 @@ sap.ui.define([
 				result.Mes === oTableItemObject.MDEF_MES && result.Sociedad === oTableItemObject.MDEF_SOCIEDAD && result.Centro ===
 				oTableItemObject.MDEF_CENTRO);
 
-			// var oCommodite = this.detailCommodite.filter(result => result.Year === "2020" && result.Mes === "01");
-
-			// var oCommodite = this.detailCommodite;
-
 			if (oCommodite.length > 0) {
 				var precio = this.executeFormula(oTableItemObject, oCommodite[0]);
 				oTableItemObject.MDEF_PRECIOPRODUCTIVO = Number(precio);
