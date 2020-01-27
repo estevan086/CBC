@@ -9,6 +9,13 @@ sap.ui.define([
 	return Controller.extend("cbc.co.simulador_costos.controller.Admon.Centros", {
 
 		onInit: function () {
+
+			var oModelV = new JSONModel({
+				busy: true,
+				Bezei: ""
+			});
+			this.setModel(oModelV, "modelView");
+
 			var myRoute = this.getOwnerComponent().getRouter().getRoute("rtChCentros");
 			myRoute.attachPatternMatched(this.onMyRoutePatternMatched, this);
 		},
@@ -18,8 +25,7 @@ sap.ui.define([
 		},
 
 		GetSociedades: function () {
-
-			/*var oModel = this.getOwnerComponent().getModel("ModelSimulador");
+			var oModel = this.getOwnerComponent().getModel("ModelSimulador");
 			var sServiceUrl = oModel.sServiceUrl;
 
 			//Definir modelo del servicio web
@@ -44,44 +50,36 @@ sap.ui.define([
 			}
 
 			var oCbx = this.byId("idComboBoxSociedad");
-			oCbx.getModel().setProperty("/LstSociedades", this.oDataSociedades);*/
-
-			/*	var oCbx3 = this.byId("idComboBoxSociedad3");
-				oCbx3.getView().setModel(oModel);*/
-
-			//oCbx.getModel().refresh();
-			
-			this.getcen();
+			oCbx.getModel().setProperty("/LstSociedades", this.oDataSociedades);
+			this.getModel("modelView").setProperty("/busy", false);
 		},
 
-		getcen: function(){
-		var oModel = this.getView().getModel("ModelSimulador");
-			oModel.read("/centroSet", {
-				success: function (oData, response) {
-					var data = new sap.ui.model.json.JSONModel();
-					data.setProperty("/CodCentros", oData.results);
-					this.getOwnerComponent().setModel(data, "Centros");
-				}.bind(this),
-				error: function (oError) {
-					this.showGeneralError({
-						oDataError: oError
-					});
-					this.getModel("modelView").setProperty("/busy", false);
-				}
-			});	
-		},
 		onChangeSociedad: function (oEvent) {
+			this.getModel("modelView").setProperty("/busy", true);
 			var oItem = oEvent.getParameter("selectedItem");
 			var oItemObject = oItem.getBindingContext().getObject();
-			var oSociedadSeleccionada = oItemObject.CompCode;
+
+			var filterCompCode = new sap.ui.model.Filter({
+				path: "CompCode",
+				operator: sap.ui.model.FilterOperator.EQ,
+				value1: oItemObject.CompCode
+			});
+
+			var filtersArray = new Array();
+			filtersArray.push(filterCompCode);
+
 			var oModel = this.getView().getModel("ModelSimulador");
 			oModel.read("/centroSet", {
+				filters: filtersArray,
+				async: true,
 				success: function (oData, response) {
 					var data = new sap.ui.model.json.JSONModel();
 					data.setProperty("/CodCentros", oData.results);
 					this.getOwnerComponent().setModel(data, "Centros");
+					this.getModel("modelView").setProperty("/busy", false);
 				}.bind(this),
 				error: function (oError) {
+					this.getModel("modelView").setProperty("/busy", false);
 					this.showGeneralError({
 						oDataError: oError
 					});
