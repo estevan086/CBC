@@ -146,7 +146,7 @@
 				},
 				"rtChProfiles": {
 					"pattern": "Profiles",
-					"target": "rtHomeTarget"
+					"target": "rtChProfilesTarget"
 				},
 				"rtChCentros": {
 					"pattern": "rtChCentros",

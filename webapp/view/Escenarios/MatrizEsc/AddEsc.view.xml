@@ -91,6 +91,42 @@
 									<Select selectedKey="{Escenarios>junio}"/>
 								</t:template>
 							</t:Column>
+							<t:Column width="11rem">
+								<Label text="Julio"/>
+								<t:template>
+									<Select selectedKey="{Escenarios>julio}"/>
+								</t:template>
+							</t:Column>
+							<t:Column width="11rem">
+								<Label text="Agosto"/>
+								<t:template>
+									<Select selectedKey="{Escenarios>agosto}"/>
+								</t:template>
+							</t:Column>
+							<t:Column width="11rem">
+								<Label text="Septiembre"/>
+								<t:template>
+									<Select selectedKey="{Escenarios>septiembre}"/>
+								</t:template>
+							</t:Column>
+							<t:Column width="11rem">
+								<Label text="Octubre"/>
+								<t:template>
+									<Select selectedKey="{Escenarios>octubre}"/>
+								</t:template>
+							</t:Column>
+							<t:Column width="11rem">
+								<Label text="Noviembre"/>
+								<t:template>
+									<Select selectedKey="{Escenarios>noviembre}"/>
+								</t:template>
+							</t:Column>
+							<t:Column width="11rem">
+								<Label text="Diciembre"/>
+								<t:template>
+									<Select selectedKey="{Escenarios>diciembre}"/>
+								</t:template>
+							</t:Column>
 						</t:columns>
 					</t:Table>
 				</WizardStep>
