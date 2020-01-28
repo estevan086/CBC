@@ -26,6 +26,7 @@ sap.ui.define([
 		},
 
 		GetSociedades: function () {
+			this.ShowCentrosActivos();
 			var oModel = this.getModel("ModelSimulador");
 			var sServiceUrl = oModel.sServiceUrl;
 
@@ -93,15 +94,15 @@ sap.ui.define([
 				value1: oItemObject.CompCode
 			});
 
-			var filterFlag = new sap.ui.model.Filter({
-				path: "Flag",
-				operator: sap.ui.model.FilterOperator.EQ,
-				value1: "1"
-			});
+			/*	var filterFlag = new sap.ui.model.Filter({
+					path: "Flag",
+					operator: sap.ui.model.FilterOperator.EQ,
+					value1: "1"
+				});*/
 
 			var filtersArray = new Array();
 			filtersArray.push(filterCompCode);
-			filtersArray.push(filterFlag);
+			//filtersArray.push(filterFlag);
 
 			var oModel = this.getView().getModel("ModelSimulador");
 			oModel.read("/centroSet", {
@@ -113,7 +114,7 @@ sap.ui.define([
 
 					for (var i = 0; i < oData.results.length; i++) {
 						oData.results[i].PlantDesc = oData.results[i].Plant + " - " + oData.results[i].PlantDesc;
-						oData.results[i].Flag = oData.results[i].Flag == "1" ? true : false;
+						oData.results[i].Flag = oData.results[i].Flag == "X" ? true : false;
 						oData.results[i].oKey = oData.results[i].CompCode + ";" + oData.results[i].Plant;
 					}
 					data.setProperty("/CodCentros", oData.results);
@@ -131,15 +132,42 @@ sap.ui.define([
 
 		},
 
-		UpdateCentros: function (oEvent) {
-			MessageBox.show(
-				'Datos guardados correctamente', {
-					icon: MessageBox.Icon.SUCCESS,
-					title: "Exito",
-					actions: [MessageBox.Action.OK],
-					onClose: function (oAction) {}
+		ShowCentrosActivos: function (oEvent) {
+			this.getModel("modelView").setProperty("/busy", true);
+			var filterFlag = new sap.ui.model.Filter({
+				path: "Flag",
+				operator: sap.ui.model.FilterOperator.EQ,
+				value1: "X"
+			});
+
+			var filtersArray = new Array();
+			filtersArray.push(filterFlag);
+
+			var oModel = this.getView().getModel("ModelSimulador");
+			oModel.read("/centroSet", {
+				filters: filtersArray,
+				async: true,
+				success: function (oData, response) {
+					var data = new sap.ui.model.json.JSONModel();
+					//data.setProperty("/CodCentros", oData.results);
+
+					for (var i = 0; i < oData.results.length; i++) {
+						oData.results[i].PlantDesc = oData.results[i].CompDesc + " - " + oData.results[i].Plant + " - " + oData.results[i].PlantDesc;
+						oData.results[i].Flag = oData.results[i].Flag == "X" ? true : false;
+						oData.results[i].oKey = oData.results[i].CompCode + ";" + oData.results[i].Plant;
+					}
+					data.setProperty("/CodCentros", oData.results);
+					this.getOwnerComponent().setModel(data, "Centros");
+					this.getModel("modelView").setProperty("/busy", false);
+				}.bind(this),
+				error: function (oError) {
+					this.getModel("modelView").setProperty("/busy", false);
+					this.showGeneralError({
+						oDataError: oError
+					});
+					this.getModel("modelView").setProperty("/busy", false);
 				}
-			);
+			});
 
 		}
 
