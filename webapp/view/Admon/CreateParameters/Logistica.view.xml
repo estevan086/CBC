@@ -2,7 +2,7 @@
 	controllerName="cbc.co.simulador_costos.controller.Admon.CreateParameters.Logistica" xmlns:html="http://www.w3.org/1999/xhtml">
 	<Page title="{i18n>CatLogistica}" showNavButton="true" navButtonPress="onNavBack" busy="{modelView>/busy}">
 		<content>
-			<ui:Table id="tblLogisticCategories"  selectionMode="None" visibleRowCount="10" rowActionCount="1" rows="{LogisticCategories>/Items}"
+			<ui:Table id="tblLogisticCategories" selectionMode="None" visibleRowCount="10" rowActionCount="1" rows="{LogisticCategories>/Items}"
 				class="sapUiSizeCompact">
 				<ui:extension>
 					<OverflowToolbar>
@@ -24,19 +24,7 @@
 					<ui:Column>
 						<Label text="Descripción"/>
 						<ui:template>
-							<Input value="{LogisticCategories>TxtMd}" enabled="{LogisticCategories>enabled}" />
-						</ui:template>
-					</ui:Column>
-					<ui:Column>
-						<Label text="Fecha"/>
-						<ui:template>
-							<Text text="{LogisticCategories>Date0}"  wrapping="false" />
-						</ui:template>
-					</ui:Column>
-					<ui:Column>
-						<Label text="Responsable"/>
-						<ui:template>
-							<Text text="{LogisticCategories>PerResp}"  wrapping="false" />
+							<Input value="{LogisticCategories>TxtMd}" enabled="{LogisticCategories>enabled}"/>
 						</ui:template>
 					</ui:Column>
 					<ui:Column width="4rem" hAlign="Center">
@@ -54,5 +42,11 @@
 				</ui:rowActionTemplate>
 			</ui:Table>
 		</content>
+		<footer>
+			<Toolbar id="otbFooter">
+				<Button icon="sap-icon://alert" text="{= ${message>/}.length }" visible="{= ${message>/}.length &gt; 0 }" type="Emphasized"
+					press="onMessagePopoverPress"/>
+			</Toolbar>
+		</footer>
 	</Page>
 </mvc:View>

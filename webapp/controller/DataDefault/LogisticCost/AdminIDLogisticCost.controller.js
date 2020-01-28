@@ -96,7 +96,7 @@ sap.ui.define([
 					if (pLast === false) {
 						MessageToast.show(this.getView().getModel("i18n").getResourceBundle().getText("NotificacionModificacionOk"));
 						this.getLogisticCostData();
-					}else{
+					} else {
 						this.onUpdateLogisticCost();
 					}
 				}.bind(this),
@@ -144,17 +144,20 @@ sap.ui.define([
 
 			oModel.remove("/codigocostologisticoSet('" + oRow.getCells()[0].getText() + "')", {
 				success: function (oData, oResponse) {
-					if (oData === undefined) {
+					if (oResponse !== undefined) {
+
 						this.getModel("modelView").setProperty("/busy", false);
 						var oMessage = JSON.parse(oResponse.headers["sap-message"]);
 
-						this.showGeneralError({
-							message: oMessage.message,
-							title: this.getResourceBundle().getText("ErrorBorrado")
-						});
-
-					} else {
-						this.getLogisticCostData();
+						if (oMessage.severity === "error") {
+							this.showGeneralError({
+								message: oMessage.message,
+								title: this.getResourceBundle().getText("ErrorBorrado")
+							});
+						} else {
+							MessageToast.show(oMessage.message);
+							this.getLogisticCostData();
+						}
 					}
 				}.bind(this),
 				error: function (oError) {

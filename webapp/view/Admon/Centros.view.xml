@@ -15,7 +15,7 @@
 								<core:ListItem key="{CompCode}" text="{CompDesc}" additionalText="{CompCode}"/>
 							</ComboBox>
 							<ToolbarSpacer/>
-							<Button icon="sap-icon://save" type="Emphasized" text="{i18n>Guardar}" tooltip="Crear Centros"/>
+							<Button icon="sap-icon://save" type="Emphasized" text="Ver Centros Activos" tooltip="Ver Centros Activos" press="ShowCentrosActivos"/>
 						</content>
 					</OverflowToolbar>
 				</ui:extension>
@@ -27,9 +27,15 @@
 						</ui:template>
 					</ui:Column>
 					<ui:Column filterProperty="Flag">
-						<Label text="Descripcion"/>
+						<Label text="Estado"/>
 						<ui:template>
-							<CheckBox id="cbxStatusCentro" selected="false" wrapping="false"/>
+							<CheckBox id="chxStatusCentro" selected="{Centros>Flag}" wrapping="false"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="1rem" id="hideColumn" filterProperty="Flag">
+						<Label text=""/>
+						<ui:template>
+								<Text text="{Centros>oKey}" wrapping="false"/>
 						</ui:template>
 					</ui:Column>
 				</ui:columns>

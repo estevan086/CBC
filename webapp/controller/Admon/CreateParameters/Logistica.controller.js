@@ -3,8 +3,10 @@ sap.ui.define([
 	"cbc/co/simulador_costos/controller/BaseController",
 	"sap/ui/model/Filter",
 	"sap/m/MessageToast",
-	"sap/ui/model/json/JSONModel"
-], function (BaseController, Filter, MessageToast, JSONModel) {
+	"sap/ui/model/json/JSONModel",
+	"sap/ui/core/message/Message",
+	"sap/ui/core/MessageType"
+], function (BaseController, Filter, MessageToast, JSONModel, Message, MessageType) {
 	"use strict";
 
 	return BaseController.extend("cbc.co.simulador_costos.controller.Admon.CreateParameters.Logistica", {
@@ -16,6 +18,7 @@ sap.ui.define([
 		 */
 		onInit: function () {
 
+			this.initMessageManager();
 			this.setModel(new JSONModel({
 				busy: true
 			}), "modelView");
@@ -89,7 +92,7 @@ sap.ui.define([
 					if (pLast === false) {
 						MessageToast.show(this.getView().getModel("i18n").getResourceBundle().getText("NotificacionModificacionOk"));
 						this.getLogisticCatData();
-					}else{
+					} else {
 						this.onUpdateLogisticCat();
 					}
 				}.bind(this),
@@ -136,17 +139,27 @@ sap.ui.define([
 
 			oModel.remove("/categorialogisticaSet('" + oRow.getCells()[0].getText() + "')", {
 				success: function (oData, oResponse) {
-					if (oData === undefined) {
+					if (oResponse !== undefined) {
 						this.getModel("modelView").setProperty("/busy", false);
 						var oMessage = JSON.parse(oResponse.headers["sap-message"]);
 
-						this.showGeneralError({
-							message: oMessage.message,
-							title: this.getResourceBundle().getText("ErrorBorrado")
-						});
-
-					} else {
-						this.getLogisticCatData();
+						if (oMessage.severity === "error") {
+							this.showGeneralError({
+								message: oMessage.message,
+								title: this.getResourceBundle().getText("ErrorBorrado")
+							});
+							this.addMessage(new Message({
+								message: oMessage.message,
+								type: MessageType.Error
+							}));
+						} else {
+							this.addMessage(new Message({
+								message: oMessage.message,
+								type: MessageType.Success
+							}));
+							MessageToast.show(oMessage.message);
+							this.getLogisticCatData();
+						}
 					}
 				}.bind(this),
 				error: function (oError) {

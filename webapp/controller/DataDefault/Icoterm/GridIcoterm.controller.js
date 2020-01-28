@@ -4,11 +4,10 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 	"sap/ui/table/RowSettings"
 ], function (Controller, History, CoreLibrary, JSONModel, MessageToast, RowSettings) {
 	"use strict";
-
+	var that = this;
 	return Controller.extend("cbc.co.simulador_costos.controller.DataDefault.Icoterm.GridIcoterm", {
 
 		onInit: function () {
-
 			var oModelV = new JSONModel({
 				busy: true,
 				Bezei: ""
@@ -24,6 +23,14 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 		},
 
 		GetIcoterm: function () {
+			var oModel = this.getOwnerComponent().getModel("ModelSimulador");
+			var sServiceUrl = oModel.sServiceUrl;
+			var oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true);
+			//Definir filtro
+
+			//Leer datos del ERP
+			var oRead = this.fnReadEntity(oModelService, "/IcotermSet", null);
+
 			var oModel = this.getView().getModel("ModelSimulador");
 			oModel.read("/IcotermSet", {
 				success: function (oData, response) {
@@ -42,21 +49,23 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 			this.getModel("modelView").setProperty("/busy", false);
 			var txtDescGrid = this.byId("txtDescGrid");
 			var GetValueEdited = function (oEvent) {
-				oModel.create("/headerCommoditiesUpdate", {
-					IdCommoditie: this.getParent().getCells()[0].getText(),
-					Descripcion: this.getParent().getCells()[1].getValue(),
-					status: "1"
-				}, {
-					success: function (oData, oResponse) {
-						MessageToast.show(this.getView().getModel("i18n").getResourceBundle().getText("NotificacionGuardarOk"));
-						this.getMasterCommodities();
-					}.bind(this),
-					error: function (oError) {
-						MessageToast.show(oError.responseText);
-					}.bind(this)
-				});
+				var oEntidad = {};
+				oEntidad.yidAuton = this.getParent().getCells()[0].getText();
+				oEntidad.yicoterm = this.getParent().getCells()[1].getValue();
+
+				var oCreate = that.fnUpdateEntity(oModelService, "/IcotermSet", oEntidad);
+
+				if (oCreate.tipo === "S") {
+					if (oCreate.datos.Msj !== "" && oCreate.datos.Msj !== undefined) {
+						MessageToast.show(oCreate.datos.Msj);
+					}
+				} else {
+					MessageToast.show(this.getView().getModel("i18n").getResourceBundle().getText("NotificacionGuardarOk"));
+					this.getMasterCommodities();
+				}
 			};
 			txtDescGrid.attachBrowserEvent("focusout", GetValueEdited);
+			that = this;
 		},
 
 		showFormAddIcoterm: function (oEvent) {
@@ -64,27 +73,38 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 		},
 
 		AddIcoterm: function (oEvent) {
-			var oModel = this.getView().getModel("ModelSimulador"),
-				oModelLocal = this.getView().getModel("Commodities"),
+			this.getModel("modelView").setProperty("/busy", true);
+			var sServiceUrl = this.getView().getModel("ModelSimulador").sServiceUrl,
+				oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true),
+				oModelLocal = this.getView().getModel("Icoterm"),
 				data = oModelLocal.getProperty("/");
 
-			//Crea el Commoditie
-			oModel.create("/headerCommoditiesSet", {
-				IdCommoditie: "COM9999",
-				Descripcion: data.TxtDesc
-			}, {
-				success: function (oData, oResponse) {
-					MessageToast.show(this.getView().getModel("i18n").getResourceBundle().getText("NotificacionGuardarOk"));
-					this.getMasterCommodities();
-				}.bind(this),
-				error: function (oError) {
-					this.showGeneralError({
-						oDataError: oError
-					});
-					this.getModel("modelView").setProperty("/busy", false);
-				}.bind(this)
-			});
+			var valDesc = data.TxtDesc;
+			var msn = "";
+			if (valDesc !== "") {
+				var oEntidad = {};
+				oEntidad.yidAuton = "01";
+				oEntidad.yicoterm = valDesc;
+				
+				var oCreate = this.fnCreateEntity(oModelService, "/IcotermSet", oEntidad);
 
+				if (oCreate.tipo === "S") {
+					if (oCreate.datos.Msj !== "" && oCreate.datos.Msj !== undefined) {
+						msn = "fail";
+					}
+				} else {
+					msn = "fail";
+				}
+
+				if (msn == "") {
+					MessageToast.show(this.getView().getModel("i18n").getResourceBundle().getText("NotificacionGuardarOk"));
+					this.GetPeriodos();
+				} else {
+					MessageToast.show("Fail");
+				}
+			} else {
+				MessageToast.show("el campo periodo esta vacio");
+			}
 			this.fnCloseFragment(oEvent);
 		},
 
