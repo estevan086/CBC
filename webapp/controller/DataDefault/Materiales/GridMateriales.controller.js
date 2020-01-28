@@ -709,6 +709,12 @@ sap.ui.define([
 			// oRowEdited.getCells().filter(result => result.mProperties.value).map(cell => cell.setProperty("editable", true));
 
 			// oRowEdited.getCells()[6].setProperty("editable", true);
+			//Columna Unidad de medida
+			oRowEdited.getCells()[4].setProperty("editable", true);
+			//Columna Moneda
+			oRowEdited.getCells()[5].setProperty("editable", true);
+			//Columna Peso Material
+			oRowEdited.getCells()[6].setProperty("editable", true);
 			//Columna commoditie
 			oRowEdited.getCells()[7].setProperty("editable", true);
 			//Columna precio productivo

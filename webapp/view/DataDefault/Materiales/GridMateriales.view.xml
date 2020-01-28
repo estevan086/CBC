@@ -64,20 +64,22 @@
 					<Column autoResizable="true" width="5rem" filterProperty="MDEF_UMD">
 						<m:Label text="Unidad Medida"/>
 						<template>
-							<m:Text text="{MDEF_UMD}" wrapping="false"/>
+							<!--<m:Text text="{MDEF_UMD}" wrapping="false"/>-->
+							<m:Input value="{MDEF_UMD}" editable="false"/>
 						</template>
 					</Column>
 					<Column autoResizable="true" width="5rem" filterProperty="MDEF_MONEDA">
 						<m:Label text="Moneda"/>
 						<template>
-							<m:Text text="{MDEF_MONEDA}" wrapping="false"/>
-							<!--<m:Input value="{MDEF_MONEDA}" editable="false"/>-->
+							<!--<m:Text text="{MDEF_MONEDA}" wrapping="false"/>-->
+							<m:Input value="{MDEF_MONEDA}" editable="false"/>
 						</template>
 					</Column>
 					<Column autoResizable="true" width="5rem" filterProperty="MDEF_PESOMATERIAL">
 						<m:Label text="Peso Material"/>
 						<template>
-							<m:Text text="{MDEF_PESOMATERIAL}" wrapping="false"/>
+							<!--<m:Text text="{MDEF_PESOMATERIAL}" wrapping="false"/>-->
+							<m:Input value="{MDEF_PESOMATERIAL}" type="Number" editable="false"/>
 						</template>
 					</Column>
 					<Column autoResizable="true" width="10rem" filterProperty="MDEF_COMMODITIE">
