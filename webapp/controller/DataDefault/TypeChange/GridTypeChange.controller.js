@@ -1,224 +1,146 @@
 jQuery.sap.require("cbc.co.simulador_costos.Formatter");
-sap.ui.define([
-	"sap/ui/core/mvc/Controller",
-	"sap/ui/model/json/JSONModel",
-	"sap/m/MessageToast",
-	"sap/ui/core/format/DateFormat",
-	"sap/ui/table/library",
-	"sap/ui/model/Filter",
-	"sap/ui/model/FilterOperator"
-], function(Controller, JSONModel, MessageToast, DateFormat, library, Filter, FilterOperator) {
+sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core/routing/History", "sap/ui/core/library",
+	"sap/ui/model/json/JSONModel", "sap/m/MessageToast",
+	"sap/ui/table/RowSettings", 'sap/m/MessageBox'
+], function (Controller, History, CoreLibrary, JSONModel, MessageToast, RowSettings, MessageBox) {
 	"use strict";
-
-	var SortOrder = library.SortOrder;
-	
+	var updatedRecords = [];
+	var that = this;
+	that.updatedRecords = [];
 	return Controller.extend("cbc.co.simulador_costos.controller.DataDefault.TypeChange.GridTypeChange", {
 
-		onInit : function() {
-			// set explored app's demo model on this sample
-			var json = this.initSampleDataModel();
-			// Setting json to current view....
-				//var json = new sap.ui.model.json.JSONModel("model/products.json");
-			this.getView().setModel(json);
-			
-			var fnPress = this.handleActionPress.bind(this);
-			var fnfrPress = this.frmLogisticPress.bind(this);
+		onInit: function () {
 
-		// 	this.modes = [
-		// 		{
-		// 			key: "NavigationDelete",
-		// 			text: "Navigation & Delete",
-		// 			handler: function(){
-		// 				var oTemplate = new sap.ui.table.RowAction({items: [
-		// 					new sap.ui.table.RowActionItem({icon: "sap-icon://edit", text: "Edit", press:  fnfrPress}),
-		// 					new sap.ui.table.RowActionItem({type: "Delete", press: fnPress})
-		// 				]});
-		// 				return [2, oTemplate];
-		// 			}
-		// 		}
-		// 	];
-		// 	this.getView().setModel(new JSONModel({items: this.modes}), "modes");
-		// 	this.switchState("NavigationDelete");
-		 },
-		
-		initSampleDataModel : function() {
-			var oModel = new JSONModel();
-			//var oDateFormat = DateFormat.getDateInstance({source: {pattern: "timestamp"}, pattern: "dd/MM/yyyy"});
+			var oModelV = new JSONModel({
+				busy: true,
+				Bezei: ""
+			});
+			this.setModel(oModelV, "modelView");
 
-			jQuery.ajax("model/TasaCambio.json", {
-				dataType: "json",
-				success: function(oData) {
-					var aTemp1 = [];
-					var aTemp2 = [];
-					var aSuppliersData = [];
-					var aCategoryData = [];
-					for (var i = 0; i < oData.TASACAMBIO.length; i++) {
-						var oProduct = oData.TASACAMBIO[i];
-						if (oProduct.TIPO && jQuery.inArray(oProduct.TIPO, aTemp1) < 0) {
-							aTemp1.push(oProduct.TIPO);
-							aSuppliersData.push({Name: oProduct.TIPO});
-						}
-						if (oProduct.PAIS && jQuery.inArray(oProduct.PAIS, aTemp2) < 0) {
-							aTemp2.push(oProduct.PAIS);
-							aCategoryData.push({Name: oProduct.PAIS});
-						}
-						oProduct.DeliveryDate = (new Date()).getTime() - (i % 10 * 4 * 24 * 60 * 60 * 1000);
-						//var d = new Date(oProduct.DeliveryDate);
-						//d = formatTime(d);
-						//oProduct.DeliveryDateStr = oDateFormat.format(new Date(oProduct.DeliveryDate));
-						oProduct.Heavy = oProduct.WeightMeasure > 1000 ? "true" : "false";
-						oProduct.Available = oProduct.Status === "Available" ? true : false;
+			var myRoute = this.getOwnerComponent().getRouter().getRoute("rtChTypeChange");
+			myRoute.attachPatternMatched(this.onMyRoutePatternMatched, this);
+		},
+
+		onMyRoutePatternMatched: function (event) {
+			this.GetTypeChange();
+		},
+
+		GetTypeChange: function () {
+			/*	var oModel = this.getView().getModel("ModelSimulador");
+				oModel.read("/periodoSet", {
+					success: function (oData, response) {
+						var data = new sap.ui.model.json.JSONModel();
+						data.setProperty("/CodTypeChange", oData.results);
+						this.getOwnerComponent().setModel(data, "TypeChange");
+						this.getModel("modelView").setProperty("/busy", false);
+					}.bind(this),
+					error: function (oError) {
+						this.showGeneralError({
+							oDataError: oError
+						});
+						this.getModel("modelView").setProperty("/busy", false);
 					}
-
-					oData.Suppliers = aSuppliersData;
-					oData.Categories = aCategoryData;
-
-					oModel.setData(oData);
-				},
-				error: function() {
-					jQuery.sap.log.error("failed to load json");
-				}
-			});
-
-			return oModel;
+				});*/
 		},
-		
-		switchState : function(sKey) {
-			var oTable = this.byId("tblTasaCambio");
-			var iCount = 0;
-			var oTemplate = oTable.getRowActionTemplate();
-			if (oTemplate) {
-				oTemplate.destroy();
-				oTemplate = null;
-			}
 
-			for (var i = 0; i < this.modes.length; i++) {
-				if (sKey === this.modes[i].key) {
-					var aRes = this.modes[i].handler();
-					iCount = aRes[0];
-					oTemplate = aRes[1];
-					break;
-				}
-			}
-
-			oTable.setRowActionTemplate(oTemplate);
-			oTable.setRowActionCount(iCount);
-		},
-		
-		handleActionPress : function(oEvent) {
-			var oRow = oEvent.getParameter("row");
+		handleEditPress: function (oEvent, Data) {
+		/*	var oRow = oEvent.getParameter("row");
 			var oItem = oEvent.getParameter("item");
-			MessageToast.show("Item " + (oItem.getText() || oItem.getType()) + " pressed for product with id " +
-				this.getView().getModel().getProperty("ProductId", oRow.getBindingContext()));
-		},
-		
-		frmLogisticPress: function(oEvent) {
-			//this.onPersonalizationDialogPress();
-			this.LogisticaDisplay = sap.ui.xmlfragment("cbc.co.simulador_costos.view.Utilities.fragments.AdminTypeChange", this);
-			this.LogisticaDisplay.open();
-			//this.getOwnerComponent().OpnFrmLogitica();
-		},
-		
-		closeDialog: function() {
-			this.LogisticaDisplay.close();
-		},
-	
-		updateMultipleSelection: function(oEvent) {
-			var oMultiInput = oEvent.getSource(),
-				sTokensPath = oMultiInput.getBinding("tokens").getContext().getPath() + "/" + oMultiInput.getBindingPath("tokens"),
-				aRemovedTokensKeys = oEvent.getParameter("removedTokens").map(function(oToken) {
-					return oToken.getKey();
-				}),
-				aCurrentTokensData = oMultiInput.getTokens().map(function(oToken) {
-					return {"Key" : oToken.getKey(), "Name" : oToken.getText()};
-				});
 
-			aCurrentTokensData = aCurrentTokensData.filter(function(oToken){
-				return aRemovedTokensKeys.indexOf(oToken.Key) === -1;
-			});
+			var oTable = this.byId("tblCommodities");
+			var oRowData = oEvent.getSource().getBindingContext().getProperty();
 
-			oMultiInput.getModel().setProperty(sTokensPath, aCurrentTokensData);
-		},
-
-		formatAvailableToObjectState : function(bAvailable) {
-			return bAvailable ? "Success" : "Error";
-		},
-
-		formatAvailableToIcon : function(bAvailable) {
-			return bAvailable ? "sap-icon://accept" : "sap-icon://decline";
-		},
-
-		handleDetailsPress : function(oEvent) {
-			MessageToast.show("Details for product with id " + this.getView().getModel().getProperty("ProductId", oEvent.getSource().getBindingContext()));
-		},
-
-		onPaste: function(oEvent) {
-			var aData = oEvent.getParameter("data");
-			sap.m.MessageToast.show("Pasted Data: " + aData);
-		},
-		
-		getSelectedIndices: function(evt) {
-			var aIndices = this.byId("tblTasaCambio").getSelectedIndices();
-			var sMsg;
-			if (aIndices.length < 1) {
-				sMsg = "no item selected";
-			} else {
-				sMsg = aIndices;
+			for (var i = 0; i < oTable.getModel().getData().lstItemsCommodities.length; i++) {
+				var oObj = oTable.getModel().getData().lstItemsCommodities[i];
+				oObj.editable = false;
+				oObj.highlight = "None";
 			}
-			MessageToast.show(sMsg);
-		},
-		
-		clearAllSortings : function(oEvent) {
-			var oTable = this.byId("tblTasaCambio");
-			oTable.getBinding("rows").sort(null);
-			this._resetSortingState();
-		},
+			oTable.getModel().setProperty(oEvent.getSource().getBindingContext().getPath() + "/editable", true);
+			oTable.getModel().setProperty(oEvent.getSource().getBindingContext().getPath() + "/highlight", "Information");
+			oTable.getModel().setProperty(oEvent.getSource().getBindingContext().getPath() + "/navigated", true);
 
-		sortCategories : function(oEvent) {
-			var oView = this.getView();
-			var oTable = oView.byId("tblTasaCambio");
-			var oCategoriesColumn = oView.byId("categories");
+			var oEntidad = {};
+			var oPath = oEvent.getSource().getBindingContext().sPath;
 
-			oTable.sort(oCategoriesColumn, this._bSortColumnDescending ? SortOrder.Descending : SortOrder.Ascending, /*extend existing sorting*/true);
-			this._bSortColumnDescending = !this._bSortColumnDescending;
+			oEntidad.RowPath = oPath.split("/")[2];
+
+			updatedRecords.push(oEntidad);
+
+			MessageToast.show("Puedes comenzar a " + (oItem.getText() || oItem.getType()) + " el ID " + oRowData.IdCommoditie);*/
+
 		},
 
-		sortCategoriesAndName : function(oEvent) {
-			var oView = this.getView();
-			var oTable = oView.byId("tblTasaCambio");
-			oTable.sort(oView.byId("categories"), SortOrder.Ascending, false);
-			oTable.sort(oView.byId("name"), SortOrder.Ascending, true);
-		},
-		
-		_filter : function() {
-			var oFilter = null;
+		saveTypeChange: function (oEvent) {
+			/*	var oCommodities = [];
 
-			if (this._oGlobalFilter && this._oPriceFilter) {
-				oFilter = new sap.ui.model.Filter([this._oGlobalFilter, this._oPriceFilter], true);
-			} else if (this._oGlobalFilter) {
-				oFilter = this._oGlobalFilter;
-			} else if (this._oPriceFilter) {
-				oFilter = this._oPriceFilter;
+			var oTable = this.byId("tblCommodities");
+
+			var sServiceUrl = this.getView().getModel("ModelSimulador").sServiceUrl,
+				oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true),
+				oEntidad = {},
+				oDetail = {};
+
+			oEntidad = {
+				IdCommoditie: '1111',
+				Descripcion: 'Prueba',
+				detailCommoditiesSet: []
+			};
+
+			for (var i = 0; i < updatedRecords.length; i++) {
+
+				var CurrentRow = updatedRecords[i];
+
+				var oTempRow = oTable.getModel().getData().lstItemsCommodities[CurrentRow.RowPath];
+
+				oDetail = {
+					IdFormula: oTempRow.IdFormula,
+					TxtFormula: oTempRow.TxtFormula,
+					IdCommoditie: oTempRow.IdCommoditie,
+					Sociedad: oTempRow.Sociedad,
+					Centro: oTempRow.Centro,
+					UnidadMedida: oTempRow.UnidadMedida,
+					Moneda: oTempRow.Moneda,
+					Mes: oTempRow.Mes,
+					Year: oTempRow.Year,
+					PrecioMaterial: oTempRow.PrecioMaterial,
+					OtrosCostos: oTempRow.OtrosCostos
+						// Recordmode: '1'
+				};
+
+				oEntidad.detailCommoditiesSet.push(oDetail);
 			}
 
-			this.byId("tblTasaCambio").getBinding("rows").filter(oFilter, "Application");
-		},
-		
-		filterGlobally : function(oEvent) {
-			var sQuery = oEvent.getParameter("query");
-			this._oGlobalFilter = null;
+			var oCreate = this.fnUpdateEntity(oModelService, "/headerCommoditiesSet", oEntidad);
 
-			if (sQuery) {
-				this._oGlobalFilter = new Filter([
-					new Filter("Name", FilterOperator.Contains, sQuery),
-					new Filter("Category", FilterOperator.Contains, sQuery)
-				], false);
+			if (oCreate.tipo === 'S') {
+
+				MessageBox.show(
+					'Datos guardados correctamente', {
+						icon: MessageBox.Icon.SUCCESS,
+						title: "Exito",
+						actions: [MessageBox.Action.OK],
+						onClose: function (oAction) {
+							if (oAction === sap.m.MessageBox.Action.OK) {
+
+								updatedRecords = [];
+								return;
+							}
+						}
+					}
+				);
+
+			} else if (oCreate.tipo === 'E') {
+
+				MessageBox.show(
+					oCreate.msjs, {
+						icon: MessageBox.Icon.ERROR,
+						title: "Error"
+					}
+				);
+
 			}
-
-			this._filter();
+*/
 		}
-		
-		
-	});
 
+	});
 });
