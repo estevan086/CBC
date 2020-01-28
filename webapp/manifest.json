@@ -112,6 +112,10 @@
 					"pattern": "",
 					"target": "parentTarget"
 				},
+				"rtHomeExpanded": {
+					"pattern": "",
+					"target": "rtHomeTarget"
+				},
 				"home2": {
 					"pattern": "home",
 					"target": "homeTarget"
@@ -198,7 +202,7 @@
 				},
 				"rtChVolumen": {
 					"pattern": "rtChVolumen",
-					"target": "rtChVolumenTarget"
+					"target": "rtHomeTarget"
 				},
 				"rtChAdminCL": {
 					"pattern": "rtChAdminCL",
