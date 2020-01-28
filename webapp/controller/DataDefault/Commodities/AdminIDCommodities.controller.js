@@ -18,12 +18,15 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 		},
 
 		getMasterCommodities: function () {
-			var oModel = this.getView().getModel("ModelSimulador");
+			var oModel = this.getView().getModel("ModelSimulador"),
+				oModelLocal = this.getView().getModel("Commodities");
+			//	data = oModelLocal.getProperty("/");
+
 			oModel.read("/headerCommoditiesSet", {
 				success: function (oData, response) {
-					var data = new sap.ui.model.json.JSONModel();
-					data.setProperty("/CodCommodities", oData.results);
-					this.getOwnerComponent().setModel(data, "Commodities");
+					var dataModel = new sap.ui.model.json.JSONModel();
+					dataModel.setProperty("/CodCommodities", oData.results);
+					this.getOwnerComponent().setModel(dataModel, "Commodities");
 				}.bind(this),
 				error: function (oError) {
 					this.showGeneralError({
@@ -35,7 +38,7 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 
 			var txtDescGrid = this.byId("txtDescGrid");
 			var GetValueEdited = function (oEvent) {
-				oModel.create("/headerCommoditiesUpdate", {
+				oModel.update("/headerCommoditiesSet", {
 					IdCommoditie: this.getParent().getCells()[0].getText(),
 					Descripcion: this.getParent().getCells()[1].getValue(),
 					status: "1"
@@ -48,7 +51,7 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 						MessageToast.show(oError.responseText);
 					}.bind(this)
 				});
-			};
+			}.bind(this);
 			txtDescGrid.attachBrowserEvent("focusout", GetValueEdited);
 		},
 
@@ -92,20 +95,18 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 
 		handleDeletePress: function (oEvent, Data) {
 			var oModel = this.getView().getModel("ModelSimulador");
-			oModel.create("/headerCommoditiesUpdate", {
+			var status = "0";
+			oModel.update("/headerCommoditiesSet", {
 				IdCommoditie: oEvent.getSource().getParent().getParent().getCells()[0].getText(),
 				Descripcion: oEvent.getSource().getParent().getParent().getCells()[1].getValue(),
-				status: "0"
+				status: status
 			}, {
 				success: function (oData, oResponse) {
 					MessageToast.show(this.getView().getModel("i18n").getResourceBundle().getText("NotificacionGuardarOk"));
-					this.getMasterCommodities();
+					//	this.getMasterCommodities();
 				}.bind(this),
 				error: function (oError) {
-					this.showGeneralError({
-						oDataError: oError
-					});
-					this.getModel("modelView").setProperty("/busy", false);
+					MessageToast.show(oError.responseText);
 				}.bind(this)
 			});
 		},

@@ -16,14 +16,6 @@
 				"settings": {
 					"localUri": "localService/metadata.xml"
 				}
-			},
-			"Northwind": {
-				"uri": "/Northwind/V2/Northwind/Northwind.svc/",
-				"type": "OData",
-				"settings": {
-					"odataVersion": "2.0",
-					"localUri": "localService/metadata.xml"
-				}
 			}
 		},
 		"sourceTemplate": {
@@ -89,14 +81,16 @@
 				"dataSource": "Z_SIMULADOR_SRV",
 				"preload": true
 			},
-			"Northwind": {
-				"dataSource": "Northwind",
-				"preload": true
-			},
 			"ImgHome": {
 				"type": "sap.ui.model.json.JSONModel",
 				"settings": {},
 				"uri": "model/img.json",
+				"preload": true
+			},
+			"Escenarios": {
+				"type": "sap.ui.model.json.JSONModel",
+				"settings": {},
+				"uri": "model/Escenarios/MatrizEscenarios.json",
 				"preload": true
 			}
 		},
@@ -131,7 +125,7 @@
 					"target": "rtChCommoditiesTarget"
 				},
 				"rtChFromuladora": {
-					"pattern": "rtChFromuladora/{oRowPath}",
+					"pattern": "rtChFromuladora/{oRowPath}/oIdFormula{oIdFormula}/oTxt{oTxt}/oYear{oYear}/oMes{oMes}",
 					"target": "rtChFromuladoraTarget"
 				},
 				"rtChIDCommodities": {
@@ -152,7 +146,7 @@
 				},
 				"rtChProfiles": {
 					"pattern": "Profiles",
-					"target": "rtHomeTarget"
+					"target": "rtChProfilesTarget"
 				},
 				"rtChCentros": {
 					"pattern": "rtChCentros",
@@ -179,8 +173,12 @@
 					"target": "rtHomeTarget"
 				},
 				"rtChMatrizEs": {
-					"pattern": "rtChMatrizEs",
-					"target": "rtHomeTarget"
+					"pattern": "MatrizEscenarios",
+					"target": "rtChMatrizEsTarget"
+				},
+				"rtChMatrizEsNew": {
+					"pattern": "MatrizEscenarios/Nuevo",
+					"target": "rtChMatrizEsNewTarget"	
 				},
 				"rtChAdmonEs": {
 					"pattern": "rtChAdmonEs",
@@ -331,6 +329,13 @@
 				"rtChMatrizEsTarget": {
 					"viewPath": "cbc.co.simulador_costos.view.Escenarios",
 					"viewName": "MatrizEsc",
+					"parent": "parentTarget",
+					"controlId": "parentNavContainer",
+					"transition": "slide"
+				},
+				"rtChMatrizEsNewTarget": {
+					"viewPath": "cbc.co.simulador_costos.view.Escenarios.MatrizEsc",
+					"viewName": "AddEsc",
 					"parent": "parentTarget",
 					"controlId": "parentNavContainer",
 					"transition": "slide"
