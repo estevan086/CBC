@@ -116,7 +116,8 @@
 					<Column width="10rem">
 						<m:Label text="Formula"/>
 						<template>
-							<m:Input value="{TxtFormula}" editable="{editable}"/>
+							<!--<m:Input value="{TxtFormula}" editable="{editable}"/>-->
+								<m:Text text="{TxtFormula}" wrapping="false"/>
 						</template>
 					</Column>
 					<Column width="4rem" hAlign="Center">

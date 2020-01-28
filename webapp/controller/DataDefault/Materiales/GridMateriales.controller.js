@@ -1580,7 +1580,7 @@ sap.ui.define([
 					// Date0: oTempRow.MDEF_IDMATERIAL,
 					// usuario: oTempRow.MDEF_IDMATERIAL,
 					preprodc: oTempRow.Precio_Productivo.toString(),
-					costconv: oTempRow.Costo_Conversión.toString(),
+					costconv: oTempRow.Costo_Conversion.toString(),
 					costadic: oTempRow.Costo_Adicional.toString(),
 					costenv: oTempRow.Costo_Envio.toString(),
 					costmat: oTempRow.Costo_Material.toString(),
