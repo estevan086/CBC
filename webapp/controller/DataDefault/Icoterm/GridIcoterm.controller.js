@@ -83,9 +83,9 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 			var msn = "";
 			if (valDesc !== "") {
 				var oEntidad = {};
-				oEntidad.yidAuton = "ICO9999";
+				oEntidad.yidAuton = "01";
 				oEntidad.yicoterm = valDesc;
-
+				
 				var oCreate = this.fnCreateEntity(oModelService, "/IcotermSet", oEntidad);
 
 				if (oCreate.tipo === "S") {

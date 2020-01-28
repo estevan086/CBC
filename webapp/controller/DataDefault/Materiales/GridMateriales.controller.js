@@ -47,6 +47,7 @@ sap.ui.define([
 			this.loadModel();
 			this.loadModelCommoditie();
 			this.loadModelCommoditieDetail();
+			this.loadModelIcoterm();
 			// this.editCellsTable(false);
 
 			// var fnPress = this.handleActionPress.bind(this);
@@ -960,11 +961,13 @@ sap.ui.define([
 						MDEF_MONEDA: value.Currency,
 						MDEF_PESOMATERIAL: value.NetWeight,
 						MDEF_COMMODITIE: value.commodit,
+						MDEF_COMMODITIE_ID: value.commodit,
 						MDEF_PRECIOPRODUCTIVO: value.preprodc,
 						MDEF_COSTOCONVERSION: value.costconv,
 						MDEF_COSTOADICIONAL: value.costadic,
 						MDEF_COSTOENVIO: value.costenv,
-						MDEF_ICOTERM: value.Incoterms,
+						MDEF_ICOTERM: value.yicoterm,
+						MDEF_ICOTERM_ID: value.yicoterm,
 						MDEF_COSTOMATERIAL: value.costmat,
 						MDEF_FORMULAOTROSCOSTOS: value.fotrcost,
 						MDEF_OTROSCOSTOS: value.otrocost,
@@ -1034,13 +1037,13 @@ sap.ui.define([
 					subcateg: oTempRow.MDEF_IDSUBCATEGORIA,
 					yfamilia: oTempRow.MDEF_IDFAMILIA,
 					ysubfamil: oTempRow.MDEF_IDSUFAMILIA,
-					Fiscyear: oTempRow.MDEF_PERIODO,
+					yfiscyear: oTempRow.MDEF_PERIODO,
 					// Fiscvarnt: oTempRow.MDEF_IDMATERIAL,
-					Fiscper3: oTempRow.MDEF_MES,
+					yfiscper3: oTempRow.MDEF_MES,
 					NetWeight: oTempRow.MDEF_PESOMATERIAL,
 					// UnitOfWt: oTempRow.MDEF_IDMATERIAL,
-					commodit: oTempRow.MDEF_COMMODITIE.toString(),
-					Incoterms: oTempRow.MDEF_ICOTERM.toString(),
+					commodit: oTempRow.MDEF_COMMODITIE_ID.toString(),
+					yicoterm: oTempRow.MDEF_ICOTERM_ID.toString(),
 					fotrcost: oTempRow.MDEF_FORMULAOTROSCOSTOS.toString(),
 					// Version: oTempRow.MDEF_IDMATERIAL,
 					// estado: oTempRow.MDEF_IDMATERIAL,
@@ -1580,7 +1583,7 @@ sap.ui.define([
 					// Date0: oTempRow.MDEF_IDMATERIAL,
 					// usuario: oTempRow.MDEF_IDMATERIAL,
 					preprodc: oTempRow.Precio_Productivo.toString(),
-					costconv: oTempRow.Costo_Conversión.toString(),
+					costconv: oTempRow.Costo_Conversion.toString(),
 					costadic: oTempRow.Costo_Adicional.toString(),
 					costenv: oTempRow.Costo_Envio.toString(),
 					costmat: oTempRow.Costo_Material.toString(),
@@ -1696,7 +1699,68 @@ sap.ui.define([
 			
 			return eval(vFormula);
 
-		}
+		},
+		
+		/**
+		 * Load model data in Combobox Icoterm
+		 * @function
+		 * @param 
+		 * @private
+		 */
+		loadModelIcoterm: function (event) {
+			var sServiceUrl = "",
+				oModelService = "",
+				aListData = [];
+
+			sServiceUrl = this.getOwnerComponent().getModel("ModelSimulador").sServiceUrl;
+			oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true);
+
+			//Leer datos del ERP
+			var oRead = this.fnReadEntity(oModelService, "/IcotermSet", null);
+
+			if (oRead.tipo === "S") {
+				aListData = oRead.datos.results;
+			} else {
+				MessageBox.error(oRead.msjs, null, "Mensaje del sistema", "OK", null);
+				return;
+			}
+
+			// this.mapDataComboboxCommoditie(aListData);
+			this.loadModelComboBoxIcoterm(aListData);
+		},
+		
+		/**
+		 * load model comboBox Commoditie
+		 * @function
+		 * @param 
+		 * @private
+		 */
+		loadModelComboBoxIcoterm: function (p_listIcoterm) {
+
+			var oTable = this.byId("tblMaterial");
+			oTable.getModel().setProperty("/LstIcoterm", p_listIcoterm);
+			oTable.getModel().refresh(true);
+
+		},
+		
+		/**
+		 * select icoterm combobox
+		 * @function
+		 * @param 
+		 * @private
+		 */
+		onChangeIcoterm: function (oEvent) {
+			var oItem = oEvent.getParameter("selectedItem");
+			var oTableCommodities = this.byId("tblMaterial");
+			var oItemObject = oItem.getBindingContext().getObject();
+			var oUnidadSeleccionada = oItemObject.yidAuton;
+			var oTableItem = oEvent.getSource().getParent();
+			var oTableItemObject = oTableItem.getBindingContext().getObject();
+			oTableItemObject.MDEF_ICOTERM = oUnidadSeleccionada;
+
+			oTableCommodities.getModel().refresh();
+
+		}		
 
 	});
 

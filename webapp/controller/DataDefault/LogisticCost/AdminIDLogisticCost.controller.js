@@ -2,8 +2,10 @@ sap.ui.define([
 	"cbc/co/simulador_costos/controller/BaseController",
 	"sap/ui/model/Filter",
 	"sap/m/MessageToast",
-	"sap/ui/model/json/JSONModel"
-], function (BaseController, Filter, MessageToast, JSONModel) {
+	"sap/ui/model/json/JSONModel",
+	"sap/ui/core/message/Message",
+	"sap/ui/core/MessageType"
+], function (BaseController, Filter, MessageToast, JSONModel, Message, MessageType) {
 	"use strict";
 
 	return BaseController.extend("cbc.co.simulador_costos.controller.DataDefault.LogisticCost.AdminIDLogisticCost", {
@@ -15,6 +17,7 @@ sap.ui.define([
 		 */
 		onInit: function () {
 
+			this.initMessageManager();
 			this.setModel(new JSONModel({
 				busy: true,
 				Bezei: ""
@@ -96,7 +99,7 @@ sap.ui.define([
 					if (pLast === false) {
 						MessageToast.show(this.getView().getModel("i18n").getResourceBundle().getText("NotificacionModificacionOk"));
 						this.getLogisticCostData();
-					}else{
+					} else {
 						this.onUpdateLogisticCost();
 					}
 				}.bind(this),
@@ -144,17 +147,28 @@ sap.ui.define([
 
 			oModel.remove("/codigocostologisticoSet('" + oRow.getCells()[0].getText() + "')", {
 				success: function (oData, oResponse) {
-					if (oData === undefined) {
+					if (oResponse !== undefined) {
+
 						this.getModel("modelView").setProperty("/busy", false);
 						var oMessage = JSON.parse(oResponse.headers["sap-message"]);
 
-						this.showGeneralError({
-							message: oMessage.message,
-							title: this.getResourceBundle().getText("ErrorBorrado")
-						});
-
-					} else {
-						this.getLogisticCostData();
+						if (oMessage.severity === "error") {
+							this.showGeneralError({
+								message: oMessage.message,
+								title: this.getResourceBundle().getText("ErrorBorrado")
+							});
+							this.addMessage(new Message({
+								message: oMessage.message,
+								type: MessageType.Error
+							}));
+						} else {
+							this.addMessage(new Message({
+								message: oMessage.message,
+								type: MessageType.Success
+							}));
+							MessageToast.show(oMessage.message);
+							this.getLogisticCostData();
+						}
 					}
 				}.bind(this),
 				error: function (oError) {
