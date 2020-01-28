@@ -34,17 +34,6 @@ sap.ui.define([
 		//	this._helloDialog = new HelloDialog(this.getRootControl());
 			
             this.getRouter().initialize();
-		},
-
-		exit : function() {
-			this._helloDialog.destroy();
-			delete this._helloDialog;
-		},
-
-		openHelloDialog : function () {
-			this._helloDialog.open();
 		}
-		
-		
 	});
 });
