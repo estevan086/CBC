@@ -116,6 +116,10 @@
 					"pattern": "",
 					"target": "rtHomeTarget"
 				},
+				"rtNone": {
+					"pattern": "",
+					"target": "rtHomeTarget"
+				},
 				"home2": {
 					"pattern": "home",
 					"target": "homeTarget"

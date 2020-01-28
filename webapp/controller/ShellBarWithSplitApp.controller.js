@@ -45,7 +45,7 @@ sap.ui.define([
 					"title": "Administracion",
 					"icon": "sap-icon://employee",
 					"expanded": false,
-					"key": "rtHome",
+					"key": "rtNone",
 					"items": [{
 						"title": "Centros",
 						"key": "rtChCentros"
@@ -63,7 +63,7 @@ sap.ui.define([
 					"title": "Datos Default",
 					"icon": "sap-icon://accounting-document-verification",
 					"expanded": false,
-					"key": "rtHome",
+					"key": "rtNone",
 					"items": [{
 						"title": "Mantenimiento Tipo Cambio",
 						"key": "rtChTypeChange"
@@ -87,7 +87,7 @@ sap.ui.define([
 					"title": "Commodities",
 					"icon": "sap-icon://factory",
 					"expanded": false,
-					"key": "rtHome",
+					"key": "rtNone",
 					"items": [{
 						"title": "Mantenimiento Commodities",
 						"key": "rtChMantenimientoCommodities"
@@ -96,7 +96,7 @@ sap.ui.define([
 					"title": "Materiales",
 					"icon": "sap-icon://product",
 					"expanded": false,
-					"key": "rtHome",
+					"key": "rtNone",
 					"items": [{
 						"title": "Mantenimiento Materiales",
 						"key": "rtChMantenimientoMateriales"
@@ -105,7 +105,7 @@ sap.ui.define([
 					"title": "Costos Log\u00EDstico",
 					"icon": "sap-icon://travel-expense",
 					"expanded": false,
-					"key": "rtHome",
+					"key": "rtNone",
 					"items": [{
 						"title": "Mantenimiento Costos Log\u00EDstico",
 						"key": "rtChCostosLogisticos?version=true"
@@ -114,7 +114,7 @@ sap.ui.define([
 					"title": "Carga BW",
 					"icon": "sap-icon://upload-to-cloud",
 					"expanded": false,
-					"key": "rtHome",
+					"key": "rtNone",
 					"items": [{
 						"title": "Carga BW",
 						"key": "rtChVolumen"
@@ -123,7 +123,7 @@ sap.ui.define([
 					"title": "Escenarios",
 					"icon": "sap-icon://simulate",
 					"expanded": false,
-					"key": "rtHome",
+					"key": "rtNone",
 					"items": [{
 							"title": "Matriz de Escenarios",
 							"key": "rtChMatrizEs"
@@ -141,7 +141,7 @@ sap.ui.define([
 					"title": "COGS",
 					"icon": "sap-icon://settings",
 					"expanded": false,
-					"key": "rtHome",
+					"key": "rtNone",
 					"items": [{
 						"title": "Reportes COGS",
 						"key": "rtCCOGS"
@@ -150,7 +150,7 @@ sap.ui.define([
 					"title": "Reportes",
 					"icon": "sap-icon://pie-chart",
 					"expanded": false,
-					"key": "rtHome",
+					"key": "rtNone",
 					"items": [{
 						"title": "Visualizacion",
 						"key": "rtChVisualizacion"
