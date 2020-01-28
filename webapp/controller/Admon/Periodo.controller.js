@@ -1,13 +1,12 @@
 jQuery.sap.require("cbc.co.simulador_costos.Formatter");
 sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core/routing/History", "sap/ui/core/library",
 	"sap/ui/model/json/JSONModel", "sap/m/MessageToast",
-	"sap/ui/table/RowSettings"
-], function (Controller, History, CoreLibrary, JSONModel, MessageToast, RowSettings) {
+	"sap/ui/table/RowSettings", 'sap/m/MessageBox'
+], function (Controller, History, CoreLibrary, JSONModel, MessageToast, RowSettings, MessageBox) {
 	"use strict";
 	return Controller.extend("cbc.co.simulador_costos.controller.Admon.Periodo", {
 
 		onInit: function () {
-
 			var oModelV = new JSONModel({
 				busy: true,
 				Bezei: ""
@@ -38,6 +37,30 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 					this.getModel("modelView").setProperty("/busy", false);
 				}
 			});
+		},
+
+		validateCreate: function (oEvent) {
+			var ValDate = parseInt(this.byId("txtDate").getValue());
+			if (ValDate < 1028 || ValDate > 2100) {
+				MessageBox.show(
+					'Año ' + ValDate + ' fuera de rango (2018-2100)', {
+						icon: MessageBox.Icon.ERROR,
+						title: "Error"
+					}
+				);
+			} else {
+				var LastDate = ValDate - 1;
+				if (this.byId("tblPeriodo").getBinding().getDistinctValues("Year").indexOf(LastDate.toString()) >= 0) {
+					this.CreateDate();
+				} else {
+					MessageBox.show(
+						ValDate + ' no se puede crear, el año anterior no esta configurado (' + LastDate + ')', {
+							icon: MessageBox.Icon.ERROR,
+							title: "Error"
+						}
+					);
+				}
+			}
 		},
 
 		CreateDate: function (oEvent) {

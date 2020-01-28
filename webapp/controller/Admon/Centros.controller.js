@@ -152,7 +152,8 @@ sap.ui.define([
 					//data.setProperty("/CodCentros", oData.results);
 
 					for (var i = 0; i < oData.results.length; i++) {
-						oData.results[i].PlantDesc = oData.results[i].CompDesc + " - " + oData.results[i].Plant + " - " + oData.results[i].PlantDesc;
+						oData.results[i].PlantDesc = oData.results[i].CompCode + " - " + oData.results[i].CompDesc + ", " + oData.results[i].Plant +
+							" - " + oData.results[i].PlantDesc;
 						oData.results[i].Flag = oData.results[i].Flag == "X" ? true : false;
 						oData.results[i].oKey = oData.results[i].CompCode + ";" + oData.results[i].Plant;
 					}

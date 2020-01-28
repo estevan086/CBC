@@ -15,7 +15,7 @@
 								<core:ListItem key="{CompCode}" text="{CompDesc}" additionalText="{CompCode}"/>
 							</ComboBox>
 							<ToolbarSpacer/>
-							<Button icon="sap-icon://save" type="Emphasized" text="Ver Centros Activos" tooltip="Ver Centros Activos" press="ShowCentrosActivos"/>
+							<Button icon="sap-icon://activities" type="Emphasized" text="Ver Centros Activos" tooltip="Ver Centros Activos" press="ShowCentrosActivos"/>
 						</content>
 					</OverflowToolbar>
 				</ui:extension>

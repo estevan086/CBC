@@ -13,16 +13,15 @@ sap.ui.define([
 	var CController = Controller.extend("cbc.co.simulador_costos.controller.ShellBarWithSplitApp", {
 		onInit: function () {
 
-			var toolPage = this.byId("toolPage");
-			toolPage.setSideExpanded(toolPage.getSideExpanded());
-
-			var showValueHelp = function () {
-				var toolPageCurrent = this.getParent().byId("toolPage");
-				toolPageCurrent.setSideExpanded(toolPageCurrent.getSideExpanded());
+		/*	var showValueHelp = function () {
+				var toolPageCurrent = this.getParent().getParent().byId("toolPage");
+				toolPageCurrent.setSideExpanded(!toolPageCurrent.getSideExpanded());
 			};
+        */
+			this.byId("toolPage").setSideExpanded(!this.byId("toolPage").getSideExpanded());
+			/*var toolPage = this.byId("snTool");
+			toolPage.attachBrowserEvent("dblclick", showValueHelp);*/
 
-			toolPage.attachBrowserEvent("dblclick", showValueHelp);
-		
 			// const router = this.getOwnerComponent().getRouter();
 			// router.attachRoutePatternMatched(this.onRoutePatternMatched.bind(this));
 			// this.getView().addEventDelegate({
@@ -33,6 +32,11 @@ sap.ui.define([
 			this.oModel.setData({
 				"selectedKey": "rtHome",
 				"navigation": [{
+					"title": "",
+					"icon": "sap-icon://menu",
+					"expanded": false,
+					"key": "rtHomeExpanded"
+				}, {
 					"title": "Home",
 					"icon": "sap-icon://home",
 					"expanded": false,
@@ -41,11 +45,11 @@ sap.ui.define([
 					"title": "Administracion",
 					"icon": "sap-icon://employee",
 					"expanded": false,
-					"key": "rtAdministracion",
+					"key": "rtNone",
 					"items": [{
 						"title": "Centros",
 						"key": "rtChCentros"
-					},  {
+					}, {
 						"title": "Periodos",
 						"key": "rtChPeriodo"
 					}, {
@@ -59,7 +63,7 @@ sap.ui.define([
 					"title": "Datos Default",
 					"icon": "sap-icon://accounting-document-verification",
 					"expanded": false,
-					"key": "rtDataDefault",
+					"key": "rtNone",
 					"items": [{
 						"title": "Mantenimiento Tipo Cambio",
 						"key": "rtChTypeChange"
@@ -83,6 +87,7 @@ sap.ui.define([
 					"title": "Commodities",
 					"icon": "sap-icon://factory",
 					"expanded": false,
+					"key": "rtNone",
 					"items": [{
 						"title": "Mantenimiento Commodities",
 						"key": "rtChMantenimientoCommodities"
@@ -91,6 +96,7 @@ sap.ui.define([
 					"title": "Materiales",
 					"icon": "sap-icon://product",
 					"expanded": false,
+					"key": "rtNone",
 					"items": [{
 						"title": "Mantenimiento Materiales",
 						"key": "rtChMantenimientoMateriales"
@@ -99,6 +105,7 @@ sap.ui.define([
 					"title": "Costos Log\u00EDstico",
 					"icon": "sap-icon://travel-expense",
 					"expanded": false,
+					"key": "rtNone",
 					"items": [{
 						"title": "Mantenimiento Costos Log\u00EDstico",
 						"key": "rtChCostosLogisticos?version=true"
@@ -107,6 +114,7 @@ sap.ui.define([
 					"title": "Carga BW",
 					"icon": "sap-icon://upload-to-cloud",
 					"expanded": false,
+					"key": "rtNone",
 					"items": [{
 						"title": "Carga BW",
 						"key": "rtChVolumen"
@@ -115,6 +123,7 @@ sap.ui.define([
 					"title": "Escenarios",
 					"icon": "sap-icon://simulate",
 					"expanded": false,
+					"key": "rtNone",
 					"items": [{
 							"title": "Matriz de Escenarios",
 							"key": "rtChMatrizEs"
@@ -132,6 +141,7 @@ sap.ui.define([
 					"title": "COGS",
 					"icon": "sap-icon://settings",
 					"expanded": false,
+					"key": "rtNone",
 					"items": [{
 						"title": "Reportes COGS",
 						"key": "rtCCOGS"
@@ -140,6 +150,7 @@ sap.ui.define([
 					"title": "Reportes",
 					"icon": "sap-icon://pie-chart",
 					"expanded": false,
+					"key": "rtNone",
 					"items": [{
 						"title": "Visualizacion",
 						"key": "rtChVisualizacion"
@@ -154,6 +165,11 @@ sap.ui.define([
 
 		onItemSelect: function (oEvent) {
 
+			if (oEvent.getParameter("item").getProperty("key") === "rtHomeExpanded") {
+				var toolPageCurrent = this.byId("toolPage");
+				toolPageCurrent.setSideExpanded(!toolPageCurrent.getSideExpanded());
+			}
+
 			var router = this.getOwnerComponent().getRouter(),
 				sKey = oEvent.getParameter("item").getProperty("key"),
 				params = {},
@@ -161,7 +177,7 @@ sap.ui.define([
 				sParams,
 				sValue;
 			//descomponer parametros para enviar
-			if(sKey.toString().indexOf("?") > 0){
+			if (sKey.toString().indexOf("?") > 0) {
 				sParams = sKey.toString().substring(sKey.toString().indexOf("?"), sKey.toString().length);
 				sKey = sKey.toString().replace(sParams, "");
 				aParams = sParams.split("=");
@@ -169,7 +185,7 @@ sap.ui.define([
 				sParams = aParams[0].toString().replace("?", "");
 				params[sParams] = sValue;
 			}
-				
+
 			//if (this._isPageInNavContainer(sKey)) {
 			router.navTo(sKey, params);
 			/*} else {
