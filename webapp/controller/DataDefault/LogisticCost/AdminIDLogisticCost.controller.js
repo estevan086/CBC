@@ -2,8 +2,10 @@ sap.ui.define([
 	"cbc/co/simulador_costos/controller/BaseController",
 	"sap/ui/model/Filter",
 	"sap/m/MessageToast",
-	"sap/ui/model/json/JSONModel"
-], function (BaseController, Filter, MessageToast, JSONModel) {
+	"sap/ui/model/json/JSONModel",
+	"sap/ui/core/message/Message",
+	"sap/ui/core/MessageType"
+], function (BaseController, Filter, MessageToast, JSONModel, Message, MessageType) {
 	"use strict";
 
 	return BaseController.extend("cbc.co.simulador_costos.controller.DataDefault.LogisticCost.AdminIDLogisticCost", {
@@ -15,6 +17,7 @@ sap.ui.define([
 		 */
 		onInit: function () {
 
+			this.initMessageManager();
 			this.setModel(new JSONModel({
 				busy: true,
 				Bezei: ""
@@ -154,7 +157,15 @@ sap.ui.define([
 								message: oMessage.message,
 								title: this.getResourceBundle().getText("ErrorBorrado")
 							});
+							this.addMessage(new Message({
+								message: oMessage.message,
+								type: MessageType.Error
+							}));
 						} else {
+							this.addMessage(new Message({
+								message: oMessage.message,
+								type: MessageType.Success
+							}));
 							MessageToast.show(oMessage.message);
 							this.getLogisticCostData();
 						}

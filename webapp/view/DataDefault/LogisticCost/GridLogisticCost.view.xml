@@ -1,4 +1,4 @@
-<mvc:View xmlns:html="http://www.w3.org/1999/xhtml" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.ui.table" xmlns:m="sap.m" xmlns:u="sap.ui.unified" xmlns:c="sap.ui.core" controllerName="cbc.co.simulador_costos.controller.DataDefault.LogisticCost.GridLogisticCost" displayBlock="true" height="100%">
+<mvc:View xmlns:html="http://www.w3.org/1999/xhtml" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.ui.table" xmlns:m="sap.m" xmlns:u="sap.ui.unified" xmlns:core="sap.ui.core" controllerName="cbc.co.simulador_costos.controller.DataDefault.LogisticCost.GridLogisticCost" displayBlock="true" height="100%">
 	<m:Page showHeader="true" title="{i18n>CostosLogisticos}" enableScrolling="false" class="sapUiContentPadding" busy="{modelView>/busy}">
 		<m:content>
 			<m:FlexBox height="auto" alignItems="Start" justifyContent="Start">
@@ -11,7 +11,21 @@
 				<extension>
 					<m:OverflowToolbar>
 						<m:content>
-							<m:SearchField id="sfMaterial" width="30%" search="onFilterLogisticCost" placeholder="{i18n>MatPlant}"/>
+							<m:Input id="inpMaterial" width="20%" placeholder="{i18n>Material}"/>
+							<m:ComboBox items="{ path: 'ModelSimulador>/centroSet', 
+												 filters: [ { path: 'Flag', operator: 'EQ', value1: 'X' } ] }" 
+										selectedKey="{LogisticCost>Plant}" selectionChange="onselectionChange" placeholder="{i18n>Plant}" >
+								<m:items>
+									<core:ListItem key="{ModelSimulador>Plant}" text="{ModelSimulador>Plant}"/>
+								</m:items>
+							</m:ComboBox>
+							<m:ComboBox items="{path: 'ModelSimulador>/periodoSet', sorter: [{ path: 'Year', group: true }] }" 
+										selectedKey="{LogisticCost>Year}" 
+										selectionChange="onselectionChange" placeholder="{i18n>Year}" >
+								<m:items>
+									<core:ListItem key="{ModelSimulador>Year}" text="{ModelSimulador>Year}"/>
+								</m:items>
+							</m:ComboBox>
 							<m:Button icon="sap-icon://sales-order" text="{i18n>CostEmpty}" tooltip="{i18n>CostEmpty}" press="onCostEmpty"/>
 							<m:ToolbarSpacer/>
 							<m:Button icon="sap-icon://sys-next-page" text="{i18n>Exportar}" tooltip="{i18n>Exportar}" press="onDataExport"/>

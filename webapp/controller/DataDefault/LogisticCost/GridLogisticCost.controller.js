@@ -10,19 +10,14 @@ sap.ui.define([
 ], function (BaseController, JSONModel, MessageToast, Filter, FilterOperator, Message, MessageType) {
 	"use strict";
 	const cDefaultNumValue = "0,000";
-	var oMessageManager;
+	var initialLoad = false;
 
 	return BaseController.extend("cbc.co.simulador_costos.controller.DataDefault.LogisticCost.GridLogisticCost", {
 
 		onInit: function () {
-///MENSAJES
-			// set message model
-			oMessageManager = sap.ui.getCore().getMessageManager();
-			this.setModel(oMessageManager.getMessageModel(), "message");
 
-			// or just do it for the whole view
-			oMessageManager.registerObject(this.getView(), true);
-///FIN MENSAJES
+			this.initMessageManager();
+
 			var oModelV = new JSONModel({
 				busy: false,
 				version: false
@@ -43,13 +38,16 @@ sap.ui.define([
 		},
 		onMyRoutePatternMatched: function (event) {
 			//Cargar datos
-			this.getLogisticCostValoration();
+			if (initialLoad === false) {
+				initialLoad = true;
+				this.getLogisticCostValoration();
+			}
 			var oVModel = this.getModel("modelView");
 			oVModel.version = event.getParameter("arguments").version;
-			
+
 			if (event.getParameter("arguments").version === "true") {
 				this.getView().byId("btnAdmin").setVisible(false);
-			}else{
+			} else {
 				this.getView().byId("btnAdmin").setVisible(true);
 			}
 		},
@@ -381,19 +379,27 @@ sap.ui.define([
 		},
 		onCostEmpty: function (oEvent) {
 			var aFilter = [];
-			
+
 			this.getView().byId("sfMaterial").setValue("");
-			
+
 			aFilter.push(new Filter("CostTotal", FilterOperator.EQ, "0.000"));
 			this.getLogisticCostValoration(aFilter);
+		},
+		onselectionChange: function (oEvent) {
+
 		},
 		onFilterLogisticCost: function (oEvent) {
 			var sQuery = oEvent.getParameter('query'),
 				aFilter = [];
 
 			if (sQuery) {
-				aFilter.push(new Filter("Plant", FilterOperator.Contains, sQuery));
-				aFilter.push(new Filter("Material", FilterOperator.Contains, sQuery));
+				if (oEvent.getSource().getId().toString().indexOf("Material") > 0) {
+					aFilter.push(new Filter("Material", FilterOperator.Contains, sQuery));
+				} else if(oEvent.getSource().getId().toString().indexOf("Plant") > 0) {
+					aFilter.push(new Filter("Plant", FilterOperator.Contains, sQuery));
+				}else{
+					
+				}
 				// Create a filter which contains our name and 'publ' filter
 				this.getLogisticCostValoration(aFilter);
 			} else {

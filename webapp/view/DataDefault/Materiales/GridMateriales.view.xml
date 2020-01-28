@@ -86,7 +86,7 @@
 							<!--<m:Text text="{MDEF_COMMODITIE}" wrapping="false"/>-->
 							<!--<m:Input value="{MDEF_COMMODITIE}" editable="false"/>-->
 							<m:ComboBox id="idComboBoxUnidadesMedida" showSecondaryValues="true" filterSecondaryValues="true" value="{MDEF_COMMODITIE}"
-								selectedKey="{MDEF_COMMODITIE}" items="{ path: '/LstCommodite', sorter: { path: 'Descripcion' } }" editable="false" selectionChange="onChange">
+								selectedKey="{MDEF_COMMODITIE_ID}" items="{ path: '/LstCommodite', sorter: { path: 'Descripcion' } }" editable="false" selectionChange="onChange">
 								<c:ListItem key="{IdCommoditie}" text="{Descripcion}" additionalText="{IdCommoditie}"/>
 							</m:ComboBox>
 						</template>
@@ -125,7 +125,7 @@
 							<!--<m:Text text="{MDEF_ICOTERM}" wrapping="false"/>-->
 							<!--<m:Input value="{MDEF_ICOTERM}" editable="false" change="onChangeCostoMaterial"/>-->
 							<m:ComboBox id="idComboBoxIcoterm" showSecondaryValues="true" filterSecondaryValues="true" value="{MDEF_ICOTERM}"
-								selectedKey="{MDEF_ICOTERM}" items="{ path: '/LstIcoterm', sorter: { path: 'yicoterm' } }" editable="false" selectionChange="onChangeIcoterm">
+								selectedKey="{MDEF_ICOTERM_ID}" items="{ path: '/LstIcoterm', sorter: { path: 'yicoterm' } }" editable="false" selectionChange="onChangeIcoterm">
 								<c:ListItem key="{yidAuton}" text="{yicoterm}" additionalText="{yidAuton}"/>
 							</m:ComboBox>							
 						</template>
