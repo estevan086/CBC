@@ -37,18 +37,6 @@
 							</ComboBox>
 						</ui:template>
 					</ui:Column>
-					<ui:Column>
-						<Label text="Fecha"/>
-						<ui:template>
-							<Text text="{LogisticCost>Date0}" wrapping="false"/>
-						</ui:template>
-					</ui:Column>
-					<ui:Column>
-						<Label text="Responsable"/>
-						<ui:template>
-							<Text text="{LogisticCost>PerResp}" wrapping="false"/>
-						</ui:template>
-					</ui:Column>
 					<ui:Column width="4rem" hAlign="Center">
 						<ui:template>
 							<Button tooltip="Editar" icon="sap-icon://edit" press="onEditLC"/>

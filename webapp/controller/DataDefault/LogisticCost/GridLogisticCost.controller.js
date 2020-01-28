@@ -10,30 +10,19 @@ sap.ui.define([
 ], function (BaseController, JSONModel, MessageToast, Filter, FilterOperator, Message, MessageType) {
 	"use strict";
 	const cDefaultNumValue = "0,000";
+	var oMessageManager;
 
 	return BaseController.extend("cbc.co.simulador_costos.controller.DataDefault.LogisticCost.GridLogisticCost", {
 
 		onInit: function () {
-
-			var oMessageManager, oView;
-
-			oView = this.getView();
-
+///MENSAJES
 			// set message model
 			oMessageManager = sap.ui.getCore().getMessageManager();
-			oView.setModel(oMessageManager.getMessageModel(), "message");
+			this.setModel(oMessageManager.getMessageModel(), "message");
 
 			// or just do it for the whole view
-			oMessageManager.registerObject(oView, true);
-
-			var oMessage = new Message({
-				message: "My generated error message",
-				type: MessageType.Error,
-				target: "/Dummy",
-				processor: this.getView().getModel()
-			});
-			sap.ui.getCore().getMessageManager().addMessages(oMessage);
-
+			oMessageManager.registerObject(this.getView(), true);
+///FIN MENSAJES
 			var oModelV = new JSONModel({
 				busy: false,
 				version: false
@@ -51,19 +40,6 @@ sap.ui.define([
 
 			var myRoute = this.getOwnerComponent().getRouter().getRoute("rtChCostosLogisticos");
 			myRoute.attachPatternMatched(this.onMyRoutePatternMatched, this);
-		},
-		//################ Private APIs ###################
-		onMessagePopoverPress: function (oEvent) {
-			this._getMessagePopover().openBy(oEvent.getSource());
-		},
-		_getMessagePopover: function () {
-			// create popover lazily (singleton)
-			if (!this._oMessagePopover) {
-				this._oMessagePopover = sap.ui.xmlfragment(this.getView().getId(),
-					"cbc.co.simulador_costos.view.Utilities.fragments.MessagePopover", this);
-				this.getView().addDependent(this._oMessagePopover);
-			}
-			return this._oMessagePopover;
 		},
 		onMyRoutePatternMatched: function (event) {
 			//Cargar datos
@@ -416,8 +392,8 @@ sap.ui.define([
 				aFilter = [];
 
 			if (sQuery) {
-				aFilter.push(new Filter("Material", FilterOperator.Contains, sQuery));
 				aFilter.push(new Filter("Plant", FilterOperator.Contains, sQuery));
+				aFilter.push(new Filter("Material", FilterOperator.Contains, sQuery));
 				// Create a filter which contains our name and 'publ' filter
 				this.getLogisticCostValoration(aFilter);
 			} else {

@@ -9,10 +9,12 @@ sap.ui.define([
 	"sap/m/Text",
 	"sap/m/MessageBox",
 	"sap/ui/core/util/Export",
-	"sap/ui/core/util/ExportTypeCSV"
-], function (Controller, History, Dialog, Button, MessageToast, Text, MessageBox, Export, ExportTypeCSV) {
+	"sap/ui/core/util/ExportTypeCSV",
+	"sap/ui/core/message/Message",
+	"sap/ui/core/MessageType"
+], function (Controller, History, Dialog, Button, MessageToast, Text, MessageBox, Export, ExportTypeCSV, Message, MessageType ) {
 	"use strict";
-
+	var oMessageManager;
 	return Controller.extend("cbc.co.simulador_costos.controller.BaseController", {
 		/**
 		 * Convenience method for accessing the router in every controller of the application.
@@ -482,8 +484,32 @@ sap.ui.define([
 			var oFinalResult = JSON.parse(oStringResult.replace(/\\r/g, "")); //OBJETO JSON para guardar
 
 			return oFinalResult;
+		},
+		//################ Private APIs ###################
+		initMessageManager(){
+			this.oMessageManager = sap.ui.getCore().getMessageManager();
+			this.setModel(this.oMessageManager.getMessageModel(), "message");
+			this.oMessageManager.registerObject(this.getView(), true);
+		},
+		addMessage(oMessage){
+			
+			sap.ui.getCore().getMessageManager().removeAllMessages();
+			oMessage.target = "/Dummy";
+			oMessage.processor = this.getView().getModel();
+			sap.ui.getCore().getMessageManager().addMessages(oMessage);	
+		},
+		onMessagePopoverPress: function (oEvent) {
+			this._getMessagePopover().openBy(oEvent.getSource());
+		},
+		_getMessagePopover: function () {
+			// create popover lazily (singleton)
+			if (!this._oMessagePopover) {
+				this._oMessagePopover = sap.ui.xmlfragment(this.getView().getId(),
+					"cbc.co.simulador_costos.view.Utilities.fragments.MessagePopover", this);
+				this.getView().addDependent(this._oMessagePopover);
+			}
+			return this._oMessagePopover;
 		}
-
 	});
 
 });
