@@ -377,35 +377,23 @@ sap.ui.define([
 			}
 
 		},
-		onCostEmpty: function (oEvent) {
+		onFilterLogisticCost: function (oEvent) {
 			var aFilter = [];
 
-			this.getView().byId("sfMaterial").setValue("");
-
-			aFilter.push(new Filter("CostTotal", FilterOperator.EQ, "0.000"));
-			this.getLogisticCostValoration(aFilter);
-		},
-		onselectionChange: function (oEvent) {
-
-		},
-		onFilterLogisticCost: function (oEvent) {
-			var sQuery = oEvent.getParameter('query'),
-				aFilter = [];
-
-			if (sQuery) {
-				if (oEvent.getSource().getId().toString().indexOf("Material") > 0) {
-					aFilter.push(new Filter("Material", FilterOperator.Contains, sQuery));
-				} else if(oEvent.getSource().getId().toString().indexOf("Plant") > 0) {
-					aFilter.push(new Filter("Plant", FilterOperator.Contains, sQuery));
-				}else{
-					
-				}
-				// Create a filter which contains our name and 'publ' filter
-				this.getLogisticCostValoration(aFilter);
-			} else {
-				// Use empty filter to show all list items
-				this.getLogisticCostValoration();
+			if (this.getView().byId("inpMaterial").getValue() !== "") {
+				aFilter.push(new Filter("Material", FilterOperator.Contains, this.getView().byId("inpMaterial").getValue()));
 			}
+			if (this.getView().byId("cmbPlant").getSelectedKey() !== "") {
+				aFilter.push(new Filter("Plant", FilterOperator.EQ, this.getView().byId("cmbPlant").getSelectedKey()));
+			}
+			if (this.getView().byId("cmbYear").getSelectedKey() !== "") {
+				aFilter.push(new Filter("Fiscyear", FilterOperator.EQ, this.getView().byId("cmbYear").getSelectedKey()));
+			}
+			aFilter.push(new Filter("CostTotal", FilterOperator.EQ, "0.000"));
+
+			// Create a filter which contains our name and 'publ' filter
+			this.getLogisticCostValoration(aFilter);
+
 		}
 	});
 

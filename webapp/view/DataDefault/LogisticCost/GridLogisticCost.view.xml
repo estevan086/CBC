@@ -11,22 +11,22 @@
 				<extension>
 					<m:OverflowToolbar>
 						<m:content>
-							<m:Input id="inpMaterial" width="20%" placeholder="{i18n>Material}"/>
-							<m:ComboBox items="{ path: 'ModelSimulador>/centroSet', 
+							<m:Input id="inpMaterial" width="10rem" placeholder="{i18n>Material}"/>
+							<m:ComboBox id="cmbPlant" items="{ path: 'ModelSimulador>/centroSet', 
 												 filters: [ { path: 'Flag', operator: 'EQ', value1: 'X' } ] }" 
-										selectedKey="{LogisticCost>Plant}" selectionChange="onselectionChange" placeholder="{i18n>Plant}" >
+										placeholder="{i18n>Plant}" width="7rem" >
 								<m:items>
 									<core:ListItem key="{ModelSimulador>Plant}" text="{ModelSimulador>Plant}"/>
 								</m:items>
 							</m:ComboBox>
-							<m:ComboBox items="{path: 'ModelSimulador>/periodoSet', sorter: [{ path: 'Year', group: true }] }" 
-										selectedKey="{LogisticCost>Year}" 
-										selectionChange="onselectionChange" placeholder="{i18n>Year}" >
+							<m:ComboBox id="cmbYear" items="{path: 'ModelSimulador>/periodoSet', filters: [{ path: 'GoupYear', operator: 'EQ', value1: 'X' }] }" 
+										width="5rem" placeholder="{i18n>Year}" >
 								<m:items>
 									<core:ListItem key="{ModelSimulador>Year}" text="{ModelSimulador>Year}"/>
 								</m:items>
 							</m:ComboBox>
-							<m:Button icon="sap-icon://sales-order" text="{i18n>CostEmpty}" tooltip="{i18n>CostEmpty}" press="onCostEmpty"/>
+							<m:CheckBox text="{i18n>CostEmpty}" id="chkCostEmpty" />
+							<m:Button icon="sap-icon://search"  press="onFilterLogisticCost"/>
 							<m:ToolbarSpacer/>
 							<m:Button icon="sap-icon://sys-next-page" text="{i18n>Exportar}" tooltip="{i18n>Exportar}" press="onDataExport"/>
 							<u:FileUploader id="fileUploader" name="myFileUpload" icon="sap-icon://sys-prev-page" tooltip="{i18n>Importar}" change="onImportCvsFile"/>
