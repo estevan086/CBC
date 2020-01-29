@@ -32,7 +32,7 @@
 							</f:FormElement>
 							<f:FormElement label="{i18n>nameVersionFragment}" visible="{= ${versionModel>/version/indexOption} === 1}">
 								<f:fields>
-									<Input value="{versionModel>/version/nameVersion}" required="true"/>
+									<Input value="{versionModel>/version/nameVersion}" required="true" maxLength="30"/>
 								</f:fields>
 							</f:FormElement>
 							<!--<f:FormElement label="{i18n>idVersionFragment}" visible="{= ${versionModel>/version/indexOption} === 1}">
@@ -42,7 +42,7 @@
 							</f:FormElement>-->
 							<f:FormElement label="{i18n>descriptionVersionFragment}" visible="{= ${versionModel>/version/indexOption} === 1}">
 								<f:fields>
-									<Input value="{versionModel>/version/descriptionVersion}" required="true"/>
+									<Input value="{versionModel>/version/descriptionVersion}" required="true" maxLength="40"/>
 								</f:fields>
 							</f:FormElement>
 							<f:FormElement label="{i18n>materialsVersionFragment}" visible="{= ${versionModel>/version/indexOption} === 1}">
@@ -53,6 +53,11 @@
 							<f:FormElement label="{i18n>originVersionFragment}" visible="{= ${versionModel>/version/indexOption} === 1}">
 								<f:fields>
 									<Input id="inpOriginVersion" showSuggestion="true" showValueHelp="true" description="{versionModel>/version/logisticsOriginDesc}" value="{versionModel>/version/logisticsOrigin}" app:filter="LOG"/>
+								</f:fields>
+							</f:FormElement>
+							<f:FormElement label="{i18n>yearVersionFragment}" visible="{= ${versionModel>/version/indexOption} === 1 &amp;&amp; ${versionModel>/version/logisticsOrigin}.indexOf('DEFAULT') >= 0 }">
+								<f:fields>
+									<ComboBox id="cmbYear"/>
 								</f:fields>
 							</f:FormElement>
 						</f:formElements>

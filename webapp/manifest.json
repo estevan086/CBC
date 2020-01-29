@@ -417,7 +417,7 @@
 					"viewType": "XML",
 					"parent": "parentTarget",
 					"controlId": "parentNavContainer",
-					"transition": "flip"					
+					"transition": "flip"
 				}
 			},
 			"config": {
