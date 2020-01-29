@@ -3,8 +3,5 @@ sap.ui.define([
 ], function (Controller) {
    "use strict";
    return Controller.extend("cbc.co.simulador_costos.controller.App", {
-   	onOpenDialog : function () {
-			this.getOwnerComponent().openHelloDialog();
-		}
    });
 });

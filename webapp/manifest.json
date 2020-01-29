@@ -133,7 +133,7 @@
 					"target": "rtChCommoditiesTarget"
 				},
 				"rtChFromuladora": {
-					"pattern": "rtChFromuladora/{oRowPath}/oIdFormula{oIdFormula}/oTxt{oTxt}/oYear{oYear}/oMes{oMes}",
+					"pattern": "rtChFromuladora/{oIdCommoditie}/oSociedad{oSociedad}/oCentro{oCentro}/oYear{oYear}/oMes{oMes}/oIdFormula{oIdFormula}/oTxt{oTxt}",
 					"target": "rtChFromuladoraTarget"
 				},
 				"rtChIDCommodities": {
@@ -150,6 +150,10 @@
 				},
 				"rtChCostosLogisticos": {
 					"pattern": "rtChCostosLogisticos/{version}",
+					"target": "rtChCostosLogisticosTarget"
+				},
+				"rtChCostosLogisticosVersion": {
+					"pattern": "rtChCostosLogisticosVersion",
 					"target": "rtChCostosLogisticosTarget"
 				},
 				"rtChProfiles": {
@@ -398,6 +402,10 @@
 				"ListProfiles": {
 					"viewType": "XML",
 					"viewName": "ListProfiles"
+				},
+				"SelectVersion": {
+					"viewType": "XML",
+					"viewName": "SelectVersion"
 				}
 			},
 			"config": {

@@ -102,6 +102,10 @@ sap.ui.define([
 		changeCarouselImage: function (passedthis) {
 			var oCarousel = passedthis.byId("carouselSample");
 			oCarousel.next();
+		},
+		onExit: function(){
+			var oCarousel = this.byId("carouselSample");
+			oCarousel.destroyPages();
 		}
 
 	});

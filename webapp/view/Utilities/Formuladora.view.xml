@@ -21,7 +21,7 @@
 				</m:subHeader>
 				<m:content>
 					
-					<CalculationBuilder allowStringConstants="true" id="builder" layoutType="{settings>/layoutType}" expression="{/expression}"
+					<CalculationBuilder allowStringConstants="true" id="builder" layoutType="{settings>/layoutType}" expression="{settings>/expression}"
 						readOnly="{settings>/readOnly}" allowComparisonOperators="{settings>/allowComparison}" allowLogicalOperators="{settings>/allowLogical}"
 						 title="{/title}" variables="{/variables}">
 						<variables>

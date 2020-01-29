@@ -6,14 +6,15 @@ sap.ui.define([
 	"sap/ui/model/Filter",
 	"sap/ui/model/FilterOperator",
 	"sap/ui/core/message/Message",
-	"sap/ui/core/MessageType"
-], function (BaseController, JSONModel, MessageToast, Filter, FilterOperator, Message, MessageType) {
+	"sap/ui/core/MessageType",
+	"cbc/co/simulador_costos/controller/Versiones/SelectVersion"
+], function (BaseController, JSONModel, MessageToast, Filter, FilterOperator, Message, MessageType, SelectVersion) {
 	"use strict";
 	const cDefaultNumValue = "0,000";
 	var initialLoad = false;
 
 	return BaseController.extend("cbc.co.simulador_costos.controller.DataDefault.LogisticCost.GridLogisticCost", {
-
+		SelectVersion: SelectVersion,
 		onInit: function () {
 
 			this.initMessageManager();
@@ -33,8 +34,13 @@ sap.ui.define([
 				}
 			}, oUploader);
 
-			var myRoute = this.getOwnerComponent().getRouter().getRoute("rtChCostosLogisticos");
-			myRoute.attachPatternMatched(this.onMyRoutePatternMatched, this);
+			if (this.getRouter().getRoute("rtChCostosLogisticos")) {
+				this.getRouter().getRoute("rtChCostosLogisticos").attachPatternMatched(this.onMyRoutePatternMatched, this);
+			}
+			if (this.getRouter().getRoute("rtChCostosLogisticosVersion")) {
+				this.getRouter().getRoute("rtChCostosLogisticosVersion").attachPatternMatched(this.onMyRoutePatternMatchedVersion, this);
+			}
+			SelectVersion.init(this);
 		},
 		onMyRoutePatternMatched: function (event) {
 			//Cargar datos
@@ -44,12 +50,19 @@ sap.ui.define([
 			}
 			var oVModel = this.getModel("modelView");
 			oVModel.version = event.getParameter("arguments").version;
-
-			if (event.getParameter("arguments").version === "true") {
-				this.getView().byId("btnAdmin").setVisible(false);
-			} else {
-				this.getView().byId("btnAdmin").setVisible(true);
-			}
+			this.getView().byId("btnAdmin").setVisible(true);
+		},
+		onMyRoutePatternMatchedVersion: function (oEvent) {
+			SelectVersion.open();
+			this.getView().byId("btnAdmin").setVisible(false);
+		},
+		onCreateVersion: function(){
+			SelectVersion.close();
+			console.log(this.getModel("versionModel").getProperty("/version"));	
+		},
+		onEditVersion: function(){
+			SelectVersion.close();
+			console.log(this.getModel("versionModel").getProperty("/version"));
 		},
 		getLogisticCostValoration: function (oFilter, pExport) {
 			var oModel = this.getView().getModel("ModelSimulador"),
@@ -105,10 +118,12 @@ sap.ui.define([
 				}
 			});
 		},
-		tableCreate: function () {
+		tableCreate: function (pBuildColums = true) {
 			var oModel = this.getView().getModel("LogisticCost"),
 				costData = oModel.getProperty("/CodLogisticCost"),
-				costValoration = oModel.getProperty("/LogisticCostValoration");
+				costValoration = oModel.getProperty("/LogisticCostValoration"),
+				oMaterial = [],
+				modelStructure = {};
 
 			//Crear columnas dinamicas
 			var _columnData = [{
@@ -180,49 +195,48 @@ sap.ui.define([
 			//guardamos las columnas
 			this.columnData = _columnData;
 
-			var oMaterial = [],
-				modelStructure = {};
+			if (pBuildColums === true) {
+				//agrega propiedades(columnas) a json
+				costData.forEach(function (oValue2, j) {
+					modelStructure[oValue2.CostLog] = "";
+				});
 
-			//agrega propiedades(columnas) a json
-			costData.forEach(function (oValue2, j) {
-				modelStructure[oValue2.CostLog] = "";
-			});
+				//Convierte estructura de tabla, asignando valores de filas en columnas relacionadas por la clave de la tabla Material
+				costValoration.forEach(function (oValue, i) {
 
-			//Convierte estructura de tabla, asignando valores de filas en columnas relacionadas por la clave de la tabla Material
-			costValoration.forEach(function (oValue, i) {
+					if (oMaterial.find(x => x.Material === oValue.Material) === undefined || oMaterial.find(x => x.Plant === oValue.Plant) ===
+						undefined ||
+						oMaterial.find(x => x.Fiscyear === oValue.Fiscyear) === undefined || oMaterial.find(x => x.Version === oValue.Version) ===
+						undefined ||
+						oMaterial.find(x => x.Fiscper3 === oValue.Fiscper3) === undefined ||
+						oMaterial.find(x => x.CompCode === oValue.CompCode) === undefined) {
 
-				if (oMaterial.find(x => x.Material === oValue.Material) === undefined || oMaterial.find(x => x.Plant === oValue.Plant) ===
-					undefined ||
-					oMaterial.find(x => x.Fiscyear === oValue.Fiscyear) === undefined || oMaterial.find(x => x.Version === oValue.Version) ===
-					undefined ||
-					oMaterial.find(x => x.Fiscper3 === oValue.Fiscper3) === undefined ||
-					oMaterial.find(x => x.CompCode === oValue.CompCode) === undefined) {
+						modelStructure = oValue; //asigna datos generales
 
-					modelStructure = oValue; //asigna datos generales
+						modelStructure.CantEst = oValue.CantEst.toString().replace(".", ",");
+						modelStructure.CostTotal = oValue.CostTotal.toString().replace(".", ",");
+						modelStructure.CostUnid = oValue.CostUnid.toString().replace(".", ",");
 
-					modelStructure.CantEst = oValue.CantEst.toString().replace(".", ",");
-					modelStructure.CostTotal = oValue.CostTotal.toString().replace(".", ",");
-					modelStructure.CostUnid = oValue.CostUnid.toString().replace(".", ",");
+						for (var j = 0; j < costValoration.length; j++) {
 
-					for (var j = 0; j < costValoration.length; j++) {
+							if (costValoration[j].Material === costValoration[i].Material && costValoration[j].Plant === costValoration[i].Plant &&
+								costValoration[j].Fiscyear === costValoration[i].Fiscyear && costValoration[j].Version === costValoration[i].Version &&
+								costValoration[j].Fiscper3 === costValoration[i].Fiscper3 &&
+								costValoration[j].CompCode === costValoration[i].CompCode) {
 
-						if (costValoration[j].Material === costValoration[i].Material && costValoration[j].Plant === costValoration[i].Plant &&
-							costValoration[j].Fiscyear === costValoration[i].Fiscyear && costValoration[j].Version === costValoration[i].Version &&
-							costValoration[j].Fiscper3 === costValoration[i].Fiscper3 &&
-							costValoration[j].CompCode === costValoration[i].CompCode) {
-
-							if (costValoration[j].CostLog !== "") {
-								modelStructure[costValoration[j].CostLog] = costValoration[j].VCostLog !== undefined ? costValoration[j].VCostLog.toString()
-									.replace(".", ",") : cDefaultNumValue;
+								if (costValoration[j].CostLog !== "") {
+									modelStructure[costValoration[j].CostLog] = costValoration[j].VCostLog !== undefined ? costValoration[j].VCostLog.toString()
+										.replace(".", ",") : cDefaultNumValue;
+								}
 							}
 						}
+
+						oMaterial.push(modelStructure);
 					}
+				});
 
-					oMaterial.push(modelStructure);
-				}
-			});
-
-			oModel.setProperty("/LogisticCostValoration", oMaterial);
+				oModel.setProperty("/LogisticCostValoration", oMaterial);
+			}
 			//agregar columnas y datos a tabla
 			var oTable = this.getView().byId("tblLogicCost");
 			var oTableModel = new sap.ui.model.json.JSONModel();
@@ -370,42 +384,30 @@ sap.ui.define([
 					//Actualiza modelo
 					that.getView().getModel("LogisticCost").setProperty("/LogisticCostValoration", oLogistiCost);
 					//Recrea Tabla
-					that.tableCreate();
+					that.tableCreate(false);
 					that.getModel("modelView").setProperty("/busy", false);
 				};
 				reader.readAsText(oFile);
 			}
 
 		},
-		onCostEmpty: function (oEvent) {
+		onFilterLogisticCost: function (oEvent) {
 			var aFilter = [];
 
-			this.getView().byId("sfMaterial").setValue("");
-
-			aFilter.push(new Filter("CostTotal", FilterOperator.EQ, "0.000"));
-			this.getLogisticCostValoration(aFilter);
-		},
-		onselectionChange: function (oEvent) {
-
-		},
-		onFilterLogisticCost: function (oEvent) {
-			var sQuery = oEvent.getParameter('query'),
-				aFilter = [];
-
-			if (sQuery) {
-				if (oEvent.getSource().getId().toString().indexOf("Material") > 0) {
-					aFilter.push(new Filter("Material", FilterOperator.Contains, sQuery));
-				} else if(oEvent.getSource().getId().toString().indexOf("Plant") > 0) {
-					aFilter.push(new Filter("Plant", FilterOperator.Contains, sQuery));
-				}else{
-					
-				}
-				// Create a filter which contains our name and 'publ' filter
-				this.getLogisticCostValoration(aFilter);
-			} else {
-				// Use empty filter to show all list items
-				this.getLogisticCostValoration();
+			if (this.getView().byId("inpMaterial").getValue() !== "") {
+				aFilter.push(new Filter("Material", FilterOperator.Contains, this.getView().byId("inpMaterial").getValue()));
 			}
+			if (this.getView().byId("cmbPlant").getSelectedKey() !== "") {
+				aFilter.push(new Filter("Plant", FilterOperator.EQ, this.getView().byId("cmbPlant").getSelectedKey()));
+			}
+			if (this.getView().byId("cmbYear").getSelectedKey() !== "") {
+				aFilter.push(new Filter("Fiscyear", FilterOperator.EQ, this.getView().byId("cmbYear").getSelectedKey()));
+			}
+			aFilter.push(new Filter("CostTotal", FilterOperator.EQ, "0.000"));
+
+			// Create a filter which contains our name and 'publ' filter
+			this.getLogisticCostValoration(aFilter);
+
 		}
 	});
 

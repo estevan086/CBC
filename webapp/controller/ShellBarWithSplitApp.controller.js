@@ -108,7 +108,7 @@ sap.ui.define([
 					"key": "rtNone",
 					"items": [{
 						"title": "Mantenimiento Costos Log\u00EDstico",
-						"key": "rtChCostosLogisticos?version=true"
+						"key": "rtChCostosLogisticosVersion"
 					}]
 				}, {
 					"title": "Carga BW",

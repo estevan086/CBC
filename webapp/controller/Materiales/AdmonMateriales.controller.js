@@ -5,8 +5,6 @@ sap.ui.define([
 ], function (Controller, MessageToast, Fragment) {
    "use strict";
    return Controller.extend("cbc.co.simulador_costos.controller.Materiales.AdmonMateriales", {
-		onOpenDialog : function () {
-			this.getOwnerComponent().openHelloDialog();
-		}
+
    });
 });
