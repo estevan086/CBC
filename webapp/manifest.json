@@ -152,6 +152,10 @@
 					"pattern": "rtChCostosLogisticos/{version}",
 					"target": "rtChCostosLogisticosTarget"
 				},
+				"rtChCostosLogisticosVersion": {
+					"pattern": "rtChCostosLogisticosVersion",
+					"target": "rtChCostosLogisticosTarget"
+				},
 				"rtChProfiles": {
 					"pattern": "Profiles",
 					"target": "rtChProfilesTarget"
@@ -398,6 +402,10 @@
 				"ListProfiles": {
 					"viewType": "XML",
 					"viewName": "ListProfiles"
+				},
+				"SelectVersion": {
+					"viewType": "XML",
+					"viewName": "SelectVersion"
 				}
 			},
 			"config": {

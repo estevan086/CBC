@@ -1,0 +1,57 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.ui.layout.form">
+	<Dialog title="{versionModel>/title}">
+		<content>
+			<f:Form editable="true">
+				<f:layout>
+					<f:ResponsiveGridLayout/>
+				</f:layout>
+				<f:formContainers>
+					<f:FormContainer>
+						<f:formElements>
+							<f:FormElement label="{i18n>optionLabelVersionFragment}">
+								<f:fields>
+									<RadioButtonGroup id="rbtnOption" columns="2" selectedIndex="{versionModel>/version/indexOption}" select="onSelectOption">
+										<buttons>
+											<RadioButton text="{i18n>Edit}"/>
+											<RadioButton text="{i18n>Crear}"/>
+										</buttons>
+									</RadioButtonGroup>
+								</f:fields>
+							</f:FormElement>
+							<f:FormElement label="{i18n>selectVersionFragment}" visible="{= ${versionModel>/version/indexOption} === 0}">
+								<f:fields>
+									<Input showSuggestion="true" showValueHelp="true" value="{versionModel>/version/versionForEdit}" required="true"/>
+								</f:fields>
+							</f:FormElement>
+							<f:FormElement label="{i18n>idVersionFragment}" visible="{= ${versionModel>/version/indexOption} === 1}">
+								<f:fields>
+									<Input value="{versionModel>/version/idNewVersion}" required="true"/>
+								</f:fields>
+							</f:FormElement>
+							<f:FormElement label="{i18n>descriptionVersionFragment}" visible="{= ${versionModel>/version/indexOption} === 1}">
+								<f:fields>
+									<Input value="{versionModel>/version/descriptionVersion}" required="true"/>
+								</f:fields>
+							</f:FormElement>
+							<f:FormElement label="{i18n>materialsVersionFragment}" visible="{= ${versionModel>/version/indexOption} === 1}">
+								<f:fields>
+									<Input showSuggestion="true" showValueHelp="true" description="Descripción versión materiales" value="{versionModel>/version/materialsVersion}" required="true"/>
+								</f:fields>
+							</f:FormElement>
+							<f:FormElement label="{i18n>originVersionFragment}" visible="{= ${versionModel>/version/indexOption} === 1}">
+								<f:fields>
+									<Input showSuggestion="true" showValueHelp="true" description="Descripción versión costo logístico" value="{versionModel>/version/logisticsOrigin}"/>
+								</f:fields>
+							</f:FormElement>
+						</f:formElements>
+					</f:FormContainer>
+				</f:formContainers>
+			</f:Form>
+		</content>
+		<buttons>
+			<Button text="Crear versión" visible="{= ${versionModel>/version/indexOption} === 1}" type="Accept" press="onCreateVersion"/>
+			<Button text="Editar versión" visible="{= ${versionModel>/version/indexOption} === 0}" type="Accept" press="onEditVersion"/>
+			<Button text="Cancelar" press="onNavBack"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

@@ -6,14 +6,15 @@ sap.ui.define([
 	"sap/ui/model/Filter",
 	"sap/ui/model/FilterOperator",
 	"sap/ui/core/message/Message",
-	"sap/ui/core/MessageType"
-], function (BaseController, JSONModel, MessageToast, Filter, FilterOperator, Message, MessageType) {
+	"sap/ui/core/MessageType",
+	"cbc/co/simulador_costos/controller/Versiones/SelectVersion"
+], function (BaseController, JSONModel, MessageToast, Filter, FilterOperator, Message, MessageType, SelectVersion) {
 	"use strict";
 	const cDefaultNumValue = "0,000";
 	var initialLoad = false;
 
 	return BaseController.extend("cbc.co.simulador_costos.controller.DataDefault.LogisticCost.GridLogisticCost", {
-
+		SelectVersion: SelectVersion,
 		onInit: function () {
 
 			this.initMessageManager();
@@ -33,11 +34,13 @@ sap.ui.define([
 				}
 			}, oUploader);
 
-			var myRoute = this.getOwnerComponent().getRouter().getRoute("rtChCostosLogisticos"),
-				myRouteVersion = this.getOwnerComponent().getRouter().getRoute("rtChCostosLogisticosVersion");
-
-			myRoute.attachPatternMatched(this.onMyRoutePatternMatched, this);
-			myRouteVersion.attachPatternMatched(this.onMyRoutePatternMatchedVersion, this);
+			if (this.getRouter().getRoute("rtChCostosLogisticos")) {
+				this.getRouter().getRoute("rtChCostosLogisticos").attachPatternMatched(this.onMyRoutePatternMatched, this);
+			}
+			if (this.getRouter().getRoute("rtChCostosLogisticosVersion")) {
+				this.getRouter().getRoute("rtChCostosLogisticosVersion").attachPatternMatched(this.onMyRoutePatternMatchedVersion, this);
+			}
+			SelectVersion.init(this);
 		},
 		onMyRoutePatternMatched: function (event) {
 			//Cargar datos
@@ -50,7 +53,16 @@ sap.ui.define([
 			this.getView().byId("btnAdmin").setVisible(true);
 		},
 		onMyRoutePatternMatchedVersion: function (oEvent) {
+			SelectVersion.open();
 			this.getView().byId("btnAdmin").setVisible(false);
+		},
+		onCreateVersion: function(){
+			SelectVersion.close();
+			console.log(this.getModel("versionModel").getProperty("/version"));	
+		},
+		onEditVersion: function(){
+			SelectVersion.close();
+			console.log(this.getModel("versionModel").getProperty("/version"));
 		},
 		getLogisticCostValoration: function (oFilter, pExport) {
 			var oModel = this.getView().getModel("ModelSimulador"),
