@@ -1,87 +1,64 @@
 <mvc:View controllerName="cbc.co.simulador_costos.controller.DataDefault.TypeChange.GridTypeChange"
-	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:mvc="sap.ui.core.mvc" displayBlock="true" xmlns="sap.ui.table" xmlns:m="sap.m"
+	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:mvc="sap.ui.core.mvc" displayBlock="true" xmlns:ui="sap.ui.table" xmlns:m="sap.m"
 	xmlns:u="sap.ui.unified" xmlns:c="sap.ui.core" height="100%">
-	<m:ObjectHeader binding="{/ProductCollection/0}" title="Datos Default - Tipo de Cambio" condensed="true"
-		number="{ parts:[{path:'Price'},{path:'CurrencyCode'}], type: 'sap.ui.model.type.Currency', formatOptions: {showMeasure: false} }"
-		numberUnit="{CurrencyCode}"/>
-	<m:Page showHeader="false" enableScrolling="false" class="sapUiContentPadding">
+	<m:Page title="Datos Default - Tipo de Cambio" showNavButton="true" navButtonPress="onNavBack" class="sapUiContentPadding"
+		busy="{modelView>/busy}">
 		<m:content>
-			<Table id="tblTasaCambio" rows="{TypeChange>/CodTypeChange}" selectionMode="None" visibleRowCount="10" rowActionCount="1" class="sapUiSizeCompact">
-				<extension>
+			<ui:Table id="tblTasaCambio" rows="{TipoCambio>/CodTipoCambio}" selectionMode="None" visibleRowCount="10" rowActionCount="1"
+				class="sapUiSizeCompact">
+				<ui:extension>
 					<m:OverflowToolbar>
 						<m:content>
-							<m:Title id="title" text="Tipos de Cambio"/>
+							<m:Label text="Tipo"/>
+							<m:ComboBox id="cbxTipo" selectionChange="onselectionChange" selectedKey="P" placeholder="{i18n>Tipo}">
+								<c:ListItem key="P" text="Plan" />
+								<c:ListItem key="M" text="Real"/>
+							</m:ComboBox>
 							<m:ToolbarSpacer/>
 							<m:Button icon="sap-icon://sys-next-page" text="Exportar" tooltip="Exportar version de commoditie"/>
 							<m:Button icon="sap-icon://sys-prev-page" text="Importar" tooltip="Importar version de commoditie"/>
 							<m:Button icon="sap-icon://save" type="Emphasized" text="{i18n>Guardar}" tooltip="Guardar Tipo de Cambio" press="saveTypeChange"/>
 						</m:content>
 					</m:OverflowToolbar>
-				</extension>
-				<columns>
-					<Column filterProperty="Type">
-						<m:Label text="Tipo"/>
-						<template>
-							<m:Text text="{TypeChange>/Type}" wrapping="false"/>
-						</template>
-					</Column>
-					<Column filterProperty="KURST">
-						<m:Label text="KURST"/>
-						<template>
-							<m:Text text="{TypeChange>/KURST}" wrapping="false"/>
-						</template>
-					</Column>
-					<Column filterProperty="FCURR">
+				</ui:extension>
+				<ui:columns>
+					<ui:Column filterProperty="Fcurr">
 						<m:Label text="Moneda local"/>
-						<template>
-							<m:Text text="{TypeChange>/FCURR}" wrapping="false"/>
-						</template>
-					</Column>
-					<Column filterProperty="TCURR">
-						<m:Label text="Moneda internacional"/>
-						<template>
-							<m:Text text="{TypeChange>/TCURR}" wrapping="false"/>
-						</template>
-					</Column>
-					<Column filterProperty="FECHA">
-						<m:Label text="Fecha de cambio"/>
-						<template>
-							<m:Text text="{TypeChange>/FECHA}" wrapping="false"/>
-						</template>
-					</Column>
-					<Column filterProperty="FISCPER3">
-						<m:Label text="Mes"/>
-						<template>
-							<m:Text text="{TypeChange>/FISCPER3}" wrapping="false"/>
-						</template>
-					</Column>
-					<Column filterProperty="FISCYEAR">
+						<ui:template>
+							<m:Text text="{TipoCambio>Fcurr}" wrapping="false"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column filterProperty="Tcurr">
+						<m:Label text="Moneda Destinio"/>
+						<ui:template>
+							<m:Text text="{TipoCambio>Tcurr}" wrapping="false"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column filterProperty="Fiscyear">
 						<m:Label text="Año"/>
-						<template>
-							<m:Text text="{TypeChange>/FISCYEAR}" wrapping="false"/>
-						</template>
-					</Column>
-					<Column filterProperty="FISCPER">
-						<m:Label text="Fecha"/>
-						<template>
-							<m:Text text="{TypeChange>/FISCPER}" wrapping="false"/>
-						</template>
-					</Column>
-					<Column filterProperty="UKURS">
-						<m:Label text="Tasa de Cambio"/>
-						<template>
-							<m:Text text="{TypeChange>/UKURS}" wrapping="false"/>
-						</template>
-					</Column>
-				</columns>
-				<rowActionTemplate>
-					<RowAction>
-						<items>
-							<RowActionItem type="Navigation" tooltip="Editar" icon="sap-icon://edit" press="handleEditPress"></RowActionItem>
-						</items>
-					</RowAction>
-				</rowActionTemplate>
-			</Table>
+						<ui:template>
+							<m:Text text="{TipoCambio>Fiscyear}" wrapping="false"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column filterProperty="Fiscper3">
+						<m:Label text="Mes"/>
+						<ui:template>
+							<m:Text text="{TipoCambio>Fiscper3}" wrapping="false"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column filterProperty="Ukurspromedio">
+						<m:Label text="Tasa de Cambio Promedio"/>
+						<ui:template>
+							<m:Text text="{TipoCambio>Ukurspromedio}" wrapping="false"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="4rem" hAlign="Center">
+						<ui:template>
+							<m:Button tooltip="Editar" icon="sap-icon://edit" press="handleEditPress"/>
+						</ui:template>
+					</ui:Column>
+				</ui:columns>
+			</ui:Table>
 		</m:content>
 	</m:Page>
 </mvc:View>

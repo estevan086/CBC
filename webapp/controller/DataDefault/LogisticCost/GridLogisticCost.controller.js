@@ -59,11 +59,11 @@ sap.ui.define([
 		onCreateVersion: function(oData){
 			console.log(oData);
 			SelectVersion.close();
-			console.log(this.getModel("versionModel").getProperty("/version"));	
+			//console.log(this.getModel("versionModel").getProperty("/version"));	
 		},
 		onEditVersion: function(){
 			SelectVersion.close();
-			console.log(this.getModel("versionModel").getProperty("/version"));
+			//console.log(this.getModel("versionModel").getProperty("/version"));
 		},
 		getLogisticCostValoration: function (oFilter, pExport) {
 			var oModel = this.getView().getModel("ModelSimulador"),

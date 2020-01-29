@@ -4,9 +4,9 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 	"sap/ui/table/RowSettings", 'sap/m/MessageBox'
 ], function (Controller, History, CoreLibrary, JSONModel, MessageToast, RowSettings, MessageBox) {
 	"use strict";
-	var updatedRecords = [];
-	var that = this;
-	that.updatedRecords = [];
+	/*	var updatedRecords = [];
+		var that = this;
+		that.updatedRecords = [];*/
 	return Controller.extend("cbc.co.simulador_costos.controller.DataDefault.TypeChange.GridTypeChange", {
 
 		onInit: function () {
@@ -26,47 +26,95 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 		},
 
 		GetTypeChange: function () {
-			/*	var oModel = this.getView().getModel("ModelSimulador");
-				oModel.read("/periodoSet", {
-					success: function (oData, response) {
-						var data = new sap.ui.model.json.JSONModel();
-						data.setProperty("/CodTypeChange", oData.results);
-						this.getOwnerComponent().setModel(data, "TypeChange");
-						this.getModel("modelView").setProperty("/busy", false);
-					}.bind(this),
-					error: function (oError) {
-						this.showGeneralError({
-							oDataError: oError
-						});
-						this.getModel("modelView").setProperty("/busy", false);
-					}
-				});*/
+			var oModel = this.getView().getModel("ModelSimulador");
+			var filterKurst = new sap.ui.model.Filter({
+				path: "Kurst",
+				operator: sap.ui.model.FilterOperator.EQ,
+				value1: "P"
+			});
+			this.byId("tblTasaCambio").getColumns()[5].setVisible(true);
+			var filtersArray = new Array();
+			filtersArray.push(filterKurst);
+
+			oModel.read("/tipoCambioSet", {
+				filters: filtersArray,
+				async: true,
+				success: function (oData, response) {
+					var data = new sap.ui.model.json.JSONModel();
+					data.setProperty("/CodTipoCambio", oData.results);
+					this.getOwnerComponent().setModel(data, "TipoCambio");
+					this.getModel("modelView").setProperty("/busy", false);
+				}.bind(this),
+				error: function (oError) {
+					this.showGeneralError({
+						oDataError: oError
+					});
+					this.getModel("modelView").setProperty("/busy", false);
+				}
+			});
+		},
+
+		onselectionChange: function (oEvent) {
+
+			this.getModel("modelView").setProperty("/busy", true);
+			var oModel = this.getView().getModel("ModelSimulador");
+			var oItem = oEvent.getParameter("selectedItem");
+
+			var filterKurst = new sap.ui.model.Filter({
+				path: "Kurst",
+				operator: sap.ui.model.FilterOperator.EQ,
+				value1: oItem.getKey()
+			});
+			if (oItem.getKey() === "P") {
+				this.byId("tblTasaCambio").getColumns()[5].setVisible(true);
+			} else {
+				this.byId("tblTasaCambio").getColumns()[5].setVisible(false);
+			}
+			var filtersArray = new Array();
+			filtersArray.push(filterKurst);
+
+			oModel.read("/tipoCambioSet", {
+				filters: filtersArray,
+				async: true,
+				success: function (oData, response) {
+					var data = new sap.ui.model.json.JSONModel();
+					data.setProperty("/CodTipoCambio", oData.results);
+					this.getOwnerComponent().setModel(data, "TipoCambio");
+					this.getModel("modelView").setProperty("/busy", false);
+				}.bind(this),
+				error: function (oError) {
+					this.showGeneralError({
+						oDataError: oError
+					});
+					this.getModel("modelView").setProperty("/busy", false);
+				}
+			});
 		},
 
 		handleEditPress: function (oEvent, Data) {
-		/*	var oRow = oEvent.getParameter("row");
-			var oItem = oEvent.getParameter("item");
+			/*	var oRow = oEvent.getParameter("row");
+				var oItem = oEvent.getParameter("item");
 
-			var oTable = this.byId("tblCommodities");
-			var oRowData = oEvent.getSource().getBindingContext().getProperty();
+				var oTable = this.byId("tblCommodities");
+				var oRowData = oEvent.getSource().getBindingContext().getProperty();
 
-			for (var i = 0; i < oTable.getModel().getData().lstItemsCommodities.length; i++) {
-				var oObj = oTable.getModel().getData().lstItemsCommodities[i];
-				oObj.editable = false;
-				oObj.highlight = "None";
-			}
-			oTable.getModel().setProperty(oEvent.getSource().getBindingContext().getPath() + "/editable", true);
-			oTable.getModel().setProperty(oEvent.getSource().getBindingContext().getPath() + "/highlight", "Information");
-			oTable.getModel().setProperty(oEvent.getSource().getBindingContext().getPath() + "/navigated", true);
+				for (var i = 0; i < oTable.getModel().getData().lstItemsCommodities.length; i++) {
+					var oObj = oTable.getModel().getData().lstItemsCommodities[i];
+					oObj.editable = false;
+					oObj.highlight = "None";
+				}
+				oTable.getModel().setProperty(oEvent.getSource().getBindingContext().getPath() + "/editable", true);
+				oTable.getModel().setProperty(oEvent.getSource().getBindingContext().getPath() + "/highlight", "Information");
+				oTable.getModel().setProperty(oEvent.getSource().getBindingContext().getPath() + "/navigated", true);
 
-			var oEntidad = {};
-			var oPath = oEvent.getSource().getBindingContext().sPath;
+				var oEntidad = {};
+				var oPath = oEvent.getSource().getBindingContext().sPath;
 
-			oEntidad.RowPath = oPath.split("/")[2];
+				oEntidad.RowPath = oPath.split("/")[2];
 
-			updatedRecords.push(oEntidad);
+				updatedRecords.push(oEntidad);
 
-			MessageToast.show("Puedes comenzar a " + (oItem.getText() || oItem.getType()) + " el ID " + oRowData.IdCommoditie);*/
+				MessageToast.show("Puedes comenzar a " + (oItem.getText() || oItem.getType()) + " el ID " + oRowData.IdCommoditie);*/
 
 		},
 

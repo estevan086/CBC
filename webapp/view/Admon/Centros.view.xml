@@ -1,9 +1,6 @@
-<mvc:View controllerName="cbc.co.simulador_costos.controller.Admon.Centros" xmlns:core="sap.ui.core"
-	xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:ui="sap.ui.table" height="100%">
-	<ObjectHeader binding="{/ProductCollection/0}" title="Centros" condensed="true"
-		number="{ parts:[{path:'Price'},{path:'CurrencyCode'}], type: 'sap.ui.model.type.Currency', formatOptions: {showMeasure: false} }"
-		numberUnit="{CurrencyCode}"/>
-	<Page showHeader="false" enableScrolling="false" class="sapUiContentPadding" busy="{modelView>/busy}">
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:ui="sap.ui.table"
+	controllerName="cbc.co.simulador_costos.controller.Admon.Centros" xmlns:html="http://www.w3.org/1999/xhtml">
+	<Page title="{i18n>Centros}" showNavButton="true" navButtonPress="onNavBack" class="sapUiContentPadding" busy="{modelView>/busy}">
 		<content>
 			<ui:Table id="tblCentros" rows="{Centros>/CodCentros}" selectionMode="None" visibleRowCount="10" rowActionCount="1" class="sapUiSizeCompact">
 				<ui:extension>
@@ -41,5 +38,11 @@
 				</ui:columns>
 			</ui:Table>
 		</content>
+		<footer>
+			<Toolbar id="otbFooter">
+				<Button icon="sap-icon://alert" text="{= ${message>/}.length }" visible="{= ${message>/}.length &gt; 0 }" type="Emphasized"
+					press="onMessagePopoverPress"/>
+			</Toolbar>
+		</footer>
 	</Page>
 </mvc:View>

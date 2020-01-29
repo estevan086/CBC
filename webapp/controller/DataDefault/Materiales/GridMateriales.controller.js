@@ -47,7 +47,9 @@ sap.ui.define([
 			this.loadModel();
 			this.loadModelCommoditie();
 			this.loadModelCommoditieDetail();
-			this.loadModelIcoterm();
+			// this.loadModelIcoterm();
+			this.loadModelUnidaMedida();
+			this.loadModelMoneda();
 			// this.editCellsTable(false);
 
 			// var fnPress = this.handleActionPress.bind(this);
@@ -965,21 +967,21 @@ sap.ui.define([
 						MDEF_CENTRO: value.Plant,
 						MDEF_UMD: value.BaseUom,
 						MDEF_MONEDA: value.Currency,
-						MDEF_PESOMATERIAL: value.NetWeight,
+						MDEF_PESOMATERIAL: Number(value.NetWeight) === 0 ? '' : Number(value.NetWeight),
 						MDEF_COMMODITIE: value.commodit,
 						MDEF_COMMODITIE_ID: value.commodit,
-						MDEF_PRECIOPRODUCTIVO: value.preprodc,
-						MDEF_COSTOCONVERSION: value.costconv,
-						MDEF_COSTOADICIONAL: value.costadic,
-						MDEF_COSTOENVIO: value.costenv,
+						MDEF_PRECIOPRODUCTIVO: Number(value.preprodc) === 0 ? '' : Number(value.preprodc),
+						MDEF_COSTOCONVERSION: Number(value.costconv) === 0 ? '' : Number(value.costconv),
+						MDEF_COSTOADICIONAL: Number(value.costadic) === 0 ? '' : Number(value.costadic),
+						MDEF_COSTOENVIO: Number(value.costenv) === 0 ? '' : Number(value.costenv),
 						MDEF_ICOTERM: value.yicoterm,
 						MDEF_ICOTERM_ID: value.yicoterm,
-						MDEF_COSTOMATERIAL: value.costmat,
-						MDEF_FORMULAOTROSCOSTOS: value.fotrcost,
-						MDEF_OTROSCOSTOS: value.otrocost,
-						MDEF_PCTRANSFERENCIA: value.ptransf,
-						MDEF_COSTOTRANSFERENCIA: value.costrans,
-						MDEF_PRECIOPREMISA: value.ppremisa,
+						MDEF_COSTOMATERIAL: Number(value.costmat) === 0 ? '' : Number(value.costmat),
+						MDEF_FORMULAOTROSCOSTOS: Number(value.fotrcost) === 0 ? '' : Number(value.fotrcost),
+						MDEF_OTROSCOSTOS: Number(value.otrocost) === 0 ? '' : Number(value.otrocost),
+						MDEF_PCTRANSFERENCIA: Number(value.ptransf) === 0 ? '' : Number(value.ptransf),
+						MDEF_COSTOTRANSFERENCIA: Number(value.costrans) === 0 ? '' : Number(value.costrans),
+						MDEF_PRECIOPREMISA: Number(value.ppremisa) === 0 ? '' : Number(value.ppremisa),
 						MDEF_IDCATEGORIA: value.catgoria,
 						MDEF_CATEGORIA: value.Txtcat,
 						MDEF_IDSUBCATEGORIA: value.subcateg,
@@ -1033,7 +1035,7 @@ sap.ui.define([
 					CompCode: oTempRow.MDEF_SOCIEDAD,
 					Plant: oTempRow.MDEF_CENTRO,
 					BaseUom: oTempRow.MDEF_UMD,
-					Currency: oTempRow.MDEF_MONEDA,
+					// Currency: oTempRow.MDEF_MONEDA,
 					Txtsubfam: oTempRow.MDEF_SUBFAMILIA,
 					Txtfam: oTempRow.MDEF_FAMILIA,
 					Txtsubcat: oTempRow.MDEF_SUBCATEGORIA,
@@ -1182,7 +1184,8 @@ sap.ui.define([
 			var oTableItemObject = oTableItem.getBindingContext().getObject();
 			oTableItemObject.MDEF_COMMODITIE = oUnidadSeleccionada;
 
-			var oCommodite = this.detailCommodite.filter(result => result.IdCommoditie === oTableItemObject.MDEF_COMMODITIE && result.Year === oTableItemObject.MDEF_PERIODO &&
+			var oCommodite = this.detailCommodite.filter(result => result.IdCommoditie === oTableItemObject.MDEF_COMMODITIE && result.Year ===
+				oTableItemObject.MDEF_PERIODO &&
 				result.Mes === oTableItemObject.MDEF_MES && result.Sociedad === oTableItemObject.MDEF_SOCIEDAD && result.Centro ===
 				oTableItemObject.MDEF_CENTRO);
 
@@ -1190,7 +1193,7 @@ sap.ui.define([
 				var precio = this.executeFormula(oTableItemObject, oCommodite[0]);
 				oTableItemObject.MDEF_PRECIOPRODUCTIVO = Number(precio);
 			}
-			
+
 			//Realizar calculos
 			oTableItemObject.MDEF_COSTOMATERIAL =
 				Number(oTableItemObject.MDEF_PRECIOPRODUCTIVO) +
@@ -1206,7 +1209,7 @@ sap.ui.define([
 			oTableItemObject.MDEF_PRECIOPREMISA =
 				Number(oTableItemObject.MDEF_COSTOMATERIAL) +
 				Number(oTableItemObject.MDEF_OTROSCOSTOS) +
-				Number(oTableItemObject.MDEF_COSTOTRANSFERENCIA);			
+				Number(oTableItemObject.MDEF_COSTOTRANSFERENCIA);
 
 			oTableCommodities.getModel().refresh();
 
@@ -1697,16 +1700,16 @@ sap.ui.define([
 					actions: [MessageBox.Action.OK],
 					onClose: function (oAction) {
 						// if (oAction === sap.m.MessageBox.Action.OK) {
-							
+
 						// }
 					}
 				}
 			);
-			
+
 			return eval(vFormula);
 
 		},
-		
+
 		/**
 		 * Load model data in Combobox Icoterm
 		 * @function
@@ -1734,7 +1737,7 @@ sap.ui.define([
 			// this.mapDataComboboxCommoditie(aListData);
 			this.loadModelComboBoxIcoterm(aListData);
 		},
-		
+
 		/**
 		 * load model comboBox Commoditie
 		 * @function
@@ -1748,7 +1751,7 @@ sap.ui.define([
 			oTable.getModel().refresh(true);
 
 		},
-		
+
 		/**
 		 * select icoterm combobox
 		 * @function
@@ -1766,7 +1769,228 @@ sap.ui.define([
 
 			oTableCommodities.getModel().refresh();
 
-		}		
+		},
+
+		/**
+		 * Load model data in Combobox Commoditie
+		 * @function
+		 * @param 
+		 * @private
+		 */
+		loadModelUnidaMedida: function (event) {
+			var sServiceUrl = "",
+				oModelService = "",
+				aListData = [];
+
+			sServiceUrl = this.getOwnerComponent().getModel("ModelSimulador").sServiceUrl;
+			oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true);
+
+			//Leer datos del ERP
+			var oRead = this.fnReadEntity(oModelService, "/unidadesMedidaSet", null);
+
+			if (oRead.tipo === "S") {
+				aListData = oRead.datos.results;
+			} else {
+				MessageBox.error(oRead.msjs, null, "Mensaje del sistema", "OK", null);
+				return;
+			}
+
+			this.loadModelComboBoxUnidadMedida(aListData);
+		},
+
+		/**
+		 * load model comboBox unidad de medida
+		 * @function
+		 * @param 
+		 * @private
+		 */
+		loadModelComboBoxUnidadMedida: function (p_listUnidadMedida) {
+
+			var oTable = this.byId("tblMaterial");
+			oTable.getModel().setProperty("/LstUnMedida", p_listUnidadMedida);
+			oTable.getModel().refresh(true);
+
+		},
+
+		/**
+		 * select unidad de medida
+		 * @function
+		 * @param 
+		 * @private
+		 */
+		onChangeUMB: function (oEvent) {
+			var oItem = oEvent.getParameter("selectedItem");
+			var oTableCommodities = this.byId("tblMaterial");
+			var oItemObject = oItem.getBindingContext().getObject();
+			var oUnidadSeleccionada = oItemObject.Msehi;
+			var oTableItem = oEvent.getSource().getParent();
+			var oTableItemObject = oTableItem.getBindingContext().getObject();
+			oTableItemObject.MDEF_UMD = oUnidadSeleccionada;
+
+			oTableCommodities.getModel().refresh();
+
+		},
+
+		/**
+		 * Load model data in Combobox Moneda
+		 * @function
+		 * @param 
+		 * @private
+		 */
+		loadModelMoneda: function (event) {
+			var sServiceUrl = "",
+				oModelService = "",
+				aListData = [];
+
+			sServiceUrl = this.getOwnerComponent().getModel("ModelSimulador").sServiceUrl;
+			oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true);
+
+			//Leer datos del ERP
+			var oRead = this.fnReadEntity(oModelService, "/monedasSet", null);
+
+			if (oRead.tipo === "S") {
+				aListData = oRead.datos.results;
+			} else {
+				MessageBox.error(oRead.msjs, null, "Mensaje del sistema", "OK", null);
+				return;
+			}
+
+			this.loadModelComboBoxMoneda(aListData);
+		},
+
+		/**
+		 * load model comboBox moneda
+		 * @function
+		 * @param 
+		 * @private
+		 */
+		loadModelComboBoxMoneda: function (p_listUnidadMedida) {
+
+			var oTable = this.byId("tblMaterial");
+			oTable.getModel().setProperty("/LstMoneda", p_listUnidadMedida);
+			oTable.getModel().refresh(true);
+
+		},
+
+		/**
+		 * select unidad de medida
+		 * @function
+		 * @param 
+		 * @private
+		 */
+		onChangeMoneda: function (oEvent) {
+			var oItem = oEvent.getParameter("selectedItem");
+			var oTableCommodities = this.byId("tblMaterial");
+			var oItemObject = oItem.getBindingContext().getObject();
+			var oUnidadSeleccionada = oItemObject.Waers;
+			var oTableItem = oEvent.getSource().getParent();
+			var oTableItemObject = oTableItem.getBindingContext().getObject();
+			oTableItemObject.MDEF_MONEDA = oUnidadSeleccionada;
+
+			oTableCommodities.getModel().refresh();
+
+		},
+
+		/**
+		 * Open calculator
+		 * @function
+		 * @param 
+		 * @private
+		 */
+		showCalculator: function (oEvent) {
+
+			// if (updatedRecords.length > 0) {
+			// 	//this.oEventcall = oEvent;
+			// 	this.oRowData = oEvent.getSource().getBindingContext().getProperty();
+			// 	this.oRouter = sap.ui.core.UIComponent.getRouterFor(this);  
+			// 	//var oRowData
+			// 	that = this;
+			// 	MessageBox.show(
+			// 		'Desea guardar los datos editados?', {
+			// 			icon: MessageBox.Icon.INFORMATION,
+			// 			title: "Informacion",
+			// 			actions: [MessageBox.Action.OK, MessageBox.Action.CANCEL],
+			// 			onClose: function (oAction) {
+			// 				if (oAction === sap.m.MessageBox.Action.OK) {
+			// 					// this.saveCommodities();
+
+			// 				} else if (oAction === sap.m.MessageBox.Action.CANCEL) {
+			// 					// updatedRecords = [];
+
+			// 				} else {
+			// 					return;
+			// 				}
+			// 				//rtChFromuladora
+			// 			//	var oRowData = that.oEventcall.getSource().getBindingContext().getProperty();
+			// 			//	var oRouter = sap.ui.core.UIComponent.getRouterFor(that);
+
+			// 				var oData = {
+			// 					oIdCommoditie: "", //this.oRowData.IdCommoditie,
+			// 					oIdFormula: "", //this.oRowData.IdFormula,
+			// 					oTxtFormula: "", //this.oRowData.TxtFormula
+			// 				};
+
+			// 				//Navigation to the Detail Form
+			// 				//app.to(page,"rtChFromuladora");
+			// 				var bus = sap.ui.getCore().getEventBus();
+			// 				//const bus = this.getOwnerComponent().getEventBus();
+			// 				// 1. ChannelName, 2. EventName, 3. the data
+			// 				bus.publish("GridAdminFormuladoraChannel", "onNavigateEvent", oData);
+
+			// 				//	oRowData.TxtFormula = oRowData.TxtFormula.replace('/', '\\/');
+			// 				this.oRowData.TxtFormula = encodeURIComponent(this.oRowData.TxtFormula);
+
+			// 				this.oRowData.TxtFormula = (this.oRowData.TxtFormula === "") ? "0" : this.oRowData.TxtFormula;
+
+			// 				this.oRouter.navTo("rtChFromuladora", {
+			// 					oRowPath: "", //this.oRowData.IdCommoditie,
+			// 					oIdFormula: "", //this.oRowData.IdFormula,
+			// 					oTxt: "", //this.oRowData.TxtFormula,
+			// 					oYear: "", //this.oRowData.Year,
+			// 					oMes: "", //this.oRowData.Mes
+			// 				});
+			// 			}.bind(this)
+			// 		}
+			// 	);
+			// }
+			
+			var  oRowData = oEvent.getSource().getBindingContext().getProperty(),
+			oData = {};
+
+			oData = {
+				oIdMaterial: oRowData.MDEF_IDMATERIAL, 
+				oSociedad: oRowData.MDEF_SOCIEDAD,
+				oCentro: oRowData.MDEF_CENTRO,
+				oYear: oRowData.MDEF_PERIODO,
+				oMes: oRowData.MDEF_MES,				
+				oIdFormula: "11", 
+				oTxtFormula: " ", 
+			};
+
+			//Navigation to the Detail Form
+			//app.to(page,"rtChFromuladora");
+			// var bus = sap.ui.getCore().getEventBus();
+			//const bus = this.getOwnerComponent().getEventBus();
+			// 1. ChannelName, 2. EventName, 3. the data
+			// bus.publish("GridAdminFormuladoraChannel", "onNavigateEvent", oData);
+
+			//	oRowData.TxtFormula = oRowData.TxtFormula.replace('/', '\\/');
+			// this.oRowData.TxtFormula = encodeURIComponent(this.oRowData.TxtFormula);
+
+			// this.oRowData.TxtFormula = (this.oRowData.TxtFormula === "") ? "0" : this.oRowData.TxtFormula;
+			
+			this.oRouter = sap.ui.core.UIComponent.getRouterFor(this);  
+			this.oRouter.navTo("rtChFormuladoraMaterial", {
+				oIdMaterial: oData.oIdMaterial,
+				oSociedad: oData.oSociedad,
+				oCentro: oData.oCentro,
+				oYear: oData.oYear,
+				oMes: oData.oMes,
+				oIdFormula: oData.oIdFormula,
+				oTxt: oData.oTxtFormula
+			});
+
+		}
 
 	});
 
