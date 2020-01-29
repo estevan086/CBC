@@ -1,0 +1,52 @@
+<mvc:View controllerName="cbc.co.simulador_costos.controller.Utilities.FormuladoraMaterial" xmlns="sap.suite.ui.commons"
+	xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns:m="sap.m" height="100%">
+	<m:App>
+		<m:pages>
+			<m:Page id="pageFormuladora" showHeader="false" enableScrolling="false" class="sapUiContentPadding">
+				<m:subHeader>
+					<m:OverflowToolbar>
+						<m:Button type="Back" press="onToPage1"/>
+						<!--<m:Label wrapping="true" text="Layout Type:"/>-->
+						<!--<m:content>-->
+						<!--	<m:Select id="layoutType" tooltip="Layout Types" change="layoutTypeChanged" selectedKey="{settings>/layoutType}">-->
+						<!--		<core:Item key="Default" text="Default"/>-->
+						<!--		<core:Item key="VisualTextualReadOnly" text="Visual Textual Read Only"/>-->
+						<!--		<core:Item key="VisualOnly" text="Visual Only"/>-->
+						<!--		<core:Item key="TextualOnly" text="Textual Only"/> -->
+						<!--	</m:Select>-->
+						<!--</m:content>-->
+						<!--<m:ToggleButton text="Read only" pressed="{settings>/readOnly}" press="readOnlyChanged"/>-->
+					</m:OverflowToolbar>
+				</m:subHeader>
+				<m:content>
+					<CalculationBuilder allowStringConstants="true" id="builder" layoutType="{settings>/layoutType}" expression="{settings>/expression}"
+						readOnly="{settings>/readOnly}" allowComparisonOperators="{settings>/allowComparison}" allowLogicalOperators="{settings>/allowLogical}"
+						title="{/title}" variables="{/variables}">
+						<variables>
+							<CalculationBuilderVariable key="{key}" group="{group}" label="{label}" items="{path:'items', templateShareable:true}">
+								<items>
+									<CalculationBuilderItem key="{key}"></CalculationBuilderItem>
+								</items>
+							</CalculationBuilderVariable>
+						</variables>
+						<!--<groups>-->
+						<!--	<CalculationBuilderGroup setSelection="setSelection" title="References" key="references" icon="sap-icon://account"-->
+						<!--		description="Internal item references">-->
+						<!--		<customView >-->
+						<!--			<m:Tree id="Tree" select="handleChange" mode="SingleSelectMaster" items="{/references}" includeItemInSelection="true">-->
+						<!--				<m:StandardTreeItem title="{text}" icon="{ref}">-->
+						<!--					<m:customData>-->
+						<!--						<core:CustomData key="{key}" value="{key}"/>-->
+						<!--					</m:customData>-->
+						<!--				</m:StandardTreeItem>-->
+						<!--			</m:Tree>-->
+						<!--		</customView>-->
+						<!--	</CalculationBuilderGroup>-->
+						<!--</groups>-->
+					</CalculationBuilder>
+					<m:Button icon="sap-icon://save" type="Emphasized" text="Guardar" tooltip="Guardar Formula" press="saveFormula"/>
+				</m:content>
+			</m:Page>
+		</m:pages>
+	</m:App>
+</mvc:View>
