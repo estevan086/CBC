@@ -215,6 +215,10 @@
 				"rtChAdminCL": {
 					"pattern": "rtChAdminCL",
 					"target": "rtChAdminCLTarget"
+				},
+				"rtChFormuladoraMaterial": {
+					"pattern": "rtChFormuladoraMaterial/{oIdMaterial}/oSociedad{oSociedad}/oCentro{oCentro}/oYear{oYear}/oMes{oMes}/oIdFormula{oIdFormula}/oTxt{oTxt}",
+					"target": "rtFormuladoraMaterialTarget"
 				}
 			},
 			"targets": {
@@ -406,6 +410,14 @@
 				"SelectVersion": {
 					"viewType": "XML",
 					"viewName": "SelectVersion"
+				},
+				"rtFormuladoraMaterialTarget": {
+					"viewPath": "cbc.co.simulador_costos.view.Utilities",
+					"viewName": "FormuladoraMaterial",
+					"viewType": "XML",
+					"parent": "parentTarget",
+					"controlId": "parentNavContainer",
+					"transition": "flip"					
 				}
 			},
 			"config": {

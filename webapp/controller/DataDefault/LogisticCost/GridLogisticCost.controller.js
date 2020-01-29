@@ -40,7 +40,7 @@ sap.ui.define([
 			if (this.getRouter().getRoute("rtChCostosLogisticosVersion")) {
 				this.getRouter().getRoute("rtChCostosLogisticosVersion").attachPatternMatched(this.onMyRoutePatternMatchedVersion, this);
 			}
-			SelectVersion.init(this);
+			SelectVersion.init(this, "LOG");
 		},
 		onMyRoutePatternMatched: function (event) {
 			//Cargar datos
