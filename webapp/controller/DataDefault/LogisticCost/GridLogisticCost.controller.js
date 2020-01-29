@@ -56,7 +56,8 @@ sap.ui.define([
 			SelectVersion.open();
 			this.getView().byId("btnAdmin").setVisible(false);
 		},
-		onCreateVersion: function(){
+		onCreateVersion: function(oData){
+			console.log(oData);
 			SelectVersion.close();
 			//console.log(this.getModel("versionModel").getProperty("/version"));	
 		},
