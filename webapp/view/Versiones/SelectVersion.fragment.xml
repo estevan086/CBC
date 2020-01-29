@@ -1,4 +1,4 @@
-<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.ui.layout.form">
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.ui.layout.form" xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
 	<Dialog title="{versionModel>/title}">
 		<content>
 			<f:Form editable="true">
@@ -20,12 +20,17 @@
 							</f:FormElement>
 							<f:FormElement label="{i18n>selectVersionFragment}" visible="{= ${versionModel>/version/indexOption} === 0}">
 								<f:fields>
-									<Input showSuggestion="true" showValueHelp="true" value="{versionModel>/version/versionForEdit}" required="true"/>
+									<Input id="inpVersionForEdit" showSuggestion="true" showValueHelp="true" value="{versionModel>/version/versionForEdit}" required="true"/>
+								</f:fields>
+							</f:FormElement>
+							<f:FormElement label="{i18n>nameVersionFragment}" visible="{= ${versionModel>/version/indexOption} === 1}">
+								<f:fields>
+									<Input value="{versionModel>/version/nameVersion}" required="true"/>
 								</f:fields>
 							</f:FormElement>
 							<f:FormElement label="{i18n>idVersionFragment}" visible="{= ${versionModel>/version/indexOption} === 1}">
 								<f:fields>
-									<Input value="{versionModel>/version/idNewVersion}" required="true"/>
+									<Input value="{versionModel>/version/nameVersion}_{versionModel>/version/modulo}" enabled="false"/>
 								</f:fields>
 							</f:FormElement>
 							<f:FormElement label="{i18n>descriptionVersionFragment}" visible="{= ${versionModel>/version/indexOption} === 1}">
@@ -35,12 +40,12 @@
 							</f:FormElement>
 							<f:FormElement label="{i18n>materialsVersionFragment}" visible="{= ${versionModel>/version/indexOption} === 1}">
 								<f:fields>
-									<Input showSuggestion="true" showValueHelp="true" description="Descripción versión materiales" value="{versionModel>/version/materialsVersion}" required="true"/>
+									<Input id="inpMaterialsVersion" showSuggestion="true" showValueHelp="true" description="Descripción versión materiales" value="{versionModel>/version/materialsVersion}" required="true" app:filter="MAT"/>
 								</f:fields>
 							</f:FormElement>
 							<f:FormElement label="{i18n>originVersionFragment}" visible="{= ${versionModel>/version/indexOption} === 1}">
 								<f:fields>
-									<Input showSuggestion="true" showValueHelp="true" description="Descripción versión costo logístico" value="{versionModel>/version/logisticsOrigin}"/>
+									<Input id="inpOriginVersion" showSuggestion="true" showValueHelp="true" description="Descripción versión costo logístico" value="{versionModel>/version/logisticsOrigin}" app:filter="LOG"/>
 								</f:fields>
 							</f:FormElement>
 						</f:formElements>
