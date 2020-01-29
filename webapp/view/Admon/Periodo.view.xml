@@ -1,9 +1,6 @@
-<mvc:View controllerName="cbc.co.simulador_costos.controller.Admon.Periodo" xmlns:core="sap.ui.core"
-	xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:ui="sap.ui.table" height="100%">
-	<ObjectHeader binding="{/ProductCollection/0}" title="{i18n>Periodos}" condensed="true"
-		number="{ parts:[{path:'Price'},{path:'CurrencyCode'}], type: 'sap.ui.model.type.Currency', formatOptions: {showMeasure: false} }"
-		numberUnit="{CurrencyCode}"/>
-	<Page showHeader="false" enableScrolling="false" class="sapUiContentPadding" busy="{modelView>/busy}">
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:ui="sap.ui.table"
+	controllerName="cbc.co.simulador_costos.controller.Admon.Periodo" xmlns:html="http://www.w3.org/1999/xhtml">
+	<Page title="{i18n>Periodos}" showNavButton="true" navButtonPress="onNavBack" class="sapUiContentPadding" busy="{modelView>/busy}">
 		<content>
 			<ui:Table id="tblPeriodo" rows="{Periodos>/CodPeriodos}" selectionMode="None" visibleRowCount="10" rowActionCount="1"
 				class="sapUiSizeCompact">
@@ -24,14 +21,20 @@
 							<Text text="{Periodos>Year}" wrapping="false"/>
 						</ui:template>
 					</ui:Column>
-					<ui:Column filterProperty="Period">
+					<!--<ui:Column filterProperty="Period">
 						<Label text="Mes"/>
 						<ui:template>
 							<Text text="{Periodos>Period}" wrapping="false"/>
 						</ui:template>
-					</ui:Column>
+					</ui:Column>-->
 				</ui:columns>
 			</ui:Table>
 		</content>
+		<footer>
+			<Toolbar id="otbFooter">
+				<Button icon="sap-icon://alert" text="{= ${message>/}.length }" visible="{= ${message>/}.length &gt; 0 }" type="Emphasized"
+					press="onMessagePopoverPress"/>
+			</Toolbar>
+		</footer>
 	</Page>
 </mvc:View>

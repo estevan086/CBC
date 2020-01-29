@@ -26,7 +26,16 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 			oModel.read("/periodoSet", {
 				success: function (oData, response) {
 					var data = new sap.ui.model.json.JSONModel();
-					data.setProperty("/CodPeriodos", oData.results);
+					var currentYear = "";
+					var test= [];
+					for (var i = 0; i < oData.results.length; i++) {
+						if(currentYear !== oData.results[i].Year)
+						{
+							currentYear =oData.results[i].Year;
+							test.push(oData.results[i]);
+						}
+					}
+					data.setProperty("/CodPeriodos",test);
 					this.getOwnerComponent().setModel(data, "Periodos");
 					this.getModel("modelView").setProperty("/busy", false);
 				}.bind(this),
