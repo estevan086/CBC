@@ -52,15 +52,26 @@ sap.ui.define([
 		onMyRoutePatternMatched: function (event) {
 			// your code when the view is about to be displayed ..
 
-			this.oIdCommoditie = event.getParameter("arguments").oRowPath;
-			this.oIdFormula = event.getParameter("arguments").oIdFormula;
-			this.oTxtFormula = event.getParameter("arguments").oTxt;
+			this.oIdCommoditie = event.getParameter("arguments").oIdCommoditie;
+			this.oSociedad = event.getParameter("arguments").oSociedad;
+			this.oCentro = event.getParameter("arguments").oCentro;
 			this.oYear = event.getParameter("arguments").oYear;
 			this.oMes = event.getParameter("arguments").oMes;
+			this.oIdFormula = event.getParameter("arguments").oIdFormula;
+			this.oTxtFormula = event.getParameter("arguments").oTxt;
 
-			this.oTxtFormula = decodeURIComponent(this.oTxtFormula);
 
-			var oTitle = "Id Commoditie:" + this.oIdCommoditie;
+			this.oTxtFormula = decodeURIComponent(this.oTxtFormula); 
+			
+			if (this.oTxtFormula === "0"){
+				this.oTxtFormula = "";
+			}
+
+			var oTitle = "Id Commoditie:" + this.oIdCommoditie +
+					     " - Sociedad:" + this.oSociedad +
+					     " - Centro:" + this.oCentro +
+					     " - A\u00F1o:" + this.oYear +
+					     " - Mes:" + this.oMes;
 
 			var oModel = new JSONModel();
 			
@@ -93,6 +104,7 @@ sap.ui.define([
 			this._oBuilder = this.getView().byId("builder");
 
 			this._oModelSettings = new JSONModel({
+				expression: this.oTxtFormula,
 				layoutType: "VisualOnly",
 				showInputToolbar: false,
 				allowComparison: false,
@@ -130,6 +142,8 @@ sap.ui.define([
 
 			oEntidad = {
 				IdCommoditie: this.oIdCommoditie,
+				Sociedad: this.oSociedad,
+				Centro: this.oCentro,
 				Fotrcost: this.oIdFormula,
 				Txtlg: oBuilderData,
 				Year: this.oYear,
@@ -174,26 +188,7 @@ sap.ui.define([
 
 			}
 			
-			
-			
-			// oModel.create("/formuladoraSet", {
-			// 	IdCommoditie: this.oIdCommoditie,
-			// 	FotrCost: this.oIdFormula,
-			// 	Txtlg: oBuilderData
-			// }, {
-			// 	success: function (oData, oResponse) {
-			// 		MessageToast.show(this.getView().getModel("i18n").getResourceBundle().getText("NotificacionGuardarOk"));
-			// 		//	this.getMasterCommodities();
-			// 	}.bind(this),
-			// 	error: function (oError) {
-			// 		this.showGeneralError({
-			// 			oDataError: oError
-			// 		});
-			// 		//	this.getModel("modelView").setProperty("/busy", false);
-			// 	}.bind(this)
-			// });
-
-			//	this.fnCloseFragment(oEvent);
+		 
 		},
 
 		layoutTypeChanged: function (oEvent) {

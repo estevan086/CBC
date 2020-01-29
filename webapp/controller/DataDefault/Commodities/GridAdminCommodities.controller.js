@@ -116,7 +116,7 @@ sap.ui.define([
 			this.GetSociedades();
 
 			//Obtiene Monedas
-			//	this.GetMonedas();
+			this.GetMonedas();
 
 			//Obtiene Unidades de Medida
 			this.GetUnidadesMedida();
@@ -139,9 +139,12 @@ sap.ui.define([
 			//Definir modelo del servicio web
 			var oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true);
 			//Definir filtro
+			//oFilters = ["$filter=Flag eq 'X' ] ;
+			//var oFilters = [ new sap.ui.model.Filter('Flag',FilterOperator.EQ, 'X') ];
+			var oFilters = [new Filter("Flag", FilterOperator.EQ, 'X')];
 
 			//Leer datos del ERP
-			var oRead = this.fnReadEntity(oModelService, "/centroSet", null);
+			var oRead = this.fnReadEntity(oModelService, "/centroSet", oFilters );
 
 			if (oRead.tipo === "S") {
 				this.oDataSociedades = oRead.datos.results;
@@ -603,24 +606,26 @@ sap.ui.define([
 				oDetail = {};
 
 			oEntidad = {
-				IdCommoditie: '1111',
-				Descripcion: 'Prueba',
+				IdCommoditie: 'CSV',
+				Descripcion: 'CSV',
 				detailCommoditiesSet: []
 			};
 
-			for (var i = 1; i < JsonValue.length; i++) {
+			for (var i = 0; i < JsonValue.length; i++) {
 
 				var CurrentRow = JsonValue[i];
 
 				oDetail = {
-					Formula: CurrentRow.CDEF_FORMULA,
+					//TxtFormula: CurrentRow.CDEF_FORMULA,
 					IdCommoditie: CurrentRow.CDEF_IDCOMMODITIES,
 					Sociedad: CurrentRow.CDEF_SOCIEDAD,
 					Centro: CurrentRow.CDEF_CENTRO,
+					Year: CurrentRow.CDEF_PERIODO,
+					Mes: CurrentRow.CDEF_MES,
 					UnidadMedida: CurrentRow.CDEF_UMD,
 					Moneda: CurrentRow.CDEF_MONEDA,
-					Mes: CurrentRow.CDEF_MES,
-					Year: CurrentRow.CDEF_PERIODO
+					PrecioMaterial: CurrentRow.CDEF_PRECIO,
+					OtrosCostos: CurrentRow.CDEF_OTROCOSTO
 						// Recordmode: '1'
 				};
 
@@ -714,18 +719,21 @@ sap.ui.define([
 						//	var oRowData = that.oEventcall.getSource().getBindingContext().getProperty();
 						//	var oRouter = sap.ui.core.UIComponent.getRouterFor(that);
 
-							var oData = {
-								oIdCommoditie: this.oRowData.IdCommoditie,
-								oIdFormula: this.oRowData.IdFormula,
-								oTxtFormula: this.oRowData.TxtFormula
-							};
+							// var oData = {
+							// 	oIdCommoditie: this.oRowData.IdCommoditie,
+							// 	oSociedad: this.oRowData.Sociedad,
+							// 	oCentro: this.oRowData.Centro,
+							// 	oYear: this.oRowData.Sociedad,
+							// 	oIdFormula: this.oRowData.IdFormula,
+							// 	oTxtFormula: this.oRowData.TxtFormula
+							// };
 
 							//Navigation to the Detail Form
 							//app.to(page,"rtChFromuladora");
 							var bus = sap.ui.getCore().getEventBus();
 							//const bus = this.getOwnerComponent().getEventBus();
 							// 1. ChannelName, 2. EventName, 3. the data
-							bus.publish("GridAdminFormuladoraChannel", "onNavigateEvent", oData);
+						//	bus.publish("GridAdminFormuladoraChannel", "onNavigateEvent", oData);
 
 							//	oRowData.TxtFormula = oRowData.TxtFormula.replace('/', '\\/');
 							this.oRowData.TxtFormula = encodeURIComponent(this.oRowData.TxtFormula);
@@ -733,11 +741,13 @@ sap.ui.define([
 							this.oRowData.TxtFormula = (this.oRowData.TxtFormula === "") ? "0" : this.oRowData.TxtFormula;
 
 							this.oRouter.navTo("rtChFromuladora", {
-								oRowPath: this.oRowData.IdCommoditie,
-								oIdFormula: this.oRowData.IdFormula,
-								oTxt: this.oRowData.TxtFormula,
+								oIdCommoditie: this.oRowData.IdCommoditie,
+								oSociedad: this.oRowData.Sociedad,
+								oCentro: this.oRowData.Centro,
 								oYear: this.oRowData.Year,
-								oMes: this.oRowData.Mes
+								oMes: this.oRowData.Mes,
+								oIdFormula: this.oRowData.IdFormula,
+								oTxt: this.oRowData.TxtFormula
 							});
 						}.bind(this)
 					}
