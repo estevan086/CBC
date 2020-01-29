@@ -61,6 +61,11 @@ sap.ui.define([
 		onCancelOriginVersion: function (oEvent) {
 
 		},
+		onCreateVersion: function (oEvent) {
+			if (this._oView.getController().onCreateVersion) {
+				this._oView.getController().onCreateVersion(this.getModel("versionModel").getProperty("/version"));
+			}
+		},
 		_createDialog: function (oContext) {
 			this._oDialog = sap.ui.xmlfragment(this._oView.createId("SelectVersion"),
 				"cbc.co.simulador_costos.view.Versiones.SelectVersion", oContext);
@@ -72,14 +77,15 @@ sap.ui.define([
 			this._oView.byId("SelectVersion--inpOriginVersion").attachValueHelpRequest(jQuery.proxy(this.onRequestSelectOriginVersion, this));
 			this._oView.byId("SelectVersion--inpVersionForEdit").attachValueHelpRequest(jQuery.proxy(this.onRequestSelectOriginVersion, this,
 				this._sModulo));
+			this._oView.byId("SelectVersion--btnCreateVersion").attachPress(jQuery.proxy(this.onCreateVersion, this));
 			this._oView.addDependent(this._oDialog);
 		},
 		_createSelectDialogOriginVersion: function (sValueFilter, oControl) {
 			var oSelectDialog = this._oSelectDialog;
 			if (!this._oSelectDialog) {
 				oSelectDialog = new sap.m.SelectDialog(this._oView.createId("SelectDialogVersion"), {
-					noDataText: "No se han encontrado versiones",
-					title: "Seleccione una versión",
+					noDataText: this._oContext.getResourceBundle().getText("notVersionsFoundVersionFragment"),
+					title: this._oContext.getResourceBundle().getText("selectTitleVersionFragment"),
 					search: jQuery.proxy(this.onSearchOriginVersion, this, sValueFilter, oControl),
 					confirm: jQuery.proxy(this.onConfirmOriginVersion, this, oControl),
 					cancel: jQuery.proxy(this.onCancelOriginVersion, this),
@@ -104,17 +110,23 @@ sap.ui.define([
 			});
 			return oSelectDialog;
 		},
+		_validateMandatoryInput: function () {
+			
+		},
 		_createDialogModel: function () {
 			var oModel = new JSONModel({
 				title: this._oContext.getResourceBundle().getText("titleVersionFragment"),
 				version: {
 					indexOption: 0,
 					versionForEdit: "",
+					country: "",
 					nameVersion: "",
-					idNewVersion: this._sModulo + "_",
+					idNewVersion: "",
 					descriptionVersion: "",
 					materialsVersion: "",
+					materialsVersionDesc: "",
 					logisticsOrigin: "",
+					logisticsOriginDesc: "",
 					modulo: this._sModulo
 				}
 			});

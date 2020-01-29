@@ -23,16 +23,23 @@
 									<Input id="inpVersionForEdit" showSuggestion="true" showValueHelp="true" value="{versionModel>/version/versionForEdit}" required="true"/>
 								</f:fields>
 							</f:FormElement>
+							<f:FormElement label="{i18n>countryVersionFragment}" visible="{= ${versionModel>/version/indexOption} === 1}">
+								<f:fields>
+									<ComboBox items="{ModelSimulador>/paisesSet}" selectedKey="{versionModel>/version/country}">
+										<core:Item key="{ModelSimulador>Pais}" text="{ModelSimulador>Descripcion}" />
+									</ComboBox>
+								</f:fields>
+							</f:FormElement>
 							<f:FormElement label="{i18n>nameVersionFragment}" visible="{= ${versionModel>/version/indexOption} === 1}">
 								<f:fields>
 									<Input value="{versionModel>/version/nameVersion}" required="true"/>
 								</f:fields>
 							</f:FormElement>
-							<f:FormElement label="{i18n>idVersionFragment}" visible="{= ${versionModel>/version/indexOption} === 1}">
+							<!--<f:FormElement label="{i18n>idVersionFragment}" visible="{= ${versionModel>/version/indexOption} === 1}">
 								<f:fields>
 									<Input value="{versionModel>/version/nameVersion}_{versionModel>/version/modulo}" enabled="false"/>
 								</f:fields>
-							</f:FormElement>
+							</f:FormElement>-->
 							<f:FormElement label="{i18n>descriptionVersionFragment}" visible="{= ${versionModel>/version/indexOption} === 1}">
 								<f:fields>
 									<Input value="{versionModel>/version/descriptionVersion}" required="true"/>
@@ -40,12 +47,12 @@
 							</f:FormElement>
 							<f:FormElement label="{i18n>materialsVersionFragment}" visible="{= ${versionModel>/version/indexOption} === 1}">
 								<f:fields>
-									<Input id="inpMaterialsVersion" showSuggestion="true" showValueHelp="true" description="Descripción versión materiales" value="{versionModel>/version/materialsVersion}" required="true" app:filter="MAT"/>
+									<Input id="inpMaterialsVersion" showSuggestion="true" showValueHelp="true" description="{versionModel>/version/materialsVersionDesc}" value="{versionModel>/version/materialsVersion}" required="true" app:filter="MAT"/>
 								</f:fields>
 							</f:FormElement>
 							<f:FormElement label="{i18n>originVersionFragment}" visible="{= ${versionModel>/version/indexOption} === 1}">
 								<f:fields>
-									<Input id="inpOriginVersion" showSuggestion="true" showValueHelp="true" description="Descripción versión costo logístico" value="{versionModel>/version/logisticsOrigin}" app:filter="LOG"/>
+									<Input id="inpOriginVersion" showSuggestion="true" showValueHelp="true" description="{versionModel>/version/logisticsOriginDesc}" value="{versionModel>/version/logisticsOrigin}" app:filter="LOG"/>
 								</f:fields>
 							</f:FormElement>
 						</f:formElements>
@@ -54,7 +61,7 @@
 			</f:Form>
 		</content>
 		<buttons>
-			<Button text="Crear versión" visible="{= ${versionModel>/version/indexOption} === 1}" type="Accept" press="onCreateVersion"/>
+			<Button id="btnCreateVersion" text="Crear versión" visible="{= ${versionModel>/version/indexOption} === 1}" type="Accept"/>
 			<Button text="Editar versión" visible="{= ${versionModel>/version/indexOption} === 0}" type="Accept" press="onEditVersion"/>
 			<Button text="Cancelar" press="onNavBack"/>
 		</buttons>
