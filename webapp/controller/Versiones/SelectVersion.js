@@ -50,13 +50,13 @@ sap.ui.define([
 			this._oSelectDialog.open();
 		},
 		onSearchOriginVersion: function (sValueFilter, oControl, oEvent) {
-			console.log(oEvent);
+			/*console.log(oEvent);
 			console.log(sValueFilter);
-			console.log(oControl);
+			console.log(oControl);*/
 		},
 		onConfirmOriginVersion: function (oControl, oEvent) {
-			console.log(oEvent);
-			console.log(oControl);
+			/*console.log(oEvent);
+			console.log(oControl);*/
 		},
 		onCancelOriginVersion: function (oEvent) {
 
