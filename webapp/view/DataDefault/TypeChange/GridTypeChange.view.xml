@@ -29,7 +29,7 @@
 						</ui:template>
 					</ui:Column>
 					<ui:Column filterProperty="Tcurr">
-						<m:Label text="Moneda Destinio"/>
+						<m:Label text="Moneda Destino"/>
 						<ui:template>
 							<m:Text text="{TipoCambio>Tcurr}" wrapping="false"/>
 						</ui:template>
