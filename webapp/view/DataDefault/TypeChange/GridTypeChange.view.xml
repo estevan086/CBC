@@ -1,7 +1,7 @@
 <mvc:View controllerName="cbc.co.simulador_costos.controller.DataDefault.TypeChange.GridTypeChange"
 	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:mvc="sap.ui.core.mvc" displayBlock="true" xmlns:ui="sap.ui.table" xmlns:m="sap.m"
 	xmlns:u="sap.ui.unified" xmlns:c="sap.ui.core" height="100%">
-	<m:Page title="Datos Default - Tipo de Cambio" showNavButton="true" navButtonPress="onNavBack" class="sapUiContentPadding"
+	<m:Page title="Datos Default - Tipo de Cambio" class="sapUiContentPadding"
 		busy="{modelView>/busy}">
 		<m:content>
 			<ui:Table id="tblTasaCambio" rows="{TipoCambio>/CodTipoCambio}" selectionMode="None" visibleRowCount="10" rowActionCount="1"
