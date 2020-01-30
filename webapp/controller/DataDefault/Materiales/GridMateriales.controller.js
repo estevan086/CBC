@@ -26,6 +26,8 @@ sap.ui.define([
 	var that = this;
 	var SortOrder = library.SortOrder;
 	this.detailCommodite = [];
+	this.tipoCambio = [];
+	this.centroYear = [];
 
 	return Controller.extend("cbc.co.simulador_costos.controller.DataDefault.Materiales.GridMateriales", {
 
@@ -44,12 +46,14 @@ sap.ui.define([
 				}
 			}, oUploader);
 
+			this.loadModelCbYear();
 			this.loadModel();
 			this.loadModelCommoditie();
 			this.loadModelCommoditieDetail();
 			// this.loadModelIcoterm();
 			this.loadModelUnidaMedida();
 			this.loadModelMoneda();
+			this.loadModelTipoCambio();
 			// this.editCellsTable(false);
 
 			// var fnPress = this.handleActionPress.bind(this);
@@ -966,10 +970,13 @@ sap.ui.define([
 						MDEF_SOCIEDAD: value.CompCode,
 						MDEF_CENTRO: value.Plant,
 						MDEF_UMD: value.BaseUom,
+						MDEF_UMD_SELECT: value.BaseUom,
 						MDEF_MONEDA: value.Currency,
+						MDEF_MONEDA_SELECT: value.Currency,
 						MDEF_PESOMATERIAL: Number(value.NetWeight) === 0 ? '' : Number(value.NetWeight),
 						MDEF_COMMODITIE: value.commodit,
 						MDEF_COMMODITIE_ID: value.commodit,
+						MDEF_COMMODITIE_SELECT: value.commodit,
 						MDEF_PRECIOPRODUCTIVO: Number(value.preprodc) === 0 ? '' : Number(value.preprodc),
 						MDEF_COSTOCONVERSION: Number(value.costconv) === 0 ? '' : Number(value.costconv),
 						MDEF_COSTOADICIONAL: Number(value.costadic) === 0 ? '' : Number(value.costadic),
@@ -1034,8 +1041,8 @@ sap.ui.define([
 					Material: oTempRow.MDEF_IDMATERIAL,
 					CompCode: oTempRow.MDEF_SOCIEDAD,
 					Plant: oTempRow.MDEF_CENTRO,
-					BaseUom: oTempRow.MDEF_UMD,
-					// Currency: oTempRow.MDEF_MONEDA,
+					BaseUom: oTempRow.MDEF_UMD_SELECT,
+					Currency: oTempRow.MDEF_MONEDA_SELECT,
 					Txtsubfam: oTempRow.MDEF_SUBFAMILIA,
 					Txtfam: oTempRow.MDEF_FAMILIA,
 					Txtsubcat: oTempRow.MDEF_SUBCATEGORIA,
@@ -1050,7 +1057,7 @@ sap.ui.define([
 					yfiscper3: oTempRow.MDEF_MES,
 					NetWeight: oTempRow.MDEF_PESOMATERIAL,
 					// UnitOfWt: oTempRow.MDEF_IDMATERIAL,
-					commodit: oTempRow.MDEF_COMMODITIE_ID.toString(),
+					commodit: oTempRow.MDEF_COMMODITIE_SELECT.toString(),
 					yicoterm: oTempRow.MDEF_ICOTERM_ID.toString(),
 					fotrcost: oTempRow.MDEF_FORMULAOTROSCOSTOS.toString(),
 					// Version: oTempRow.MDEF_IDMATERIAL,
@@ -1183,6 +1190,7 @@ sap.ui.define([
 			var oTableItem = oEvent.getSource().getParent();
 			var oTableItemObject = oTableItem.getBindingContext().getObject();
 			oTableItemObject.MDEF_COMMODITIE = oUnidadSeleccionada;
+			oTableItemObject.MDEF_COMMODITIE_SELECT = oUnidadSeleccionada;
 
 			var oCommodite = this.detailCommodite.filter(result => result.IdCommoditie === oTableItemObject.MDEF_COMMODITIE && result.Year ===
 				oTableItemObject.MDEF_PERIODO &&
@@ -1333,7 +1341,7 @@ sap.ui.define([
 				oValueItem = oEvent.getSource().getBindingContext().getObject();
 
 			oValueItem.MDEF_PCTRANSFERENCIA =
-				Number(oValueItem.MDEF_PCTRANSFERENCIA) / 100;
+				Number(oValueItem.MDEF_PCTRANSFERENCIA);
 
 			oValueItem.MDEF_COSTOMATERIAL =
 				Number(oValueItem.MDEF_PRECIOPRODUCTIVO) +
@@ -1344,12 +1352,12 @@ sap.ui.define([
 			oValueItem.MDEF_COSTOTRANSFERENCIA =
 				(Number(oValueItem.MDEF_COSTOMATERIAL) +
 					Number(oValueItem.MDEF_OTROSCOSTOS)) *
-				Number(oValueItem.MDEF_PCTRANSFERENCIA);
+				(Number(oValueItem.MDEF_PCTRANSFERENCIA) / 100);
 
 			oValueItem.MDEF_PRECIOPREMISA =
 				Number(oValueItem.MDEF_COSTOMATERIAL) +
 				Number(oValueItem.MDEF_OTROSCOSTOS) +
-				Number(oValueItem.MDEF_COSTOTRANSFERENCIA);
+				(Number(oValueItem.MDEF_PCTRANSFERENCIA) / 100);
 		},
 
 		/**
@@ -1677,7 +1685,9 @@ sap.ui.define([
 		 */
 		executeFormula: function (pMaterial, pCommodite) {
 			var vFormula = "",
-				vPatron = "";
+				vPatron = "",
+				oTipoCambio = [],
+				vTextCambio = "";
 
 			vFormula = pCommodite.TxtFormula;
 
@@ -1692,6 +1702,15 @@ sap.ui.define([
 			//Reemplazar peso material 
 			vPatron = '/PesoMaterial/gi';
 			vFormula = vFormula.replace(eval(vPatron), pMaterial.MDEF_PESOMATERIAL);
+
+			oTipoCambio = this.tipoCambio.filter(result => result.Fcurr === pMaterial.MDEF_MONEDA_SELECT && result.Tcurr === pCommodite.Moneda &&
+				result.Fiscyear === pMaterial.MDEF_PERIODO && result.Fiscper3 === pMaterial.MDEF_MES);
+
+			if (oTipoCambio.length > 0) {
+				vTextCambio = oTipoCambio[0].Fcurr + ' a ' + oTipoCambio[0].Tcurr + ' = ' + oTipoCambio[0].Ukurspromedio;
+				pCommodite.TxtFormula = "(" + vFormula + ") * " + "( " + oTipoCambio[0].Ukurspromedio + " )";
+				vFormula = "(" + vFormula + ") * " + "( " + oTipoCambio[0].Ukurspromedio + " )";
+			}
 
 			MessageBox.show(
 				'Formula aplicada\n' + pCommodite.TxtFormula + '\n\n' + vFormula, {
@@ -1826,6 +1845,7 @@ sap.ui.define([
 			var oTableItem = oEvent.getSource().getParent();
 			var oTableItemObject = oTableItem.getBindingContext().getObject();
 			oTableItemObject.MDEF_UMD = oUnidadSeleccionada;
+			oTableItemObject.MDEF_UMD_SELECT = oUnidadSeleccionada;
 
 			oTableCommodities.getModel().refresh();
 
@@ -1846,7 +1866,7 @@ sap.ui.define([
 			oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true);
 
 			//Leer datos del ERP
-			var oRead = this.fnReadEntity(oModelService, "/monedasSet", null);
+			var oRead = this.fnReadEntity(oModelService, "/monedaMaterialSet", null);
 
 			if (oRead.tipo === "S") {
 				aListData = oRead.datos.results;
@@ -1886,6 +1906,7 @@ sap.ui.define([
 			var oTableItem = oEvent.getSource().getParent();
 			var oTableItemObject = oTableItem.getBindingContext().getObject();
 			oTableItemObject.MDEF_MONEDA = oUnidadSeleccionada;
+			oTableItemObject.MDEF_MONEDA_SELECT = oUnidadSeleccionada;
 
 			oTableCommodities.getModel().refresh();
 
@@ -1953,18 +1974,18 @@ sap.ui.define([
 			// 		}
 			// 	);
 			// }
-			
-			var  oRowData = oEvent.getSource().getBindingContext().getProperty(),
-			oData = {};
+
+			var oRowData = oEvent.getSource().getBindingContext().getProperty(),
+				oData = {};
 
 			oData = {
-				oIdMaterial: oRowData.MDEF_IDMATERIAL, 
+				oIdMaterial: oRowData.MDEF_IDMATERIAL,
 				oSociedad: oRowData.MDEF_SOCIEDAD,
 				oCentro: oRowData.MDEF_CENTRO,
 				oYear: oRowData.MDEF_PERIODO,
-				oMes: oRowData.MDEF_MES,				
-				oIdFormula: "11", 
-				oTxtFormula: " ", 
+				oMes: oRowData.MDEF_MES,
+				oIdFormula: "11",
+				oTxtFormula: " ",
 			};
 
 			//Navigation to the Detail Form
@@ -1978,8 +1999,8 @@ sap.ui.define([
 			// this.oRowData.TxtFormula = encodeURIComponent(this.oRowData.TxtFormula);
 
 			// this.oRowData.TxtFormula = (this.oRowData.TxtFormula === "") ? "0" : this.oRowData.TxtFormula;
-			
-			this.oRouter = sap.ui.core.UIComponent.getRouterFor(this);  
+
+			this.oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 			this.oRouter.navTo("rtChFormuladoraMaterial", {
 				oIdMaterial: oData.oIdMaterial,
 				oSociedad: oData.oSociedad,
@@ -1990,7 +2011,185 @@ sap.ui.define([
 				oTxt: oData.oTxtFormula
 			});
 
-		}
+		},
+
+		/**
+		 * Load model data tipo cambio
+		 * @function
+		 * @param 
+		 * @private
+		 */
+		loadModelTipoCambio: function (event) {
+			var sServiceUrl = "",
+				oModelService = "",
+				aListData = [],
+				filterKurst = {},
+				filtersArray = {};
+
+			filterKurst = new sap.ui.model.Filter({
+				path: "Kurst",
+				operator: sap.ui.model.FilterOperator.EQ,
+				value1: 'REAL'
+			});
+
+			filtersArray = new Array();
+			filtersArray.push(filterKurst);
+
+			sServiceUrl = this.getOwnerComponent().getModel("ModelSimulador").sServiceUrl;
+			oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true);
+
+			//Leer datos del ERP
+			var oRead = this.fnReadEntity(oModelService, "/tipoCambioSet", filtersArray);
+
+			if (oRead.tipo === "S") {
+				aListData = oRead.datos.results;
+			} else {
+				MessageBox.error(oRead.msjs, null, "Mensaje del sistema", "OK", null);
+				return;
+			}
+
+			this.tipoCambio = aListData;
+		},
+
+		/**
+		 * Load model combo box year
+		 * @function
+		 * @param 
+		 * @private
+		 */
+		loadModelCbYear: function (event) {
+
+			var sServiceUrl = {},
+				oModelService = {};
+
+			sServiceUrl = this.getOwnerComponent().getModel("ModelSimulador").sServiceUrl;
+			oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true);
+
+			oModelService.read("/centroYearMaterialSet", {
+				async: true,
+				success: function (oData, response) {
+					this.centroYear = oData.results;
+					this.loadModelComboBoxYear(oData.results);
+				}.bind(this),
+				error: function (oError) {
+					this.showGeneralError({
+						oDataError: oError
+					});
+					this.getModel("modelView").setProperty("/busy", false);
+				}
+			});
+
+		},
+
+		/**
+		 * load model comboBox year
+		 * @function
+		 * @param 
+		 * @private
+		 */
+		loadModelComboBoxYear: function (p_listYear) {
+			var oTable = this.byId("idYear"),
+				oListaData = "";
+
+			oListaData = Array.from(new Set(p_listYear.map(s => s.yfiscyear)))
+				.map(yfiscyear => {
+					return {
+						yfiscyear: yfiscyear
+
+					};
+				});
+
+			oTable.getModel().setProperty("/LstYear", oListaData);
+			oTable.getModel().refresh();
+
+		},
+
+		/**
+		 * change year
+		 * @function
+		 * @param 
+		 * @private
+		 */
+		onChangeYear: function (oEvent) {
+
+			var oCombox = this.byId("idPlatn"),
+				oListYear = [],
+				oListaData = "",
+				oItem = oEvent.getParameter("selectedItem"),
+				oItemObject = oItem.getBindingContext().getObject();
+				
+			oCombox.setSelectedKey(null);
+				
+			oListYear = this.centroYear.filter(result => result.yfiscyear === oItemObject.yfiscyear);
+
+			oListaData = Array.from(new Set(oListYear.map(s => s.Plant)))
+				.map(Plant => {
+					return {
+						Plant: Plant,
+                        txtmd: oListYear.find(s => s.Plant === Plant).txtmd
+					};
+				});				
+
+			oCombox.getModel().setProperty("/LstPlant", oListaData);
+			oCombox.getModel().refresh(true);
+
+		},
+		
+		/**
+		 * Filter material
+		 * @function
+		 * @param 
+		 * @private
+		 */
+		onFilterMaterial: function (oEvent) {
+
+			var oComboxYear = this.byId("idYear"),
+				oComboxPlant = this.byId("idPlatn");
+				
+			var aFilter = [];
+
+			if (oComboxYear.getSelectedKey() !== "") {
+				aFilter.push(new Filter("yfiscyear", FilterOperator.EQ, oComboxYear.getSelectedKey()));
+			}
+			if (oComboxPlant.getSelectedKey() !== "") {
+				aFilter.push(new Filter("Plant", FilterOperator.EQ, oComboxPlant.getSelectedKey()));
+			}
+			
+			this.getMaterialFilter(aFilter);
+
+		},
+		
+		/**
+		 * Get material filter
+		 * @function
+		 * @param 
+		 * @private
+		 */
+		getMaterialFilter: function (oFilter) {
+			
+			var sServiceUrl = {},
+				oModelService = {};
+
+			sServiceUrl = this.getOwnerComponent().getModel("ModelSimulador").sServiceUrl;
+			oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true);
+
+			oModelService.read("/materialDefatultSet", {
+				async: true,
+				filters: oFilter,
+				success: function (oData, response) {
+					this.mapDataTable(oData.results);
+				}.bind(this),
+				error: function (oError) {
+					this.showGeneralError({
+						oDataError: oError
+					});
+					this.getModel("modelView").setProperty("/busy", false);
+				}
+			});	
+			
+			this.loadModelCbYear();
+
+		}		
 
 	});
 

@@ -14,28 +14,35 @@
 					<m:Button icon="sap-icon://upload-to-cloud" text="Publicar" tooltip="Publicar version de commoditie"/>
 				</m:items>
 			</m:FlexBox>
-			<Table id="tblMaterial" enableColumnFreeze="true" rows="{/MATERIAL}" selectionMode="None" visibleRowCount="7" rowActionCount="1" class="sapUiSizeCompact">
+			<Table id="tblMaterial" enableColumnFreeze="true" rows="{/MATERIAL}" selectionMode="None" visibleRowCount="7" rowActionCount="1"
+				class="sapUiSizeCompact">
 				<extension>
 					<m:OverflowToolbar>
 						<m:content>
 							<m:Title id="title" text=""/>
-							<!--<m:ToggleButton icon="sap-icon://complete" tooltip="Show available products only" press="toggleAvailabilityFilter"-->
-							<!--	pressed="{ui>/availabilityFilterOn}"/>-->
-							<!--<m:ToggleButton icon="sap-icon://grid" tooltip="Enable / Disable Cell Filter Functionality" pressed="{ui>/cellFilterOn}"/>-->
 							<m:Button icon="sap-icon://eraser" text="" tooltip="Clear all filters" press="clearAllFilters"/>
-							<!--<m:ToolbarSeparator/>-->
-							<m:SearchField placeholder="Filter" value="{ui>/globalFilter}" liveChange="filterGloballySup" width="15rem"/>
+							<m:SearchField placeholder="Filter" value="{ui>/globalFilter}" liveChange="filterGloballySup" width="10rem"/>
+							<m:Text text="Filtros Consulta" wrapping="false"/>
+							<m:ComboBox id="idYear" showSecondaryValues="true" filterSecondaryValues="true" placeholder="Año" 
+								items="{ path: '/LstYear', sorter: { path: 'yfiscyear' } }" editable="true" width="5rem" selectionChange="onChangeYear">
+								<c:ListItem key="{yfiscyear}" text="{yfiscyear}"/>
+							</m:ComboBox>
+							<m:ComboBox id="idPlatn" showSecondaryValues="true" filterSecondaryValues="true" placeholder="Centro" 
+								items="{ path: '/LstPlant', sorter: { path: 'Plant' } }" editable="true" width="7rem">
+								<c:ListItem key="{Plant}" text="{Plant}" additionalText="{txtmd}"/>
+							</m:ComboBox>
+							<m:Button icon="sap-icon://search"  press="onFilterMaterial"/>
 							<m:ToolbarSpacer/>
 							<m:Button icon="sap-icon://sys-next-page" text="Exportar" tooltip="Exportar version de material" press="onDataExport"/>
 							<u:FileUploader id="fileUploader" name="myFileUpload" icon="sap-icon://sys-prev-page" tooltip="Importar version de commoditie"
-								change="handleUpload"/> 
+								change="handleUpload"/>
 							<!--<m:Button icon="sap-icon://factory" type="Emphasized" text="Administrar material" tooltip="Crear Material" press="onGoToIdCommoditieTable"/>-->
 							<!--<m:Button icon="sap-icon://edit" type="Emphasized" text="Editar Version" tooltip="Version" press="showFormEditCommoditie"/>-->
 						</m:content>
 					</m:OverflowToolbar>
 				</extension>
 				<columns>
-					<Column autoResizable="true" width="5rem"  filterProperty="MDEF_IDMATERIAL">
+					<Column autoResizable="true" width="5rem" filterProperty="MDEF_IDMATERIAL">
 						<m:Label text="IDMaterial"/>
 						<template>
 							<m:Text text="{MDEF_IDMATERIAL}" wrapping="false"/>
@@ -69,7 +76,7 @@
 							<m:ComboBox id="idComboBoxUnidadesMedida" showSecondaryValues="true" filterSecondaryValues="true" value="{MDEF_UMD}"
 								selectedKey="{MDEF_UMD}" items="{ path: '/LstUnMedida', sorter: { path: 'Mseht' } }" editable="false" selectionChange="onChangeUMB">
 								<c:ListItem key="{Msehi}" text="{Mseht}" additionalText="{Msehi}"/>
-							</m:ComboBox>							
+							</m:ComboBox>
 						</template>
 					</Column>
 					<Column autoResizable="true" width="8rem" filterProperty="MDEF_MONEDA">
@@ -77,10 +84,10 @@
 						<template>
 							<!--<m:Text text="{MDEF_MONEDA}" wrapping="false"/>-->
 							<!--<m:Input value="{MDEF_MONEDA}" editable="false"/>-->
-							<m:ComboBox id="idComboBoxMoneda" showSecondaryValues="true" filterSecondaryValues="true" value="{MDEF_MONEDA}"
-								selectedKey="{MDEF_MONEDA}" items="{ path: '/LstMoneda', sorter: { path: 'Ltext' } }" editable="false" selectionChange="onChangeMoneda">
+							<m:ComboBox id="idComboBoxMoneda" showSecondaryValues="true" filterSecondaryValues="true" value="{MDEF_MONEDA}" selectedKey="{MDEF_MONEDA}"
+								items="{ path: '/LstMoneda', sorter: { path: 'Ltext' } }" editable="false" selectionChange="onChangeMoneda">
 								<c:ListItem key="{Waers}" text="{Ltext}" additionalText="{Waers}"/>
-							</m:ComboBox>							
+							</m:ComboBox>
 						</template>
 					</Column>
 					<Column autoResizable="true" width="5rem" filterProperty="MDEF_PESOMATERIAL">
@@ -96,7 +103,8 @@
 							<!--<m:Text text="{MDEF_COMMODITIE}" wrapping="false"/>-->
 							<!--<m:Input value="{MDEF_COMMODITIE}" editable="false"/>-->
 							<m:ComboBox id="idComboBoxCommodite" showSecondaryValues="true" filterSecondaryValues="true" value="{MDEF_COMMODITIE}"
-								selectedKey="{MDEF_COMMODITIE_ID}" items="{ path: '/LstCommodite', sorter: { path: 'Descripcion' } }" editable="false" selectionChange="onChange">
+								selectedKey="{MDEF_COMMODITIE_ID}" items="{ path: '/LstCommodite', sorter: { path: 'Descripcion' } }" editable="false"
+								selectionChange="onChange">
 								<c:ListItem key="{IdCommoditie}" text="{Descripcion}" additionalText="{IdCommoditie}"/>
 							</m:ComboBox>
 						</template>
@@ -135,9 +143,10 @@
 							<!--<m:Text text="{MDEF_ICOTERM}" wrapping="false"/>-->
 							<!--<m:Input value="{MDEF_ICOTERM}" editable="false" change="onChangeCostoMaterial"/>-->
 							<m:ComboBox id="idComboBoxIcoterm" showSecondaryValues="true" filterSecondaryValues="true" value="{MDEF_ICOTERM}"
-								selectedKey="{MDEF_ICOTERM_ID}" items="{ path: '/LstIcoterm', sorter: { path: 'yicoterm' } }" editable="false" selectionChange="onChangeIcoterm">
+								selectedKey="{MDEF_ICOTERM_ID}" items="{ path: '/LstIcoterm', sorter: { path: 'yicoterm' } }" editable="false"
+								selectionChange="onChangeIcoterm">
 								<c:ListItem key="{yidAuton}" text="{yicoterm}" additionalText="{yidAuton}"/>
-							</m:ComboBox>							
+							</m:ComboBox>
 						</template>
 					</Column>
 					<Column autoResizable="true" width="5rem" filterProperty="MDEF_COSTOMATERIAL">
