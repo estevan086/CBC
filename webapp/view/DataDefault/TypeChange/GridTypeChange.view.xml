@@ -15,7 +15,7 @@
 								<c:ListItem key="M" text="Real"/>
 							</m:ComboBox>
 							<m:ToolbarSpacer/>
-							<m:Button icon="sap-icon://sys-next-page" text="Exportar" tooltip="Exportar version de commoditie"/>
+							<m:Button icon="sap-icon://sys-next-page" text="Exportar" tooltip="Exportar Tipo de Cambio" press="onDataExport"/>
 						<u:FileUploader id="fileUploader" name="myFileUpload" icon="sap-icon://sys-prev-page" tooltip="Importar Tipo de Cambio"
 								change="handleUpload" sameFilenameAllowed="true" />
 							<m:Button icon="sap-icon://save" type="Emphasized" text="{i18n>Guardar}" tooltip="Guardar Tipo de Cambio" press="saveTypeChange"/>

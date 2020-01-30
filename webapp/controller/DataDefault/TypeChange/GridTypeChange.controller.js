@@ -284,6 +284,59 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 
 			}
 
+		},
+
+		onDataExport: function (oEvent, pExport) {
+
+			var oModelLocal = this.getModel("TipoCambio"); //this.getView().getModel("DataExport");
+			/*var oColumns = this.byId("tblTasaCambio").getColumns();
+			for (var j = 0; j < this.byId("tblTasaCambio").getColumns().length; j++) {
+				if (currentline[0] === "P") {
+					obj[headers[j]] = currentline[j];
+				}
+			}*/
+
+			/*if (pExport) {*/
+			var oModel = new sap.ui.model.json.JSONModel(oModelLocal.getProperty("/CodTipoCambio")),
+				columns = [];
+			columns.push({
+				name: "Tipo",
+				template: {content: {path: "Kurst"}}
+			},{
+				name: "Moneda Local",
+				template: {content: {path: "Fcurr"}}
+			},{
+				name: "Moneda Destino",
+				template: {content: {path: "Tcurr"}}
+			},{
+				name: "Mes",
+				template: {content: {path: "Fiscper3"}}
+			},{
+				name: "Año",
+				template: {content: {path: "Fiscyear"}}
+			},{
+				name: "Tasa de Cambio Promedio",
+				template: {content: {path: "Ukurspromedio"}}
+			}
+			);
+			//recupera columnas creadas dinamicamente
+			/*this.columnData.forEach(function (oValue, i) {
+				columns.push({
+					name: oValue.label,
+					template: {
+						content: {
+							path: oValue.columnName
+						}
+					}
+				});
+			});
+*/
+			this.cvsDataExport(oModel, columns);
+			this.getView().getModel("DataExport").setProperty("/CodTipoCambio", []);
+			/*} else {
+				this.getLogisticCostValoration(this.getFilters(), true);
+			}*/
+
 		}
 
 	});
