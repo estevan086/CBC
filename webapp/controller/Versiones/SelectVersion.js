@@ -46,15 +46,15 @@ sap.ui.define([
 			this._oSelectDialog = this._createSelectDialogOriginVersion(sValueFilter, sProperty);
 			this._oSelectDialog.open();
 		},
-		onSearchOriginVersion: function (sValueFilter, oEvent) {
+		onSearchOriginVersion: function (oEvent) {
 			var sValue = oEvent.getParameter("value");
-			var aFilter = [new Filter("Modulo", FilterOperator.EQ, sValueFilter),
+			var aFilter = [new Filter("Modulo", FilterOperator.EQ, this._sValueFilter),
 				new Filter("Version", FilterOperator.Contains, sValue)
 			];
 			var oBinding = oEvent.getSource().getBinding("items");
 			oBinding.filter(aFilter);
 		},
-		onConfirmOriginVersion: function (sProperty, oEvent) {
+		onConfirmOriginVersion: function (oEvent) {
 			var oSelectedItem = oEvent.getParameter("selectedItem");
 			var oModel = this.getModel("versionModel");
 			if (oSelectedItem) {
@@ -123,7 +123,9 @@ sap.ui.define([
 				oSelectDialog = new sap.m.SelectDialog(this._oView.createId("SelectDialogVersion"), {
 					noDataText: this._oContext.getResourceBundle().getText("notVersionsFoundVersionFragment"),
 					title: this._oContext.getResourceBundle().getText("selectTitleVersionFragment"),
-					confirm: jQuery.proxy(this.onConfirmOriginVersion, this, sProperty),
+					confirm: jQuery.proxy(this.onConfirmOriginVersion, this),
+					cancel: jQuery.proxy(this.onConfirmOriginVersion, this),
+					search: jQuery.proxy(this.onSearchOriginVersion, this),
 					showClearButton: true
 				});
 				this._oView.addDependent(oSelectDialog);
@@ -132,6 +134,7 @@ sap.ui.define([
 			oSelectDialog.attachCancel(jQuery.proxy(this.onConfirmOriginVersion, this, sProperty));
 			oSelectDialog.attachSearch(jQuery.proxy(this.onSearchOriginVersion, this, sProperty));*/
 			this._sProperty = sProperty;
+			this._sValueFilter = sValueFilter;
 			var oTemplate = new sap.m.StandardListItem({
 				title: "{ModelSimulador>Version}",
 				description: "{ModelSimulador>Txtmd}",
