@@ -20,7 +20,7 @@
 							</f:FormElement>
 							<f:FormElement label="{i18n>selectVersionFragment}" visible="{= ${versionModel>/version/indexOption} === 0}">
 								<f:fields>
-									<Input id="inpVersionForEdit" showSuggestion="true" showValueHelp="true" value="{versionModel>/version/versionForEdit}" required="true"/>
+									<Input id="inpVersionForEdit" showSuggestion="true" showValueHelp="true" value="{versionModel>/version/versionForEdit}" required="true" app:filter="LOG" app:property="versionForEdit"/>
 								</f:fields>
 							</f:FormElement>
 							<f:FormElement label="{i18n>countryVersionFragment}" visible="{= ${versionModel>/version/indexOption} === 1}">
@@ -47,15 +47,15 @@
 							</f:FormElement>
 							<f:FormElement label="{i18n>materialsVersionFragment}" visible="{= ${versionModel>/version/indexOption} === 1}">
 								<f:fields>
-									<Input id="inpMaterialsVersion" showSuggestion="true" showValueHelp="true" description="{versionModel>/version/materialsVersionDesc}" value="{versionModel>/version/materialsVersion}" required="true" app:filter="MAT"/>
+									<Input id="inpMaterialsVersion" showSuggestion="true" showValueHelp="true" description="{versionModel>/version/materialsVersionDesc}" value="{versionModel>/version/materialsVersion}" required="true" app:filter="MAT" app:property="materialsVersion"/>
 								</f:fields>
 							</f:FormElement>
 							<f:FormElement label="{i18n>originVersionFragment}" visible="{= ${versionModel>/version/indexOption} === 1}">
 								<f:fields>
-									<Input id="inpOriginVersion" showSuggestion="true" showValueHelp="true" description="{versionModel>/version/logisticsOriginDesc}" value="{versionModel>/version/logisticsOrigin}" app:filter="LOG"/>
+									<Input id="inpOriginVersion" showSuggestion="true" showValueHelp="true" description="{versionModel>/version/logisticsOriginDesc}" value="{versionModel>/version/logisticsOrigin}" app:filter="LOG" app:property="logisticsOrigin"/>
 								</f:fields>
 							</f:FormElement>
-							<f:FormElement label="{i18n>yearVersionFragment}" visible="{= ${versionModel>/version/indexOption} === 1 &amp;&amp; ${versionModel>/version/logisticsOrigin}.indexOf('DEF') >= 0 }">
+							<f:FormElement label="{i18n>yearVersionFragment}" visible="{= ${versionModel>/version/indexOption} === 1 &amp;&amp; ${versionModel>/version/logisticsOrigin}.indexOf('DEFAULT') >= 0 }">
 								<f:fields>
 									<ComboBox id="cmbYear" selectedKey="{versionModel>/version/year}"/>
 								</f:fields>
@@ -67,7 +67,7 @@
 		</content>
 		<buttons>
 			<Button id="btnCreateVersion" text="Crear versión" visible="{= ${versionModel>/version/indexOption} === 1}" type="Accept"/>
-			<Button text="Editar versión" visible="{= ${versionModel>/version/indexOption} === 0}" type="Accept" press="onEditVersion"/>
+			<Button id="btnEditVersion" text="Editar versión" visible="{= ${versionModel>/version/indexOption} === 0}" type="Accept"/>
 			<Button text="Cancelar" press="onNavBack"/>
 		</buttons>
 	</Dialog>
