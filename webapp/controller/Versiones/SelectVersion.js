@@ -95,7 +95,7 @@ sap.ui.define([
 		},
 		onEditVersion: function (oEvent) {
 			this.close();
-			this.getModel("versionModel").setProperty("/idVersion", this.getModel("versionModel").getProperty("/versionForEdit"));
+			this.getModel("versionModel").setProperty("/version/idVersion", this.getModel("versionModel").getProperty("/version/versionForEdit"));
 			if (this._oView.getController().onShowVersion) {
 				this._oView.getController().onShowVersion(this.getModel("versionModel").getProperty("/version"));
 			}
@@ -145,6 +145,14 @@ sap.ui.define([
 				FilterOperator.EQ,
 				sValueFilter
 			)];
+			var oVersion = this.getModel("versionModel").getProperty("/version");
+			if (sValueFilter !== this._sModulo && oVersion.logisticsOrigin) {
+				aFilter.push(new Filter(
+					"VerOrigen",
+					FilterOperator.EQ,
+					oVersion.logisticsOrigin
+				));
+			}
 			oSelectDialog.bindAggregation("items", {
 				path: "/versionSet",
 				model: "ModelSimulador",

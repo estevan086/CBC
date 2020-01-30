@@ -61,13 +61,10 @@ sap.ui.define([
 		},
 		onShowVersion: function (oData) {
 			var aFilter = [];
-
-			console.log(oData);
-			SelectVersion.close();
 			version = oData.idVersion;
 
 			aFilter.push(new Filter("Version", FilterOperator.EQ, version));
-			aFilter.push(new Filter("FiscYear", FilterOperator.EQ, oData.year));
+			aFilter.push(new Filter("Fiscyear", FilterOperator.EQ, oData.year));
 			this.getLogisticCostValoration(aFilter);
 		},
 		getLogisticCostValoration: function (oFilter, pExport) {
