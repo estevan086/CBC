@@ -16,10 +16,11 @@ sap.ui.define([
 	'sap/ui/core/Fragment',
 	'sap/m/MessageBox',
 	'sap/ui/core/util/Export',
-	'sap/ui/core/util/ExportTypeCSV'
+	'sap/ui/core/util/ExportTypeCSV',
+    "cbc/co/simulador_costos/controller/Versiones/SelectVersion"
 
 ], function (Controller, JSONModel, MessageToast, DateFormat, library, Filter, FilterOperator, Button, Dialog, List, StandardListItem,
-	ButtonType, Fragment, MessageBox, Export, ExportTypeCSV) {
+	ButtonType, Fragment, MessageBox, Export, ExportTypeCSV, SelectVersion) {
 	"use strict";
 
 	this.updatedRecords = [];
@@ -30,9 +31,12 @@ sap.ui.define([
 	this.centroYear = [];
 	this.moneda = [];
 	this.commodite = [];
-
+	
+	const cDefaultVersion = "DEFAULT";
+	var   version = "";
+	
 	return Controller.extend("cbc.co.simulador_costos.controller.DataDefault.Materiales.GridMateriales", {
-
+		SelectVersion: SelectVersion,
 		onInit: function () {
 			// set explored app's demo model on this sample
 			// var json = this.initSampleDataModel();
@@ -48,14 +52,23 @@ sap.ui.define([
 				}
 			}, oUploader);
 
-			this.loadModelCbYear();
+			/*this.loadModelCbYear();
 			this.loadModel();
 			this.loadModelCommoditie();
 			this.loadModelCommoditieDetail();
 			// this.loadModelIcoterm();
 			this.loadModelUnidaMedida();
 			this.loadModelMoneda();
-			this.loadModelTipoCambio();
+			this.loadModelTipoCambio();*/
+			
+			if (this.getRouter().getRoute("rtChMateriales")) {
+				this.getRouter().getRoute("rtChMateriales").attachPatternMatched(this.onMyRoutePatternMatched, this);
+			}
+			if (this.getRouter().getRoute("rtChMaterialesVersion")) {
+				this.getRouter().getRoute("rtChMaterialesVersion").attachPatternMatched(this.onMyRoutePatternMatchedVersion, this);
+			}
+			SelectVersion.init(this, "MAT");
+			
 			// this.editCellsTable(false);
 
 			// var fnPress = this.handleActionPress.bind(this);
@@ -83,7 +96,39 @@ sap.ui.define([
 			// myRoute.attachPatternMatched(this.onMyRoutePatternMatched, this);			
 
 		},
+		onMyRoutePatternMatched: function (event) {
+			var aFilter = [];
+			version = "";
+			
+			this.loadModelCbYear();
+			this.loadModel();
+			this.loadModelCommoditie();
+			this.loadModelCommoditieDetail();
+			// this.loadModelIcoterm();
+			this.loadModelUnidaMedida();
+			this.loadModelMoneda();
+			this.loadModelTipoCambio();
+		},
+		onMyRoutePatternMatchedVersion: function (oEvent) {
+			SelectVersion.open();
+			this.getView().byId("btnAdmin").setVisible(false);
+		},
+		onShowVersion: function (oData) {
+			var aFilter = [];
+			version = oData.idVersion;
 
+			aFilter.push(new Filter("Version", FilterOperator.EQ, version));
+			aFilter.push(new Filter("Fiscyear", FilterOperator.EQ, oData.year));
+			
+			this.loadModelCbYear();
+			this.loadModel();
+			this.loadModelCommoditie();
+			this.loadModelCommoditieDetail();
+			// this.loadModelIcoterm();
+			this.loadModelUnidaMedida();
+			this.loadModelMoneda();
+			this.loadModelTipoCambio();
+		},
 		onInitCalculation: function () {
 			var oModel = new JSONModel("model/Calculation.json");
 			this.getView().setModel(oModel);
