@@ -26,6 +26,7 @@ sap.ui.define([
 	var that = this;
 	var SortOrder = library.SortOrder;
 	this.detailCommodite = [];
+	this.tipoCambio = [];
 
 	return Controller.extend("cbc.co.simulador_costos.controller.DataDefault.Materiales.GridMateriales", {
 
@@ -50,6 +51,7 @@ sap.ui.define([
 			// this.loadModelIcoterm();
 			this.loadModelUnidaMedida();
 			this.loadModelMoneda();
+			this.loadModelTipoCambio();
 			// this.editCellsTable(false);
 
 			// var fnPress = this.handleActionPress.bind(this);
@@ -1677,7 +1679,9 @@ sap.ui.define([
 		 */
 		executeFormula: function (pMaterial, pCommodite) {
 			var vFormula = "",
-				vPatron = "";
+				vPatron = "",
+				oTipoCambio = [],
+				vTextCambio = "";
 
 			vFormula = pCommodite.TxtFormula;
 
@@ -1692,6 +1696,15 @@ sap.ui.define([
 			//Reemplazar peso material 
 			vPatron = '/PesoMaterial/gi';
 			vFormula = vFormula.replace(eval(vPatron), pMaterial.MDEF_PESOMATERIAL);
+
+			oTipoCambio = this.tipoCambio.filter(result => result.Fcurr === pMaterial.MDEF_MONEDA_SELECT && result.Tcurr === pCommodite.Moneda &&
+				result.Fiscyear === pMaterial.MDEF_PERIODO && result.Fiscper3 === pMaterial.MDEF_MES);
+				
+			if(oTipoCambio.length > 0){
+				vTextCambio = oTipoCambio[0].Fcurr + ' a ' + oTipoCambio[0].Tcurr + ' = ' + oTipoCambio[0].Ukurspromedio;
+				pCommodite.TxtFormula = "(" + vFormula + ") * " + "( " + oTipoCambio[0].Ukurspromedio + " )";
+				vFormula = "(" + vFormula + ") * " + "( " + oTipoCambio[0].Ukurspromedio + " )";
+			}
 
 			MessageBox.show(
 				'Formula aplicada\n' + pCommodite.TxtFormula + '\n\n' + vFormula, {
@@ -1846,7 +1859,7 @@ sap.ui.define([
 			oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true);
 
 			//Leer datos del ERP
-			var oRead = this.fnReadEntity(oModelService, "/monedasSet", null);
+			var oRead = this.fnReadEntity(oModelService, "/monedaMaterialSet", null);
 
 			if (oRead.tipo === "S") {
 				aListData = oRead.datos.results;
@@ -1886,6 +1899,7 @@ sap.ui.define([
 			var oTableItem = oEvent.getSource().getParent();
 			var oTableItemObject = oTableItem.getBindingContext().getObject();
 			oTableItemObject.MDEF_MONEDA = oUnidadSeleccionada;
+			oTableItemObject.MDEF_MONEDA_SELECT = oUnidadSeleccionada;
 
 			oTableCommodities.getModel().refresh();
 
@@ -1953,18 +1967,18 @@ sap.ui.define([
 			// 		}
 			// 	);
 			// }
-			
-			var  oRowData = oEvent.getSource().getBindingContext().getProperty(),
-			oData = {};
+
+			var oRowData = oEvent.getSource().getBindingContext().getProperty(),
+				oData = {};
 
 			oData = {
-				oIdMaterial: oRowData.MDEF_IDMATERIAL, 
+				oIdMaterial: oRowData.MDEF_IDMATERIAL,
 				oSociedad: oRowData.MDEF_SOCIEDAD,
 				oCentro: oRowData.MDEF_CENTRO,
 				oYear: oRowData.MDEF_PERIODO,
-				oMes: oRowData.MDEF_MES,				
-				oIdFormula: "11", 
-				oTxtFormula: " ", 
+				oMes: oRowData.MDEF_MES,
+				oIdFormula: "11",
+				oTxtFormula: " ",
 			};
 
 			//Navigation to the Detail Form
@@ -1978,8 +1992,8 @@ sap.ui.define([
 			// this.oRowData.TxtFormula = encodeURIComponent(this.oRowData.TxtFormula);
 
 			// this.oRowData.TxtFormula = (this.oRowData.TxtFormula === "") ? "0" : this.oRowData.TxtFormula;
-			
-			this.oRouter = sap.ui.core.UIComponent.getRouterFor(this);  
+
+			this.oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 			this.oRouter.navTo("rtChFormuladoraMaterial", {
 				oIdMaterial: oData.oIdMaterial,
 				oSociedad: oData.oSociedad,
@@ -1990,7 +2004,45 @@ sap.ui.define([
 				oTxt: oData.oTxtFormula
 			});
 
-		}
+		},
+
+		/**
+		 * Load model data tipo cambio
+		 * @function
+		 * @param 
+		 * @private
+		 */
+		loadModelTipoCambio: function (event) {
+			var sServiceUrl = "",
+				oModelService = "",
+				aListData = [],
+				filterKurst = {},
+				filtersArray = {};
+
+			filterKurst = new sap.ui.model.Filter({
+				path: "Kurst",
+				operator: sap.ui.model.FilterOperator.EQ,
+				value1: 'REAL'
+			});
+
+			filtersArray = new Array();
+			filtersArray.push(filterKurst);
+
+			sServiceUrl = this.getOwnerComponent().getModel("ModelSimulador").sServiceUrl;
+			oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true);
+
+			//Leer datos del ERP
+			var oRead = this.fnReadEntity(oModelService, "/tipoCambioSet", filtersArray);
+
+			if (oRead.tipo === "S") {
+				aListData = oRead.datos.results;
+			} else {
+				MessageBox.error(oRead.msjs, null, "Mensaje del sistema", "OK", null);
+				return;
+			}
+
+			this.tipoCambio = aListData;
+		},
 
 	});
 
