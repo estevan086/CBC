@@ -10,8 +10,10 @@ sap.ui.define([
 	"cbc/co/simulador_costos/controller/Versiones/SelectVersion"
 ], function (BaseController, JSONModel, MessageToast, Filter, FilterOperator, Message, MessageType, SelectVersion) {
 	"use strict";
-	const cDefaultNumValue = "0,000";
-	var initialLoad = false;
+	const cDefaultNumValue = "0,000",
+		cDefaultVersion = "DEFAULT";
+	var initialLoad = false,
+		version = "";
 
 	return BaseController.extend("cbc.co.simulador_costos.controller.DataDefault.LogisticCost.GridLogisticCost", {
 		SelectVersion: SelectVersion,
@@ -20,8 +22,7 @@ sap.ui.define([
 			this.initMessageManager();
 
 			var oModelV = new JSONModel({
-				busy: false,
-				version: false
+				busy: false
 			});
 			this.setModel(oModelV, "modelView");
 
@@ -43,27 +44,31 @@ sap.ui.define([
 			SelectVersion.init(this, "LOG");
 		},
 		onMyRoutePatternMatched: function (event) {
+			var aFilter = [];
+			
+			version = "";
 			//Cargar datos
 			if (initialLoad === false) {
 				initialLoad = true;
 				this.getLogisticCostValoration();
 			}
-			var oVModel = this.getModel("modelView");
-			oVModel.version = event.getParameter("arguments").version;
+			aFilter.push(new Filter("Version", FilterOperator.EQ, cDefaultVersion ));
 			this.getView().byId("btnAdmin").setVisible(true);
 		},
 		onMyRoutePatternMatchedVersion: function (oEvent) {
 			SelectVersion.open();
 			this.getView().byId("btnAdmin").setVisible(false);
 		},
-		onCreateVersion: function(oData){
+		onShowVersion: function (oData) {
+			var aFilter = [];
+
 			console.log(oData);
 			SelectVersion.close();
-			//console.log(this.getModel("versionModel").getProperty("/version"));	
-		},
-		onEditVersion: function(){
-			SelectVersion.close();
-			//console.log(this.getModel("versionModel").getProperty("/version"));
+			version = oData.idVersion;
+
+			aFilter.push(new Filter("Version", FilterOperator.EQ, version));
+			aFilter.push(new Filter("FiscYear", FilterOperator.EQ, oData.year));
+			this.getLogisticCostValoration(aFilter);
 		},
 		getLogisticCostValoration: function (oFilter, pExport) {
 			var oModel = this.getView().getModel("ModelSimulador"),
@@ -278,7 +283,7 @@ sap.ui.define([
 				data = [];
 
 			this.getModel("modelView").setProperty("/busy", true);
-			this.getView().byId("sfMaterial").setValue("");
+			this.clearFilterFields();
 			//Convertir columnas de costos logistico en filas para ser almacenadas
 			costValorationTable.forEach(function (oValue, i) {
 
@@ -292,6 +297,7 @@ sap.ui.define([
 					modelStructure.Fiscper3 = oValue.Fiscper3;
 					modelStructure.CompCode = oValue.CompCode;
 					modelStructure.CostLog = oLogisticCost.CostLog;
+					modelStructure.Version = version !== "" ? version : cDefaultVersion;
 					if (oValue.CantEst !== "") {
 						modelStructure.CantEst = oValue.CantEst.toString().replace(",", ".");
 					}
@@ -404,11 +410,18 @@ sap.ui.define([
 			if (this.getView().byId("cmbYear").getSelectedKey() !== "") {
 				aFilter.push(new Filter("Fiscyear", FilterOperator.EQ, this.getView().byId("cmbYear").getSelectedKey()));
 			}
-			aFilter.push(new Filter("CostTotal", FilterOperator.EQ, "0.000"));
-
+			if (this.getView().byId("chkCostEmpty").getSelected() === true) {
+				aFilter.push(new Filter("CostTotal", FilterOperator.EQ, "0.000"));
+			}
 			// Create a filter which contains our name and 'publ' filter
 			this.getLogisticCostValoration(aFilter);
 
+		},
+		clearFilterFields: function () {
+			this.getView().byId("inpMaterial").setValue("");
+			this.getView().byId("cmbPlant").setSelectedKey("");
+			this.getView().byId("cmbYear").setSelectedKey("");
+			this.getView().byId("chkCostEmpty").setSelected(false);
 		}
 	});
 
