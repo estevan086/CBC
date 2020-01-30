@@ -4,18 +4,25 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 	"sap/ui/table/RowSettings", 'sap/m/MessageBox'
 ], function (Controller, History, CoreLibrary, JSONModel, MessageToast, RowSettings, MessageBox) {
 	"use strict";
-	/*	var updatedRecords = [];
-		var that = this;
-		that.updatedRecords = [];*/
+	var updatedRecords = [];
+	var that = this;
 	return Controller.extend("cbc.co.simulador_costos.controller.DataDefault.TypeChange.GridTypeChange", {
 
 		onInit: function () {
-
 			var oModelV = new JSONModel({
 				busy: true,
 				Bezei: ""
 			});
 			this.setModel(oModelV, "modelView");
+
+			var oUploader = this.getView().byId("fileUploader");
+			oUploader.oBrowse.setText("Importar");
+			oUploader.oFilePath.setVisible(false);
+			oUploader.addEventDelegate({
+				onAfterRendering: function () {
+					this.setFileType(['csv']);
+				}
+			}, oUploader);
 
 			var myRoute = this.getOwnerComponent().getRouter().getRoute("rtChTypeChange");
 			myRoute.attachPatternMatched(this.onMyRoutePatternMatched, this);
@@ -41,9 +48,14 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 				async: true,
 				success: function (oData, response) {
 					var data = new sap.ui.model.json.JSONModel();
+					for (var i = 0; i < oData.results.length; i++) {
+						oData.results[i].Ukurspromedio = Number(oData.results[i].Ukurspromedio);
+						oData.results[i].editable = false;
+					}
 					data.setProperty("/CodTipoCambio", oData.results);
 					this.getOwnerComponent().setModel(data, "TipoCambio");
 					this.getModel("modelView").setProperty("/busy", false);
+
 				}.bind(this),
 				error: function (oError) {
 					this.showGeneralError({
@@ -52,10 +64,10 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 					this.getModel("modelView").setProperty("/busy", false);
 				}
 			});
+
 		},
 
 		onselectionChange: function (oEvent) {
-
 			this.getModel("modelView").setProperty("/busy", true);
 			var oModel = this.getView().getModel("ModelSimulador");
 			var oItem = oEvent.getParameter("selectedItem");
@@ -78,9 +90,21 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 				async: true,
 				success: function (oData, response) {
 					var data = new sap.ui.model.json.JSONModel();
+
+					for (var i = 0; i < oData.results.length; i++) {
+						oData.results[i].Ukurspromedio = Number(oData.results[i].Ukurspromedio);
+					}
 					data.setProperty("/CodTipoCambio", oData.results);
 					this.getOwnerComponent().setModel(data, "TipoCambio");
+
+					var oTable = this.byId("tblTasaCambio");
+					for (var j = 0; j < oTable.getModel("TipoCambio").getData().CodTipoCambio.length; j++) {
+						var oObj = oTable.getModel("TipoCambio").getData().CodTipoCambio[j];
+						oObj.editable = false;
+						oObj.highlight = "None";
+					}
 					this.getModel("modelView").setProperty("/busy", false);
+
 				}.bind(this),
 				error: function (oError) {
 					this.showGeneralError({
@@ -92,36 +116,18 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 		},
 
 		handleEditPress: function (oEvent, Data) {
-			/*	var oRow = oEvent.getParameter("row");
-				var oItem = oEvent.getParameter("item");
-
-				var oTable = this.byId("tblCommodities");
-				var oRowData = oEvent.getSource().getBindingContext().getProperty();
-
-				for (var i = 0; i < oTable.getModel().getData().lstItemsCommodities.length; i++) {
-					var oObj = oTable.getModel().getData().lstItemsCommodities[i];
-					oObj.editable = false;
-					oObj.highlight = "None";
-				}
-				oTable.getModel().setProperty(oEvent.getSource().getBindingContext().getPath() + "/editable", true);
-				oTable.getModel().setProperty(oEvent.getSource().getBindingContext().getPath() + "/highlight", "Information");
-				oTable.getModel().setProperty(oEvent.getSource().getBindingContext().getPath() + "/navigated", true);
-
-				var oEntidad = {};
-				var oPath = oEvent.getSource().getBindingContext().sPath;
-
-				oEntidad.RowPath = oPath.split("/")[2];
-
-				updatedRecords.push(oEntidad);
-
-				MessageToast.show("Puedes comenzar a " + (oItem.getText() || oItem.getType()) + " el ID " + oRowData.IdCommoditie);*/
-
+			var oTable = this.byId("tblTasaCambio");
+			for (var j = 0; j < oTable.getModel("TipoCambio").getData().CodTipoCambio.length; j++) {
+				var oObj = oTable.getModel("TipoCambio").getData().CodTipoCambio[j];
+				oObj.editable = false;
+				oObj.highlight = "None";
+			}
+			oEvent.getSource().getParent().getCells()[4].setEditable(true);
+			updatedRecords.push(oEvent.getSource().getParent().getIndex());
 		},
 
 		saveTypeChange: function (oEvent) {
-			/*	var oCommodities = [];
-
-			var oTable = this.byId("tblCommodities");
+			var oTable = this.byId("tblTasaCambio");
 
 			var sServiceUrl = this.getView().getModel("ModelSimulador").sServiceUrl,
 				oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true),
@@ -129,36 +135,32 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 				oDetail = {};
 
 			oEntidad = {
-				IdCommoditie: '1111',
-				Descripcion: 'Prueba',
-				detailCommoditiesSet: []
+				Kurst: 'CSV',
+				Fcurr: 'CSV',
+				Tcurr: '',
+				tiposCambio: []
 			};
 
 			for (var i = 0; i < updatedRecords.length; i++) {
 
 				var CurrentRow = updatedRecords[i];
 
-				var oTempRow = oTable.getModel().getData().lstItemsCommodities[CurrentRow.RowPath];
+				var oTempRow = oTable.getRows()[CurrentRow].getCells();
 
 				oDetail = {
-					IdFormula: oTempRow.IdFormula,
-					TxtFormula: oTempRow.TxtFormula,
-					IdCommoditie: oTempRow.IdCommoditie,
-					Sociedad: oTempRow.Sociedad,
-					Centro: oTempRow.Centro,
-					UnidadMedida: oTempRow.UnidadMedida,
-					Moneda: oTempRow.Moneda,
-					Mes: oTempRow.Mes,
-					Year: oTempRow.Year,
-					PrecioMaterial: oTempRow.PrecioMaterial,
-					OtrosCostos: oTempRow.OtrosCostos
-						// Recordmode: '1'
+					Kurst: "P",
+					Fcurr: oTempRow[0].getText(),
+					Tcurr: oTempRow[1].getText(),
+					Fiscper3: oTempRow[3].getText(),
+					Fiscyear: oTempRow[2].getText(),
+					Tipo: "PLAN",
+					Ukurspromedio: oTempRow[4].getValue()
 				};
 
-				oEntidad.detailCommoditiesSet.push(oDetail);
+				oEntidad.tiposCambio.push(oDetail);
 			}
 
-			var oCreate = this.fnUpdateEntity(oModelService, "/headerCommoditiesSet", oEntidad);
+			var oCreate = this.fnCreateEntity(oModelService, "/tipoCambioCabSet", oEntidad);
 
 			if (oCreate.tipo === 'S') {
 
@@ -187,7 +189,101 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 				);
 
 			}
-*/
+
+		},
+
+		handleUpload: function (oEvent) {
+			var that = this;
+			var oFile = oEvent.getParameter("files")[0];
+			if (oFile && window.FileReader) {
+				var reader = new FileReader();
+				reader.onload = function (evt) {
+					var strCSV = evt.target.result; //string in CSV 
+					that.csvJSON(strCSV);
+				};
+				reader.readAsText(oFile);
+			}
+		},
+
+		csvJSON: function (csv) {
+			var lines = csv.split("\n");
+			var result = [];
+			var headers = lines[0].split(",");
+			for (var i = 1; i < lines.length; i++) {
+				var obj = {};
+				var currentline = lines[i].split(",");
+				for (var j = 0; j < headers.length; j++) {
+					if (currentline[0] === "P") {
+						obj[headers[j]] = currentline[j];
+					}
+				}
+				if (!obj.Kurst === false) {
+					result.push(obj);
+				}
+			}
+			var oStringResult = JSON.stringify(result);
+			var oFinalResult = JSON.parse(oStringResult.replace(/\\r/g, ""));
+			this.CargaMasiva(oFinalResult);
+		},
+
+		CargaMasiva: function (JsonValue) {
+			var sServiceUrl = this.getView().getModel("ModelSimulador").sServiceUrl,
+				oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true),
+				oEntidad = {},
+				oDetail = {};
+
+			oEntidad = {
+				Kurst: 'CSV',
+				Fcurr: 'CSV',
+				Tcurr: '',
+				tiposCambio: []
+			};
+
+			for (var i = 0; i < JsonValue.length; i++) {
+				var CurrentRow = JsonValue[i];
+				oDetail = {
+					Kurst: CurrentRow.Kurst,
+					Fcurr: CurrentRow.Fcurr,
+					Tcurr: CurrentRow.Tcurr,
+					Fiscper3: CurrentRow.Fiscper3,
+					Fiscyear: CurrentRow.Fiscyear,
+					Tipo: CurrentRow.Kurst === "P" ? "PLAN" : "REAL",
+					Ukurspromedio: CurrentRow.Ukurspromedio,
+				};
+
+				oEntidad.tiposCambio.push(oDetail);
+			}
+
+			var oCreate = this.fnCreateEntity(oModelService, "/tipoCambioCabSet", oEntidad);
+			//that = this;
+			if (oCreate.tipo === 'S') {
+
+				MessageBox.show(
+					'Datos importados correctamente', {
+						icon: MessageBox.Icon.SUCCESS,
+						title: "Exito",
+						actions: [MessageBox.Action.OK],
+						onClose: function (oAction) {
+							if (oAction === sap.m.MessageBox.Action.OK) {
+
+								//that.fnConsultaDetalleCommodities();
+								return;
+							}
+						}
+					}
+				);
+				this.GetTypeChange();
+			} else if (oCreate.tipo === 'E') {
+
+				MessageBox.show(
+					oCreate.msjs, {
+						icon: MessageBox.Icon.ERROR,
+						title: "Error"
+					}
+				);
+
+			}
+
 		}
 
 	});

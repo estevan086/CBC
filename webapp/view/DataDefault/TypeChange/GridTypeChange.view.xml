@@ -16,7 +16,8 @@
 							</m:ComboBox>
 							<m:ToolbarSpacer/>
 							<m:Button icon="sap-icon://sys-next-page" text="Exportar" tooltip="Exportar version de commoditie"/>
-							<m:Button icon="sap-icon://sys-prev-page" text="Importar" tooltip="Importar version de commoditie"/>
+						<u:FileUploader id="fileUploader" name="myFileUpload" icon="sap-icon://sys-prev-page" tooltip="Importar Tipo de Cambio"
+								change="handleUpload" sameFilenameAllowed="true" />
 							<m:Button icon="sap-icon://save" type="Emphasized" text="{i18n>Guardar}" tooltip="Guardar Tipo de Cambio" press="saveTypeChange"/>
 						</m:content>
 					</m:OverflowToolbar>
@@ -49,7 +50,7 @@
 					<ui:Column filterProperty="Ukurspromedio">
 						<m:Label text="Tasa de Cambio Promedio"/>
 						<ui:template>
-							<m:Text text="{TipoCambio>Ukurspromedio}" wrapping="false"/>
+							<m:Input id="inpUkurspromedio" value="{TipoCambio>Ukurspromedio}" type="Number" editable="{TipoCambio>editable}"/>
 						</ui:template>
 					</ui:Column>
 					<ui:Column width="4rem" hAlign="Center">
