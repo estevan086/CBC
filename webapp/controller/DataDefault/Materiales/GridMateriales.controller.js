@@ -28,6 +28,8 @@ sap.ui.define([
 	this.detailCommodite = [];
 	this.tipoCambio = [];
 	this.centroYear = [];
+	this.moneda = [];
+	this.commodite = [];
 
 	return Controller.extend("cbc.co.simulador_costos.controller.DataDefault.Materiales.GridMateriales", {
 
@@ -1132,13 +1134,14 @@ sap.ui.define([
 
 			if (oRead.tipo === "S") {
 				aListData = oRead.datos.results;
+				this.commodite = aListData;
 			} else {
 				MessageBox.error(oRead.msjs, null, "Mensaje del sistema", "OK", null);
 				return;
 			}
 
 			// this.mapDataComboboxCommoditie(aListData);
-			this.loadModelComboBoxCommoditie(aListData);
+			this.loadModelComboBoxCommoditie(this.commodite);
 		},
 
 		/**
@@ -1870,12 +1873,13 @@ sap.ui.define([
 
 			if (oRead.tipo === "S") {
 				aListData = oRead.datos.results;
+				this.moneda = aListData;
 			} else {
 				MessageBox.error(oRead.msjs, null, "Mensaje del sistema", "OK", null);
 				return;
 			}
 
-			this.loadModelComboBoxMoneda(aListData);
+			this.loadModelComboBoxMoneda(this.moneda);
 		},
 
 		/**
@@ -2168,7 +2172,10 @@ sap.ui.define([
 		getMaterialFilter: function (oFilter) {
 			
 			var sServiceUrl = {},
-				oModelService = {};
+				oModelService = {},
+				oPanel = this.getView();
+				
+			oPanel.setBusy(true);
 
 			sServiceUrl = this.getOwnerComponent().getModel("ModelSimulador").sServiceUrl;
 			oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true);
@@ -2178,16 +2185,21 @@ sap.ui.define([
 				filters: oFilter,
 				success: function (oData, response) {
 					this.mapDataTable(oData.results);
+					this.loadModelComboBoxYear(this.centroYear);
+					this.loadModelComboBoxMoneda(this.moneda);
+					this.loadModelComboBoxCommoditie(this.commodite);
+					oPanel.setBusy(false);
 				}.bind(this),
 				error: function (oError) {
 					this.showGeneralError({
 						oDataError: oError
 					});
-					this.getModel("modelView").setProperty("/busy", false);
+					// this.getModel("modelView").setProperty("/busy", false);
+					oPanel.setBusy(false);
 				}
 			});	
 			
-			this.loadModelCbYear();
+			// this.loadModelCbYear();
 
 		}		
 
