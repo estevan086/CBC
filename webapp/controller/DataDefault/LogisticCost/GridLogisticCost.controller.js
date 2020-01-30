@@ -334,9 +334,9 @@ sap.ui.define([
 
 		onDataExport: function (oEvent, pExport) {
 
-			var oModelLocal = this.getView().getModel("DataExport");
+			var oModelLocal = this.getModel("LogisticCost");//this.getView().getModel("DataExport");
 
-			if (pExport) {
+			/*if (pExport) {*/
 				var oModel = new sap.ui.model.json.JSONModel(oModelLocal.getProperty("/LogisticCostValoration")),
 					columns = [];
 
@@ -354,9 +354,9 @@ sap.ui.define([
 
 				this.cvsDataExport(oModel, columns);
 				this.getView().getModel("DataExport").setProperty("/LogisticCostValoration", []);
-			} else {
-				this.getLogisticCostValoration(undefined, true);
-			}
+			/*} else {
+				this.getLogisticCostValoration(this.getFilters(), true);
+			}*/
 
 		},
 		onImportCvsFile: function (oEvent) {
@@ -396,6 +396,12 @@ sap.ui.define([
 
 		},
 		onFilterLogisticCost: function (oEvent) {
+			
+			// Create a filter which contains our name and 'publ' filter
+			this.getLogisticCostValoration( this.getFilters() );
+
+		},
+		getFilters: function(){
 			var aFilter = [];
 
 			if (this.getView().byId("inpMaterial").getValue() !== "") {
@@ -410,9 +416,8 @@ sap.ui.define([
 			if (this.getView().byId("chkCostEmpty").getSelected() === true) {
 				aFilter.push(new Filter("CostTotal", FilterOperator.EQ, "0.000"));
 			}
-			// Create a filter which contains our name and 'publ' filter
-			this.getLogisticCostValoration(aFilter);
-
+			
+			return aFilter;
 		},
 		clearFilterFields: function () {
 			this.getView().byId("inpMaterial").setValue("");
