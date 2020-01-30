@@ -61,5 +61,11 @@
 				</ui:columns>
 			</ui:Table>
 		</m:content>
+		<m:footer>
+			<m:Toolbar id="otbFooter">
+				<m:Button icon="sap-icon://alert" text="{= ${message>/}.length }" visible="{= ${message>/}.length &gt; 0 }" type="Emphasized"
+					press="onMessagePopoverPress"/>
+			</m:Toolbar>
+		</m:footer>
 	</m:Page>
 </mvc:View>

@@ -1,9 +1,6 @@
 <mvc:View controllerName="cbc.co.simulador_costos.controller.DataDefault.Icoterm.GridIcoterm" xmlns:core="sap.ui.core"
 	xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:ui="sap.ui.table" height="100%">
-	<ObjectHeader binding="{/ProductCollection/0}" title="Datos Default - Icoterm" condensed="true"
-		number="{ parts:[{path:'Price'},{path:'CurrencyCode'}], type: 'sap.ui.model.type.Currency', formatOptions: {showMeasure: false} }"
-		numberUnit="{CurrencyCode}"/>
-	<Page showHeader="false" enableScrolling="false" class="sapUiContentPadding" busy="{modelView>/busy}">
+	<Page title="Datos Default - Icoterm" class="sapUiContentPadding" busy="{modelView>/busy}">
 		<content>
 			<ui:Table id="tblIcoterm" rows="{Icoterm>/CodIcoterm}" selectionMode="None" visibleRowCount="10" rowActionCount="2" class="sapUiSizeCompact">
 				<ui:extension>
@@ -44,5 +41,11 @@
 				</ui:rowActionTemplate>
 			</ui:Table>
 		</content>
+		<footer>
+			<Toolbar id="otbFooter">
+				<Button icon="sap-icon://alert" text="{= ${message>/}.length }" visible="{= ${message>/}.length &gt; 0 }" type="Emphasized"
+					press="onMessagePopoverPress"/>
+			</Toolbar>
+		</footer>
 	</Page>
 </mvc:View>

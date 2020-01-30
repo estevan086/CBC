@@ -1,6 +1,6 @@
 <mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:ui="sap.ui.table"
 	controllerName="cbc.co.simulador_costos.controller.Admon.Periodo" xmlns:html="http://www.w3.org/1999/xhtml">
-	<Page title="{i18n>Periodos}" showNavButton="true" navButtonPress="onNavBack" class="sapUiContentPadding" busy="{modelView>/busy}">
+	<Page title="{i18n>Periodos}" class="sapUiContentPadding" busy="{modelView>/busy}">
 		<content>
 			<ui:Table id="tblPeriodo" rows="{Periodos>/CodPeriodos}" selectionMode="None" visibleRowCount="10" rowActionCount="1"
 				class="sapUiSizeCompact">

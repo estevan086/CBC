@@ -1,13 +1,13 @@
 <mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:ui="sap.ui.table"
 	controllerName="cbc.co.simulador_costos.controller.Admon.CreateParameters.Logistica" xmlns:html="http://www.w3.org/1999/xhtml">
-	<Page title="{i18n>CatLogistica}" showNavButton="true" navButtonPress="onNavBack" busy="{modelView>/busy}">
+	<Page title="{i18n>CatLogistica}" class="sapUiContentPadding" busy="{modelView>/busy}">
 		<content>
 			<ui:Table id="tblLogisticCategories" selectionMode="None" visibleRowCount="10" rowActionCount="1" rows="{LogisticCategories>/Items}"
 				class="sapUiSizeCompact">
 				<ui:extension>
 					<OverflowToolbar>
 						<content>
-							<Title id="title" text="{i18n>CatLogistica}"/>
+							<Title id="title" text=""/>
 							<ToolbarSpacer/>
 							<Button icon="sap-icon://factory" type="Emphasized" text="{i18n>Crear}" tooltip="Crear" press="showFormAddLC"/>
 							<Button icon="sap-icon://save" type="Emphasized" text="{i18n>Guardar}" tooltip="Guardar" press="onUpdateLogisticCat"/>
