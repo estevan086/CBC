@@ -132,6 +132,10 @@
 					"pattern": "rtChCommodities",
 					"target": "rtChCommoditiesTarget"
 				},
+				"rtChCommoditiesVersion": {
+					"pattern": "rtChCommoditiesVersion",
+					"target": "rtChCommoditiesVersionTarget"
+				},
 				"rtChFromuladora": {
 					"pattern": "rtChFromuladora/{oIdCommoditie}/oSociedad{oSociedad}/oCentro{oCentro}/oYear{oYear}/oMes{oMes}/oIdFormula{oIdFormula}/oTxt{oTxt}",
 					"target": "rtChFromuladoraTarget"
@@ -143,10 +147,6 @@
 				"rtChMateriales": {
 					"pattern": "rtChMateriales",
 					"target": "rtChMaterialesTarget"
-				},
-				"rtChMantenimientoCommodities": {
-					"pattern": "rtChMantenimientoCommodities",
-					"target": "rtChMantenimientoCommoditiesTarget"
 				},
 				"rtChCostosLogisticos": {
 					"pattern": "rtChCostosLogisticos/{version}",
@@ -249,6 +249,14 @@
 					"controlAggregation": "pages",
 					"transition": "slide"
 				},
+				"rtChCommoditiesVersionTarget": {
+					"viewPath": "cbc.co.simulador_costos.view.DataDefault.Commodities",
+					"viewName": "AdminCommodities",
+					"parent": "parentTarget",
+					"controlId": "parentNavContainer",
+					"controlAggregation": "pages",
+					"transition": "slide"
+				},
 				"rtChFromuladoraTarget": {
 					"viewPath": "cbc.co.simulador_costos.view.Utilities",
 					"viewName": "Formuladora",
@@ -266,13 +274,6 @@
 				"rtChMaterialesTarget": {
 					"viewPath": "cbc.co.simulador_costos.view.DataDefault.Materiales",
 					"viewName": "AdminMateriales",
-					"parent": "parentTarget",
-					"controlId": "parentNavContainer",
-					"transition": "slide"
-				},
-				"rtChMantenimientoCommoditiesTarget": {
-					"viewPath": "cbc.co.simulador_costos.view.Commodities",
-					"viewName": "Commodities",
 					"parent": "parentTarget",
 					"controlId": "parentNavContainer",
 					"transition": "slide"

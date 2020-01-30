@@ -90,7 +90,7 @@ sap.ui.define([
 					"key": "rtNone",
 					"items": [{
 						"title": "Mantenimiento Commodities",
-						"key": "rtChMantenimientoCommodities"
+						"key": "rtChCommoditiesVersion"
 					}]
 				}, {
 					"title": "Materiales",

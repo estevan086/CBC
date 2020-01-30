@@ -50,9 +50,10 @@ sap.ui.define([
 			//Cargar datos
 			if (initialLoad === false) {
 				initialLoad = true;
-				this.getLogisticCostValoration();
+				aFilter.push(new Filter("Version", FilterOperator.EQ, cDefaultVersion ));
+				this.getLogisticCostValoration(aFilter);
 			}
-			aFilter.push(new Filter("Version", FilterOperator.EQ, cDefaultVersion ));
+			
 			this.getView().byId("btnAdmin").setVisible(true);
 		},
 		onMyRoutePatternMatchedVersion: function (oEvent) {
