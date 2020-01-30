@@ -61,9 +61,6 @@ sap.ui.define([
 		},
 		onShowVersion: function (oData) {
 			var aFilter = [];
-
-			console.log(oData);
-			SelectVersion.close();
 			version = oData.idVersion;
 
 			aFilter.push(new Filter("Version", FilterOperator.EQ, version));
