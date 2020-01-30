@@ -148,6 +148,10 @@
 					"pattern": "rtChMateriales",
 					"target": "rtChMaterialesTarget"
 				},
+				"rtChMaterialesVersion": {
+					"pattern": "rtChMaterialesVersion",
+					"target": "rtChMaterialesVersionTarget"
+				},
 				"rtChCostosLogisticos": {
 					"pattern": "rtChCostosLogisticos/{version}",
 					"target": "rtChCostosLogisticosTarget"
@@ -195,10 +199,6 @@
 				"rtChAdmonEs": {
 					"pattern": "rtChAdmonEs",
 					"target": "rtHomeTarget"
-				},
-				"rtChMantenimientoMateriales": {
-					"pattern": "rtChMantenimientoMateriales",
-					"target": "rtChMantenimientoMaterialesTarget"
 				},
 				"rtCCOGS": {
 					"pattern": "rtCCOGS",
@@ -272,6 +272,13 @@
 					"transition": "flip"
 				},
 				"rtChMaterialesTarget": {
+					"viewPath": "cbc.co.simulador_costos.view.DataDefault.Materiales",
+					"viewName": "AdminMateriales",
+					"parent": "parentTarget",
+					"controlId": "parentNavContainer",
+					"transition": "slide"
+				},
+				"rtChMaterialesVersionTarget": {
 					"viewPath": "cbc.co.simulador_costos.view.DataDefault.Materiales",
 					"viewName": "AdminMateriales",
 					"parent": "parentTarget",
@@ -360,13 +367,6 @@
 				"rtChAdmonEsTarget": {
 					"viewPath": "cbc.co.simulador_costos.view.Escenarios",
 					"viewName": "AdmonEsc",
-					"parent": "parentTarget",
-					"controlId": "parentNavContainer",
-					"transition": "slide"
-				},
-				"rtChMantenimientoMaterialesTarget": {
-					"viewPath": "cbc.co.simulador_costos.view.Materiales",
-					"viewName": "AdmonMateriales",
 					"parent": "parentTarget",
 					"controlId": "parentNavContainer",
 					"transition": "slide"
