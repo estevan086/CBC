@@ -55,9 +55,9 @@
 									<Input id="inpOriginVersion" showSuggestion="true" showValueHelp="true" description="{versionModel>/version/logisticsOriginDesc}" value="{versionModel>/version/logisticsOrigin}" app:filter="LOG"/>
 								</f:fields>
 							</f:FormElement>
-							<f:FormElement label="{i18n>yearVersionFragment}" visible="{= ${versionModel>/version/indexOption} === 1 &amp;&amp; ${versionModel>/version/logisticsOrigin}.indexOf('DEFAULT') >= 0 }">
+							<f:FormElement label="{i18n>yearVersionFragment}" visible="{= ${versionModel>/version/indexOption} === 1 &amp;&amp; ${versionModel>/version/logisticsOrigin}.indexOf('DEF') >= 0 }">
 								<f:fields>
-									<ComboBox id="cmbYear"/>
+									<ComboBox id="cmbYear" selectedKey="{versionModel>/version/year}"/>
 								</f:fields>
 							</f:FormElement>
 						</f:formElements>

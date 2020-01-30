@@ -66,6 +66,12 @@ sap.ui.define([
 				this._oView.getController().onCreateVersion(this.getModel("versionModel").getProperty("/version"));
 			}
 		},
+		onChangeOriginVersion: function(oEvent){
+			this._bindYears("DEF");
+		},
+		onSuggestionItemSelectedOriginVersion: function(oEvent){
+			this._bindYears("DEF");
+		},
 		_createDialog: function (oContext) {
 			this._oDialog = sap.ui.xmlfragment(this._oView.createId("SelectVersion"),
 				"cbc.co.simulador_costos.view.Versiones.SelectVersion", oContext);
@@ -75,6 +81,8 @@ sap.ui.define([
 			this._oView.byId("SelectVersion--rbtnOption").attachSelect(jQuery.proxy(this.onSelectOption, this));
 			this._oView.byId("SelectVersion--inpMaterialsVersion").attachValueHelpRequest(jQuery.proxy(this.onRequestSelectOriginVersion, this));
 			this._oView.byId("SelectVersion--inpOriginVersion").attachValueHelpRequest(jQuery.proxy(this.onRequestSelectOriginVersion, this));
+			this._oView.byId("SelectVersion--inpOriginVersion").attachChange(jQuery.proxy(this.onChangeOriginVersion, this));
+			this._oView.byId("SelectVersion--inpOriginVersion").attachSuggestionItemSelected(jQuery.proxy(this.onSuggestionItemSelectedOriginVersion, this));
 			this._oView.byId("SelectVersion--inpVersionForEdit").attachValueHelpRequest(jQuery.proxy(this.onRequestSelectOriginVersion, this,
 				this._sModulo));
 			this._oView.byId("SelectVersion--btnCreateVersion").attachPress(jQuery.proxy(this.onCreateVersion, this));
@@ -113,6 +121,24 @@ sap.ui.define([
 		_validateMandatoryInput: function () {
 			
 		},
+		_bindYears: function(sOriginVersion){
+			var oCmbYear = this._oView.byId("SelectVersion--cmbYear");
+			var oTemplate = new sap.ui.core.Item({
+				key: "{ModelSimulador>Year}",
+				text: "{ModelSimulador>Year}"
+			});
+			var aFilter = [new Filter(
+				"Version",
+				FilterOperator.EQ,
+				sOriginVersion
+			)];
+			oCmbYear.bindItems({
+				path: "/annoVersionSet",
+				model: "ModelSimulador",
+				template: oTemplate,
+				filters: aFilter
+			});
+		},
 		_createDialogModel: function () {
 			var oModel = new JSONModel({
 				title: this._oContext.getResourceBundle().getText("titleVersionFragment"),
@@ -121,12 +147,13 @@ sap.ui.define([
 					versionForEdit: "",
 					country: "",
 					nameVersion: "",
-					idNewVersion: "",
+					idVersion: "",
 					descriptionVersion: "",
 					materialsVersion: "",
 					materialsVersionDesc: "",
 					logisticsOrigin: "",
 					logisticsOriginDesc: "",
+					year: "",
 					modulo: this._sModulo
 				}
 			});
