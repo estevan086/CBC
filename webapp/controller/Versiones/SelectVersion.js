@@ -57,9 +57,9 @@ sap.ui.define([
 		},
 		onConfirmOriginVersion: function (oEvent) {
 			var oSelectedItem = oEvent.getParameter("selectedItem");
-			var oSelectedVersion = this._oView.getModel("ModelSimulador").getProperty(oSelectedItem.getBindingContextPath());
 			var oModel = this.getModel("versionModel");
 			if (oSelectedItem) {
+				var oSelectedVersion = this._oView.getModel("ModelSimulador").getProperty(oSelectedItem.getBindingContextPath());
 				oModel.setProperty("/version/" + this._sProperty, oSelectedVersion.Nombre);
 				oModel.setProperty("/version/" + this._sProperty + "Desc", oSelectedVersion.Txtmd);
 				oModel.setProperty("/version/" + this._sProperty + "Id", oSelectedVersion.Version);
@@ -133,7 +133,7 @@ sap.ui.define([
 			this._sProperty = sProperty;
 			this._sValueFilter = sValueFilter;
 			var oTemplate = new sap.m.StandardListItem({
-				title: "- {ModelSimulador>Nombre}",
+				title: "{ModelSimulador>Nombre}",
 				description: "{ModelSimulador>Txtmd}",
 				info: "{ModelSimulador>FiscYear}",
 				type: "Active"
