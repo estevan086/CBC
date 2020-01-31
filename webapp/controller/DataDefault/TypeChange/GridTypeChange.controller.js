@@ -209,16 +209,32 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 			var lines = csv.split("\n");
 			var result = [];
 			var headers = lines[0].split(",");
-			for (var i = 1; i < lines.length; i++) {
-				var obj = {};
-				var currentline = lines[i].split(",");
-				for (var j = 0; j < headers.length; j++) {
-					if (currentline[0] === "P") {
-						obj[headers[j]] = currentline[j];
+			if (headers.length > 1) {
+				for (var i = 1; i < lines.length; i++) {
+					var obj = {};
+					var currentline = lines[i].split(",");
+					for (var j = 0; j < headers.length; j++) {
+						if (currentline[0] === "P") {
+							obj[headers[j]] = currentline[j];
+						}
+					}
+					if (!obj.Tipo === false) {
+						result.push(obj);
 					}
 				}
-				if (!obj.Kurst === false) {
-					result.push(obj);
+			} else {
+				var headersPC = lines[0].split(";");
+				for (var k = 1; k < lines.length; k++) {
+					var objPC = {};
+					var currentlinePC = lines[k].split(";");
+					for (var l = 0; l < headersPC.length; l++) {
+						if (currentlinePC[0] === "P") {
+							objPC[headersPC[l]] = currentlinePC[l];
+						}
+					}
+					if (!objPC.Tipo === false) {
+						result.push(objPC);
+					}
 				}
 			}
 			var oStringResult = JSON.stringify(result);
@@ -227,63 +243,72 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 		},
 
 		CargaMasiva: function (JsonValue) {
-			var sServiceUrl = this.getView().getModel("ModelSimulador").sServiceUrl,
-				oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true),
-				oEntidad = {},
-				oDetail = {};
 
-			oEntidad = {
-				Kurst: 'CSV',
-				Fcurr: 'CSV',
-				Tcurr: '',
-				tiposCambio: []
-			};
+			if (JsonValue.length > 0) {
 
-			for (var i = 0; i < JsonValue.length; i++) {
-				var CurrentRow = JsonValue[i];
-				oDetail = {
-					Kurst: CurrentRow.Kurst,
-					Fcurr: CurrentRow.Fcurr,
-					Tcurr: CurrentRow.Tcurr,
-					Fiscper3: CurrentRow.Fiscper3,
-					Fiscyear: CurrentRow.Fiscyear,
-					Tipo: CurrentRow.Kurst === "P" ? "PLAN" : "REAL",
-					Ukurspromedio: CurrentRow.Ukurspromedio,
+				var sServiceUrl = this.getView().getModel("ModelSimulador").sServiceUrl,
+					oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true),
+					oEntidad = {},
+					oDetail = {};
+
+				oEntidad = {
+					Kurst: 'CSV',
+					Fcurr: 'CSV',
+					Tcurr: '',
+					tiposCambio: []
 				};
 
-				oEntidad.tiposCambio.push(oDetail);
-			}
+				for (var i = 0; i < JsonValue.length; i++) {
+					var CurrentRow = JsonValue[i];
+					oDetail = {
+						Kurst: CurrentRow.Tipo,
+						Fcurr: CurrentRow.Moneda_Local,
+						Tcurr: CurrentRow.Moneda_Destino,
+						Fiscper3: CurrentRow.Mes,
+						Fiscyear: CurrentRow.Año,
+						Tipo: CurrentRow.Tipo === "P" ? "PLAN" : "REAL",
+						Ukurspromedio: CurrentRow.Tasa_de_Cambio_Promedio,
+					};
+					oEntidad.tiposCambio.push(oDetail);
+				}
 
-			var oCreate = this.fnCreateEntity(oModelService, "/tipoCambioCabSet", oEntidad);
-			//that = this;
-			if (oCreate.tipo === 'S') {
+				var oCreate = this.fnCreateEntity(oModelService, "/tipoCambioCabSet", oEntidad);
+				//that = this;
+				if (oCreate.tipo === 'S') {
 
-				MessageBox.show(
-					'Datos importados correctamente', {
-						icon: MessageBox.Icon.SUCCESS,
-						title: "Exito",
-						actions: [MessageBox.Action.OK],
-						onClose: function (oAction) {
-							if (oAction === sap.m.MessageBox.Action.OK) {
+					MessageBox.show(
+						'Datos importados correctamente', {
+							icon: MessageBox.Icon.SUCCESS,
+							title: "Exito",
+							actions: [MessageBox.Action.OK],
+							onClose: function (oAction) {
+								if (oAction === sap.m.MessageBox.Action.OK) {
 
-								//that.fnConsultaDetalleCommodities();
-								return;
+									//that.fnConsultaDetalleCommodities();
+									return;
+								}
 							}
 						}
-					}
-				);
-				this.GetTypeChange();
-			} else if (oCreate.tipo === 'E') {
+					);
+					this.GetTypeChange();
+				} else if (oCreate.tipo === 'E') {
 
+					MessageBox.show(
+						oCreate.msjs, {
+							icon: MessageBox.Icon.ERROR,
+							title: "Error"
+						}
+					);
+
+				}
+			} else {
 				MessageBox.show(
-					oCreate.msjs, {
+					"Error en el archivo, (Columnas no validas o Archivo sin datos)", {
 						icon: MessageBox.Icon.ERROR,
 						title: "Error"
 					}
 				);
-
 			}
-
 		},
 
 		onDataExport: function (oEvent, pExport) {
@@ -301,24 +326,47 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 				columns = [];
 			columns.push({
 				name: "Tipo",
-				template: {content: {path: "Kurst"}}
-			},{
-				name: "Moneda Local",
-				template: {content: {path: "Fcurr"}}
-			},{
-				name: "Moneda Destino",
-				template: {content: {path: "Tcurr"}}
-			},{
+				template: {
+					content: {
+						path: "Kurst"
+					}
+				}
+			}, {
+				name: "Moneda_Local",
+				template: {
+					content: {
+						path: "Fcurr"
+					}
+				}
+			}, {
+				name: "Moneda_Destino",
+				template: {
+					content: {
+						path: "Tcurr"
+					}
+				}
+			}, {
 				name: "Mes",
-				template: {content: {path: "Fiscper3"}}
-			},{
+				template: {
+					content: {
+						path: "Fiscper3"
+					}
+				}
+			}, {
 				name: "Año",
-				template: {content: {path: "Fiscyear"}}
-			},{
-				name: "Tasa de Cambio Promedio",
-				template: {content: {path: "Ukurspromedio"}}
-			}
-			);
+				template: {
+					content: {
+						path: "Fiscyear"
+					}
+				}
+			}, {
+				name: "Tasa_de_Cambio_Promedio",
+				template: {
+					content: {
+						path: "Ukurspromedio"
+					}
+				}
+			});
 			//recupera columnas creadas dinamicamente
 			/*this.columnData.forEach(function (oValue, i) {
 				columns.push({

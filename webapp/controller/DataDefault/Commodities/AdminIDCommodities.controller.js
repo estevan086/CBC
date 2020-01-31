@@ -38,19 +38,36 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 
 			var txtDescGrid = this.byId("txtDescGrid");
 			var GetValueEdited = function (oEvent) {
-				oModel.update("/headerCommoditiesSet", {
-					IdCommoditie: this.getParent().getCells()[0].getText(),
-					Descripcion: this.getParent().getCells()[1].getValue(),
-					status: "1"
-				}, {
+
+				var oEntry = {
+					IdCommoditie: "COM_0003",
+					Descripcion: "Test line 43"
+				};
+				var sObjectPath = oModel.createKey("headerCommoditiesSet", {
+					IdCommoditie: 'COM_0003'
+				});
+				oModel.update("/" + sObjectPath, oEntry, {
+					refreshAfterChange: false,
 					success: function (oData, oResponse) {
 						MessageToast.show(this.getView().getModel("i18n").getResourceBundle().getText("NotificacionGuardarOk"));
-						this.getMasterCommodities();
 					}.bind(this),
 					error: function (oError) {
 						MessageToast.show(oError.responseText);
 					}.bind(this)
 				});
+
+				/*	oModel.update("/headerCommoditiesSet", {
+						IdCommoditie: "COM_0003",
+						Descripcion: "Test line 43"
+					}, {
+						success: function (oData, oResponse) {
+							MessageToast.show(this.getView().getModel("i18n").getResourceBundle().getText("NotificacionGuardarOk"));
+							this.getMasterCommodities();
+						}.bind(this),
+						error: function (oError) {
+							MessageToast.show(oError.responseText);
+						}.bind(this)
+					});*/
 			}.bind(this);
 			txtDescGrid.attachBrowserEvent("focusout", GetValueEdited);
 		},
