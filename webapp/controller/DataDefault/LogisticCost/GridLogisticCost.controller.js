@@ -1,4 +1,3 @@
-jQuery.sap.require("cbc.co.simulador_costos.Formatter");
 sap.ui.define([
 	"cbc/co/simulador_costos/controller/BaseController",
 	"sap/ui/model/json/JSONModel",
@@ -45,15 +44,15 @@ sap.ui.define([
 		},
 		onMyRoutePatternMatched: function (event) {
 			var aFilter = [];
-			
+
 			version = "";
 			//Cargar datos
 			if (initialLoad === false) {
 				initialLoad = true;
-				aFilter.push(new Filter("Version", FilterOperator.EQ, cDefaultVersion ));
+				aFilter.push(new Filter("Version", FilterOperator.EQ, cDefaultVersion));
 				this.getLogisticCostValoration(aFilter);
 			}
-			
+
 			this.getView().byId("btnAdmin").setVisible(true);
 		},
 		onMyRoutePatternMatchedVersion: function (oEvent) {
@@ -167,7 +166,7 @@ sap.ui.define([
 			}, {
 				columnName: "Currency",
 				label: "Moneda",
-				enabled: false
+				enabled: true
 			}, {
 				columnName: "CantEst",
 				label: "Cant Estandar",
@@ -262,10 +261,23 @@ sap.ui.define([
 					template: oContext.getObject().enabled === false ? new sap.m.Text(columnName, {
 						text: "{" + columnName + "}",
 						wrapping: false
+					}) : (columnName === "Currency" ? new sap.m.ComboBox(columnName, {
+						items: {
+							path: "ModelSimulador>/monedaMaterialSet",
+							templateShareable: false,
+							template: new sap.ui.core.Item({
+								key: "{ModelSimulador>Waers}",
+								text: "{ModelSimulador>Waers}"
+							})
+						},
+						//value: "{LogisticCostValoration>/Currency}",
+						selectedKey: "{Currency}"
+					
 					}) : new sap.m.Input(columnName, {
 						value: "{" + columnName + "}",
 						enabled: oContext.getObject().enabled
-					})
+					}))
+
 				});
 			});
 
@@ -294,6 +306,7 @@ sap.ui.define([
 					modelStructure.Fiscyear = oValue.Fiscyear;
 					modelStructure.Fiscper3 = oValue.Fiscper3;
 					modelStructure.CompCode = oValue.CompCode;
+					modelStructure.Currency = oValue.Currency;
 					modelStructure.CostLog = oLogisticCost.CostLog;
 					modelStructure.Version = version !== "" ? version : cDefaultVersion;
 					if (oValue.CantEst !== "") {
@@ -335,26 +348,26 @@ sap.ui.define([
 
 		onDataExport: function (oEvent, pExport) {
 
-			var oModelLocal = this.getModel("LogisticCost");//this.getView().getModel("DataExport");
+			var oModelLocal = this.getModel("LogisticCost"); //this.getView().getModel("DataExport");
 
 			/*if (pExport) {*/
-				var oModel = new sap.ui.model.json.JSONModel(oModelLocal.getProperty("/LogisticCostValoration")),
-					columns = [];
+			var oModel = new sap.ui.model.json.JSONModel(oModelLocal.getProperty("/LogisticCostValoration")),
+				columns = [];
 
-				//recupera columnas creadas dinamicamente
-				this.columnData.forEach(function (oValue, i) {
-					columns.push({
-						name: oValue.label,
-						template: {
-							content: {
-								path: oValue.columnName
-							}
+			//recupera columnas creadas dinamicamente
+			this.columnData.forEach(function (oValue, i) {
+				columns.push({
+					name: oValue.label,
+					template: {
+						content: {
+							path: oValue.columnName
 						}
-					});
+					}
 				});
+			});
 
-				this.cvsDataExport(oModel, columns);
-				this.getView().getModel("DataExport").setProperty("/LogisticCostValoration", []);
+			this.cvsDataExport(oModel, columns);
+			this.getView().getModel("DataExport").setProperty("/LogisticCostValoration", []);
 			/*} else {
 				this.getLogisticCostValoration(this.getFilters(), true);
 			}*/
@@ -397,12 +410,12 @@ sap.ui.define([
 
 		},
 		onFilterLogisticCost: function (oEvent) {
-			
+
 			// Create a filter which contains our name and 'publ' filter
-			this.getLogisticCostValoration( this.getFilters() );
+			this.getLogisticCostValoration(this.getFilters());
 
 		},
-		getFilters: function(){
+		getFilters: function () {
 			var aFilter = [];
 
 			if (this.getView().byId("inpMaterial").getValue() !== "") {
@@ -417,7 +430,7 @@ sap.ui.define([
 			if (this.getView().byId("chkCostEmpty").getSelected() === true) {
 				aFilter.push(new Filter("CostTotal", FilterOperator.EQ, "0.000"));
 			}
-			
+
 			return aFilter;
 		},
 		clearFilterFields: function () {
