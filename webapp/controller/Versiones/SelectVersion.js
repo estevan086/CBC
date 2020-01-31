@@ -44,6 +44,9 @@ sap.ui.define([
 					sProperty = this.getValue();
 				}
 			});
+			if (sProperty === "versionForEdit" || !sValueFilter) {
+				sValueFilter = this._sModulo;
+			}
 			this._oSelectDialog = this._createSelectDialogOriginVersion(sValueFilter, sProperty);
 			this._oSelectDialog.open();
 		},
@@ -71,7 +74,7 @@ sap.ui.define([
 				oModel.setProperty("/version/" + this._sProperty + "Id", "");
 				oModel.setProperty("/version/" + this._sProperty + "Year", "");
 			}
-			if(oSelectedVersion.Version === "DEFAULT"){
+			if (oSelectedVersion.Version === "DEFAULT") {
 				this._bindYears(oSelectedVersion.Version);
 			}
 		},
@@ -79,22 +82,53 @@ sap.ui.define([
 			if (!this._validateMandatoryInput()) {
 				return;
 			}
-			this._createVersion(function (oData) {
-					if (oData.Version) {
-						this.getModel("versionModel").setProperty("/version/idVersion", oData.Version);
-						this.close();
-						if (this._oView.getController().onShowVersion) {
-							this._oView.getController().onShowVersion(this.getModel("versionModel").getProperty("/version"));
+			var oModel = this.getModel("versionModel"),
+				oVersion = oModel.getProperty("/version");
+			if (!oVersion.year) {
+				if (!oVersion.materialsVersion) {
+					oVersion.year = oVersion.originYear;
+				} else {
+					oVersion.year = oVersion.materialsVersionYear;
+				}
+			}
+			if (this._oView.byId("SelectVersion--rbtnExchangeRateOption").getVisible()) {
+				if (oModel.getProperty("/indexExchangeRateOption") === 0) {
+					oVersion.exchangeRate = "M";
+				} else {
+					oVersion.exchangeRate = "P";
+				}
+			} else {
+				oVersion.exchangeRate = "";
+			}
+			var createVersion = function () {
+				this._createVersion(function (oData) {
+						if (oData.Version) {
+							this.getModel("versionModel").setProperty("/version/idVersion", oData.Version);
+							this.close();
+							if (this._oView.getController().onShowVersion) {
+								this._oView.getController().onShowVersion(this.getModel("versionModel").getProperty("/version"));
+							}
+						}
+					}.bind(this),
+					function (oError) {
+						this._oView.getController().showGeneralError({
+							oDataError: oError
+						});
+						//this.close();
+					}.bind(this));
+			}.bind(this);
+
+			if (oVersion.year !== new Date().getFullYear().toString()) {
+				sap.m.MessageBox.confirm(this._oContext.getResourceBundle().getText("mismathYearVersionFragment"), {
+					onClose: function (oAction) {
+						if (oAction === sap.m.MessageBox.Action.OK) {
+							createVersion();
 						}
 					}
-				}.bind(this),
-				function (oError) {
-					this._oView.getController().showGeneralError({
-						oDataError: oError
-					});
-					//this.close();
-				}.bind(this));
-
+				});
+			} else {
+				createVersion();
+			}
 		},
 		onEditVersion: function (oEvent) {
 			this.close();
@@ -111,6 +145,7 @@ sap.ui.define([
 			});
 			this._oView.byId("SelectVersion--rbtnOption").attachSelect(jQuery.proxy(this.onSelectOption, this));
 			this._oView.byId("SelectVersion--inpMaterialsVersion").attachValueHelpRequest(jQuery.proxy(this.onRequestSelectOriginVersion, this));
+			this._oView.byId("SelectVersion--inpCommoditieVersion").attachValueHelpRequest(jQuery.proxy(this.onRequestSelectOriginVersion, this));
 			this._oView.byId("SelectVersion--inpOriginVersion").attachValueHelpRequest(jQuery.proxy(this.onRequestSelectOriginVersion, this));
 			this._oView.byId("SelectVersion--inpVersionForEdit").attachValueHelpRequest(jQuery.proxy(this.onRequestSelectOriginVersion, this));
 			this._oView.byId("SelectVersion--btnCreateVersion").attachPress(jQuery.proxy(this.onCreateVersion, this));
@@ -144,11 +179,11 @@ sap.ui.define([
 				sValueFilter
 			)];
 			var oVersion = this.getModel("versionModel").getProperty("/version");
-			if (sValueFilter !== this._sModulo && oVersion.logisticsOrigin) {
+			if (sValueFilter !== this._sModulo && oVersion.origin) {
 				aFilter.push(new Filter(
 					"VerOrigen",
 					FilterOperator.EQ,
-					oVersion.logisticsOrigin
+					oVersion.origin
 				));
 			}
 			oSelectDialog.bindAggregation("items", {
@@ -174,7 +209,7 @@ sap.ui.define([
 				if (!oVersion.descriptionVersion) {
 					oErrors.push(this._oContext.getResourceBundle().getText("errMissDescriptionVersionFragment"));
 				}
-				if (!oVersion.materialsVersionId && !oVersion.logisticsOriginId) {
+				if (!oVersion.materialsVersionId && !oVersion.originId) {
 					oErrors.push(this._oContext.getResourceBundle().getText("errMissMaterialVersionVersionFragment"));
 				}
 			}
@@ -193,15 +228,16 @@ sap.ui.define([
 				text: "{ModelSimulador>Year}"
 			});
 			var aFilter = [new Filter(
-				"Version",
-				FilterOperator.EQ,
-				sOriginVersion
-			), 
-			new Filter(
-				"Modulo",
-				FilterOperator.EQ,
-				this._sModulo
-			)];
+					"Version",
+					FilterOperator.EQ,
+					sOriginVersion
+				),
+				new Filter(
+					"Modulo",
+					FilterOperator.EQ,
+					this._sModulo
+				)
+			];
 			oCmbYear.bindItems({
 				path: "/annoVersionSet",
 				model: "ModelSimulador",
@@ -211,13 +247,6 @@ sap.ui.define([
 		},
 		_createVersion: function (fnSuccess, fnError) {
 			var oVersion = this.getModel("versionModel").getProperty("/version");
-			if (!oVersion.year) {
-				if (!oVersion.materialsVersion) {
-					oVersion.year = oVersion.logisticsOriginYear;
-				} else {
-					oVersion.year = oVersion.materialsVersionYear;
-				}
-			}
 			var oObject = {
 				Modulo: this._sModulo,
 				Date0: Formatter.formatDateToShortString(new Date(), this._oContext),
@@ -225,7 +254,7 @@ sap.ui.define([
 				Txtmd: oVersion.descriptionVersion,
 				FiscYear: oVersion.year,
 				VerMaterial: oVersion.materialsVersion,
-				VerOrigen: oVersion.logisticsOrigin
+				VerOrigen: oVersion.origin
 			};
 			this._oView.getModel("ModelSimulador").create("/versionSet", oObject, {
 				success: function (oData, oResponse) {
@@ -239,6 +268,7 @@ sap.ui.define([
 		_createDialogModel: function () {
 			var oModel = new JSONModel({
 				title: this._oContext.getResourceBundle().getText("titleVersionFragment"),
+				indexExchangeRateOption: 0,
 				version: {
 					indexOption: 0,
 					versionForEdit: "",
@@ -246,14 +276,19 @@ sap.ui.define([
 					nameVersion: "",
 					idVersion: "",
 					descriptionVersion: "",
+					exchangeRate: "",
 					materialsVersion: "",
 					materialsVersionId: "",
 					materialsVersionDesc: "",
 					materialsVersionYear: "",
-					logisticsOrigin: "",
-					logisticsOriginId: "",
-					logisticsOriginDesc: "",
-					logisticsOriginYear: "",
+					commoditieVersion: "",
+					commoditieVersionId: "",
+					commoditieVersionDesc: "",
+					commoditieVersionYear: "",
+					origin: "",
+					originId: "",
+					originDesc: "",
+					oYear: "",
 					year: "",
 					modulo: this._sModulo
 				}
