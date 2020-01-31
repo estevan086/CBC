@@ -29,6 +29,7 @@ sap.ui.define([
 	StandardListItem, ButtonType, MessageBox, RowSettings, CoreLibrary, EventBus) {
 	"use strict";
 
+	const cDefaultVersion = "DEFAULT";
 	var updatedRecords = [];
 	var that = this;
 	var MessageType = CoreLibrary.MessageType;
@@ -144,7 +145,7 @@ sap.ui.define([
 			var oFilters = [new Filter("Flag", FilterOperator.EQ, 'X')];
 
 			//Leer datos del ERP
-			var oRead = this.fnReadEntity(oModelService, "/centroSet", oFilters );
+			var oRead = this.fnReadEntity(oModelService, "/centroSet", oFilters);
 
 			if (oRead.tipo === "S") {
 				this.oDataSociedades = oRead.datos.results;
@@ -375,7 +376,8 @@ sap.ui.define([
 					Mes: oTempRow.Mes,
 					Year: oTempRow.Year,
 					PrecioMaterial: oTempRow.PrecioMaterial,
-					OtrosCostos: oTempRow.OtrosCostos
+					OtrosCostos: oTempRow.OtrosCostos,
+					Version: oTempRow.Version
 						// Recordmode: '1'
 				};
 
@@ -386,6 +388,14 @@ sap.ui.define([
 
 			if (oCreate.tipo === 'S') {
 
+				for (var j = 0; j < oTable.getModel().getData().lstItemsCommodities.length; j++) {
+					var oObj = oTable.getModel().getData().lstItemsCommodities[j];
+					oObj.editable = false;
+					oObj.highlight = "None";
+				}
+				oTable.getModel().refresh();
+				updatedRecords = [];
+				
 				MessageBox.show(
 					'Datos guardados correctamente', {
 						icon: MessageBox.Icon.SUCCESS,
@@ -393,11 +403,10 @@ sap.ui.define([
 						actions: [MessageBox.Action.OK],
 						onClose: function (oAction) {
 							if (oAction === sap.m.MessageBox.Action.OK) {
-
-								updatedRecords = [];
-								return;
+								
+								//return;
 							}
-						}
+						}.bind(this, oEvent)
 					}
 				);
 
@@ -616,7 +625,6 @@ sap.ui.define([
 				var CurrentRow = JsonValue[i];
 
 				oDetail = {
-					//TxtFormula: CurrentRow.CDEF_FORMULA,
 					IdCommoditie: CurrentRow.CDEF_IDCOMMODITIES,
 					Sociedad: CurrentRow.CDEF_SOCIEDAD,
 					Centro: CurrentRow.CDEF_CENTRO,
@@ -625,7 +633,9 @@ sap.ui.define([
 					UnidadMedida: CurrentRow.CDEF_UMD,
 					Moneda: CurrentRow.CDEF_MONEDA,
 					PrecioMaterial: CurrentRow.CDEF_PRECIO,
-					OtrosCostos: CurrentRow.CDEF_OTROCOSTO
+					OtrosCostos: CurrentRow.CDEF_OTROCOSTO,
+					TxtFormula: CurrentRow.CDEF_FORMULA,
+					Version:CurrentRow.CDEF_VERSION
 						// Recordmode: '1'
 				};
 
@@ -697,7 +707,7 @@ sap.ui.define([
 			if (updatedRecords.length > 0) {
 				//this.oEventcall = oEvent;
 				this.oRowData = oEvent.getSource().getBindingContext().getProperty();
-				this.oRouter = sap.ui.core.UIComponent.getRouterFor(this);  
+				this.oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 				//var oRowData
 				that = this;
 				MessageBox.show(
@@ -708,34 +718,18 @@ sap.ui.define([
 						onClose: function (oAction) {
 							if (oAction === sap.m.MessageBox.Action.OK) {
 								this.saveCommodities();
-								
+
 							} else if (oAction === sap.m.MessageBox.Action.CANCEL) {
 								updatedRecords = [];
-								
+
 							} else {
 								return;
 							}
-							//rtChFromuladora
-						//	var oRowData = that.oEventcall.getSource().getBindingContext().getProperty();
-						//	var oRouter = sap.ui.core.UIComponent.getRouterFor(that);
-
-							// var oData = {
-							// 	oIdCommoditie: this.oRowData.IdCommoditie,
-							// 	oSociedad: this.oRowData.Sociedad,
-							// 	oCentro: this.oRowData.Centro,
-							// 	oYear: this.oRowData.Sociedad,
-							// 	oIdFormula: this.oRowData.IdFormula,
-							// 	oTxtFormula: this.oRowData.TxtFormula
-							// };
-
-							//Navigation to the Detail Form
-							//app.to(page,"rtChFromuladora");
-							var bus = sap.ui.getCore().getEventBus();
-							//const bus = this.getOwnerComponent().getEventBus();
+							
+							//var bus = sap.ui.getCore().getEventBus();
 							// 1. ChannelName, 2. EventName, 3. the data
-						//	bus.publish("GridAdminFormuladoraChannel", "onNavigateEvent", oData);
+							//	bus.publish("GridAdminFormuladoraChannel", "onNavigateEvent", oData);
 
-							//	oRowData.TxtFormula = oRowData.TxtFormula.replace('/', '\\/');
 							this.oRowData.TxtFormula = encodeURIComponent(this.oRowData.TxtFormula);
 
 							this.oRowData.TxtFormula = (this.oRowData.TxtFormula === "") ? "0" : this.oRowData.TxtFormula;
@@ -746,6 +740,7 @@ sap.ui.define([
 								oCentro: this.oRowData.Centro,
 								oYear: this.oRowData.Year,
 								oMes: this.oRowData.Mes,
+								oVersion: this.oRowData.Version,
 								oIdFormula: this.oRowData.IdFormula,
 								oTxt: this.oRowData.TxtFormula
 							});
