@@ -1167,7 +1167,7 @@ sap.ui.define([
 							// }
 					}
 				);
-				
+
 				return;
 
 			}
@@ -1739,7 +1739,7 @@ sap.ui.define([
 
 				return;
 			}
-			
+
 			if (sap.ui.getCore().getMessageManager().getMessageModel().getData().filter(result => result.type === "Error").length > 0) {
 
 				MessageBox.show(
@@ -1752,10 +1752,10 @@ sap.ui.define([
 							// }
 					}
 				);
-				
+
 				return;
 
-			}			
+			}
 
 			oCreate = this.fnCreateEntity(oModelService, "/materialsaveSet", oEntidad);
 
@@ -1833,9 +1833,10 @@ sap.ui.define([
 			var vFormula = "",
 				vPatron = "",
 				oTipoCambio = [],
-				vTextCambio = "";
+				vTextCambio = "",
+				vFormulaText = "";
 
-			vFormula = pCommodite.TxtFormula;
+			vFormula = vFormulaText = pCommodite.TxtFormula;
 
 			//Reemplazar precio
 			vPatron = '/Precio/gi';
@@ -1854,12 +1855,12 @@ sap.ui.define([
 
 			if (oTipoCambio.length > 0) {
 				vTextCambio = oTipoCambio[0].Fcurr + ' a ' + oTipoCambio[0].Tcurr + ' = ' + oTipoCambio[0].Ukurspromedio;
-				// pCommodite.TxtFormula = "(" + vFormula + ") * " + "( " + oTipoCambio[0].Ukurspromedio + " )";
+				vFormulaText = "(" + vFormulaText + ") * " + "( " + oTipoCambio[0].Ukurspromedio + " )";
 				vFormula = "(" + vFormula + ") * " + "( " + oTipoCambio[0].Ukurspromedio + " )";
 			}
 
 			MessageBox.show(
-				'Formula aplicada\n' + vFormula + '\n\n' + vFormula, {
+				'Formula aplicada\n' + vFormulaText + '\n\n' + vFormula, {
 					icon: MessageBox.Icon.SUCCESS,
 					title: "Exito",
 					actions: [MessageBox.Action.OK],
@@ -2363,6 +2364,7 @@ sap.ui.define([
 					this.loadModelComboBoxYear(this.centroYear);
 					this.loadModelComboBoxMoneda(this.moneda);
 					this.loadModelComboBoxCommoditie(this.commodite);
+					this.loadPlantToYear();
 					oPanel.setBusy(false);
 				}.bind(this),
 				error: function (oError) {
@@ -2528,7 +2530,7 @@ sap.ui.define([
 
 			}
 		},
-		
+
 		/**
 		 * change peso material
 		 * @function
@@ -2537,7 +2539,7 @@ sap.ui.define([
 		 */
 		onChangePesoMaterial: function (oEvent) {
 			var oTableItemObject = {};
-			
+
 			oTableItemObject = oEvent.getSource().getBindingContext().getObject();
 
 			if (oTableItemObject.MDEF_COMMODITIE_SELECT === "") {
@@ -2570,7 +2572,38 @@ sap.ui.define([
 				Number(oTableItemObject.MDEF_COSTOMATERIAL) +
 				Number(oTableItemObject.MDEF_OTROSCOSTOS) +
 				Number(oTableItemObject.MDEF_COSTOTRANSFERENCIA);
-		}		
+		},
+
+		/**
+		 * Load model plant to year
+		 * @function
+		 * @param 
+		 * @private
+		 */
+		loadPlantToYear: function () {
+
+			var oComboxYear = this.byId("idYear"),
+				oComboxPlant = this.byId("idPlatn"),
+				vKeyYear = oComboxYear.getSelectedKey(),
+				oListYear = [],
+				oListaData = [];
+
+			vKeyYear = oComboxYear.getSelectedKey();
+
+			oListYear = this.centroYear.filter(result => result.yfiscyear === vKeyYear);
+
+			oListaData = Array.from(new Set(oListYear.map(s => s.Plant)))
+				.map(Plant => {
+					return {
+						Plant: Plant,
+						txtmd: oListYear.find(s => s.Plant === Plant).txtmd
+					};
+				});
+
+			oComboxPlant.getModel().setProperty("/LstPlant", oListaData);
+			oComboxPlant.getModel().refresh(true);
+
+		}
 
 	});
 
