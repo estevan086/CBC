@@ -174,7 +174,7 @@ sap.ui.define([
 				if (!oVersion.descriptionVersion) {
 					oErrors.push(this._oContext.getResourceBundle().getText("errMissDescriptionVersionFragment"));
 				}
-				if (!oVersion.materialsVersion && !oVersion.logisticsOrigin) {
+				if (!oVersion.materialsVersionId && !oVersion.logisticsOriginId) {
 					oErrors.push(this._oContext.getResourceBundle().getText("errMissMaterialVersionVersionFragment"));
 				}
 			}
