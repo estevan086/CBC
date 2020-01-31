@@ -21,6 +21,9 @@ sap.ui.define([
 			//bus.subscribe("GridAdminFormuladoraChannel", "onNavigateEvent", this.onDataReceived, this);
 
 		},
+		onAfterRendering: function () {
+				
+		},
 
 		onDataReceived: function (channel, event, data) {
 			// do something with the data (bind to model)
@@ -44,6 +47,9 @@ sap.ui.define([
 		onMyRoutePatternMatched: function (event) {
 			// your code when the view is about to be displayed ..
 
+			var oBuilder = this.getView().byId("builder");
+			oBuilder.setShowInputToolbar(true);
+			
 			this.oIdCommoditie = event.getParameter("arguments").oIdCommoditie;
 			this.oSociedad = event.getParameter("arguments").oSociedad;
 			this.oCentro = event.getParameter("arguments").oCentro;
@@ -57,7 +63,7 @@ sap.ui.define([
 			this.oTxtFormula = decodeURIComponent(this.oTxtFormula); 
 			
 			if (this.oTxtFormula === "0"){
-				this.oTxtFormula = "";
+				this.oTxtFormula = " ";
 			}
 
 			var oTitle = "Id Commoditie:" + this.oIdCommoditie +
@@ -73,8 +79,13 @@ sap.ui.define([
 				"expression": this.oTxtFormula,
 				"title": oTitle,
 				"showToolbar": false,
+				"layoutType": "VisualOnly",
+				"showInputToolbar": false,
+				"allowComparison": false,
+				"allowComparisonOperators": false,
+				"allowLogical": false,
+				"readOnly": false,
 				"variables": [
-					
 					{
 						"key": "Precio",
 						"label": "Precio"
@@ -92,24 +103,8 @@ sap.ui.define([
 			};
 
 			oModel.setData(oCalcData);
-			
 			this.getView().setModel(oModel);
-			
-			this._oBuilder = this.getView().byId("builder");
-
-			this._oModelSettings = new JSONModel({
-				expression: this.oTxtFormula,
-				layoutType: "VisualOnly",
-				showInputToolbar: false,
-				allowComparison: false,
-				allowComparisonOperators: false,
-				allowLogical: false,
-				readOnly: false
-			});
-			this.getView().setModel(this._oModelSettings, "settings");
-
-			this._oBuilder.setShowInputToolbar(true);
-
+			this.getView().getModel().refresh();
 		},
 
 		onToPage1: function (oEvent) {
@@ -141,8 +136,8 @@ sap.ui.define([
 				Fotrcost: this.oIdFormula,
 				Txtlg: oBuilderData,
 				Year: this.oYear,
-				Mes: this.oMes
-				//Version: this.oVersion
+				Mes: this.oMes,
+				Version: this.oVersion
 			};
 			
 			

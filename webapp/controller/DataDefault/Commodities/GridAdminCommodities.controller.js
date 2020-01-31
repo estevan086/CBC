@@ -5,7 +5,6 @@ var vPromiseUM = {
 	UM: ""
 };
 
-jQuery.sap.require("cbc.co.simulador_costos.Formatter");
 sap.ui.define([
 	"cbc/co/simulador_costos/controller/BaseController",
 	"sap/ui/model/json/JSONModel",
@@ -261,7 +260,7 @@ sap.ui.define([
 			var oItem = oEvent.getParameter("selectedItem");
 			var oTableCommodities = this.byId("tblCommodities");
 			var oItemObject = oItem.getBindingContext().getObject();
-			var oMonedaSeleccionada = oItemObject.Msehi;
+			var oMonedaSeleccionada = oItemObject.Waers;
 			var oTableItem = oEvent.getSource().getParent();
 			var oTableItemObject = oTableItem.getBindingContext().getObject();
 			oTableItemObject.Moneda = oMonedaSeleccionada;

@@ -1,4 +1,3 @@
-jQuery.sap.require("cbc.co.simulador_costos.Formatter");
 sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core/routing/History", "sap/ui/core/library",
 	"sap/ui/model/json/JSONModel", "sap/m/MessageToast",
 	"sap/ui/table/RowSettings", 'sap/m/MessageBox'
@@ -50,7 +49,7 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 
 		validateCreate: function (oEvent) {
 			var ValDate = parseInt(this.byId("txtDate").getValue());
-			if (ValDate < 1028 || ValDate > 2100) {
+			if (ValDate < 2018 || ValDate > 2100) {
 				MessageBox.show(
 					'Año ' + ValDate + ' fuera de rango (2018-2100)', {
 						icon: MessageBox.Icon.ERROR,
