@@ -5,7 +5,6 @@ var vPromiseUM = {
 	UM: ""
 };
 
-jQuery.sap.require("cbc.co.simulador_costos.Formatter");
 sap.ui.define([
 	"cbc/co/simulador_costos/controller/BaseController",
 	"sap/ui/model/json/JSONModel",
