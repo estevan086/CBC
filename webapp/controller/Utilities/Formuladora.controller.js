@@ -141,8 +141,8 @@ sap.ui.define([
 				Fotrcost: this.oIdFormula,
 				Txtlg: oBuilderData,
 				Year: this.oYear,
-				Mes: this.oMes,
-				Version: this.oVersion
+				Mes: this.oMes
+				//Version: this.oVersion
 			};
 			
 			
