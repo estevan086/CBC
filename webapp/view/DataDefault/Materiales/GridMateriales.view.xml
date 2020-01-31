@@ -20,8 +20,8 @@
 					<m:OverflowToolbar>
 						<m:content>
 							<m:Title id="title" text=""/>
-							<m:Button icon="sap-icon://eraser" text="" tooltip="Clear all filters" press="clearAllFilters"/>
-							<m:SearchField placeholder="Filter" value="{ui>/globalFilter}" liveChange="filterGloballySup" width="10rem"/>
+							<!--<m:Button icon="sap-icon://eraser" text="" tooltip="Clear all filters" press="clearAllFilters"/>-->
+							<!--<m:SearchField placeholder="Filter" value="{ui>/globalFilter}" liveChange="filterGloballySup" width="10rem"/>-->
 							<m:Text text="Filtros Consulta" wrapping="false"/>
 							<m:ComboBox id="idYear" showSecondaryValues="true" filterSecondaryValues="true" placeholder="Año"
 								items="{ path: '/LstYear', sorter: { path: 'yfiscyear' } }" editable="true" width="5rem" selectionChange="onChangeYear">
