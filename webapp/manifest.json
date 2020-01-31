@@ -137,7 +137,7 @@
 					"target": "rtChCommoditiesVersionTarget"
 				},
 				"rtChFromuladora": {
-					"pattern": "rtChFromuladora/{oIdCommoditie}/oSociedad{oSociedad}/oCentro{oCentro}/oYear{oYear}/oMes{oMes}/oIdFormula{oIdFormula}/oTxt{oTxt}",
+					"pattern": "rtChFromuladora/{oIdCommoditie}/oSociedad{oSociedad}/oCentro{oCentro}/oYear{oYear}/oMes{oMes}/oVersion{oVersion}/oIdFormula{oIdFormula}/oTxt{oTxt}",
 					"target": "rtChFromuladoraTarget"
 				},
 				"rtChIDCommodities": {

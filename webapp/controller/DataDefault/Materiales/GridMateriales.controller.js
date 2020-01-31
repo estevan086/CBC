@@ -17,11 +17,20 @@ sap.ui.define([
 	'sap/m/MessageBox',
 	'sap/ui/core/util/Export',
 	'sap/ui/core/util/ExportTypeCSV',
-    "cbc/co/simulador_costos/controller/Versiones/SelectVersion"
+	"cbc/co/simulador_costos/controller/Versiones/SelectVersion",
+	"sap/ui/core/message/Message",
+	"sap/ui/core/library",
+	"sap/ui/model/BindingMode",
 
 ], function (Controller, JSONModel, MessageToast, DateFormat, library, Filter, FilterOperator, Button, Dialog, List, StandardListItem,
-	ButtonType, Fragment, MessageBox, Export, ExportTypeCSV, SelectVersion) {
+	ButtonType, Fragment, MessageBox, Export, ExportTypeCSV, SelectVersion, Message, libraryCore, BindingMode) {
 	"use strict";
+
+	// shortcut for sap.ui.core.ValueState
+	var ValueState = libraryCore.ValueState;
+
+	// shortcut for sap.ui.core.MessageType
+	var MessageType = libraryCore.MessageType;
 
 	this.updatedRecords = [];
 	var that = this;
@@ -31,10 +40,10 @@ sap.ui.define([
 	this.centroYear = [];
 	this.moneda = [];
 	this.commodite = [];
-	
+
 	const cDefaultVersion = "DEFAULT";
-	var   version = "";
-	
+	var version = "";
+
 	return Controller.extend("cbc.co.simulador_costos.controller.DataDefault.Materiales.GridMateriales", {
 		SelectVersion: SelectVersion,
 		onInit: function () {
@@ -42,6 +51,27 @@ sap.ui.define([
 			// var json = this.initSampleDataModel();
 			// // Setting json to current view....
 			// this.getView().setModel(json);
+
+			var oMessageManager, oModel, oView;
+
+			oView = this.getView();
+
+			// set message model
+			oMessageManager = sap.ui.getCore().getMessageManager();
+			oView.setModel(oMessageManager.getMessageModel(), "message");
+
+			// or just do it for the whole view
+			oMessageManager.registerObject(oView, true);
+
+			// create a default model with somde demo data
+			oModel = new JSONModel({
+				MandatoryInputValue: "",
+				DateValue: null,
+				IntegerValue: undefined,
+				Dummy: ""
+			});
+			oModel.setDefaultBindingMode(BindingMode.TwoWay);
+			oView.setModel(oModel);
 
 			var oUploader = this.getView().byId("fileUploader");
 			oUploader.oBrowse.setText("Importar");
@@ -60,7 +90,7 @@ sap.ui.define([
 			this.loadModelUnidaMedida();
 			this.loadModelMoneda();
 			this.loadModelTipoCambio();*/
-			
+
 			if (this.getRouter().getRoute("rtChMateriales")) {
 				this.getRouter().getRoute("rtChMateriales").attachPatternMatched(this.onMyRoutePatternMatched, this);
 			}
@@ -68,7 +98,7 @@ sap.ui.define([
 				this.getRouter().getRoute("rtChMaterialesVersion").attachPatternMatched(this.onMyRoutePatternMatchedVersion, this);
 			}
 			SelectVersion.init(this, "MAT");
-			
+
 			// this.editCellsTable(false);
 
 			// var fnPress = this.handleActionPress.bind(this);
@@ -97,29 +127,23 @@ sap.ui.define([
 
 		},
 		onMyRoutePatternMatched: function (event) {
-			var aFilter = [];
-			version = "";
-			
-			this.loadModelCbYear();
-			this.loadModel();
-			this.loadModelCommoditie();
-			this.loadModelCommoditieDetail();
-			// this.loadModelIcoterm();
-			this.loadModelUnidaMedida();
-			this.loadModelMoneda();
-			this.loadModelTipoCambio();
+			var version = "";
+
+			this.loadMaterial();
 		},
+
 		onMyRoutePatternMatchedVersion: function (oEvent) {
 			SelectVersion.open();
 			this.getView().byId("btnAdmin").setVisible(false);
 		},
+
 		onShowVersion: function (oData) {
 			var aFilter = [];
 			version = oData.idVersion;
 
 			aFilter.push(new Filter("Version", FilterOperator.EQ, version));
 			aFilter.push(new Filter("Fiscyear", FilterOperator.EQ, oData.year));
-			
+
 			this.loadModelCbYear();
 			this.loadModel();
 			this.loadModelCommoditie();
@@ -907,43 +931,43 @@ sap.ui.define([
 
 		},
 
-		onMyRoutePatternMatched: function (event) {
-			// your code when the view is about to be displayed ..
+		// onMyRoutePatternMatched: function (event) {
+		// 	// your code when the view is about to be displayed ..
 
-			//	var json = this.initSampleDataModel();
-			//	this.getView().setModel(json);
+		// 	//	var json = this.initSampleDataModel();
+		// 	//	this.getView().setModel(json);
 
-			//Url Servicio
-			var oModel = this.getOwnerComponent().getModel("ModelSimulador");
-			var sServiceUrl = oModel.sServiceUrl;
+		// 	//Url Servicio
+		// 	var oModel = this.getOwnerComponent().getModel("ModelSimulador");
+		// 	var sServiceUrl = oModel.sServiceUrl;
 
-			//Definir modelo del servicio web
-			var oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true);
-			//Definir filtro
+		// 	//Definir modelo del servicio web
+		// 	var oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true);
+		// 	//Definir filtro
 
-			//Leer datos del ERP
-			var oRead = this.fnReadEntity(oModelService, "/materialDefatultSet", null);
+		// 	//Leer datos del ERP
+		// 	var oRead = this.fnReadEntity(oModelService, "/materialDefatultSet", null);
 
-			// if (oRead.tipo === "S") {
-			// 	this.oDataDetalleCommodities = oRead.datos.results;
-			// } else {
-			// 	MessageBox.error(oRead.msjs, null, "Mensaje del sistema", "OK", null);
-			// }
+		// 	// if (oRead.tipo === "S") {
+		// 	// 	this.oDataDetalleCommodities = oRead.datos.results;
+		// 	// } else {
+		// 	// 	MessageBox.error(oRead.msjs, null, "Mensaje del sistema", "OK", null);
+		// 	// }
 
-			// var oDataDetalleCommodities = "";
-			// //SI el modelo NO existe, se crea.
-			// if (!oDataDetalleCommodities) {
-			// 	oDataDetalleCommodities = {
-			// 		lstItemsCommodities: []
-			// 	};
-			// }
+		// 	// var oDataDetalleCommodities = "";
+		// 	// //SI el modelo NO existe, se crea.
+		// 	// if (!oDataDetalleCommodities) {
+		// 	// 	oDataDetalleCommodities = {
+		// 	// 		lstItemsCommodities: []
+		// 	// 	};
+		// 	// }
 
-			// oDataDetalleCommodities.lstItemsCommodities = this.oDataDetalleCommodities;
-			// var oTablaDetalleCommodities = this.byId("tblCommodities");
-			// var oModel2 = new sap.ui.model.json.JSONModel(oDataDetalleCommodities);
-			// oTablaDetalleCommodities.setModel(oModel2);
+		// 	// oDataDetalleCommodities.lstItemsCommodities = this.oDataDetalleCommodities;
+		// 	// var oTablaDetalleCommodities = this.byId("tblCommodities");
+		// 	// var oModel2 = new sap.ui.model.json.JSONModel(oDataDetalleCommodities);
+		// 	// oTablaDetalleCommodities.setModel(oModel2);
 
-		},
+		// },
 
 		fnCreateEntity: function (pModelo, pEntidad, pDatoEndidad) {
 			var vMensaje = null;
@@ -1077,11 +1101,16 @@ sap.ui.define([
 				materialDefatultSet: []
 			};
 
+			// does not remove the manually set ValueStateText we set in onValueStatePress():
+			sap.ui.getCore().getMessageManager().removeAllMessages();
+
 			for (var i = 0; i < that.updatedRecords.length; i++) {
 
 				var CurrentRow = that.updatedRecords[i];
 
 				var oTempRow = oTable.getModel().getData().MATERIAL[CurrentRow.RowPath];
+
+				this.checkErrorPosition(oTempRow);
 
 				oDetail = {
 					Txtmd: oTempRow.MDEF_MATERIAL,
@@ -1124,6 +1153,23 @@ sap.ui.define([
 				};
 
 				oEntidad.materialDefatultSet.push(oDetail);
+			}
+
+			if (sap.ui.getCore().getMessageManager().getMessageModel().getData().filter(result => result.type === "Error").length > 0) {
+
+				MessageBox.show(
+					"Existen campos por validar", {
+						icon: MessageBox.Icon.ERROR,
+						title: "Error"
+							// actions: [MessageBox.Action.YES, MessageBox.Action.NO],
+							// onClose: function (oAction) {
+							// 	/ * do something * /
+							// }
+					}
+				);
+
+				return;
+
 			}
 
 			var oCreate = this.fnCreateEntity(oModelService, "/materialsaveSet", oEntidad);
@@ -1240,7 +1286,7 @@ sap.ui.define([
 			oTableItemObject.MDEF_COMMODITIE = oUnidadSeleccionada;
 			oTableItemObject.MDEF_COMMODITIE_SELECT = oUnidadSeleccionada;
 
-			var oCommodite = this.detailCommodite.filter(result => result.IdCommoditie === oTableItemObject.MDEF_COMMODITIE && result.Year ===
+			var oCommodite = this.detailCommodite.filter(result => result.IdCommoditie === oTableItemObject.MDEF_COMMODITIE_SELECT && result.Year ===
 				oTableItemObject.MDEF_PERIODO &&
 				result.Mes === oTableItemObject.MDEF_MES && result.Sociedad === oTableItemObject.MDEF_SOCIEDAD && result.Centro ===
 				oTableItemObject.MDEF_CENTRO);
@@ -1367,10 +1413,15 @@ sap.ui.define([
 				Number(oValueItem.MDEF_COSTOADICIONAL) +
 				Number(oValueItem.MDEF_COSTOENVIO);
 
+			// oValueItem.MDEF_COSTOTRANSFERENCIA =
+			// 	(Number(oValueItem.MDEF_COSTOMATERIAL) +
+			// 		Number(oValueItem.MDEF_OTROSCOSTOS)) *
+			// 	Number(oValueItem.MDEF_PCTRANSFERENCIA);
+
 			oValueItem.MDEF_COSTOTRANSFERENCIA =
 				(Number(oValueItem.MDEF_COSTOMATERIAL) +
 					Number(oValueItem.MDEF_OTROSCOSTOS)) *
-				Number(oValueItem.MDEF_PCTRANSFERENCIA);
+				(Number(oValueItem.MDEF_PCTRANSFERENCIA) / 100);
 
 			oValueItem.MDEF_PRECIOPREMISA =
 				Number(oValueItem.MDEF_COSTOMATERIAL) +
@@ -1405,7 +1456,7 @@ sap.ui.define([
 			oValueItem.MDEF_PRECIOPREMISA =
 				Number(oValueItem.MDEF_COSTOMATERIAL) +
 				Number(oValueItem.MDEF_OTROSCOSTOS) +
-				(Number(oValueItem.MDEF_PCTRANSFERENCIA) / 100);
+				Number(oValueItem.MDEF_COSTOTRANSFERENCIA);
 		},
 
 		/**
@@ -1422,7 +1473,7 @@ sap.ui.define([
 
 				// Type that will be used to generate the content. Own ExportType's can be created to support other formats
 				exportType: new ExportTypeCSV({
-					separatorChar: ";"
+					separatorChar: ","
 				}),
 
 				// Pass in the model created above
@@ -1456,42 +1507,42 @@ sap.ui.define([
 						content: "{MDEF_CENTRO}"
 					}
 				}, {
-					name: "Unidad Medida",
+					name: "Unidad_Medida",
 					template: {
 						content: "{MDEF_UMD}"
 					}
 				}, {
 					name: "Moneda",
 					template: {
-						content: "{MDEF_MONEDA}"
+						content: "{MDEF_MONEDA_SELECT}"
 					}
 				}, {
-					name: "Peso Material",
+					name: "Peso_Material",
 					template: {
 						content: "{MDEF_PESOMATERIAL}"
 					}
 				}, {
 					name: "Commoditie",
 					template: {
-						content: "{MDEF_COMMODITIE}"
+						content: "{MDEF_COMMODITIE_SELECT}"
 					}
 				}, {
-					name: "Precio Productivo",
+					name: "Precio_Productivo",
 					template: {
 						content: "{MDEF_PRECIOPRODUCTIVO}"
 					}
 				}, {
-					name: "Costo Conversión",
+					name: "Costo_Conversion",
 					template: {
 						content: "{MDEF_COSTOCONVERSION}"
 					}
 				}, {
-					name: "Costo Adicional",
+					name: "Costo_Adicional",
 					template: {
 						content: "{MDEF_COSTOADICIONAL}"
 					}
 				}, {
-					name: "Costo Envio",
+					name: "Costo_Envio",
 					template: {
 						content: "{MDEF_COSTOENVIO}"
 					}
@@ -1501,7 +1552,7 @@ sap.ui.define([
 						content: "{MDEF_ICOTERM}"
 					}
 				}, {
-					name: "Costo Material",
+					name: "Costo_Material",
 					template: {
 						content: "{MDEF_COSTOMATERIAL}"
 					}
@@ -1511,22 +1562,22 @@ sap.ui.define([
 						content: "{MDEF_FORMULAOTROSCOSTOS}"
 					}
 				}, {
-					name: "Otros Costos",
+					name: "Otros_Costos",
 					template: {
 						content: "{MDEF_OTROSCOSTOS}"
 					}
 				}, {
-					name: "%Trasnferencia",
+					name: "PTrasnferencia",
 					template: {
 						content: "{MDEF_PCTRANSFERENCIA}"
 					}
 				}, {
-					name: "Costo Transferencia",
+					name: "Costo_Transferencia",
 					template: {
 						content: "{MDEF_COSTOTRANSFERENCIA}"
 					}
 				}, {
-					name: "Precio Premisa",
+					name: "Precio_Premisa",
 					template: {
 						content: "{MDEF_PRECIOPREMISA}"
 					}
@@ -1603,7 +1654,11 @@ sap.ui.define([
 				oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true),
 				oEntidad = {},
 				oDetail = {},
-				oCreate = {};
+				oCreate = {},
+				oPanel = {};
+
+			oPanel = this.getView();
+			oPanel.setBusy(true);
 
 			oEntidad = {
 				Material: '1111',
@@ -1618,6 +1673,11 @@ sap.ui.define([
 				if (oTempRow.Commoditie === undefined) {
 					continue;
 				}
+
+				// does not remove the manually set ValueStateText we set in onValueStatePress():
+				sap.ui.getCore().getMessageManager().removeAllMessages();
+
+				this.checkErrorPosition(oTempRow);
 
 				oDetail = {
 					// Txtmd: oTempRow.Material,
@@ -1662,6 +1722,41 @@ sap.ui.define([
 				oEntidad.materialDefatultSet.push(oDetail);
 			}
 
+			if (oEntidad.materialDefatultSet.length === 0) {
+
+				MessageBox.show(
+					"No se cargo el archivo", {
+						icon: MessageBox.Icon.ERROR,
+						title: "Error"
+							// actions: [MessageBox.Action.YES, MessageBox.Action.NO],
+							// onClose: function (oAction) {
+							// 	/ * do something * /
+							// }
+					}
+				);
+
+				oPanel.setBusy(false);
+
+				return;
+			}
+
+			if (sap.ui.getCore().getMessageManager().getMessageModel().getData().filter(result => result.type === "Error").length > 0) {
+
+				MessageBox.show(
+					"Existen campos por validar", {
+						icon: MessageBox.Icon.ERROR,
+						title: "Error"
+							// actions: [MessageBox.Action.YES, MessageBox.Action.NO],
+							// onClose: function (oAction) {
+							// 	/ * do something * /
+							// }
+					}
+				);
+
+				return;
+
+			}
+
 			oCreate = this.fnCreateEntity(oModelService, "/materialsaveSet", oEntidad);
 
 			that = this;
@@ -1674,7 +1769,8 @@ sap.ui.define([
 						actions: [MessageBox.Action.OK],
 						onClose: function (oAction) {
 							if (oAction === sap.m.MessageBox.Action.OK) {
-								// that.fnConsultaDetalleCommodities(); 
+								that.loadMaterial();
+								oPanel.setBusy(false);
 								return;
 							}
 						}
@@ -1682,6 +1778,8 @@ sap.ui.define([
 				);
 
 			} else if (oCreate.tipo === 'E') {
+
+				oPanel.setBusy(false);
 
 				MessageBox.show(
 					oCreate.msjs, {
@@ -1735,9 +1833,10 @@ sap.ui.define([
 			var vFormula = "",
 				vPatron = "",
 				oTipoCambio = [],
-				vTextCambio = "";
+				vTextCambio = "",
+				vFormulaText = "";
 
-			vFormula = pCommodite.TxtFormula;
+			vFormula = vFormulaText = pCommodite.TxtFormula;
 
 			//Reemplazar precio
 			vPatron = '/Precio/gi';
@@ -1756,12 +1855,12 @@ sap.ui.define([
 
 			if (oTipoCambio.length > 0) {
 				vTextCambio = oTipoCambio[0].Fcurr + ' a ' + oTipoCambio[0].Tcurr + ' = ' + oTipoCambio[0].Ukurspromedio;
-				pCommodite.TxtFormula = "(" + vFormula + ") * " + "( " + oTipoCambio[0].Ukurspromedio + " )";
+				vFormulaText = "(" + vFormulaText + ") * " + "( " + oTipoCambio[0].Ukurspromedio + " )";
 				vFormula = "(" + vFormula + ") * " + "( " + oTipoCambio[0].Ukurspromedio + " )";
 			}
 
 			MessageBox.show(
-				'Formula aplicada\n' + pCommodite.TxtFormula + '\n\n' + vFormula, {
+				'Formula aplicada\n' + vFormulaText + '\n\n' + vFormula, {
 					icon: MessageBox.Icon.SUCCESS,
 					title: "Exito",
 					actions: [MessageBox.Action.OK],
@@ -1957,6 +2056,38 @@ sap.ui.define([
 			oTableItemObject.MDEF_MONEDA = oUnidadSeleccionada;
 			oTableItemObject.MDEF_MONEDA_SELECT = oUnidadSeleccionada;
 
+			if (oTableItemObject.MDEF_COMMODITIE_SELECT === "") {
+				oTableCommodities.getModel().refresh();
+				return;
+			}
+
+			var oCommodite = this.detailCommodite.filter(result => result.IdCommoditie === oTableItemObject.MDEF_COMMODITIE_SELECT && result.Year ===
+				oTableItemObject.MDEF_PERIODO &&
+				result.Mes === oTableItemObject.MDEF_MES && result.Sociedad === oTableItemObject.MDEF_SOCIEDAD && result.Centro ===
+				oTableItemObject.MDEF_CENTRO);
+
+			if (oCommodite.length > 0) {
+				var precio = this.executeFormula(oTableItemObject, oCommodite[0]);
+				oTableItemObject.MDEF_PRECIOPRODUCTIVO = Number(precio);
+			}
+
+			//Realizar calculos
+			oTableItemObject.MDEF_COSTOMATERIAL =
+				Number(oTableItemObject.MDEF_PRECIOPRODUCTIVO) +
+				Number(oTableItemObject.MDEF_COSTOCONVERSION) +
+				Number(oTableItemObject.MDEF_COSTOADICIONAL) +
+				Number(oTableItemObject.MDEF_COSTOENVIO);
+
+			oTableItemObject.MDEF_COSTOTRANSFERENCIA =
+				(Number(oTableItemObject.MDEF_COSTOMATERIAL) +
+					Number(oTableItemObject.MDEF_OTROSCOSTOS)) *
+				Number(oTableItemObject.MDEF_PCTRANSFERENCIA);
+
+			oTableItemObject.MDEF_PRECIOPREMISA =
+				Number(oTableItemObject.MDEF_COSTOMATERIAL) +
+				Number(oTableItemObject.MDEF_OTROSCOSTOS) +
+				Number(oTableItemObject.MDEF_COSTOTRANSFERENCIA);
+
 			oTableCommodities.getModel().refresh();
 
 		},
@@ -2078,7 +2209,7 @@ sap.ui.define([
 			filterKurst = new sap.ui.model.Filter({
 				path: "Kurst",
 				operator: sap.ui.model.FilterOperator.EQ,
-				value1: 'REAL'
+				value1: 'PLAN'
 			});
 
 			filtersArray = new Array();
@@ -2166,24 +2297,24 @@ sap.ui.define([
 				oListaData = "",
 				oItem = oEvent.getParameter("selectedItem"),
 				oItemObject = oItem.getBindingContext().getObject();
-				
+
 			oCombox.setSelectedKey(null);
-				
+
 			oListYear = this.centroYear.filter(result => result.yfiscyear === oItemObject.yfiscyear);
 
 			oListaData = Array.from(new Set(oListYear.map(s => s.Plant)))
 				.map(Plant => {
 					return {
 						Plant: Plant,
-                        txtmd: oListYear.find(s => s.Plant === Plant).txtmd
+						txtmd: oListYear.find(s => s.Plant === Plant).txtmd
 					};
-				});				
+				});
 
 			oCombox.getModel().setProperty("/LstPlant", oListaData);
 			oCombox.getModel().refresh(true);
 
 		},
-		
+
 		/**
 		 * Filter material
 		 * @function
@@ -2194,7 +2325,7 @@ sap.ui.define([
 
 			var oComboxYear = this.byId("idYear"),
 				oComboxPlant = this.byId("idPlatn");
-				
+
 			var aFilter = [];
 
 			if (oComboxYear.getSelectedKey() !== "") {
@@ -2203,11 +2334,11 @@ sap.ui.define([
 			if (oComboxPlant.getSelectedKey() !== "") {
 				aFilter.push(new Filter("Plant", FilterOperator.EQ, oComboxPlant.getSelectedKey()));
 			}
-			
+
 			this.getMaterialFilter(aFilter);
 
 		},
-		
+
 		/**
 		 * Get material filter
 		 * @function
@@ -2215,11 +2346,11 @@ sap.ui.define([
 		 * @private
 		 */
 		getMaterialFilter: function (oFilter) {
-			
+
 			var sServiceUrl = {},
 				oModelService = {},
 				oPanel = this.getView();
-				
+
 			oPanel.setBusy(true);
 
 			sServiceUrl = this.getOwnerComponent().getModel("ModelSimulador").sServiceUrl;
@@ -2233,6 +2364,7 @@ sap.ui.define([
 					this.loadModelComboBoxYear(this.centroYear);
 					this.loadModelComboBoxMoneda(this.moneda);
 					this.loadModelComboBoxCommoditie(this.commodite);
+					this.loadPlantToYear();
 					oPanel.setBusy(false);
 				}.bind(this),
 				error: function (oError) {
@@ -2242,11 +2374,236 @@ sap.ui.define([
 					// this.getModel("modelView").setProperty("/busy", false);
 					oPanel.setBusy(false);
 				}
-			});	
-			
+			});
+
 			// this.loadModelCbYear();
 
-		}		
+		},
+
+		/**
+		 * loada data material
+		 * @function
+		 * @param 
+		 * @private
+		 */
+		loadMaterial: function () {
+			this.loadModelCbYear();
+			this.loadModel();
+			this.loadModelCommoditie();
+			this.loadModelCommoditieDetail();
+			// this.loadModelIcoterm();
+			this.loadModelUnidaMedida();
+			this.loadModelMoneda();
+			this.loadModelTipoCambio();
+		},
+
+		onMessagePopoverPress: function (oEvent) {
+			this._getMessagePopover().openBy(oEvent.getSource());
+		},
+
+		//################ Private APIs ###################
+
+		_getMessagePopover: function () {
+			// create popover lazily (singleton)
+			if (!this._oMessagePopover) {
+				this._oMessagePopover = sap.ui.xmlfragment(this.getView().getId(),
+					"cbc.co.simulador_costos.view.Utilities.fragments.MessagePopover", this);
+				this.getView().addDependent(this._oMessagePopover);
+			}
+			return this._oMessagePopover;
+		},
+
+		onErrorPress: function () {
+			var oMessage = new Message({
+				message: "My generated error message",
+				type: MessageType.Error,
+				target: "/Dummy",
+				processor: this.getView().getModel()
+			});
+			sap.ui.getCore().getMessageManager().addMessages(oMessage);
+		},
+
+		/**
+		 * check error position
+		 * @function
+		 * @param 
+		 * @private
+		 */
+		checkErrorPosition: function (oPosition) {
+			var vMessage = "",
+				oMessage = {},
+				vMessageField = "";
+
+			vMessage = "Material: " + oPosition.MDEF_IDMATERIAL +
+				" Sociedad: " + oPosition.MDEF_SOCIEDAD +
+				" Centro: " + oPosition.MDEF_CENTRO +
+				" A\u00F1o: " + oPosition.MDEF_PERIODO +
+				" Periodo: " + oPosition.MDEF_MES;
+
+			if (oPosition.MDEF_PRECIOPRODUCTIVO.toString() === "") {
+				vMessageField = "Precio Productivo es vac\u00EDo y no n\u00FAmerico";
+
+				oMessage = new Message({
+					message: vMessage,
+					type: MessageType.Error,
+					target: "/Dummy",
+					additionalText: vMessageField,
+					description: vMessageField, //"Campo Precio Productivo",
+					processor: this.getView().getModel()
+				});
+				sap.ui.getCore().getMessageManager().addMessages(oMessage);
+
+			}
+
+			if (oPosition.MDEF_PESOMATERIAL.toString() === "") {
+				vMessageField = "Peso material es vac\u00EDo y no n\u00FAmerico";
+
+				oMessage = new Message({
+					message: vMessage,
+					type: MessageType.Error,
+					target: "/Dummy",
+					additionalText: vMessageField,
+					description: vMessageField, //"Campo Precio Productivo",
+					processor: this.getView().getModel()
+				});
+				sap.ui.getCore().getMessageManager().addMessages(oMessage);
+
+			}
+
+			if (oPosition.MDEF_COSTOCONVERSION.toString() === "") {
+				vMessageField = "Costo conversi\u00F3n es vac\u00EDo y no n\u00FAmerico";
+
+				oMessage = new Message({
+					message: vMessage,
+					type: MessageType.Error,
+					target: "/Dummy",
+					additionalText: vMessageField,
+					description: vMessageField, //"Campo Precio Productivo",
+					processor: this.getView().getModel()
+				});
+				sap.ui.getCore().getMessageManager().addMessages(oMessage);
+
+			}
+
+			if (oPosition.MDEF_COSTOADICIONAL.toString() === "") {
+				vMessageField = "Costo adicional es vac\u00EDo y no n\u00FAmerico";
+
+				oMessage = new Message({
+					message: vMessage,
+					type: MessageType.Error,
+					target: "/Dummy",
+					additionalText: vMessageField,
+					description: vMessageField, //"Campo Precio Productivo",
+					processor: this.getView().getModel()
+				});
+				sap.ui.getCore().getMessageManager().addMessages(oMessage);
+
+			}
+
+			if (oPosition.MDEF_COSTOENVIO.toString() === "") {
+				vMessageField = "Costo env\u00EDo es vac\u00EDo y no n\u00FAmerico";
+
+				oMessage = new Message({
+					message: vMessage,
+					type: MessageType.Error,
+					target: "/Dummy",
+					additionalText: vMessageField,
+					description: vMessageField, //"Campo Precio Productivo",
+					processor: this.getView().getModel()
+				});
+				sap.ui.getCore().getMessageManager().addMessages(oMessage);
+
+			}
+
+			if (oPosition.MDEF_OTROSCOSTOS.toString() === "") {
+				vMessageField = "Otros costos es vac\u00EDo y no n\u00FAmerico";
+
+				oMessage = new Message({
+					message: vMessage,
+					type: MessageType.Error,
+					target: "/Dummy",
+					additionalText: vMessageField,
+					description: vMessageField, //"Campo Precio Productivo",
+					processor: this.getView().getModel()
+				});
+				sap.ui.getCore().getMessageManager().addMessages(oMessage);
+
+			}
+		},
+
+		/**
+		 * change peso material
+		 * @function
+		 * @param 
+		 * @private
+		 */
+		onChangePesoMaterial: function (oEvent) {
+			var oTableItemObject = {};
+
+			oTableItemObject = oEvent.getSource().getBindingContext().getObject();
+
+			if (oTableItemObject.MDEF_COMMODITIE_SELECT === "") {
+				return;
+			}
+
+			var oCommodite = this.detailCommodite.filter(result => result.IdCommoditie === oTableItemObject.MDEF_COMMODITIE_SELECT && result.Year ===
+				oTableItemObject.MDEF_PERIODO &&
+				result.Mes === oTableItemObject.MDEF_MES && result.Sociedad === oTableItemObject.MDEF_SOCIEDAD && result.Centro ===
+				oTableItemObject.MDEF_CENTRO);
+
+			if (oCommodite.length > 0) {
+				var precio = this.executeFormula(oTableItemObject, oCommodite[0]);
+				oTableItemObject.MDEF_PRECIOPRODUCTIVO = Number(precio);
+			}
+
+			//Realizar calculos
+			oTableItemObject.MDEF_COSTOMATERIAL =
+				Number(oTableItemObject.MDEF_PRECIOPRODUCTIVO) +
+				Number(oTableItemObject.MDEF_COSTOCONVERSION) +
+				Number(oTableItemObject.MDEF_COSTOADICIONAL) +
+				Number(oTableItemObject.MDEF_COSTOENVIO);
+
+			oTableItemObject.MDEF_COSTOTRANSFERENCIA =
+				(Number(oTableItemObject.MDEF_COSTOMATERIAL) +
+					Number(oTableItemObject.MDEF_OTROSCOSTOS)) *
+				Number(oTableItemObject.MDEF_PCTRANSFERENCIA);
+
+			oTableItemObject.MDEF_PRECIOPREMISA =
+				Number(oTableItemObject.MDEF_COSTOMATERIAL) +
+				Number(oTableItemObject.MDEF_OTROSCOSTOS) +
+				Number(oTableItemObject.MDEF_COSTOTRANSFERENCIA);
+		},
+
+		/**
+		 * Load model plant to year
+		 * @function
+		 * @param 
+		 * @private
+		 */
+		loadPlantToYear: function () {
+
+			var oComboxYear = this.byId("idYear"),
+				oComboxPlant = this.byId("idPlatn"),
+				vKeyYear = oComboxYear.getSelectedKey(),
+				oListYear = [],
+				oListaData = [];
+
+			vKeyYear = oComboxYear.getSelectedKey();
+
+			oListYear = this.centroYear.filter(result => result.yfiscyear === vKeyYear);
+
+			oListaData = Array.from(new Set(oListYear.map(s => s.Plant)))
+				.map(Plant => {
+					return {
+						Plant: Plant,
+						txtmd: oListYear.find(s => s.Plant === Plant).txtmd
+					};
+				});
+
+			oComboxPlant.getModel().setProperty("/LstPlant", oListaData);
+			oComboxPlant.getModel().refresh(true);
+
+		}
 
 	});
 

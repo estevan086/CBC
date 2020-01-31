@@ -16,10 +16,9 @@ sap.ui.define([
 			var myRoute = this.getOwnerComponent().getRouter().getRoute("rtChFromuladora");
 			myRoute.attachPatternMatched(this.onMyRoutePatternMatched, this);
 
-			var bus = sap.ui.getCore().getEventBus();
-			//const bus = this.getOwnerComponent().getEventBus();
+			//var bus = sap.ui.getCore().getEventBus();
 			// 1. ChannelName, 2. EventName, 3. Function to be executed, 4. Listener
-			bus.subscribe("GridAdminFormuladoraChannel", "onNavigateEvent", this.onDataReceived, this);
+			//bus.subscribe("GridAdminFormuladoraChannel", "onNavigateEvent", this.onDataReceived, this);
 
 		},
 
@@ -27,25 +26,18 @@ sap.ui.define([
 			// do something with the data (bind to model)
 			//console.log(JSON.stringify(data));
 
-			this.oIdCommoditie = data.oIdCommoditie;
-			this.oIdFormula = data.oIdFormula;
-			this.oTxtFormula = data.oTxtFormula;
+			// this.oIdCommoditie = data.oIdCommoditie;
+			// this.oIdFormula = data.oIdFormula;
+			// this.oTxtFormula = data.oTxtFormula;
 
-			var oDataModel = new sap.ui.model.json.JSONModel(data);
+			// var oDataModel = new sap.ui.model.json.JSONModel(data);
 
-			var oTitle = "Id Commoditie:" + this.oIdCommoditie ;
+			// var oTitle = "Id Commoditie:" + this.oIdCommoditie ;
 
-			var oBuilder = this.getView().byId("builder");
+			// var oBuilder = this.getView().byId("builder");
 
-			this.getOwnerComponent().setModel(oDataModel, "Formuladora");
+			// this.getOwnerComponent().setModel(oDataModel, "Formuladora");
 
-			//	oBuilder.setProperty("title", oTitle);
-			//	oBuilder.setProperty("expression", this.oTxtFormula);
-
-			//disabledDefaultTokens="abs;sqrt;roundup;rounddown;round"
-			// oBuilder.getModel().setProperty("title", oTitle);	
-			// oBuilder.getModel().setProperty("expr", this.oTxtFormula);
-			// oBuilder.getModel().refresh(); 
 
 		},
 
@@ -57,6 +49,7 @@ sap.ui.define([
 			this.oCentro = event.getParameter("arguments").oCentro;
 			this.oYear = event.getParameter("arguments").oYear;
 			this.oMes = event.getParameter("arguments").oMes;
+			this.oVersion = event.getParameter("arguments").oVersion;
 			this.oIdFormula = event.getParameter("arguments").oIdFormula;
 			this.oTxtFormula = event.getParameter("arguments").oTxt;
 
@@ -71,7 +64,8 @@ sap.ui.define([
 					     " - Sociedad:" + this.oSociedad +
 					     " - Centro:" + this.oCentro +
 					     " - A\u00F1o:" + this.oYear +
-					     " - Mes:" + this.oMes;
+					     " - Mes:" + this.oMes +
+					     " - Version:" + this.oVersion;
 
 			var oModel = new JSONModel();
 			
@@ -148,6 +142,7 @@ sap.ui.define([
 				Txtlg: oBuilderData,
 				Year: this.oYear,
 				Mes: this.oMes
+				//Version: this.oVersion
 			};
 			
 			

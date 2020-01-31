@@ -20,22 +20,25 @@
 					<m:OverflowToolbar>
 						<m:content>
 							<m:Title id="title" text=""/>
-							<m:Button icon="sap-icon://eraser" text="" tooltip="Clear all filters" press="clearAllFilters"/>
-							<m:SearchField placeholder="Filter" value="{ui>/globalFilter}" liveChange="filterGloballySup" width="10rem"/>
+							<!--<m:Button icon="sap-icon://eraser" text="" tooltip="Clear all filters" press="clearAllFilters"/>-->
+							<!--<m:SearchField placeholder="Filter" value="{ui>/globalFilter}" liveChange="filterGloballySup" width="10rem"/>-->
 							<m:Text text="Filtros Consulta" wrapping="false"/>
-							<m:ComboBox id="idYear" showSecondaryValues="true" filterSecondaryValues="true" placeholder="Año" 
+							<m:ComboBox id="idYear" showSecondaryValues="true" filterSecondaryValues="true" placeholder="Año"
 								items="{ path: '/LstYear', sorter: { path: 'yfiscyear' } }" editable="true" width="5rem" selectionChange="onChangeYear">
 								<c:ListItem key="{yfiscyear}" text="{yfiscyear}"/>
 							</m:ComboBox>
-							<m:ComboBox id="idPlatn" showSecondaryValues="true" filterSecondaryValues="true" placeholder="Centro" 
+							<m:ComboBox id="idPlatn" showSecondaryValues="true" filterSecondaryValues="true" placeholder="Centro"
 								items="{ path: '/LstPlant', sorter: { path: 'Plant' } }" editable="true" width="7rem">
 								<c:ListItem key="{Plant}" text="{Plant}" additionalText="{txtmd}"/>
 							</m:ComboBox>
-							<m:Button icon="sap-icon://search"  press="onFilterMaterial"/>
+							<m:Button icon="sap-icon://search" press="onFilterMaterial"/>
 							<m:ToolbarSpacer/>
+							<m:Button icon="sap-icon://alert" text="{= ${message>/}.length }" visible="{= ${message>/}.length > 0 }" type="Emphasized"
+								press="onMessagePopoverPress"/>
 							<m:Button icon="sap-icon://sys-next-page" text="Exportar" tooltip="Exportar version de material" press="onDataExport"/>
 							<u:FileUploader id="fileUploader" name="myFileUpload" icon="sap-icon://sys-prev-page" tooltip="Importar version de commoditie"
 								change="handleUpload"/>
+							<!--<m:Button type="Reject" text="Error" press="onErrorPress"/>-->
 							<!--<m:Button icon="sap-icon://factory" type="Emphasized" text="Administrar material" tooltip="Crear Material" press="onGoToIdCommoditieTable"/>-->
 							<!--<m:Button icon="sap-icon://edit" type="Emphasized" text="Editar Version" tooltip="Version" press="showFormEditCommoditie"/>-->
 						</m:content>
@@ -94,7 +97,7 @@
 						<m:Label text="Peso Material"/>
 						<template>
 							<!--<m:Text text="{MDEF_PESOMATERIAL}" wrapping="false"/>-->
-							<m:Input value="{MDEF_PESOMATERIAL}" type="Number" editable="false"/>
+							<m:Input value="{MDEF_PESOMATERIAL}" type="Number" editable="false" change="onChangePesoMaterial"/>
 						</template>
 					</Column>
 					<Column autoResizable="true" width="10rem" filterProperty="MDEF_COMMODITIE">
@@ -280,6 +283,23 @@
 				</rowActionTemplate>
 			</Table>
 		</m:content>
+		<m:footer>
+			<m:Toolbar id="otbFooter">
+				<!--<m:Button-->
+				<!--    icon="sap-icon://alert"-->
+				<!--    text="{= ${message>/}.length }"-->
+				<!--    visible="true"-->
+				<!--    type="Emphasized"-->
+				<!--    press="onMessagePopoverPress" />-->
+				<!--<m:ToolbarSpacer/>-->
+				<!--<m:Button type="Accept" text="Success" press="onSuccessPress"/>-->
+				<!--<m:Button type="Reject" text="Error" press="onErrorPress"/>-->
+				<!--<m:Button text="Warning" press="onWarningPress"/>-->
+				<!--<m:Button text="Info" press="onInfoPress"/>-->
+				<!--<m:Button text="ValueState" press="onValueStatePress"/>-->
+				<!--<m:Button text="Clear" press="onClearPress"/>-->
+			</m:Toolbar>
+		</m:footer>
 	</m:Page>
 	<!--	</m:pages>-->
 	<!--</m:App>-->
