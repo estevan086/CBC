@@ -10,17 +10,17 @@
 					labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2"
 					columnsL="2" columnsM="2" singleContainerFullSize="false">
 					<f:content>
-						<Label text="Tipo de carga"/>
-						<ComboBox id="cbxTypeLoad" selectionChange="onChangeSociedad" showSecondaryValues="true" filterSecondaryValues="true"
+						<!--<Label text="Tipo de carga"/>-->
+						<!--<ComboBox id="cbxTypeLoad" selectionChange="onChangeSociedad" showSecondaryValues="true" filterSecondaryValues="true"
 							items="{ path: '/LstSociedades', sorter: { path: 'CompCodePlant' } }">
 							<core:ListItem key="{CompCodePlant}" text="{DescCompCodePlant}" additionalText="{CompCodePlant}"/>
-						</ComboBox>
-						<Label text="Version del sistema"/>
+						</ComboBox>-->
+						<Label text="Version"/>
 						<ComboBox id="cbxVersionSistema" selectionChange="onChangeSociedad" showSecondaryValues="true" filterSecondaryValues="true"
 							items="{ path: '/LstSociedades', sorter: { path: 'CompCodePlant' } }">
 							<core:ListItem key="{CompCodePlant}" text="{DescCompCodePlant}" additionalText="{CompCodePlant}"/>
 						</ComboBox>
-						<Label text="Tipo de archivo"/>
+						<Label text="Tipo Version"/>
 						<Select id="cbxTypeFile" selectedKey="{}">
 							<items>
 								<core:Item text="Real" key="0"/>
@@ -38,7 +38,7 @@
 						<TextArea value=""></TextArea>
 						<Label text="ID" labelFor="inpId"/>
 						<Input id="inpId" name="txtID" type="Text" value="ICO_" enabled="false"/>
-						<Button icon="sap-icon://upload-to-cloud" type="Emphasized" text="Cargar" tooltip="Cargar Archivo"/>
+						<Button icon="sap-icon://Save" type="Emphasized" text="Guardar" tooltip="Guardar"/>
 					</f:content>
 				</f:SimpleForm>
 			</VBox>
