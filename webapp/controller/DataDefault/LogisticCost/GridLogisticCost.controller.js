@@ -21,7 +21,8 @@ sap.ui.define([
 			this.initMessageManager();
 
 			var oModelV = new JSONModel({
-				busy: false
+				busy: false,
+				title: ""
 			});
 			this.setModel(oModelV, "modelView");
 
@@ -44,8 +45,9 @@ sap.ui.define([
 		},
 		onMyRoutePatternMatched: function (event) {
 			var aFilter = [];
-
-			version = "";
+			
+			version = cDefaultVersion;
+			this.getModel("modelView").setProperty("/title", ( this.getView().getModel("i18n").getResourceBundle().getText("CostosLogisticos") +": "+ cDefaultVersion ).toString() );
 			//Cargar datos
 			if (initialLoad === false) {
 				initialLoad = true;
@@ -62,7 +64,7 @@ sap.ui.define([
 		onShowVersion: function (oData) {
 			var aFilter = [];
 			version = oData.idVersion;
-
+			this.getModel("modelView").setProperty("/title", ( this.getView().getModel("i18n").getResourceBundle().getText("CostosLogisticos") +": "+ oData.versionForEditDesc ).toString() );
 			aFilter.push(new Filter("Version", FilterOperator.EQ, version));
 			aFilter.push(new Filter("Fiscyear", FilterOperator.EQ, oData.year));
 			this.getLogisticCostValoration(aFilter);
@@ -308,7 +310,7 @@ sap.ui.define([
 					modelStructure.CompCode = oValue.CompCode;
 					modelStructure.Currency = oValue.Currency;
 					modelStructure.CostLog = oLogisticCost.CostLog;
-					modelStructure.Version = version !== "" ? version : cDefaultVersion;
+					modelStructure.Version = version;
 					if (oValue.CantEst !== "") {
 						modelStructure.CantEst = oValue.CantEst.toString().replace(",", ".");
 					}
