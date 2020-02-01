@@ -22,19 +22,22 @@ sap.ui.define([
 	'sap/m/MessageBox',
 	"sap/ui/table/RowSettings",
 	"sap/ui/core/library",
-	"sap/ui/core/EventBus"
-
+	"sap/ui/core/EventBus",
+	"cbc/co/simulador_costos/controller/Versiones/SelectVersion"
 ], function (Controller, JSONModel, MessageToast, Fragment, DateFormat, library, Filter, FilterOperator, Button, Dialog, List,
-	StandardListItem, ButtonType, MessageBox, RowSettings, CoreLibrary, EventBus) {
+	StandardListItem, ButtonType, MessageBox, RowSettings, CoreLibrary, EventBus, SelectVersion) {
 	"use strict";
 
 	const cDefaultVersion = "DEFAULT";
+	const cDefaultNumValue = "0,000";
+	var initialLoad = false,
+		version = "";
 	var updatedRecords = [];
 	var that = this;
 	var MessageType = CoreLibrary.MessageType;
 
 	return Controller.extend("cbc.co.simulador_costos.controller.DataDefault.Commodities.GridAdminCommodities", {
-
+		SelectVersion: SelectVersion,
 		onInit: function () {
 
 			// var oModelV = new JSONModel({
@@ -52,19 +55,44 @@ sap.ui.define([
 				}
 			}, oUploader);
 
-			var myRoute = this.getOwnerComponent().getRouter().getRoute("rtChCommodities");
-			myRoute.attachPatternMatched(this.onMyRoutePatternMatched, this);
+			//var myRoute = this.getOwnerComponent().getRouter().getRoute("rtChCommodities");
+			//myRoute.attachPatternMatched(this.onMyRoutePatternMatched, this);
+
+			if (this.getRouter().getRoute("rtChCommodities")) {
+				this.getRouter().getRoute("rtChCommodities").attachPatternMatched(this.onMyRoutePatternMatched, this);
+			}
+			if (this.getRouter().getRoute("rtChCommoditiesVersion")) {
+				this.getRouter().getRoute("rtChCommoditiesVersion").attachPatternMatched(this.onMyRoutePatternMatchedVersion, this);
+			}
+			SelectVersion.init(this, "COM");
 
 		},
 
 		onMyRoutePatternMatched: function (event) {
+			var aFilter = [];
 
-			var oTable = this.getView().byId('tblCommodities');
+			version = cDefaultVersion;
+			//Cargar datos
 
-			this.fnConsultaDetalleCommodities();
+			aFilter.push(new Filter("Flag", FilterOperator.EQ, 'X'));
+			//var oFilters = new Filter("Version", FilterOperator.EQ, cDefaultVersion);
+			this.fnConsultaDetalleCommodities(aFilter);
+			this.getView().byId("btnAdmin").setVisible(true);
 		},
 
-		fnConsultaDetalleCommodities: function (event) {
+		onMyRoutePatternMatchedVersion: function (oEvent) {
+			SelectVersion.open();
+			this.getView().byId("btnAdmin").setVisible(false);
+		},
+		onShowVersion: function (oData) {
+			var aFilter = [];
+			version = oData.idVersion;
+
+			aFilter.push(new Filter("Version", FilterOperator.EQ, version));
+			aFilter.push(new Filter("Fiscyear", FilterOperator.EQ, oData.year));
+			this.fnConsultaDetalleCommodities(aFilter);
+		},
+		fnConsultaDetalleCommodities: function (oFilter) {
 
 			var oPanel = this.getView();
 			oPanel.setBusy(true);
@@ -78,7 +106,7 @@ sap.ui.define([
 			//Definir filtro
 
 			//Leer datos del ERP
-			var oRead = this.fnReadEntity(oModelService, "/detailCommoditiesSet", null);
+			var oRead = this.fnReadEntity(oModelService, "/centroSet", oFilter);
 
 			if (oRead.tipo === "S") {
 				this.oDataDetalleCommodities = oRead.datos.results;
@@ -394,7 +422,7 @@ sap.ui.define([
 				}
 				oTable.getModel().refresh();
 				updatedRecords = [];
-				
+
 				MessageBox.show(
 					'Datos guardados correctamente', {
 						icon: MessageBox.Icon.SUCCESS,
@@ -402,7 +430,7 @@ sap.ui.define([
 						actions: [MessageBox.Action.OK],
 						onClose: function (oAction) {
 							if (oAction === sap.m.MessageBox.Action.OK) {
-								
+
 								//return;
 							}
 						}.bind(this, oEvent)
@@ -634,7 +662,7 @@ sap.ui.define([
 					PrecioMaterial: CurrentRow.CDEF_PRECIO,
 					OtrosCostos: CurrentRow.CDEF_OTROCOSTO,
 					TxtFormula: CurrentRow.CDEF_FORMULA,
-					Version:CurrentRow.CDEF_VERSION
+					Version: CurrentRow.CDEF_VERSION
 						// Recordmode: '1'
 				};
 
@@ -724,7 +752,7 @@ sap.ui.define([
 							} else {
 								return;
 							}
-							
+
 							//var bus = sap.ui.getCore().getEventBus();
 							// 1. ChannelName, 2. EventName, 3. the data
 							//	bus.publish("GridAdminFormuladoraChannel", "onNavigateEvent", oData);
