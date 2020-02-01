@@ -1704,6 +1704,9 @@ sap.ui.define([
 				materialDefatultSet: []
 			};
 
+			// does not remove the manually set ValueStateText we set in onValueStatePress():
+			sap.ui.getCore().getMessageManager().removeAllMessages();
+
 			for (var i = 0; i < JsonValue.length; i++) {
 
 				var oTempRow = JsonValue[i];
@@ -1712,10 +1715,7 @@ sap.ui.define([
 					continue;
 				}
 
-				// does not remove the manually set ValueStateText we set in onValueStatePress():
-				sap.ui.getCore().getMessageManager().removeAllMessages();
-
-				this.checkErrorPosition(oTempRow);
+				this.checkErrorPositionImport(oTempRow);
 
 				oDetail = {
 					// Txtmd: oTempRow.Material,
@@ -1762,6 +1762,8 @@ sap.ui.define([
 
 			if (oEntidad.materialDefatultSet.length === 0) {
 
+				oPanel.setBusy(false);
+
 				MessageBox.show(
 					"No se cargo el archivo", {
 						icon: MessageBox.Icon.ERROR,
@@ -1773,12 +1775,12 @@ sap.ui.define([
 					}
 				);
 
-				oPanel.setBusy(false);
-
 				return;
 			}
 
 			if (sap.ui.getCore().getMessageManager().getMessageModel().getData().filter(result => result.type === "Error").length > 0) {
+
+				oPanel.setBusy(false);
 
 				MessageBox.show(
 					"Existen campos por validar", {
@@ -2806,6 +2808,114 @@ sap.ui.define([
 			});
 
 			this.cvsDataExport(oModel, columns);
+		},
+
+		/**
+		 * check error position import
+		 * @function
+		 * @param 
+		 * @private
+		 */
+		checkErrorPositionImport: function (oPosition) {
+			var vMessage = "",
+				oMessage = {},
+				vMessageField = "";
+
+			vMessage = "Material: " + oPosition.IDMaterial +
+				" Sociedad: " + oPosition.Sociedad +
+				" Centro: " + oPosition.Centro +
+				" A\u00F1o: " + oPosition.Periodo +
+				" Periodo: " + oPosition.Mes;
+
+			if (oPosition.Precio_Productivo.toString() === "") {
+				vMessageField = "Precio Productivo es vac\u00EDo y no n\u00FAmerico";
+
+				oMessage = new Message({
+					message: vMessage,
+					type: MessageType.Error,
+					target: "/Dummy",
+					additionalText: vMessageField,
+					description: vMessageField, //"Campo Precio Productivo",
+					processor: this.getView().getModel()
+				});
+				sap.ui.getCore().getMessageManager().addMessages(oMessage);
+
+			}
+
+			if (oPosition.Peso_Material.toString() === "") {
+				vMessageField = "Peso material es vac\u00EDo y no n\u00FAmerico";
+
+				oMessage = new Message({
+					message: vMessage,
+					type: MessageType.Error,
+					target: "/Dummy",
+					additionalText: vMessageField,
+					description: vMessageField, //"Campo Precio Productivo",
+					processor: this.getView().getModel()
+				});
+				sap.ui.getCore().getMessageManager().addMessages(oMessage);
+
+			}
+
+			if (oPosition.Costo_Conversion.toString() === "") {
+				vMessageField = "Costo conversi\u00F3n es vac\u00EDo y no n\u00FAmerico";
+
+				oMessage = new Message({
+					message: vMessage,
+					type: MessageType.Error,
+					target: "/Dummy",
+					additionalText: vMessageField,
+					description: vMessageField, //"Campo Precio Productivo",
+					processor: this.getView().getModel()
+				});
+				sap.ui.getCore().getMessageManager().addMessages(oMessage);
+
+			}
+
+			if (oPosition.Costo_Adicional.toString() === "") {
+				vMessageField = "Costo adicional es vac\u00EDo y no n\u00FAmerico";
+
+				oMessage = new Message({
+					message: vMessage,
+					type: MessageType.Error,
+					target: "/Dummy",
+					additionalText: vMessageField,
+					description: vMessageField, //"Campo Precio Productivo",
+					processor: this.getView().getModel()
+				});
+				sap.ui.getCore().getMessageManager().addMessages(oMessage);
+
+			}
+
+			if (oPosition.Costo_Envio.toString() === "") {
+				vMessageField = "Costo env\u00EDo es vac\u00EDo y no n\u00FAmerico";
+
+				oMessage = new Message({
+					message: vMessage,
+					type: MessageType.Error,
+					target: "/Dummy",
+					additionalText: vMessageField,
+					description: vMessageField, //"Campo Precio Productivo",
+					processor: this.getView().getModel()
+				});
+				sap.ui.getCore().getMessageManager().addMessages(oMessage);
+
+			}
+
+			if (oPosition.Otros_Costos.toString() === "") {
+				vMessageField = "Otros costos es vac\u00EDo y no n\u00FAmerico";
+
+				oMessage = new Message({
+					message: vMessage,
+					type: MessageType.Error,
+					target: "/Dummy",
+					additionalText: vMessageField,
+					description: vMessageField, //"Campo Precio Productivo",
+					processor: this.getView().getModel()
+				});
+				sap.ui.getCore().getMessageManager().addMessages(oMessage);
+
+			}
 		}
 
 	});
