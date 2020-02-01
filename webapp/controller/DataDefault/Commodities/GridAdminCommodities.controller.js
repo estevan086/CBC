@@ -74,7 +74,7 @@ sap.ui.define([
 			version = cDefaultVersion;
 			//Cargar datos
 
-			aFilter.push(new Filter("Flag", FilterOperator.EQ, 'X'));
+			aFilter.push(new Filter("Version", FilterOperator.EQ, 'X'));
 			//var oFilters = new Filter("Version", FilterOperator.EQ, cDefaultVersion);
 			this.fnConsultaDetalleCommodities(aFilter);
 			this.getView().byId("btnAdmin").setVisible(true);
@@ -106,18 +106,22 @@ sap.ui.define([
 			//Definir filtro
 
 			//Leer datos del ERP
-			var oRead = this.fnReadEntity(oModelService, "/centroSet", oFilter);
+			var vFilterEntity = "/detailCommoditiesSet?$filter=Version eq 'DEFAULT'";
+			var oRead = this.fnReadEntity(oModelService, vFilterEntity);
+
+			// oModel.read(vFilterEntity, {
+			// 	filters: oFilter,
+			// 	success: function (oData, response) {
+
+			// 	}.bind(this),
+			// 	error: function (oError) {
+
+			// 	}
+			// });
 
 			if (oRead.tipo === "S") {
 				this.oDataDetalleCommodities = oRead.datos.results;
-				var obj = this.oDataDetalleCommodities;
-				//Object.keys(obj).map(k => obj[k] = obj[k].trim());
-
-				// Object.keys(obj).map(function(key, index) {
-				//   //obj[key] *= 2;
-				//   obj[key] = obj[key].trim();
-				// });
-
+				//var obj = this.oDataDetalleCommodities;
 			} else {
 				MessageBox.error(oRead.msjs, null, "Mensaje del sistema", "OK", null);
 			}
@@ -607,7 +611,7 @@ sap.ui.define([
 				var reader = new FileReader();
 				reader.onload = function (evt) {
 					var strCSV = evt.target.result; //string in CSV 
-					that.csvJSON(strCSV);
+					that.csvJSONFile(strCSV);
 				};
 				reader.readAsText(oFile);
 			}
@@ -632,6 +636,43 @@ sap.ui.define([
 			//return result; //JavaScript object
 			//sap.ui.getCore().getModel().setProperty("/", oFinalResult);
 			//this.generateTile();
+		},
+
+		csvJSONFile: function (csv) {
+			var lines = csv.split("\n");
+			var result = [];
+			var headers = lines[0].split(",");
+			if (headers.length > 1) {
+				for (var i = 1; i < lines.length; i++) {
+					var obj = {};
+					var currentline = lines[i].split(",");
+					for (var j = 0; j < headers.length; j++) {
+						if (currentline[0] === "P") {
+							obj[headers[j]] = currentline[j];
+						}
+					}
+					if (!obj.Tipo === false) {
+						result.push(obj);
+					}
+				}
+			} else {
+				var headersPC = lines[0].split(";");
+				for (var k = 1; k < lines.length; k++) {
+					var objPC = {};
+					var currentlinePC = lines[k].split(";");
+					for (var l = 0; l < headersPC.length; l++) {
+						// if (currentlinePC[0] === "P") {
+						objPC[headersPC[l]] = currentlinePC[l];
+						// }
+					}
+					// if (!objPC.Tipo === false) {
+					result.push(objPC);
+					// }
+				}
+			}
+			var oStringResult = JSON.stringify(result);
+			var oFinalResult = JSON.parse(oStringResult.replace(/\\r/g, ""));
+			this.cargaMasiva(oFinalResult);
 		},
 
 		CargaMasiva: function (JsonValue) {
