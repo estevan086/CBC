@@ -1,79 +1,81 @@
 sap.ui.define([
-	'sap/ui/core/Fragment',
-	'sap/ui/core/mvc/Controller',
-	'sap/ui/model/Filter',
-	'sap/ui/model/json/JSONModel',
-	'sap/m/Token',
-	'sap/ui/model/FilterOperator'
-], function (Fragment, Controller, Filter, JSONModel, Token, FilterOperator) {
+	"cbc/co/simulador_costos/controller/BaseController",
+	"sap/ui/model/json/JSONModel",
+	"cbc/co/simulador_costos/util/Factory",
+	"sap/ui/model/Filter",
+	"sap/ui/model/FilterOperator"
+], function (Controller, JSONModel, Factory, Filter, FilterOperator) {
 	"use strict";
-   return Controller.extend("cbc.co.simulador_costos.controller.Escenarios.MatrizEsc.AddEsc", {
+	return Controller.extend("cbc.co.simulador_costos.controller.Escenarios.MatrizEsc.AddEsc", {
 		onInit: function () {
-				// set explored app's demo model on this sample
-			//var oModel = new JSONModel("model/productsN.json");
-			// the default limit of the model is set to 100. We want to show all the entries.
-			//oModel.setSizeLimit(1000000);
-			//this.getView().setModel(oModel);
-			
-			//this._multiInputPais = this.byId("multiInput");
-			var oModel = new JSONModel("model/productsN.json");
-			// the default limit of the model is set to 100. We want to show all the entries.
-			oModel.setSizeLimit(1000000);
-			this.getView().setModel(oModel);
+			this._oTableMatrix = this.byId("tblMatrixScene");
+			this.getRouter().getRoute("rtChMatrizEsNew").attachPatternMatched(this._onRouteMatched, this);
 		},
-		
-		handleValueHelp: function (oEvent) {
-			var sInputValue = oEvent.getSource().getValue();
-
-			// create value help dialog
-			if (!this._valueHelpDialog) {
-				Fragment.load({
-					id: "valueHelpDialog",
-					name: "cbc.co.simulador_costos.view.Utilities.fragments.Dialog",
-					controller: this
-				}).then(function (oValueHelpDialog) {
-					this._valueHelpDialog = oValueHelpDialog;
-					this.getView().addDependent(this._valueHelpDialog);
-					this._openValueHelpDialog(sInputValue);
-				}.bind(this));
-			} else {
-				this._openValueHelpDialog(sInputValue);
-			}
+		onConfirmVersion: function (oEvent) {
+			var oSelectedItem = oEvent.getParameter("selectedItem");
+			var oViewModel = this.getModel("viewModel");
+			var that = this;
+			$.each(oViewModel.getProperty("/rows"), function () {
+				if (this.tipoVersion === that._sModule) {
+					if (oSelectedItem) {
+						var oSelectedVersion = that.getModel("ModelSimulador").getProperty(oSelectedItem.getBindingContextPath());
+						this[that._sMonth] = oSelectedVersion.Nombre;
+					}
+				}
+			});
+			oViewModel.refresh();
 		},
+		onSearchVersion: function (oEvent) {
 
-		_openValueHelpDialog: function (sInputValue) {
-			// create a filter for the binding
-			this._valueHelpDialog.getBinding("items").filter([new Filter(
-				"Name",
-				FilterOperator.Contains,
-				sInputValue
-			)]);
-
-			// open value help dialog filtered by the input value
-			this._valueHelpDialog.open(sInputValue);
 		},
-
-		_handleValueHelpSearch: function (evt) {
-			var sValue = evt.getParameter("value");
-			var oFilter = new Filter(
-				"Name",
-				FilterOperator.Contains,
-				sValue
-			);
-			evt.getSource().getBinding("items").filter([oFilter]);
+		_onRouteMatched: function (oEvent) {
+			this._createViewModel();
+			this._oTableMatrix.bindColumns({
+				path: "/columns",
+				model: "viewModel",
+				factory: jQuery.proxy(Factory.factoryColumnsScenes, this)
+			});
 		},
-
-		_handleValueHelpClose: function (evt) {
-			var aSelectedItems = evt.getParameter("selectedItems"),
-				oMultiInput = this.byId("multiInput");
-
-			if (aSelectedItems && aSelectedItems.length > 0) {
-				aSelectedItems.forEach(function (oItem) {
-					oMultiInput.addToken(new Token({
-						text: oItem.getTitle()
-					}));
+		_createSelectDialogOriginVersion: function (sModule, sMonth) {
+			var oSelectDialog = this._oSelectDialog;
+			if (!this._oSelectDialog) {
+				oSelectDialog = new sap.m.SelectDialog(this.getView().createId("SelectDialogVersion"), {
+					noDataText: this.getResourceBundle().getText("notVersionsFoundVersionFragment"),
+					title: this.getResourceBundle().getText("selectTitleVersionFragment"),
+					confirm: jQuery.proxy(this.onConfirmVersion, this),
+					cancel: jQuery.proxy(this.onConfirmVersion, this),
+					search: jQuery.proxy(this.onSearchVersion, this)
 				});
+				this.getView().addDependent(oSelectDialog);
 			}
+			this._sModule = sModule;
+			this._sMonth = sMonth;
+			var oTemplate = new sap.m.StandardListItem({
+				title: "{ModelSimulador>Nombre}",
+				description: "{ModelSimulador>Txtmd}",
+				info: "{ModelSimulador>FiscYear}",
+				type: "Active"
+			});
+			var aFilter = [new Filter(
+				"Modulo",
+				FilterOperator.EQ,
+				sModule
+			)];
+			oSelectDialog.bindAggregation("items", {
+				path: "/versionSet",
+				model: "ModelSimulador",
+				template: oTemplate,
+				filters: aFilter
+			});
+			return oSelectDialog;
+		},
+		_createViewModel: function () {
+			var oModel = new JSONModel({
+				columns: this.getModel("Escenarios").getProperty("/Meses"),
+				rows: this.getModel("Escenarios").getProperty("/Matriz")
+			});
+			this.setModel(oModel, "viewModel");
+			return oModel;
 		}
-   });
+	});
 });

@@ -1,38 +1,33 @@
 <mvc:View controllerName="cbc.co.simulador_costos.controller.Escenarios.MatrizEsc" height="100%" xmlns:l="sap.ui.layout"
 	xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m">
-	<Page title="Matriz Escenarios">
+	<Page title="{i18n>titleScenarioView}">
 		<content>
-			<Table id="tblProfiles" noDataText="{i18n>profilesNoDataFound}" busyIndicatorDelay="{viewModel>/delay}" growing="true" growingThreshold="30"
-				updateFinished=".onUpdateFinished" items="{ModelSimulador>/perfilesSet}">
+			<Table id="tblScenarios" noDataText="{i18n>scenarioNoDataFound}" busyIndicatorDelay="{viewModel>/delay}" growing="true" growingThreshold="30"
+				updateFinished=".onUpdateFinished" items="{ModelSimulador>/escenarioSet}">
 				<headerToolbar>
 					<OverflowToolbar>
 						<content>
-							<Title text="Escenarios"/>
+							<Title text="{viewModel>/tableTitle}"/>
 						</content>
 					</OverflowToolbar>
 				</headerToolbar>
 				<items>
 					<ColumnListItem type="Navigation">
 						<cells>
-							<Text text="{ModelSimulador>IdProfile}"/>
-							<Text text="Row 1 Cell 2" id="text1"/>
-							<Text text="Row 1 Cell 3" id="text2"/></cells>
+							<Text text="{ModelSimulador>yescenari}"/>
+							<Text text="{ModelSimulador>ytipoescn}"/>
+						</cells>
 					</ColumnListItem>
 				</items>
 				<columns>
 					<Column>
 						<header>
-							<Label text="{i18n>profilesProfileHeader}"/>
+							<Label text="{i18n>scenarioNameScenarioView}"/>
 						</header>
 					</Column>
 					<Column>
 						<header>
-							<Label text="{i18n>profilesModuleHeader}"/>
-						</header>
-					</Column>
-					<Column>
-						<header>
-							<Label text="{i18n>profilesSubmoduleHeader}"/>
+							<Label text="{i18n>scenarioTypeScenarioView}"/>
 						</header>
 					</Column>
 				</columns>
@@ -41,7 +36,7 @@
 		<footer>
 			<OverflowToolbar>
 				<ToolbarSpacer/>
-				<Button type="Accept" text="{i18n>Crear}" icon="sap-icon://add" tooltip="Crear nuevo escenario" press="onAddScene"/>
+				<Button type="Accept" text="{i18n>Crear}" icon="sap-icon://add" tooltip="{i18n>createScenario}" press="onAddScene"/>
 			</OverflowToolbar>
 		</footer>
 	</Page>

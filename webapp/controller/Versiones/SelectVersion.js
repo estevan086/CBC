@@ -160,8 +160,7 @@ sap.ui.define([
 					title: this._oContext.getResourceBundle().getText("selectTitleVersionFragment"),
 					confirm: jQuery.proxy(this.onConfirmOriginVersion, this),
 					cancel: jQuery.proxy(this.onConfirmOriginVersion, this),
-					search: jQuery.proxy(this.onSearchOriginVersion, this),
-					showClearButton: true
+					search: jQuery.proxy(this.onSearchOriginVersion, this)
 				});
 				this._oView.addDependent(oSelectDialog);
 			}

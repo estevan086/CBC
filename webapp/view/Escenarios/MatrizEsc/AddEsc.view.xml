@@ -42,13 +42,13 @@
 					</f:Form>
 				</WizardStep>
 				<WizardStep id="MatrixSceneStep" nextStep="ValidationSceneStep" title="Matriz" icon="sap-icon://money-bills">
-					<t:Table rows="{Escenarios>/Matriz}" selectionMode="None" visibleRowCount="3">
+					<t:Table id="tblMatrixScene" rows="{viewModel>/rows}" selectionMode="None" visibleRowCount="3">
 						<t:extension>
 							<OverflowToolbar>
 								<Title text="Crear matriz de escenarios"/>
 							</OverflowToolbar>
 						</t:extension>
-						<t:columns>
+						<!--<t:columns>
 							<t:Column width="11rem">
 								<Label text="Módulo"/>
 								<t:template>
@@ -127,7 +127,7 @@
 									<Select selectedKey="{Escenarios>diciembre}"/>
 								</t:template>
 							</t:Column>
-						</t:columns>
+						</t:columns>-->
 					</t:Table>
 				</WizardStep>
 				<WizardStep id="ValidationSceneStep" title="Validación" icon="sap-icon://credit-card"></WizardStep>

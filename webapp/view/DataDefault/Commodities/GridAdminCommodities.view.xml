@@ -31,7 +31,7 @@
 							<!--<m:Button icon="sap-icon://sys-prev-page" text="Importar" tooltip="Importar version de commoditie"/>-->
 							<u:FileUploader id="fileUploader" name="myFileUpload" icon="sap-icon://sys-prev-page" tooltip="Importar version de commoditie"
 								change="handleUpload" sameFilenameAllowed="true" />
-							<m:Button icon="sap-icon://factory" type="Emphasized" text="Administrar Commodities" tooltip="Crear Commodities"
+							<m:Button id="btnAdmin" icon="sap-icon://factory" type="Emphasized" text="Administrar Commodities" tooltip="Crear Commodities"
 								press="onGoToIdCommoditieTable"/>
 							<!--	<m:Button-->
 							<!--            type="Emphasized"-->
