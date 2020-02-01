@@ -1,4 +1,3 @@
-jQuery.sap.require("cbc.co.simulador_costos.Formatter");
 sap.ui.define([
 	"sap/ui/core/mvc/Controller",
 	"sap/ui/model/json/JSONModel",
