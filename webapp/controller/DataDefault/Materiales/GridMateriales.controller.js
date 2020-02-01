@@ -1,4 +1,3 @@
-jQuery.sap.require("cbc.co.simulador_costos.Formatter");
 sap.ui.define([
 	"cbc/co/simulador_costos/controller/BaseController",
 	// "sap/ui/core/mvc/Controller",
@@ -1331,7 +1330,7 @@ sap.ui.define([
 				var reader = new FileReader();
 				reader.onload = function (evt) {
 					var strCSV = evt.target.result; //string in CSV 
-					that.csvJSON(strCSV);
+					that.csvJSONFile(strCSV);
 				};
 				reader.readAsText(oFile);
 			}
@@ -1357,11 +1356,50 @@ sap.ui.define([
 			}
 			var oStringResult = JSON.stringify(result);
 			var oFinalResult = JSON.parse(oStringResult.replace(/\\r/g, "")); //OBJETO JSON para guardar
-			//MessageToast.show(oStringResult);
 			this.cargaMasiva(oFinalResult);
-			//return result; //JavaScript object
-			//sap.ui.getCore().getModel().setProperty("/", oFinalResult);
-			//this.generateTile();
+		},
+
+		/**
+		 * Get json file
+		 * @function
+		 * @param 
+		 * @private
+		 */
+		csvJSONFile: function (csv) {
+			var lines = csv.split("\n");
+			var result = [];
+			var headers = lines[0].split(",");
+			if (headers.length > 1) {
+				for (var i = 1; i < lines.length; i++) {
+					var obj = {};
+					var currentline = lines[i].split(",");
+					for (var j = 0; j < headers.length; j++) {
+						if (currentline[0] === "P") {
+							obj[headers[j]] = currentline[j];
+						}
+					}
+					if (!obj.Tipo === false) {
+						result.push(obj);
+					}
+				}
+			} else {
+				var headersPC = lines[0].split(";");
+				for (var k = 1; k < lines.length; k++) {
+					var objPC = {};
+					var currentlinePC = lines[k].split(";");
+					for (var l = 0; l < headersPC.length; l++) {
+						// if (currentlinePC[0] === "P") {
+						objPC[headersPC[l]] = currentlinePC[l];
+						// }
+					}
+					// if (!objPC.Tipo === false) {
+					result.push(objPC);
+					// }
+				}
+			}
+			var oStringResult = JSON.stringify(result);
+			var oFinalResult = JSON.parse(oStringResult.replace(/\\r/g, ""));
+			this.cargaMasiva(oFinalResult);
 		},
 
 		/**
@@ -2603,6 +2641,171 @@ sap.ui.define([
 			oComboxPlant.getModel().setProperty("/LstPlant", oListaData);
 			oComboxPlant.getModel().refresh(true);
 
+		},
+
+		/**
+		 * Export file
+		 * @function
+		 * @param 
+		 * @private
+		 */
+		onDataExportFile: function (oEvent) {
+			var oTable = {},
+				oModel = '',
+				columns = [];
+
+			oTable = this.byId("tblMaterial");
+			oModel = new sap.ui.model.json.JSONModel(oTable.getModel().getProperty('/MATERIAL'));
+			columns = [];
+
+			columns.push({
+				name: "IDMaterial",
+				template: {
+					content: "{MDEF_IDMATERIAL}"
+				}
+			}, {
+				name: "Material",
+				template: {
+					content: "{MDEF_MATERIAL}"
+				}
+			}, {
+				name: "Sociedad",
+				template: {
+					content: "{MDEF_SOCIEDAD}"
+				}
+			}, {
+				name: "Centro",
+				template: {
+					content: "{MDEF_CENTRO}"
+				}
+			}, {
+				name: "Unidad_Medida",
+				template: {
+					content: "{MDEF_UMD}"
+				}
+			}, {
+				name: "Moneda",
+				template: {
+					content: "{MDEF_MONEDA_SELECT}"
+				}
+			}, {
+				name: "Peso_Material",
+				template: {
+					content: "{MDEF_PESOMATERIAL}"
+				}
+			}, {
+				name: "Commoditie",
+				template: {
+					content: "{MDEF_COMMODITIE_SELECT}"
+				}
+			}, {
+				name: "Precio_Productivo",
+				template: {
+					content: "{MDEF_PRECIOPRODUCTIVO}"
+				}
+			}, {
+				name: "Costo_Conversion",
+				template: {
+					content: "{MDEF_COSTOCONVERSION}"
+				}
+			}, {
+				name: "Costo_Adicional",
+				template: {
+					content: "{MDEF_COSTOADICIONAL}"
+				}
+			}, {
+				name: "Costo_Envio",
+				template: {
+					content: "{MDEF_COSTOENVIO}"
+				}
+			}, {
+				name: "Icoterm",
+				template: {
+					content: "{MDEF_ICOTERM}"
+				}
+			}, {
+				name: "Costo_Material",
+				template: {
+					content: "{MDEF_COSTOMATERIAL}"
+				}
+			}, {
+				name: "FormulaOtrosCostos",
+				template: {
+					content: "{MDEF_FORMULAOTROSCOSTOS}"
+				}
+			}, {
+				name: "Otros_Costos",
+				template: {
+					content: "{MDEF_OTROSCOSTOS}"
+				}
+			}, {
+				name: "PTrasnferencia",
+				template: {
+					content: "{MDEF_PCTRANSFERENCIA}"
+				}
+			}, {
+				name: "Costo_Transferencia",
+				template: {
+					content: "{MDEF_COSTOTRANSFERENCIA}"
+				}
+			}, {
+				name: "Precio_Premisa",
+				template: {
+					content: "{MDEF_PRECIOPREMISA}"
+				}
+			}, {
+				name: "IDCategoria",
+				template: {
+					content: "{MDEF_IDCATEGORIA}"
+				}
+			}, {
+				name: "Categoria",
+				template: {
+					content: "{MDEF_CATEGORIA}"
+				}
+			}, {
+				name: "IDSubcategoria",
+				template: {
+					content: "{MDEF_IDSUBCATEGORIA}"
+				}
+			}, {
+				name: "Subcategoria",
+				template: {
+					content: "{MDEF_SUBCATEGORIA}"
+				}
+			}, {
+				name: "IDFamilia",
+				template: {
+					content: "{MDEF_IDFAMILIA}"
+				}
+			}, {
+				name: "Familia",
+				template: {
+					content: "{MDEF_FAMILIA}"
+				}
+			}, {
+				name: "IDSubfamilia",
+				template: {
+					content: "{MDEF_IDSUFAMILIA}"
+				}
+			}, {
+				name: "Subfamilia",
+				template: {
+					content: "{MDEF_SUBFAMILIA}"
+				}
+			}, {
+				name: "Periodo",
+				template: {
+					content: "{MDEF_PERIODO}"
+				}
+			}, {
+				name: "Mes",
+				template: {
+					content: "{MDEF_MES}"
+				}
+			});
+
+			this.cvsDataExport(oModel, columns);
 		}
 
 	});
