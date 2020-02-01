@@ -72,7 +72,7 @@ sap.ui.define([
 		getLogisticCostValoration: function (oFilter, pExport) {
 			var oModel = this.getView().getModel("ModelSimulador"),
 				that = this,
-				top = (oFilter || pExport) ? 0 : 500;
+				top = (oFilter || pExport) ? 0 : 2000;
 
 			this.getModel("modelView").setProperty("/busy", true);
 			this.pExport = pExport;
