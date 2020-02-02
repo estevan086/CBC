@@ -88,12 +88,12 @@ sap.ui.define([
 		},
 		onShowVersion: function (oData) {
 			var aFilter = [];
-			version = oData.idVersion;
+			version = oData.versionForEditId;
 			year    = oData.year;
 
 			aFilter.push(new Filter("Version", FilterOperator.EQ, version));
-			aFilter.push(new Filter("Fiscyear", FilterOperator.EQ, oData.year));
-			this.fnConsultaDetalleCommodities(version, year);
+			//aFilter.push(new Filter("Fiscyear", FilterOperator.EQ, oData.year));
+			this.fnConsultaDetalleCommodities(version);
 		},
 		fnConsultaDetalleCommodities: function (oVersion, oYear) {
 
