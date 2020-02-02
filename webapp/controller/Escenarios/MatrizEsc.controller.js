@@ -17,7 +17,8 @@ sap.ui.define([
 		},
 		_createViewModel: function(){
 			var oViewModel = new JSONModel({
-				
+				delay: 0,
+				tableTitle: this.getResourceBundle().getText("titleTableScenarioView")
 			});
 			this.setModel(oViewModel, "viewModel");
 			return oViewModel;

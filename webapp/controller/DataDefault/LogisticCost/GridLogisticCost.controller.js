@@ -21,7 +21,8 @@ sap.ui.define([
 			this.initMessageManager();
 
 			var oModelV = new JSONModel({
-				busy: false
+				busy: false,
+				title: ""
 			});
 			this.setModel(oModelV, "modelView");
 
@@ -40,12 +41,12 @@ sap.ui.define([
 			if (this.getRouter().getRoute("rtChCostosLogisticosVersion")) {
 				this.getRouter().getRoute("rtChCostosLogisticosVersion").attachPatternMatched(this.onMyRoutePatternMatchedVersion, this);
 			}
-			SelectVersion.init(this, "LOG");
 		},
 		onMyRoutePatternMatched: function (event) {
 			var aFilter = [];
-
-			version = "";
+			
+			version = cDefaultVersion;
+			this.getModel("modelView").setProperty("/title", ( this.getView().getModel("i18n").getResourceBundle().getText("CostosLogisticos") +": "+ cDefaultVersion ).toString() );
 			//Cargar datos
 			if (initialLoad === false) {
 				initialLoad = true;
@@ -56,13 +57,14 @@ sap.ui.define([
 			this.getView().byId("btnAdmin").setVisible(true);
 		},
 		onMyRoutePatternMatchedVersion: function (oEvent) {
+			SelectVersion.init(this, "LOG");
 			SelectVersion.open();
 			this.getView().byId("btnAdmin").setVisible(false);
 		},
 		onShowVersion: function (oData) {
 			var aFilter = [];
 			version = oData.idVersion;
-
+			this.getModel("modelView").setProperty("/title", ( this.getView().getModel("i18n").getResourceBundle().getText("CostosLogisticos") +": "+ oData.versionForEditDesc ).toString() );
 			aFilter.push(new Filter("Version", FilterOperator.EQ, version));
 			aFilter.push(new Filter("Fiscyear", FilterOperator.EQ, oData.year));
 			this.getLogisticCostValoration(aFilter);
@@ -70,7 +72,7 @@ sap.ui.define([
 		getLogisticCostValoration: function (oFilter, pExport) {
 			var oModel = this.getView().getModel("ModelSimulador"),
 				that = this,
-				top = (oFilter || pExport) ? 0 : 500;
+				top = (oFilter || pExport) ? 0 : 2000;
 
 			this.getModel("modelView").setProperty("/busy", true);
 			this.pExport = pExport;
@@ -308,7 +310,7 @@ sap.ui.define([
 					modelStructure.CompCode = oValue.CompCode;
 					modelStructure.Currency = oValue.Currency;
 					modelStructure.CostLog = oLogisticCost.CostLog;
-					modelStructure.Version = version !== "" ? version : cDefaultVersion;
+					modelStructure.Version = version;
 					if (oValue.CantEst !== "") {
 						modelStructure.CantEst = oValue.CantEst.toString().replace(",", ".");
 					}

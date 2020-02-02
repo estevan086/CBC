@@ -160,8 +160,7 @@ sap.ui.define([
 					title: this._oContext.getResourceBundle().getText("selectTitleVersionFragment"),
 					confirm: jQuery.proxy(this.onConfirmOriginVersion, this),
 					cancel: jQuery.proxy(this.onConfirmOriginVersion, this),
-					search: jQuery.proxy(this.onSearchOriginVersion, this),
-					showClearButton: true
+					search: jQuery.proxy(this.onSearchOriginVersion, this)
 				});
 				this._oView.addDependent(oSelectDialog);
 			}
@@ -254,7 +253,7 @@ sap.ui.define([
 				Txtmd: oVersion.descriptionVersion,
 				FiscYear: oVersion.year,
 				VerMaterial: oVersion.materialsVersion,
-				VerOrigen: oVersion.origin
+				VerOrigen: oVersion.originId
 			};
 			this._oView.getModel("ModelSimulador").create("/versionSet", oObject, {
 				success: function (oData, oResponse) {

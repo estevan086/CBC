@@ -22,19 +22,23 @@ sap.ui.define([
 	'sap/m/MessageBox',
 	"sap/ui/table/RowSettings",
 	"sap/ui/core/library",
-	"sap/ui/core/EventBus"
-
+	"sap/ui/core/EventBus",
+	"cbc/co/simulador_costos/controller/Versiones/SelectVersion"
 ], function (Controller, JSONModel, MessageToast, Fragment, DateFormat, library, Filter, FilterOperator, Button, Dialog, List,
-	StandardListItem, ButtonType, MessageBox, RowSettings, CoreLibrary, EventBus) {
+	StandardListItem, ButtonType, MessageBox, RowSettings, CoreLibrary, EventBus, SelectVersion) {
 	"use strict";
 
 	const cDefaultVersion = "DEFAULT";
+	const cDefaultNumValue = "0,000";
+	var initialLoad = false,
+		version = "",
+		year ="";
 	var updatedRecords = [];
 	var that = this;
 	var MessageType = CoreLibrary.MessageType;
 
 	return Controller.extend("cbc.co.simulador_costos.controller.DataDefault.Commodities.GridAdminCommodities", {
-
+		SelectVersion: SelectVersion,
 		onInit: function () {
 
 			// var oModelV = new JSONModel({
@@ -52,19 +56,46 @@ sap.ui.define([
 				}
 			}, oUploader);
 
-			var myRoute = this.getOwnerComponent().getRouter().getRoute("rtChCommodities");
-			myRoute.attachPatternMatched(this.onMyRoutePatternMatched, this);
+			//var myRoute = this.getOwnerComponent().getRouter().getRoute("rtChCommodities");
+			//myRoute.attachPatternMatched(this.onMyRoutePatternMatched, this);
+
+			if (this.getRouter().getRoute("rtChCommodities")) {
+				this.getRouter().getRoute("rtChCommodities").attachPatternMatched(this.onMyRoutePatternMatched, this);
+			}
+			if (this.getRouter().getRoute("rtChCommoditiesVersion")) {
+				this.getRouter().getRoute("rtChCommoditiesVersion").attachPatternMatched(this.onMyRoutePatternMatchedVersion, this);
+			}
+		
 
 		},
 
 		onMyRoutePatternMatched: function (event) {
+			var aFilter = [];
 
-			var oTable = this.getView().byId('tblCommodities');
+			version = cDefaultVersion;
+			//Cargar datos
 
-			this.fnConsultaDetalleCommodities();
+			aFilter.push(new Filter("Flag", FilterOperator.EQ, 'X'));
+			//var oFilters = new Filter("Version", FilterOperator.EQ, cDefaultVersion);
+			this.fnConsultaDetalleCommodities(version);
+			this.getView().byId("btnAdmin").setVisible(true);
 		},
 
-		fnConsultaDetalleCommodities: function (event) {
+		onMyRoutePatternMatchedVersion: function (oEvent) {
+			SelectVersion.init(this, "COM");
+			SelectVersion.open();
+			this.getView().byId("btnAdmin").setVisible(false);
+		},
+		onShowVersion: function (oData) {
+			var aFilter = [];
+			version = oData.idVersion;
+			year    = oData.year;
+
+			aFilter.push(new Filter("Version", FilterOperator.EQ, version));
+			aFilter.push(new Filter("Fiscyear", FilterOperator.EQ, oData.year));
+			this.fnConsultaDetalleCommodities(version, year);
+		},
+		fnConsultaDetalleCommodities: function (oVersion, oYear) {
 
 			var oPanel = this.getView();
 			oPanel.setBusy(true);
@@ -75,10 +106,26 @@ sap.ui.define([
 
 			//Definir modelo del servicio web
 			var oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true);
+			
 			//Definir filtro
+			var vFilterversion = "";
+			if (year !== ""){
+				vFilterversion     = " and Year eq '"+year+"'";
+			}
+			var vFilterEntity = "/detailCommoditiesSet?$filter=Version eq '"+oVersion+"'"+vFilterversion;
 
 			//Leer datos del ERP
-			var oRead = this.fnReadEntity(oModelService, "/detailCommoditiesSet", null);
+			var oRead = this.fnReadEntity(oModelService, vFilterEntity);
+
+			// oModel.read(vFilterEntity, {
+			// 	filters: oFilter,
+			// 	success: function (oData, response) {
+
+			// 	}.bind(this),
+			// 	error: function (oError) {
+
+			// 	}
+			// });
 
 			if (oRead.tipo === "S") {
 				this.oDataDetalleCommodities = oRead.datos.results;
@@ -141,10 +188,10 @@ sap.ui.define([
 			//Definir filtro
 			//oFilters = ["$filter=Flag eq 'X' ] ;
 			//var oFilters = [ new sap.ui.model.Filter('Flag',FilterOperator.EQ, 'X') ];
-			var oFilters = [new Filter("Flag", FilterOperator.EQ, 'X')];
+			//var oFilters = [new Filter("Flag", FilterOperator.EQ, 'X')];
 
 			//Leer datos del ERP
-			var oRead = this.fnReadEntity(oModelService, "/centroSet", oFilters);
+			var oRead = this.fnReadEntity(oModelService, "/centroSet?$filter=Flag eq 'X'");
 
 			if (oRead.tipo === "S") {
 				this.oDataSociedades = oRead.datos.results;
@@ -394,7 +441,7 @@ sap.ui.define([
 				}
 				oTable.getModel().refresh();
 				updatedRecords = [];
-				
+
 				MessageBox.show(
 					'Datos guardados correctamente', {
 						icon: MessageBox.Icon.SUCCESS,
@@ -402,7 +449,7 @@ sap.ui.define([
 						actions: [MessageBox.Action.OK],
 						onClose: function (oAction) {
 							if (oAction === sap.m.MessageBox.Action.OK) {
-								
+
 								//return;
 							}
 						}.bind(this, oEvent)
@@ -634,7 +681,7 @@ sap.ui.define([
 					PrecioMaterial: CurrentRow.CDEF_PRECIO,
 					OtrosCostos: CurrentRow.CDEF_OTROCOSTO,
 					TxtFormula: CurrentRow.CDEF_FORMULA,
-					Version:CurrentRow.CDEF_VERSION
+					Version: CurrentRow.CDEF_VERSION
 						// Recordmode: '1'
 				};
 
@@ -724,7 +771,7 @@ sap.ui.define([
 							} else {
 								return;
 							}
-							
+
 							//var bus = sap.ui.getCore().getEventBus();
 							// 1. ChannelName, 2. EventName, 3. the data
 							//	bus.publish("GridAdminFormuladoraChannel", "onNavigateEvent", oData);
