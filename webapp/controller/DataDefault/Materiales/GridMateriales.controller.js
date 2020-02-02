@@ -147,8 +147,6 @@ sap.ui.define([
 		onShowVersion: function (oData) {
 			var aFilter = [];
 			
-			this.getModel("modelView").setProperty("/busy", true);
-			
 			version = oData.idVersion;
 			this.getModel("modelView").setProperty("/title", ( "Materiales: " + oData.nameVersion ).toString() );
 
