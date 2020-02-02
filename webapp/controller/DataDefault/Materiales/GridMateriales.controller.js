@@ -126,9 +126,9 @@ sap.ui.define([
 
 		},
 		onMyRoutePatternMatched: function (event) {
-			var version = "";
+			version = cDefaultVersion;
 
-			this.loadMaterial();
+			this.loadMaterial("DEFAULT", "PLAN", "");
 		},
 
 		onMyRoutePatternMatchedVersion: function (oEvent) {
@@ -142,16 +142,10 @@ sap.ui.define([
 
 			aFilter.push(new Filter("Version", FilterOperator.EQ, version));
 			aFilter.push(new Filter("Fiscyear", FilterOperator.EQ, oData.year));
-
-			this.loadModelCbYear();
-			this.loadModel();
-			this.loadModelCommoditie();
-			this.loadModelCommoditieDetail();
-			// this.loadModelIcoterm();
-			this.loadModelUnidaMedida();
-			this.loadModelMoneda();
-			this.loadModelTipoCambio();
+			
+			this.loadMaterial(version, "PLAN", oData.year);
 		},
+
 		onInitCalculation: function () {
 			var oModel = new JSONModel("model/Calculation.json");
 			this.getView().setModel(oModel);
@@ -995,16 +989,28 @@ sap.ui.define([
 		 * @param 
 		 * @private
 		 */
-		loadModel: function (event) {
+		loadModel: function (pVersion, pYear) {
 			var sServiceUrl = "",
 				oModelService = "",
-				aListMaterial = [];
+				aListMaterial = [],
+				aFilter = [],
+				vFilterEntity = "";
+				
+			// vFilterEntity = "/materialDefatultSet?$filter=yversion eq 'DEFAULT'";
+			vFilterEntity = "/materialDefatultSet?$filter=yversion eq '" + pVersion + "'";
+			
+			if(pYear !== ""){
+			 vFilterEntity = vFilterEntity + " and yfiscyear eq '" + pYear + "'";
+			}
+				
+			aFilter.push(new Filter("yversion", FilterOperator.EQ, 'DEFAULT'));
 
 			sServiceUrl = this.getOwnerComponent().getModel("ModelSimulador").sServiceUrl;
 			oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true);
 
 			//Leer datos del ERP
-			var oRead = this.fnReadEntity(oModelService, "/materialDefatultSet", null);
+			// var oRead = this.fnReadEntity(oModelService, "/materialDefatultSet", aFilter);
+			var oRead = this.fnReadEntity(oModelService, vFilterEntity, aFilter);
 
 			if (oRead.tipo === "S") {
 				aListMaterial = oRead.datos.results;
@@ -1135,7 +1141,7 @@ sap.ui.define([
 					commodit: oTempRow.MDEF_COMMODITIE_SELECT.toString(),
 					yicoterm: oTempRow.MDEF_ICOTERM_ID.toString(),
 					fotrcost: oTempRow.MDEF_FORMULAOTROSCOSTOS.toString(),
-					// Version: oTempRow.MDEF_IDMATERIAL,
+					yversion: version,
 					// estado: oTempRow.MDEF_IDMATERIAL,
 					// Date0: oTempRow.MDEF_IDMATERIAL,
 					// usuario: oTempRow.MDEF_IDMATERIAL,
@@ -1809,7 +1815,7 @@ sap.ui.define([
 						actions: [MessageBox.Action.OK],
 						onClose: function (oAction) {
 							if (oAction === sap.m.MessageBox.Action.OK) {
-								that.loadMaterial();
+								that.loadMaterial("DEFAULT", "PLAN", "");
 								oPanel.setBusy(false);
 								return;
 							}
@@ -1842,16 +1848,31 @@ sap.ui.define([
 		 * @param 
 		 * @private
 		 */
-		loadModelCommoditieDetail: function (event) {
+		loadModelCommoditieDetail: function (pVersion) {
 			var sServiceUrl = "",
 				oModelService = "",
-				aListData = [];
+				aListData = [],
+				filtersArray = {},
+				filterKurst = {},
+				vFilterEntity = "";
 
 			sServiceUrl = this.getOwnerComponent().getModel("ModelSimulador").sServiceUrl;
 			oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true);
 
+			filterKurst = new sap.ui.model.Filter({
+				path: "Version",
+				operator: sap.ui.model.FilterOperator.EQ,
+				value1: "DEFAULT"
+			});
+
+			filtersArray = new Array();
+			filtersArray.push(filterKurst);
+			
+			// vFilterEntity = "/detailCommoditiesSet?$filter=Version eq 'DEFAULT'";
+			vFilterEntity = "/detailCommoditiesSet?$filter=Version eq '" + pVersion + "'";
+
 			//Leer datos del ERP
-			var oRead = this.fnReadEntity(oModelService, "/detailCommoditiesSet", null);
+			var oRead = this.fnReadEntity(oModelService, vFilterEntity, filtersArray);
 
 			if (oRead.tipo === "S") {
 				aListData = oRead.datos.results;
@@ -2239,7 +2260,7 @@ sap.ui.define([
 		 * @param 
 		 * @private
 		 */
-		loadModelTipoCambio: function (event) {
+		loadModelTipoCambio: function (pTipoCambio) {
 			var sServiceUrl = "",
 				oModelService = "",
 				aListData = [],
@@ -2249,7 +2270,7 @@ sap.ui.define([
 			filterKurst = new sap.ui.model.Filter({
 				path: "Kurst",
 				operator: sap.ui.model.FilterOperator.EQ,
-				value1: 'PLAN'
+				value1: pTipoCambio
 			});
 
 			filtersArray = new Array();
@@ -2277,15 +2298,18 @@ sap.ui.define([
 		 * @param 
 		 * @private
 		 */
-		loadModelCbYear: function (event) {
+		loadModelCbYear: function (pVersion) {
 
 			var sServiceUrl = {},
-				oModelService = {};
+				oModelService = {},
+				vFilterEntity = "";
 
 			sServiceUrl = this.getOwnerComponent().getModel("ModelSimulador").sServiceUrl;
 			oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true);
+			// vFilterEntity = "/centroYearMaterialSet?$filter=yversion eq 'DEFAULT'";
+			vFilterEntity = "/centroYearMaterialSet?$filter=yversion eq '" + pVersion + "'";
 
-			oModelService.read("/centroYearMaterialSet", {
+			oModelService.read(vFilterEntity, {
 				async: true,
 				success: function (oData, response) {
 					this.centroYear = oData.results;
@@ -2374,6 +2398,9 @@ sap.ui.define([
 			if (oComboxPlant.getSelectedKey() !== "") {
 				aFilter.push(new Filter("Plant", FilterOperator.EQ, oComboxPlant.getSelectedKey()));
 			}
+			if (oComboxPlant.getSelectedKey() !== "") {
+				aFilter.push(new Filter("yversion", FilterOperator.EQ, "DEFAULT"));
+			}
 
 			this.getMaterialFilter(aFilter);
 
@@ -2426,15 +2453,15 @@ sap.ui.define([
 		 * @param 
 		 * @private
 		 */
-		loadMaterial: function () {
-			this.loadModelCbYear();
-			this.loadModel();
+		loadMaterial: function (pVersion, pTipoCambio, pYear) {
+			this.loadModelCbYear(pVersion);
+			this.loadModel(pVersion, pYear);
 			this.loadModelCommoditie();
-			this.loadModelCommoditieDetail();
+			this.loadModelCommoditieDetail(pVersion);
 			// this.loadModelIcoterm();
 			this.loadModelUnidaMedida();
 			this.loadModelMoneda();
-			this.loadModelTipoCambio();
+			this.loadModelTipoCambio(pTipoCambio);
 		},
 
 		onMessagePopoverPress: function (oEvent) {
