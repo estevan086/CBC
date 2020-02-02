@@ -41,11 +41,11 @@ sap.ui.define([
 		SelectVersion: SelectVersion,
 		onInit: function () {
 
-			// var oModelV = new JSONModel({
-			// 	busy: true,
-			// 	Bezei: ""
-			// });
-			// this.setModel(oModelV, "modelView");
+			 var oModelV = new JSONModel({
+			 	busy: true,
+			 	title: ""
+			 });
+			 this.setModel(oModelV, "modelView");
 
 			var oUploader = this.getView().byId("fileUploader");
 			oUploader.oBrowse.setText("Importar");
@@ -74,7 +74,8 @@ sap.ui.define([
 
 			version = cDefaultVersion;
 			//Cargar datos
-
+			this.getModel("modelView").setProperty("/title", ( this.getView().getModel("i18n").getResourceBundle().getText("CommoditiesTitle") +": "+ cDefaultVersion ).toString() );
+		
 			aFilter.push(new Filter("Flag", FilterOperator.EQ, 'X'));
 			//var oFilters = new Filter("Version", FilterOperator.EQ, cDefaultVersion);
 			this.fnConsultaDetalleCommodities(version);
@@ -88,9 +89,10 @@ sap.ui.define([
 		},
 		onShowVersion: function (oData) {
 			var aFilter = [];
-			version = oData.versionForEditId;
+			version = oData.versionId;
 			year    = oData.year;
-
+			this.getModel("modelView").setProperty("/title", ( this.getView().getModel("i18n").getResourceBundle().getText("CommoditiesTitle") +": "+ oData.versionForEditDesc ).toString() );
+			
 			aFilter.push(new Filter("Version", FilterOperator.EQ, version));
 			//aFilter.push(new Filter("Fiscyear", FilterOperator.EQ, oData.year));
 			this.fnConsultaDetalleCommodities(version);

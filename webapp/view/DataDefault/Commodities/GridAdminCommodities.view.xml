@@ -11,7 +11,7 @@
 	<m:ObjectHeader binding="{/ProductCollection/0}" title="Datos Default - Commodities" condensed="true"
 		number="{ parts:[{path:'Price'},{path:'CurrencyCode'}], type: 'sap.ui.model.type.Currency', formatOptions: {showMeasure: false} }"
 		numberUnit="{CurrencyCode}"></m:ObjectHeader>
-	<m:Page showHeader="false" enableScrolling="false" class="sapUiContentPadding">
+	<m:Page showHeader="false" enableScrolling="false" class="sapUiContentPadding" title="{modelView>/title}">
 		<m:content>
 			<m:FlexBox height="auto" alignItems="Start" justifyContent="Start">
 				<m:items>
