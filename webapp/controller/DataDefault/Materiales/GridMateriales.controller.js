@@ -52,6 +52,12 @@ sap.ui.define([
 			// this.getView().setModel(json);
 
 			var oMessageManager, oModel, oView;
+			
+			var oModelV = new JSONModel({
+				busy: false,
+				title: ""
+			});
+			this.setModel(oModelV, "modelView");
 
 			oView = this.getView();
 
@@ -127,8 +133,11 @@ sap.ui.define([
 		},
 		onMyRoutePatternMatched: function (event) {
 			version = cDefaultVersion;
+			this.getModel("modelView").setProperty("/title", ( "Materiales: " + cDefaultVersion ).toString() );
 
 			this.loadMaterial("DEFAULT", "PLAN", "");
+			
+			this.getModel("modelView").setProperty("/busy", true);
 		},
 
 		onMyRoutePatternMatchedVersion: function (oEvent) {
@@ -139,11 +148,14 @@ sap.ui.define([
 		onShowVersion: function (oData) {
 			var aFilter = [];
 			version = oData.idVersion;
+			this.getModel("modelView").setProperty("/title", ( "Materiales: " + oData.versionForEditDesc ).toString() );
 
 			aFilter.push(new Filter("Version", FilterOperator.EQ, version));
 			aFilter.push(new Filter("Fiscyear", FilterOperator.EQ, oData.year));
 			
 			this.loadMaterial(version, "PLAN", oData.year);
+			
+			this.getModel("modelView").setProperty("/busy", true);
 		},
 
 		onInitCalculation: function () {
