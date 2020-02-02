@@ -23,7 +23,7 @@ sap.ui.define([
 			}
 		},
 		close: function () {
-			this._oDialog.close();
+			this._oDialog.destroy();
 		},
 		getModel: function () {
 			return this.oModelDialog;
@@ -135,6 +135,7 @@ sap.ui.define([
 		onEditVersion: function (oEvent) {
 			this.close();
 			this.getModel("versionModel").setProperty("/version/idVersion", this.getModel("versionModel").getProperty("/version/versionForEditId"));
+			this.getModel("versionModel").setProperty("/version/nameVersion", this.getModel("versionModel").getProperty("/version/versionForEditDesc"));
 			if (this._oView.getController().onShowVersion) {
 				this._oView.getController().onShowVersion(this.getModel("versionModel").getProperty("/version"));
 			}

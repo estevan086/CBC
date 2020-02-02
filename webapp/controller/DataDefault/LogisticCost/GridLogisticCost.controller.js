@@ -64,7 +64,7 @@ sap.ui.define([
 		onShowVersion: function (oData) {
 			var aFilter = [];
 			version = oData.idVersion;
-			this.getModel("modelView").setProperty("/title", ( this.getView().getModel("i18n").getResourceBundle().getText("CostosLogisticos") +": "+ oData.versionForEditDesc ).toString() );
+			this.getModel("modelView").setProperty("/title", ( this.getView().getModel("i18n").getResourceBundle().getText("CostosLogisticos") +": "+ oData.nameVersion ).toString() );
 			aFilter.push(new Filter("Version", FilterOperator.EQ, version));
 			aFilter.push(new Filter("Fiscyear", FilterOperator.EQ, oData.year));
 			this.getLogisticCostValoration(aFilter);

@@ -42,7 +42,7 @@
 									<Input value="{versionModel>/version/nameVersion}_{versionModel>/version/modulo}" enabled="false"/>
 								</f:fields>
 							</f:FormElement>-->
-							<f:FormElement label="{i18n>exchangeRateVersionFragment}" visible="{= ${versionModel>/version/indexOption} === 1 &amp;&amp; ['MAT', 'COM'].includes(${versionModel>/version/modulo}) }">
+							<f:FormElement label="{i18n>exchangeRateVersionFragment}" visible="{= ${versionModel>/version/indexOption} === 1 &amp;&amp; ['MAT'].includes(${versionModel>/version/modulo}) }">
 								<f:fields>
 									<RadioButtonGroup id="rbtnExchangeRateOption" columns="2" selectedIndex="{versionModel>/indexExchangeRateOption}">
 										<buttons>
