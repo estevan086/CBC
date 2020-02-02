@@ -102,8 +102,6 @@ sap.ui.define([
 			if (this.getRouter().getRoute("rtChMaterialesVersion")) {
 				this.getRouter().getRoute("rtChMaterialesVersion").attachPatternMatched(this.onMyRoutePatternMatchedVersion, this);
 			}
-			SelectVersion.init(this, "MAT");
-
 			// this.editCellsTable(false);
 
 			// var fnPress = this.handleActionPress.bind(this);
@@ -141,6 +139,9 @@ sap.ui.define([
 		},
 
 		onMyRoutePatternMatchedVersion: function (oEvent) {
+			
+			SelectVersion.init(this, "MAT");
+			
 			SelectVersion.open();
 		},
 
