@@ -46,8 +46,8 @@
 								<f:fields>
 									<RadioButtonGroup id="rbtnExchangeRateOption" columns="2" selectedIndex="{versionModel>/indexExchangeRateOption}">
 										<buttons>
-											<RadioButton text="{i18n>Real}"/>
-											<RadioButton text="{i18n>Plan}"/>
+											<RadioButton id="R" text="{i18n>Real}"/>
+											<RadioButton id="P" text="{i18n>Plan}"/>
 										</buttons>
 									</RadioButtonGroup>
 								</f:fields>

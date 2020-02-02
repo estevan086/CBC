@@ -251,6 +251,7 @@ sap.ui.define([
 		},
 		_createVersion: function (fnSuccess, fnError) {
 			var oVersion = this.getModel("versionModel").getProperty("/version");
+			var tipoCambio = this._oView.byId("SelectVersion--rbtnExchangeRateOption").getSelectedButton().getText();
 			var oObject = {
 				Modulo: this._sModulo,
 				Date0: Formatter.formatDateToShortString(new Date(), this._oContext),
@@ -258,7 +259,8 @@ sap.ui.define([
 				Txtmd: oVersion.descriptionVersion,
 				FiscYear: oVersion.year,
 				VerMaterial: oVersion.materialsVersion,
-				VerOrigen: oVersion.originId
+				VerOrigen: oVersion.originId,
+				TipoCambio: tipoCambio.toLocaleString().substring(0, 1) 
 			};
 			this._oView.getModel("ModelSimulador").create("/versionSet", oObject, {
 				success: function (oData, oResponse) {
