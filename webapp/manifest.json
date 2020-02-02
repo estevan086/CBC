@@ -210,7 +210,7 @@
 				},
 				"rtChVolumen": {
 					"pattern": "rtChVolumen",
-					"target": "rtHomeTarget"
+					"target": "rtChVolumenTarget"
 				},
 				"rtChAdminCL": {
 					"pattern": "rtChAdminCL",
