@@ -150,7 +150,7 @@ sap.ui.define([
 			this.getModel("modelView").setProperty("/busy", true);
 			
 			version = oData.idVersion;
-			this.getModel("modelView").setProperty("/title", ( "Materiales: " + oData.versionForEditDesc ).toString() );
+			this.getModel("modelView").setProperty("/title", ( "Materiales: " + oData.nameVersion ).toString() );
 
 			aFilter.push(new Filter("Version", FilterOperator.EQ, version));
 			aFilter.push(new Filter("Fiscyear", FilterOperator.EQ, oData.year));
