@@ -41,7 +41,6 @@ sap.ui.define([
 			if (this.getRouter().getRoute("rtChCostosLogisticosVersion")) {
 				this.getRouter().getRoute("rtChCostosLogisticosVersion").attachPatternMatched(this.onMyRoutePatternMatchedVersion, this);
 			}
-			SelectVersion.init(this, "LOG");
 		},
 		onMyRoutePatternMatched: function (event) {
 			var aFilter = [];
@@ -58,6 +57,7 @@ sap.ui.define([
 			this.getView().byId("btnAdmin").setVisible(true);
 		},
 		onMyRoutePatternMatchedVersion: function (oEvent) {
+			SelectVersion.init(this, "LOG");
 			SelectVersion.open();
 			this.getView().byId("btnAdmin").setVisible(false);
 		},

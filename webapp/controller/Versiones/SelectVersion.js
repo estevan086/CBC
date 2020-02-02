@@ -253,7 +253,7 @@ sap.ui.define([
 				Txtmd: oVersion.descriptionVersion,
 				FiscYear: oVersion.year,
 				VerMaterial: oVersion.materialsVersion,
-				VerOrigen: oVersion.origin
+				VerOrigen: oVersion.originId
 			};
 			this._oView.getModel("ModelSimulador").create("/versionSet", oObject, {
 				success: function (oData, oResponse) {
