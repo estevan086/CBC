@@ -133,6 +133,7 @@ sap.ui.define([
 			}
 		},
 		onEditVersion: function (oEvent) {
+			this.getModel("versionModel").setProperty("/busy", true);
 			this.close();
 			this.getModel("versionModel").setProperty("/version/idVersion", this.getModel("versionModel").getProperty("/version/versionForEditId"));
 			this.getModel("versionModel").setProperty("/version/nameVersion", this.getModel("versionModel").getProperty("/version/versionForEditDesc"));

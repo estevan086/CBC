@@ -44,9 +44,10 @@ sap.ui.define([
 		},
 		onMyRoutePatternMatched: function (event) {
 			var aFilter = [];
-			
+
 			version = cDefaultVersion;
-			this.getModel("modelView").setProperty("/title", ( this.getView().getModel("i18n").getResourceBundle().getText("CostosLogisticos") +": "+ cDefaultVersion ).toString() );
+			this.getModel("modelView").setProperty("/title", (this.getView().getModel("i18n").getResourceBundle().getText("CostosLogisticos") +
+				": " + cDefaultVersion).toString());
 			//Cargar datos
 			if (initialLoad === false) {
 				initialLoad = true;
@@ -64,9 +65,12 @@ sap.ui.define([
 		onShowVersion: function (oData) {
 			var aFilter = [];
 			version = oData.idVersion;
-			this.getModel("modelView").setProperty("/title", ( this.getView().getModel("i18n").getResourceBundle().getText("CostosLogisticos") +": "+ oData.nameVersion ).toString() );
+			this.getModel("modelView").setProperty("/title", (this.getView().getModel("i18n").getResourceBundle().getText("CostosLogisticos") +
+				": " + oData.nameVersion).toString());
 			aFilter.push(new Filter("Version", FilterOperator.EQ, version));
-			aFilter.push(new Filter("Fiscyear", FilterOperator.EQ, oData.year));
+			if (oData.year !== "") {
+				aFilter.push(new Filter("Fiscyear", FilterOperator.EQ, oData.year));
+			}
 			this.getLogisticCostValoration(aFilter);
 		},
 		getLogisticCostValoration: function (oFilter, pExport) {
@@ -274,7 +278,7 @@ sap.ui.define([
 						},
 						//value: "{LogisticCostValoration>/Currency}",
 						selectedKey: "{Currency}"
-					
+
 					}) : new sap.m.Input(columnName, {
 						value: "{" + columnName + "}",
 						enabled: oContext.getObject().enabled
