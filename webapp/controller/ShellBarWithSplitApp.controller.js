@@ -111,12 +111,12 @@ sap.ui.define([
 						"key": "rtChCostosLogisticosVersion"
 					}]
 				}, {
-					"title": "Carga BW",
+					"title": "Volumen",
 					"icon": "sap-icon://upload-to-cloud",
 					"expanded": false,
 					"key": "rtNone",
 					"items": [{
-						"title": "Carga BW",
+						"title": "Volumen",
 						"key": "rtChVolumen"
 					}]
 				}, {
