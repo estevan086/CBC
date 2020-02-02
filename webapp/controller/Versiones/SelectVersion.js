@@ -79,6 +79,8 @@ sap.ui.define([
 			}
 		},
 		onCreateVersion: function (oEvent) {
+			this.getModel("versionModel").setProperty("/busy", true);                         
+			
 			if (!this._validateMandatoryInput()) {
 				return;
 			}
@@ -132,7 +134,7 @@ sap.ui.define([
 		},
 		onEditVersion: function (oEvent) {
 			this.close();
-			this.getModel("versionModel").setProperty("/version/idVersion", this.getModel("versionModel").getProperty("/version/versionForEdit"));
+			this.getModel("versionModel").setProperty("/version/idVersion", this.getModel("versionModel").getProperty("/version/versionForEditId"));
 			if (this._oView.getController().onShowVersion) {
 				this._oView.getController().onShowVersion(this.getModel("versionModel").getProperty("/version"));
 			}
@@ -150,6 +152,7 @@ sap.ui.define([
 			this._oView.byId("SelectVersion--inpVersionForEdit").attachValueHelpRequest(jQuery.proxy(this.onRequestSelectOriginVersion, this));
 			this._oView.byId("SelectVersion--btnCreateVersion").attachPress(jQuery.proxy(this.onCreateVersion, this));
 			this._oView.byId("SelectVersion--btnEditVersion").attachPress(jQuery.proxy(this.onEditVersion, this));
+			this._oView.byId("SelectVersion--btnCancelar").attachPress(jQuery.proxy(this.onClose, this));
 			this._oView.addDependent(this._oDialog);
 		},
 		_createSelectDialogOriginVersion: function (sValueFilter, sProperty) {
@@ -295,6 +298,9 @@ sap.ui.define([
 			this._oView.setModel(oModel, "versionModel");
 			this.oModelDialog = oModel;
 			return oModel;
+		},
+		onClose: function(oEvent){
+			this.close();
 		}
 	};
 

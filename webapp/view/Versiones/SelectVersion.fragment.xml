@@ -1,6 +1,6 @@
 <core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.ui.layout.form"
 	xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
-	<Dialog title="{versionModel>/title}">
+	<Dialog title="{versionModel>/title}" busy="{versionModel>/busy}" >
 		<content>
 			<f:Form editable="true">
 				<f:layout>
@@ -89,7 +89,7 @@
 		<buttons>
 			<Button id="btnCreateVersion" text="Crear versión" visible="{= ${versionModel>/version/indexOption} === 1}" type="Accept"/>
 			<Button id="btnEditVersion" text="Editar versión" visible="{= ${versionModel>/version/indexOption} === 0}" type="Accept"/>
-			<Button text="Cancelar" press="onNavBack"/>
+			<Button id="btnCancelar" text="Cancelar" />
 		</buttons>
 	</Dialog>
 </core:FragmentDefinition>
