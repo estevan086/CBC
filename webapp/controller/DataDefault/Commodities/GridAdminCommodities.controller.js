@@ -31,7 +31,8 @@ sap.ui.define([
 	const cDefaultVersion = "DEFAULT";
 	const cDefaultNumValue = "0,000";
 	var initialLoad = false,
-		version = "";
+		version = "",
+		year ="";
 	var updatedRecords = [];
 	var that = this;
 	var MessageType = CoreLibrary.MessageType;
@@ -64,7 +65,7 @@ sap.ui.define([
 			if (this.getRouter().getRoute("rtChCommoditiesVersion")) {
 				this.getRouter().getRoute("rtChCommoditiesVersion").attachPatternMatched(this.onMyRoutePatternMatchedVersion, this);
 			}
-			SelectVersion.init(this, "COM");
+		
 
 		},
 
@@ -76,23 +77,25 @@ sap.ui.define([
 
 			aFilter.push(new Filter("Version", FilterOperator.EQ, 'X'));
 			//var oFilters = new Filter("Version", FilterOperator.EQ, cDefaultVersion);
-			this.fnConsultaDetalleCommodities(aFilter);
+			this.fnConsultaDetalleCommodities(version);
 			this.getView().byId("btnAdmin").setVisible(true);
 		},
 
 		onMyRoutePatternMatchedVersion: function (oEvent) {
+			SelectVersion.init(this, "COM");
 			SelectVersion.open();
 			this.getView().byId("btnAdmin").setVisible(false);
 		},
 		onShowVersion: function (oData) {
 			var aFilter = [];
 			version = oData.idVersion;
+			year    = oData.year;
 
 			aFilter.push(new Filter("Version", FilterOperator.EQ, version));
 			aFilter.push(new Filter("Fiscyear", FilterOperator.EQ, oData.year));
-			this.fnConsultaDetalleCommodities(aFilter);
+			this.fnConsultaDetalleCommodities(version, year);
 		},
-		fnConsultaDetalleCommodities: function (oFilter) {
+		fnConsultaDetalleCommodities: function (oVersion, oYear) {
 
 			var oPanel = this.getView();
 			oPanel.setBusy(true);
@@ -103,10 +106,15 @@ sap.ui.define([
 
 			//Definir modelo del servicio web
 			var oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true);
+			
 			//Definir filtro
+			var vFilterversion = "";
+			if (year !== ""){
+				vFilterversion     = " and Year eq '"+year+"'";
+			}
+			var vFilterEntity = "/detailCommoditiesSet?$filter=Version eq '"+oVersion+"'"+vFilterversion;
 
 			//Leer datos del ERP
-			var vFilterEntity = "/detailCommoditiesSet?$filter=Version eq 'DEFAULT'";
 			var oRead = this.fnReadEntity(oModelService, vFilterEntity);
 
 			// oModel.read(vFilterEntity, {
@@ -173,10 +181,10 @@ sap.ui.define([
 			//Definir filtro
 			//oFilters = ["$filter=Flag eq 'X' ] ;
 			//var oFilters = [ new sap.ui.model.Filter('Flag',FilterOperator.EQ, 'X') ];
-			var oFilters = [new Filter("Flag", FilterOperator.EQ, 'X')];
+			//var oFilters = [new Filter("Flag", FilterOperator.EQ, 'X')];
 
 			//Leer datos del ERP
-			var oRead = this.fnReadEntity(oModelService, "/centroSet", oFilters);
+			var oRead = this.fnReadEntity(oModelService, "/centroSet?$filter=Flag eq 'X'");
 
 			if (oRead.tipo === "S") {
 				this.oDataSociedades = oRead.datos.results;
