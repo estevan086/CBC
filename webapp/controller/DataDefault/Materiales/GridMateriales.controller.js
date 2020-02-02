@@ -142,7 +142,6 @@ sap.ui.define([
 
 		onMyRoutePatternMatchedVersion: function (oEvent) {
 			SelectVersion.open();
-			this.getView().byId("btnAdmin").setVisible(false);
 		},
 
 		onShowVersion: function (oData) {
