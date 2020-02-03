@@ -91,8 +91,8 @@
 							<!--<m:Input value="{Moneda}" editable="false"/>-->
 							<m:ComboBox id="idComboBoxMoneda" selectionChange="onChangeMoneda" showSecondaryValues="true" filterSecondaryValues="true"
 								value="{Moneda}" selectedKey="{Moneda}" editable="{editable}"
-								items="{ path: '/LstMonedas', sorter: { path: 'Ktext' }, templateShareable:true }">
-								<c:ListItem key="{Waers}" text="{Waers}" additionalText="{Ktext}"/>
+								items="{ path: 'ModelSimulador>/monedaMaterialSet', sorter: { path: 'Ktext' }, templateShareable:true }">
+								<c:ListItem key="{ModelSimulador>Waers}" text="{ModelSimulador>Waers}" additionalText="{ModelSimulador>Ktext}"/>
 							</m:ComboBox>
 						</template>
 					</Column>

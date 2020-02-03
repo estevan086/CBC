@@ -100,9 +100,6 @@ sap.ui.define([
 		},
 		fnConsultaDetalleCommodities: function (oVersion, oYear) {
 
-			var oPanel = this.getView();
-			oPanel.setBusy(true);
-
 			//Url Servicio
 			var oModel = this.getOwnerComponent().getModel("ModelSimulador");
 			var sServiceUrl = oModel.sServiceUrl;
@@ -118,6 +115,7 @@ sap.ui.define([
 			var vFilterEntity = "/detailCommoditiesSet?$filter=Version eq '" + oVersion + "'" + vFilterversion;
 
 			//Leer datos del ERP
+			this.getModel("modelView").setProperty("/busy", true);
 			var oRead = this.fnReadEntity(oModelService, vFilterEntity);
 
 			// oModel.read(vFilterEntity, {
@@ -131,6 +129,7 @@ sap.ui.define([
 			// });
 
 			if (oRead.tipo === "S") {
+				this.getModel("modelView").setProperty("/busy", false);
 				this.oDataDetalleCommodities = oRead.datos.results;
 				var obj = this.oDataDetalleCommodities;
 				//Object.keys(obj).map(k => obj[k] = obj[k].trim());
@@ -170,9 +169,6 @@ sap.ui.define([
 
 			//Obtiene Unidades de Medida
 			this.GetUnidadesMedida();
-
-			oPanel.setBusy(false);
-
 			// // simulate delayed end of operation
 			// setTimeout(function () {
 
@@ -215,6 +211,7 @@ sap.ui.define([
 
 			var oTableCommodities = this.byId("tblCommodities");
 			oTableCommodities.getModel().setProperty("/LstSociedades", this.oDataSociedades);
+			oTableCommodities.getModel().setSizeLimit(400);
 			oTableCommodities.getModel().refresh();
 
 		},
