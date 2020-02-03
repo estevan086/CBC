@@ -82,11 +82,25 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 
 			var msn = "";
 			if (valDesc !== "") {
-				var oEntidad = {};
-				oEntidad.yidAuton = "ICO_";
-				oEntidad.yicoterm = valDesc;
 
-				var oCreate = this.fnCreateEntity(oModelService, "/icotermSet", oEntidad);
+				var icoterm = {
+					yicoterm: 'ICO_',
+					Txtmd: valDesc,
+					icotermSet: []
+				};
+
+				var icotermDetail = {
+					yicoterm: 'ICO_',
+					Recordmode: '',
+					yusuario: '',
+					//Date0: '',
+					yestado: 'X',
+					txtmd: valDesc
+				};
+
+				icoterm.icotermSet.push(icotermDetail);
+
+				var oCreate = this.fnCreateEntity(oModelService, "/icotermHeaderSet", icoterm);
 
 				if (oCreate.tipo === "S") {
 					if (oCreate.datos.Msj !== "" && oCreate.datos.Msj !== undefined) {

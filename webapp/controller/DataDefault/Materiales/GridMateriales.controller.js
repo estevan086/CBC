@@ -2765,27 +2765,32 @@ sap.ui.define([
 				template: {
 					content: "{MDEF_ICOTERM}"
 				}
-			}, {
+			}, 
+			/*{
 				name: "Costo_Material",
 				template: {
 					content: "{MDEF_COSTOMATERIAL}"
 				}
-			}, {
+			},*/
+			{
 				name: "FormulaOtrosCostos",
 				template: {
 					content: "{MDEF_FORMULAOTROSCOSTOS}"
 				}
-			}, {
+			}, 
+			/*{
 				name: "Otros_Costos",
 				template: {
 					content: "{MDEF_OTROSCOSTOS}"
 				}
-			}, {
+			},*/
+			{
 				name: "PTrasnferencia",
 				template: {
 					content: "{MDEF_PCTRANSFERENCIA}"
 				}
-			}, {
+			}, 
+			/*{
 				name: "Costo_Transferencia",
 				template: {
 					content: "{MDEF_COSTOTRANSFERENCIA}"
@@ -2835,7 +2840,8 @@ sap.ui.define([
 				template: {
 					content: "{MDEF_SUBFAMILIA}"
 				}
-			}, {
+			}, */
+			{
 				name: "Periodo",
 				template: {
 					content: "{MDEF_PERIODO}"
