@@ -10,7 +10,7 @@
 			<f:SimpleForm id="fmAddCM" columnsM="2" columnsL="2" columnsXL="2">
 				<f:content>
 					<m:Label text="ID" labelFor="inpId"/>
-					<m:Input id="inpId" name="txtID" type="Text" value="0_" enabled="false"/>
+					<m:Input id="inpId" name="txtID" type="Text" value="ICO_" enabled="false"/>
 					<m:Label text="Descripción"/>
 					<m:Input id="inpDesc" name="txtName" required="true" value="{Icoterm>/TxtDesc}" maxLength="10"/>
 				</f:content>

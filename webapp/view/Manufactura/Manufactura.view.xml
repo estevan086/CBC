@@ -32,8 +32,8 @@
 						</ComboBox>
 						<!--<Label text="Descripcion"/>
 						<TextArea id="txtDesc" value=""></TextArea>-->
-						<Label text="ID"/>
-						<Input id="inpId" name="txtID" type="Text" value="" enabled="false"/>
+						<Label text="ID" visible="false"/>
+						<Input id="inpId" name="txtID" type="Text" value="" enabled="false" visible="false"/>
 						<Label text=""/>
 						<Button icon="sap-icon://Save" type="Emphasized" text="Guardar" tooltip="Guardar" press="saveVersionVol"/>
 						<Input id="txtDesce" value="" visible="false"></Input>

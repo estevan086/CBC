@@ -135,8 +135,9 @@ sap.ui.define([
 
 				var oObject = {
 					Modulo: "VOL",
-					Nombre: this.byId("inpId").getValue(),
+					Nombre: this.byId("iptName").getValue(),
 					FiscYear: this.byId("cbxPeriodo").getValue(),
+					VelVol: this.byId("cbxVersionSistema").getValue(),
 					TipoVersionVolumen: this.byId("cbxTypeFile").getValue()
 				};
 
