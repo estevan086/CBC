@@ -8,10 +8,10 @@
 	<!--	<m:ToolbarSpacer/>-->
 	<!--	<m:Button icon="sap-icon://message-information" press=".onOpenDialog" ariaLabelledBy="editButtonLabel"/>-->
 	<!--</m:Toolbar>-->
-	<m:ObjectHeader binding="{/ProductCollection/0}" title="{modelView>/title}"  condensed="true"
+	<!--<m:ObjectHeader binding="{/ProductCollection/0}"   condensed="true"
 		number="{ parts:[{path:'Price'},{path:'CurrencyCode'}], type: 'sap.ui.model.type.Currency', formatOptions: {showMeasure: false} }"
-		numberUnit="{CurrencyCode}"></m:ObjectHeader>
-	<m:Page showHeader="false" enableScrolling="false" class="sapUiContentPadding" >
+		numberUnit="{CurrencyCode}"></m:ObjectHeader>-->
+	<m:Page showHeader="true" enableScrolling="false" title="{modelView>/title}" busy="{modelView>/busy}" class="sapUiContentPadding" >
 		<m:content>
 			<m:FlexBox height="auto" alignItems="Start" justifyContent="Start">
 				<m:items>
@@ -27,7 +27,7 @@
 						<m:content>
 							<m:Title id="title" text="Commodities"/>
 							<m:ToolbarSpacer/>
-							<m:Button icon="sap-icon://sys-next-page" text="Exportar" tooltip="Exportar version de commoditie"/>
+							<m:Button icon="sap-icon://sys-next-page" text="Exportar" tooltip="Exportar version de commoditie" press="onDataExport" />
 							<!--<m:Button icon="sap-icon://sys-prev-page" text="Importar" tooltip="Importar version de commoditie"/>-->
 							<u:FileUploader id="fileUploader" name="myFileUpload" icon="sap-icon://sys-prev-page" tooltip="Importar version de commoditie"
 								change="handleUpload" sameFilenameAllowed="true" />
@@ -43,19 +43,19 @@
 					</m:OverflowToolbar>
 				</extension>
 				<columns>
-					<Column width="5rem" filterProperty="IdCommoditie">
+					<Column width="5rem" name="IdCommoditie" filterProperty="IdCommoditie">
 						<m:Label text="ID Commoditie"/>
 						<template>
 							<m:Text text="{IdCommoditie}" wrapping="false"/>
 						</template>
 					</Column>
-					<Column width="11rem" filterProperty="Descripcion">
+					<Column width="11rem" name="Descripcion" filterProperty="Descripcion">
 						<m:Label text="Descripcion"/>
 						<template>
 							<m:Text text="{Descripcion}" wrapping="false"/>
 						</template>
 					</Column>
-					<Column width="7rem" filterProperty="Sociedad">
+					<Column width="7rem" name="Sociedad" filterProperty="Sociedad">
 						<m:Label text="Sociedad"/>
 						<template>
 							<!--<m:TextField text="{CDEF_SOCIEDAD}" editable="false"/>-->
@@ -71,7 +71,7 @@
 							<!--<m:Text text="{CDEF_SOCIEDAD}" editable="false" visible="false"/>-->
 						</template>
 					</Column>
-					<Column width="6rem" filterProperty="Centro">
+					<Column width="6rem" name="Centro" filterProperty="Centro">
 						<m:Label text="Centro"/>
 						<template>
 							<m:Text text="{Centro}" wrapping="false"/>
@@ -84,7 +84,7 @@
 							<!--<m:Text text="{CDEF_SOCIEDAD}" editable="false" visible="false"/>-->
 						</template>
 					</Column>
-					<Column width="6rem" filterProperty="Moneda">
+					<Column width="6rem" name="Moneda" filterProperty="Moneda">
 						<m:Label text="Moneda"/>
 						<template>
 							<!--<m:Text text="{Moneda}" wrapping="false"/>-->
@@ -96,7 +96,7 @@
 							</m:ComboBox>
 						</template>
 					</Column>
-					<Column width="6rem">
+					<Column width="6rem" name="UnidadMedida">
 						<m:Label text="Unidad Medida"/>
 						<template>
 							<m:ComboBox id="idComboBoxUnidadesMedida" selectionChange="onChangeUM" showSecondaryValues="true" filterSecondaryValues="true"
@@ -105,19 +105,19 @@
 							</m:ComboBox>
 						</template>
 					</Column>
-					<Column width="7rem">
+					<Column width="7rem" name="PrecioMaterial" >
 						<m:Label text="Precio"/>
 						<template>
 							<m:Input value="{PrecioMaterial}" editable="{editable}"/>
 						</template>
 					</Column>
-					<Column width="7rem">
+					<Column width="7rem" name="OtrosCostos" >
 						<m:Label text="Otros Costos"/>
 						<template>
 							<m:Input value="{OtrosCostos}" editable="{editable}"/>
 						</template>
 					</Column>
-					<Column width="10rem">
+					<Column width="10rem" name="TxtFormula">
 						<m:Label text="Formula"/>
 						<template>
 							<!--<m:Input value="{TxtFormula}" editable="{editable}"/>-->
@@ -129,13 +129,13 @@
 							<m:Button icon="sap-icon://puzzle" press="showCalculator"/>
 						</template>
 					</Column>
-					<Column width="4rem" filterProperty="Year">
+					<Column width="4rem" name="Year" filterProperty="Year">
 						<m:Label text="Periodo"/>
 						<template>
 							<m:Text text="{Year}" wrapping="false"/>
 						</template>
 					</Column>
-					<Column width="3rem" filterProperty="Mes">
+					<Column width="3rem" name="Mes" filterProperty="Mes">
 						<m:Label text="Mes"/>
 						<template>
 							<m:Text text="{Mes}" wrapping="false"/>

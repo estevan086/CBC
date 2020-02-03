@@ -258,7 +258,7 @@ sap.ui.define([
 				Nombre: oVersion.nameVersion,
 				Txtmd: oVersion.descriptionVersion,
 				FiscYear: oVersion.year,
-				VerMaterial: oVersion.materialsVersion,
+				VerMaterial: oVersion.materialsVersionId,
 				VerOrigen: oVersion.originId,
 				TipoCambio: tipoCambio.toLocaleString().substring(0, 1) 
 			};
