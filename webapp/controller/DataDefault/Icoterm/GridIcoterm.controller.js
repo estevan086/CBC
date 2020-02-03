@@ -22,9 +22,9 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 		},
 
 		GetIcoterm: function () {
-			var oModel = this.getOwnerComponent().getModel("ModelSimulador");
+			/*var oModel = this.getOwnerComponent().getModel("ModelSimulador");
 			var sServiceUrl = oModel.sServiceUrl;
-			var oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true);
+			var oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true);*/
 			//Definir filtro
 
 			//Leer datos del ERP
@@ -93,7 +93,6 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 					yicoterm: 'ICO_',
 					Recordmode: '',
 					yusuario: '',
-					//Date0: '',
 					yestado: 'X',
 					txtmd: valDesc
 				};
@@ -112,7 +111,7 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 
 				if (msn == "") {
 					MessageToast.show(this.getView().getModel("i18n").getResourceBundle().getText("NotificacionGuardarOk"));
-					this.GetPeriodos();
+					this.GetIcoterm();
 				} else {
 					MessageToast.show("Fail");
 				}

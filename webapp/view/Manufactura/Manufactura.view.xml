@@ -23,6 +23,7 @@
 								<core:ListItem text="Real" key="0"/>
 								<core:ListItem text="AOP" key="1"/>
 								<core:ListItem text="Forecast" key="2"/>
+								<core:ListItem text="Plan" key="2"/>
 							</items>
 						</ComboBox>
 						<Label text="Nombre de version"/>

@@ -140,6 +140,16 @@ sap.ui.define([
 					VelVol: this.byId("cbxVersionSistema").getValue(),
 					TipoVersionVolumen: this.byId("cbxTypeFile").getValue()
 				};
+				
+				
+		/*			var oObject = {
+					Modulo: "VOL",
+					Nombre: this.byId("iptName").getValue(),
+					FiscYear: "2020",
+					VelVol: "R000",
+					TipoVersionVolumen: "Real"
+				};*/
+				
 
 				var oCreate = this.fnCreateEntity(oModelService, "/versionSet", oObject);
 
