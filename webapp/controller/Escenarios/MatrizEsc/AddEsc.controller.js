@@ -34,7 +34,7 @@ sap.ui.define([
 		},
 		onValidateScene: function (oEvent) {
 			if (!this._validateRequiredInputs()) {
-				var oObject = this._getMatrizObject();
+				/*var oObject = this._getMatrizObject();
 				this.getModel("ModelSimulador").create("/escenarioCabSet", oObject, {
 					success: function(oData, oResponse){
 						
@@ -42,7 +42,7 @@ sap.ui.define([
 					error: function(oError){
 						
 					}
-				});
+				});*/
 			}
 			
 		},
