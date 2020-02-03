@@ -32,7 +32,7 @@ sap.ui.define([
 	const cDefaultNumValue = "0,000";
 	var initialLoad = false,
 		version = "",
-		year ="";
+		year = "";
 	var updatedRecords = [];
 	var that = this;
 	var MessageType = CoreLibrary.MessageType;
@@ -41,11 +41,11 @@ sap.ui.define([
 		SelectVersion: SelectVersion,
 		onInit: function () {
 
-			 var oModelV = new JSONModel({
-			 	busy: false,
-			 	title: ""
-			 });
-			 this.setModel(oModelV, "modelView");
+			var oModelV = new JSONModel({
+				busy: false,
+				title: ""
+			});
+			this.setModel(oModelV, "modelView");
 
 			var oUploader = this.getView().byId("fileUploader");
 			oUploader.oBrowse.setText("Importar");
@@ -65,7 +65,6 @@ sap.ui.define([
 			if (this.getRouter().getRoute("rtChCommoditiesVersion")) {
 				this.getRouter().getRoute("rtChCommoditiesVersion").attachPatternMatched(this.onMyRoutePatternMatchedVersion, this);
 			}
-		
 
 		},
 
@@ -74,8 +73,9 @@ sap.ui.define([
 
 			version = cDefaultVersion;
 			//Cargar datos
-			this.getModel("modelView").setProperty("/title", ( this.getView().getModel("i18n").getResourceBundle().getText("CommoditiesTitle") +": "+ cDefaultVersion ).toString() );
-		
+			this.getModel("modelView").setProperty("/title", (this.getView().getModel("i18n").getResourceBundle().getText("CommoditiesTitle") +
+				": " + cDefaultVersion).toString());
+
 			aFilter.push(new Filter("Flag", FilterOperator.EQ, 'X'));
 			//var oFilters = new Filter("Version", FilterOperator.EQ, cDefaultVersion);
 			this.fnConsultaDetalleCommodities(version);
@@ -90,9 +90,10 @@ sap.ui.define([
 		onShowVersion: function (oData) {
 			var aFilter = [];
 			version = oData.idVersion;
-			year    = oData.year;
-			this.getModel("modelView").setProperty("/title", ( this.getView().getModel("i18n").getResourceBundle().getText("CommoditiesTitle") +": "+ oData.nameVersion ).toString() );
-			
+			year = oData.year;
+			this.getModel("modelView").setProperty("/title", (this.getView().getModel("i18n").getResourceBundle().getText("CommoditiesTitle") +
+				": " + oData.nameVersion).toString());
+
 			aFilter.push(new Filter("Version", FilterOperator.EQ, version));
 			//aFilter.push(new Filter("Fiscyear", FilterOperator.EQ, oData.year));
 			this.fnConsultaDetalleCommodities(version);
@@ -108,13 +109,13 @@ sap.ui.define([
 
 			//Definir modelo del servicio web
 			var oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true);
-			
+
 			//Definir filtro
 			var vFilterversion = "";
-			if (year !== ""){
-				vFilterversion     = " and Year eq '"+year+"'";
+			if (year !== "") {
+				vFilterversion = " and Year eq '" + year + "'";
 			}
-			var vFilterEntity = "/detailCommoditiesSet?$filter=Version eq '"+oVersion+"'"+vFilterversion;
+			var vFilterEntity = "/detailCommoditiesSet?$filter=Version eq '" + oVersion + "'" + vFilterversion;
 
 			//Leer datos del ERP
 			var oRead = this.fnReadEntity(oModelService, vFilterEntity);
@@ -635,12 +636,18 @@ sap.ui.define([
 		},
 
 		csvJSON: function (csv) {
-			var lines = csv.split("\n");
-			var result = [];
-			var headers = lines[0].split(",");
+			var lines = csv.split("\n"),
+				result = [],
+				separator = ";",
+				headers = lines[0].split(separator);
+
+			if (headers.length <= 1) {
+				separator = ",";
+				headers = lines[0].split(separator);
+			}
 			for (var i = 1; i < lines.length; i++) {
 				var obj = {};
-				var currentline = lines[i].split(",");
+				var currentline = lines[i].split(separator);
 				for (var j = 0; j < headers.length; j++) {
 					obj[headers[j]] = currentline[j];
 				}
@@ -660,7 +667,9 @@ sap.ui.define([
 			var sServiceUrl = this.getView().getModel("ModelSimulador").sServiceUrl,
 				oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true),
 				oEntidad = {},
-				oDetail = {};
+				oDetail = {},
+				oTableCommodities = this.byId("tblCommodities"),
+				tColumns = oTableCommodities.getColumns();
 
 			oEntidad = {
 				IdCommoditie: 'CSV',
@@ -671,23 +680,17 @@ sap.ui.define([
 			for (var i = 0; i < JsonValue.length; i++) {
 
 				var CurrentRow = JsonValue[i];
+				oDetail = {};
+				tColumns.forEach(function (oValue) {
+					if (oValue.getName() !== "") {
+						oDetail[oValue.getName().toString()] = CurrentRow[oValue.getLabel().getText().toString()];
+						oDetail.Version = version;
+					}
+				});
 
-				oDetail = {
-					IdCommoditie: CurrentRow.CDEF_IDCOMMODITIES,
-					Sociedad: CurrentRow.CDEF_SOCIEDAD,
-					Centro: CurrentRow.CDEF_CENTRO,
-					Year: CurrentRow.CDEF_PERIODO,
-					Mes: CurrentRow.CDEF_MES,
-					UnidadMedida: CurrentRow.CDEF_UMD,
-					Moneda: CurrentRow.CDEF_MONEDA,
-					PrecioMaterial: CurrentRow.CDEF_PRECIO,
-					OtrosCostos: CurrentRow.CDEF_OTROCOSTO,
-					TxtFormula: CurrentRow.CDEF_FORMULA,
-					Version: CurrentRow.CDEF_VERSION
-						// Recordmode: '1'
-				};
-
-				oEntidad.detailCommoditiesSet.push(oDetail);
+				if (!jQuery.isEmptyObject(oDetail)) {
+					oEntidad.detailCommoditiesSet.push(oDetail);
+				}
 			}
 
 			var oCreate = this.fnCreateEntity(oModelService, "/headerCommoditiesSet", oEntidad);
@@ -702,7 +705,7 @@ sap.ui.define([
 						onClose: function (oAction) {
 							if (oAction === sap.m.MessageBox.Action.OK) {
 
-								that.fnConsultaDetalleCommodities();
+								that.fnConsultaDetalleCommodities(version);
 								return;
 							}
 						}
@@ -824,7 +827,7 @@ sap.ui.define([
 			}.bind(this), 100);
 		},
 		onDataExport: function (oEvent, pExport) {
-			
+
 			var oTableCommodities = this.byId("tblCommodities");
 			var oModelLocal = oTableCommodities.getModel().getProperty("/lstItemsCommodities");
 			var oModel = new sap.ui.model.json.JSONModel(oModelLocal),
@@ -833,14 +836,16 @@ sap.ui.define([
 
 			//recupera columnas creadas dinamicamente
 			tColumns.forEach(function (oValue, i) {
-				columns.push({
-					name: oValue.getLabel() !== null ? oValue.getLabel().getText() : "",
-					template: {
-						content: {
-							path: oValue.getName() !== null ? oValue.getName() : ""
+				if (oValue.getName() !== "") {
+					columns.push({
+						name: oValue.getLabel() !== null ? oValue.getLabel().getText() : "",
+						template: {
+							content: {
+								path: oValue.getName() !== null ? oValue.getName() : ""
+							}
 						}
-					}
-				});
+					});
+				}
 			});
 
 			this.cvsDataExport(oModel, columns);
