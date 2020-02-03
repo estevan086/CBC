@@ -135,7 +135,7 @@ sap.ui.define([
 
 			this.loadMaterial("DEFAULT", "PLAN", "");
 			
-			this.getModel("modelView").setProperty("/busy", true);
+			//this.getModel("modelView").setProperty("/busy", true);
 		},
 
 		onMyRoutePatternMatchedVersion: function (oEvent) {
