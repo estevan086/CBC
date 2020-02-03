@@ -65,12 +65,14 @@ sap.ui.define([
 				var oSelectedVersion = this._oView.getModel("ModelSimulador").getProperty(oSelectedItem.getBindingContextPath());
 				oModel.setProperty("/version/" + this._sProperty, oSelectedVersion.Nombre);
 				oModel.setProperty("/version/" + this._sProperty + "Desc", oSelectedVersion.Txtmd);
+				oModel.setProperty("/version/" + this._sProperty + "Name", oSelectedVersion.Nombre);
 				oModel.setProperty("/version/" + this._sProperty + "Id", oSelectedVersion.Version);
 				oModel.setProperty("/version/" + this._sProperty + "Year", oSelectedVersion.FiscYear);
 			}
 			if (!oSelectedItem) {
 				oModel.setProperty("/version/" + this._sProperty, "");
 				oModel.setProperty("/version/" + this._sProperty + "Desc", "");
+				oModel.setProperty("/version/" + this._sProperty + "Name", "");
 				oModel.setProperty("/version/" + this._sProperty + "Id", "");
 				oModel.setProperty("/version/" + this._sProperty + "Year", "");
 			}
@@ -79,8 +81,8 @@ sap.ui.define([
 			}
 		},
 		onCreateVersion: function (oEvent) {
-			this.getModel("versionModel").setProperty("/busy", true);                         
-			
+			this.getModel("versionModel").setProperty("/busy", true);
+
 			if (!this._validateMandatoryInput()) {
 				return;
 			}
@@ -136,7 +138,8 @@ sap.ui.define([
 			this.getModel("versionModel").setProperty("/busy", true);
 			this.close();
 			this.getModel("versionModel").setProperty("/version/idVersion", this.getModel("versionModel").getProperty("/version/versionForEditId"));
-			this.getModel("versionModel").setProperty("/version/nameVersion", this.getModel("versionModel").getProperty("/version/versionForEditDesc"));
+			this.getModel("versionModel").setProperty("/version/nameVersion", this.getModel("versionModel").getProperty(
+				"/version/versionForEditName"));
 			if (this._oView.getController().onShowVersion) {
 				this._oView.getController().onShowVersion(this.getModel("versionModel").getProperty("/version"));
 			}
@@ -158,7 +161,9 @@ sap.ui.define([
 			this._oView.addDependent(this._oDialog);
 		},
 		_createSelectDialogOriginVersion: function (sValueFilter, sProperty) {
-			var oSelectDialog = this._oSelectDialog;
+			var oSelectDialog = this._oSelectDialog,
+				editable = "";
+
 			if (!this._oSelectDialog) {
 				oSelectDialog = new sap.m.SelectDialog(this._oView.createId("SelectDialogVersion"), {
 					noDataText: this._oContext.getResourceBundle().getText("notVersionsFoundVersionFragment"),
@@ -169,6 +174,11 @@ sap.ui.define([
 				});
 				this._oView.addDependent(oSelectDialog);
 			}
+
+			if (sProperty === "versionForEdit") {
+				editable = "X";
+			}
+
 			this._sProperty = sProperty;
 			this._sValueFilter = sValueFilter;
 			var oTemplate = new sap.m.StandardListItem({
@@ -178,10 +188,16 @@ sap.ui.define([
 				type: "Active"
 			});
 			var aFilter = [new Filter(
-				"Modulo",
-				FilterOperator.EQ,
-				sValueFilter
-			)];
+					"Modulo",
+					FilterOperator.EQ,
+					sValueFilter
+				),
+				new Filter(
+					"Editable",
+					FilterOperator.EQ,
+					editable.toString()
+				)
+			];
 			var oVersion = this.getModel("versionModel").getProperty("/version");
 			if (sValueFilter !== this._sModulo && oVersion.origin) {
 				aFilter.push(new Filter(
@@ -260,7 +276,7 @@ sap.ui.define([
 				FiscYear: oVersion.year,
 				VerMaterial: oVersion.materialsVersionId,
 				VerOrigen: oVersion.originId,
-				TipoCambio: tipoCambio.toLocaleString().substring(0, 1) 
+				TipoCambio: tipoCambio.toLocaleString().substring(0, 1)
 			};
 			this._oView.getModel("ModelSimulador").create("/versionSet", oObject, {
 				success: function (oData, oResponse) {
@@ -303,7 +319,7 @@ sap.ui.define([
 			this.oModelDialog = oModel;
 			return oModel;
 		},
-		onClose: function(oEvent){
+		onClose: function (oEvent) {
 			this.close();
 		}
 	};
