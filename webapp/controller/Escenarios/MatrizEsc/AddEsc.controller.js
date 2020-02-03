@@ -33,18 +33,36 @@ sap.ui.define([
 
 		},
 		onValidateScene: function (oEvent) {
-			if (!this._validateRequiredInputs()) {
-				/*var oObject = this._getMatrizObject();
+			var oModel = this.getModel("viewModel");
+			if (this._validateRequiredInputs()) {
+				oModel.setProperty("/busy", true);
+				var oObject = this._getMatrizObject();
 				this.getModel("ModelSimulador").create("/escenarioCabSet", oObject, {
-					success: function(oData, oResponse){
-						
-					},
-					error: function(oError){
-						
-					}
-				});*/
+					success: function (oData, oResponse) {
+						sap.m.MessageBox.success("Se creó exitosamente el escenario", {
+							onClose: jQuery.proxy(this.onNavBack, this)
+						});
+						oModel.setProperty("/busy", false);
+					}.bind(this),
+					error: function (oError) {
+						this.showGeneralError({
+							oDataError: oError
+						});
+						oModel.setProperty("/busy", false);
+					}.bind(this)
+				});
 			}
-			
+
+		},
+		onSelectExchangeRate: function (oEvent) {
+			var iIndex = oEvent.getParameter("selectedIndex"),
+				sExchangeRate;
+			if (iIndex === 0) {
+				sExchangeRate = "M";
+			} else {
+				sExchangeRate = "P";
+			}
+			this._bindItemsYear(sExchangeRate);
 		},
 		_onRouteMatched: function (oEvent) {
 			this._createViewModel();
@@ -53,17 +71,43 @@ sap.ui.define([
 				model: "viewModel",
 				factory: jQuery.proxy(Factory.factoryColumnsScenes, this)
 			});
+			this._bindItemsYear("M");
+		},
+		_bindItemsYear: function(sExchangeRate){
+			var oAnnoExchangeRate = this.byId("cmbAnnoExchangeRate");
+			var aFilter = [new Filter(
+				"Kurst",
+				FilterOperator.EQ,
+				sExchangeRate
+			)];
+			var oTemplate = new sap.ui.core.Item({
+				key: "{ModelSimulador>Fiscyear}",
+				text: "{ModelSimulador>Fiscyear}"
+			});
+			oAnnoExchangeRate.bindItems({
+				path: "/annoTipoCambioSet",
+				model: "ModelSimulador",
+				template: oTemplate,
+				filters: aFilter
+			});
 		},
 		_getMatrizObject: function () {
 			var oViewModel = this.getModel("viewModel"),
-				aScenarios = [];
+				aScenarios = [],
+				sExchangeRate;
+			if (oViewModel.getProperty("/indexExchangeRateOption") === 0) {
+				sExchangeRate = "M";
+			} else {
+				sExchangeRate = "P";
+			}
 			for (var i = 0; i < oViewModel.getProperty("/rows").length; i++) {
 				var oItem = {};
-				oItem.yescenari = oViewModel.getProperty("/scenarioName");
+				oItem.Nombre = oViewModel.getProperty("/scenarioName");
 				oItem.ytipoescn = oViewModel.getProperty("/scenarioType");
 				oItem.ymodulo = oViewModel.getProperty("/rows/" + i + "/tipoVersion");
 				oItem.yestado = "";
-				oItem.yfiscyear = new Date().getFullYear().toString();
+				oItem.yfiscyear = oViewModel.getProperty("/year");
+				oItem.ytipcamb = sExchangeRate;
 				for (var j = 1; j <= 12; j++) {
 					var sMonth = j < 10 ? "0" + j.toString() : j.toString();
 					oItem["yvmes" + sMonth] = oViewModel.getProperty("/rows/" + i + "/" + sMonth + "Id");
@@ -71,7 +115,6 @@ sap.ui.define([
 				aScenarios.push(oItem);
 			}
 			return {
-				yescenari: oViewModel.getProperty("/scenarioName"),
 				Descripcion: oViewModel.getProperty("/scenarioDesc"),
 				Escenarios: aScenarios
 			};
@@ -85,6 +128,9 @@ sap.ui.define([
 			}
 			if (!oViewModel.getProperty("/scenarioType")) {
 				oErrors.push(this.getResourceBundle().getText("errMissTypeScenarioView"));
+			}
+			if (!oViewModel.getProperty("/year")) {
+				oErrors.push(this.getResourceBundle().getText("errMissYearScenarioView"));
 			}
 			var bErrorsTable = false;
 			for (var i = 0; i < oViewModel.getProperty("/rows").length; i++) {
@@ -106,8 +152,9 @@ sap.ui.define([
 					message: this.getResourceBundle().getText("errMissSummary") + "\n - " + oErrors.join("\n - ")
 				});
 				return false;
+			} else {
+				return true;
 			}
-			return true;
 		},
 		_createSelectDialogOriginVersion: function (sModule, sMonth) {
 			var oSelectDialog = this._oSelectDialog;
@@ -150,7 +197,9 @@ sap.ui.define([
 				busy: false,
 				scenarioName: "",
 				scenarioDesc: "",
-				scenarioType: ""
+				scenarioType: "",
+				indexExchangeRateOption: 0,
+				year: ""
 			});
 			this.setModel(oModel, "viewModel");
 			return oModel;
