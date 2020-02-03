@@ -65,15 +65,17 @@ sap.ui.define([
 					"expanded": false,
 					"key": "rtNone",
 					"items": [{
-						"title": "Mantenimiento Tipo Cambio",
+						"title": "Tipo de Cambio",
 						"key": "rtChTypeChange"
 					}, {
 						"title": "Icoterm",
 						"key": "rtChCreateIcoterm"
-					}, {
+					}, 
+					/*{
 						"title": "Copiar Versiones",
 						"key": "rtChCopyVersion"
-					}, {
+					}, */
+					{
 						"title": "Commodities",
 						"key": "rtChCommodities"
 					}, {
@@ -139,21 +141,12 @@ sap.ui.define([
 					]
 				}, {
 					"title": "COGS",
-					"icon": "sap-icon://settings",
+					"icon": "sap-icon://provision",
 					"expanded": false,
 					"key": "rtNone",
 					"items": [{
-						"title": "Reportes COGS",
+						"title": "Calculo de COGS",
 						"key": "rtCCOGS"
-					}]
-				}, {
-					"title": "Reportes",
-					"icon": "sap-icon://pie-chart",
-					"expanded": false,
-					"key": "rtNone",
-					"items": [{
-						"title": "Visualizacion",
-						"key": "rtChVisualizacion"
 					}]
 				}]
 			});
