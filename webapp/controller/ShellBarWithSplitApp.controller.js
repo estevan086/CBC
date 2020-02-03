@@ -114,7 +114,7 @@ sap.ui.define([
 					}]
 				}, {
 					"title": "Volumen",
-					"icon": "sap-icon://upload-to-cloud",
+					"icon": "sap-icon://add-product",
 					"expanded": false,
 					"key": "rtNone",
 					"items": [{
