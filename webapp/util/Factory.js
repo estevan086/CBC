@@ -16,7 +16,8 @@ sap.ui.define([], function () {
 					template: new sap.m.Input({
 						value: "{viewModel>" + oContext.getObject().id + "}",
 						showValueHelp: true,
-						valueHelpOnly: true
+						valueHelpOnly: true,
+						valueState: "{viewModel>" + oContext.getObject().id + "ValueState}"
 					}).attachValueHelpRequest(function(oEvent){
 						this._oSelectDialog = this._createSelectDialogOriginVersion(oEvent.getSource().data("row"), oEvent.getSource().data("mes"));
 						this._oSelectDialog.open();

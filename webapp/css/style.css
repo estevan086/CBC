@@ -48,11 +48,10 @@ html[dir="rtl"] .myAppDemoWT .myCustomButton.sapMBtn {
 	border: none !important;
 }
 
-.sapUiTableCell .sapMInputBaseContentWrapper{
+.sapUiTableCell .sapMInputBaseContentWrapper:not(.sapMInputBaseContentWrapperError){
 	border: none !important;
 }
 
 .sapUiTableCell .sapMInputBaseInner {
 	background: white !important;
 }
-
