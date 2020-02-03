@@ -42,7 +42,7 @@ sap.ui.define([
 		onInit: function () {
 
 			 var oModelV = new JSONModel({
-			 	busy: true,
+			 	busy: false,
 			 	title: ""
 			 });
 			 this.setModel(oModelV, "modelView");
@@ -822,6 +822,28 @@ sap.ui.define([
 			setTimeout(function () {
 				this.oMP.openBy(oButton);
 			}.bind(this), 100);
+		},
+		onDataExport: function (oEvent, pExport) {
+			
+			var oTableCommodities = this.byId("tblCommodities");
+			var oModelLocal = oTableCommodities.getModel().getProperty("/lstItemsCommodities");
+			var oModel = new sap.ui.model.json.JSONModel(oModelLocal),
+				columns = [],
+				tColumns = oTableCommodities.getColumns();
+
+			//recupera columnas creadas dinamicamente
+			tColumns.forEach(function (oValue, i) {
+				columns.push({
+					name: oValue.getLabel() !== null ? oValue.getLabel().getText() : "",
+					template: {
+						content: {
+							path: oValue.getName() !== null ? oValue.getName() : ""
+						}
+					}
+				});
+			});
+
+			this.cvsDataExport(oModel, columns);
 		}
 
 	});
