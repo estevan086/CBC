@@ -3,7 +3,7 @@
 	<Page title="{i18n>titleScenarioView}">
 		<content>
 			<Table id="tblScenarios" noDataText="{i18n>scenarioNoDataFound}" busyIndicatorDelay="{viewModel>/delay}" growing="true" growingThreshold="30"
-				updateFinished=".onUpdateFinished" items="{ModelSimulador>/escenarioSet}">
+				updateFinished=".onUpdateFinished" items="{ModelSimulador>/escenarioCabSet}">
 				<headerToolbar>
 					<OverflowToolbar>
 						<content>
@@ -15,11 +15,19 @@
 					<ColumnListItem type="Navigation">
 						<cells>
 							<Text text="{ModelSimulador>yescenari}"/>
+							<Text text="{ModelSimulador>Nombre}"/>
 							<Text text="{ModelSimulador>ytipoescn}"/>
+							<Text text="{ModelSimulador>yfiscyear}"/>
+							<Text text="{ModelSimulador>Descripcion}"/>
 						</cells>
 					</ColumnListItem>
 				</items>
 				<columns>
+					<Column>
+						<header>
+							<Label text="{i18n>idScenarioView}"/>
+						</header>
+					</Column>
 					<Column>
 						<header>
 							<Label text="{i18n>scenarioNameScenarioView}"/>
@@ -28,6 +36,16 @@
 					<Column>
 						<header>
 							<Label text="{i18n>scenarioTypeScenarioView}"/>
+						</header>
+					</Column>
+					<Column>
+						<header>
+							<Label text="{i18n>annoScenarioView}"/>
+						</header>
+					</Column>
+					<Column>
+						<header>
+							<Label text="{i18n>descriptionScenarioView}"/>
 						</header>
 					</Column>
 				</columns>

@@ -1,6 +1,5 @@
-<mvc:View controllerName="cbc.co.simulador_costos.controller.Escenarios.MatrizEsc.AddEsc" xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core"
-	xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:f="sap.ui.layout.form" xmlns:t="sap.ui.table">
-	<Page title="{viewModel>/titleCreateEscenarioView}" busy="{viewModel>/busy}">
+<mvc:View xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:f="sap.ui.layout.form" xmlns:t="sap.ui.table" controllerName="cbc.co.simulador_costos.controller.Escenarios.MatrizEsc.AddEsc">
+	<Page title="{viewModel>/title}" busy="{viewModel>/busy}" navButtonPress="onNavBack" showNavButton="true">
 		<content>
 			<f:Form editable="true">
 				<f:formContainers>
@@ -24,6 +23,22 @@
 									<Select id="slcScenarioType" items="{Escenarios>/Tipos}">
 										<core:Item key="{Escenarios>key}" text="{Escenarios>value}"/>
 									</Select>
+								</f:fields>
+							</f:FormElement>
+							<f:FormElement label="{i18n>exchangeRateScenario}">
+								<f:fields>
+									<RadioButtonGroup id="rbtnExchangeRateOption" columns="2" selectedIndex="{versionModel>/indexExchangeRateOption}" select=".onSelectExchangeRate">
+										<buttons>
+											<RadioButton id="R" text="{i18n>Real}"/>
+											<RadioButton id="P" text="{i18n>Plan}"/>
+										</buttons>
+									</RadioButtonGroup>
+								</f:fields>
+							</f:FormElement>
+							<f:FormElement label="{i18n>annoScenarioView}">
+								<f:fields>
+									<ComboBox id="cmbAnnoExchangeRate" selectedKey="{versionModel>/year}" required="true">
+									</ComboBox>
 								</f:fields>
 							</f:FormElement>
 						</f:formElements>
