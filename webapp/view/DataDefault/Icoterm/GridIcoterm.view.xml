@@ -9,7 +9,7 @@
 							<!--<Title id="title" text="{i18n>Periodos}"/>-->
 							<ToolbarSpacer/>
 							<Button icon="sap-icon://factory" type="Emphasized" text="{i18n>Crear}" tooltip="Crear Icoterm" press="showFormAddIcoterm"/>
-							<!--<Button icon="sap-icon://save" type="Emphasized" text="Guardar" tooltip="Guardar" press="saveIcoterm"/>-->
+							<Button icon="sap-icon://save" type="Emphasized" text="Guardar" tooltip="Guardar" press="SaveIcoterm"/>
 						</content>
 					</OverflowToolbar>
 				</ui:extension>
@@ -17,13 +17,13 @@
 					<ui:Column filterProperty="idIcoterm">
 						<Label text="Icoterm"/>
 						<ui:template>
-							<Text text="{Icoterm>yidAuton}" wrapping="false"/>
+							<Text text="{Icoterm>yicoterm}" wrapping="false"/>
 						</ui:template>
 					</ui:Column>
 					<ui:Column filterProperty="DescIcoterm">
 						<Label text="Descripcion"/>
 						<ui:template>
-							<Input id="txtDescGrid" value="{Icoterm>yicoterm}" editable="false"/>
+							<Input id="txtDescGrid" value="{Icoterm>txtmd}" editable="false"/>
 						</ui:template>
 					</ui:Column>
 					<ui:Column width="4rem" hAlign="Center">
