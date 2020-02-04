@@ -16,18 +16,18 @@
 						<m:content>
 							<m:Title id="title" text="Commodities"/>
 							<m:ComboBox id="cmbPlant" items="{ path: '/LstSociedades' }" 
-										placeholder="{i18n>Plant}" width="7rem" visible="false">
+										placeholder="{i18n>Plant}" width="7rem" visible="true">
 								<m:items>
 									<c:ListItem key="{Plant}" text="{Plant}"/>
 								</m:items>
 							</m:ComboBox>
 							<m:ComboBox id="cmbYear" items="{path: 'ModelSimulador>/periodoSet', filters: [{ path: 'GoupYear', operator: 'EQ', value1: 'X' }] }" 
-										width="5rem" placeholder="{i18n>Year}" visible="false">
+										width="5rem" placeholder="{i18n>Year}" visible="true">
 								<m:items>
 									<c:ListItem key="{ModelSimulador>Year}" text="{ModelSimulador>Year}"/>
 								</m:items>
 							</m:ComboBox>
-							<m:Button icon="sap-icon://search"  press="onFilterCommodities" visible="false"/>
+							<m:Button icon="sap-icon://search"  press="onFilterCommodities" visible="true"/>
 							<m:ToolbarSpacer/>
 							<m:Button icon="sap-icon://sys-next-page" text="Exportar" tooltip="Exportar version de commoditie" press="onDataExport" />
 							<u:FileUploader id="fileUploader" name="myFileUpload" icon="sap-icon://sys-prev-page" tooltip="Importar version de commoditie"

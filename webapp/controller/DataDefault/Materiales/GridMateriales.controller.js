@@ -1586,7 +1586,7 @@ sap.ui.define([
 						content: "{MDEF_COMMODITIE_SELECT}"
 					}
 				}, {
-					name: "Commoditie",
+					name: "Commoditie_Nombre",
 					template: {
 						content: "{MDEF_COMMODITIE_NAME}"
 					}
@@ -2751,7 +2751,7 @@ sap.ui.define([
 					content: "{MDEF_COMMODITIE_SELECT}"
 				}
 			}, {
-				name: "Commoditie",
+				name: "Commoditie_Nombre",
 				template: {
 					content: "{MDEF_COMMODITIE_NAME}"
 				}
