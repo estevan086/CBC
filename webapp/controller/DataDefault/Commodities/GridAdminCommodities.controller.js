@@ -98,7 +98,34 @@ sap.ui.define([
 			//aFilter.push(new Filter("Fiscyear", FilterOperator.EQ, oData.year));
 			this.fnConsultaDetalleCommodities(version);
 		},
-		fnConsultaDetalleCommodities: function (oVersion, oYear) {
+		
+		onFilterCommodities: function (oEvent) {
+
+			// Create a filter which contains our name and 'publ' filter
+			this.fnConsultaDetalleCommodities(version, this.getFilterYear(), this.getFilterCentro());
+
+		},
+		
+		getFilterCentro: function () {
+			var oCentro = "";
+
+			oCentro = this.getView().byId("cmbPlant").getSelectedKey();
+
+			return oCentro;
+		},
+		getFilterYear: function () {
+			var oYear = "";
+
+			oYear =  this.getView().byId("cmbYear").getSelectedKey();
+
+			return oYear;
+		},
+		clearFilterFields: function () {
+			this.getView().byId("cmbPlant").setSelectedKey("");
+			this.getView().byId("cmbYear").setSelectedKey("");
+		},
+		
+		fnConsultaDetalleCommodities: function (oVersion, oYear, oCentro) {
 
 			var oPanel = this.getView();
 			oPanel.setBusy(true);
@@ -112,10 +139,14 @@ sap.ui.define([
 
 			//Definir filtro
 			var vFilterversion = "";
-			if (year !== "") {
-				vFilterversion = " and Year eq '" + year + "'";
+			var vFilterCentro  = "";
+			if (oYear !== "" && oYear !== undefined) {
+				vFilterversion = " and Year eq '" + oYear + "'";
 			}
-			var vFilterEntity = "/detailCommoditiesSet?$filter=Version eq '" + oVersion + "'" + vFilterversion;
+			if (oCentro !== "" && oCentro !== undefined) {
+				vFilterCentro = " and Centro eq '" + oCentro + "'";
+			}
+			var vFilterEntity = "/detailCommoditiesSet?$filter=Version eq '" + oVersion + "'" + vFilterversion+vFilterCentro;
 
 			//Leer datos del ERP
 			var oRead = this.fnReadEntity(oModelService, vFilterEntity);
@@ -216,6 +247,11 @@ sap.ui.define([
 			var oTableCommodities = this.byId("tblCommodities");
 			oTableCommodities.getModel().setProperty("/LstSociedades", this.oDataSociedades);
 			oTableCommodities.getModel().refresh();
+			
+			
+			var oCentroFilterList = this.byId("cmbPlant");
+			oCentroFilterList.getModel().setProperty("/LstSociedades", this.oDataSociedades);
+			oCentroFilterList.getModel().refresh();
 
 		},
 

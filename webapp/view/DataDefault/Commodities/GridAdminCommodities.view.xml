@@ -1,21 +1,10 @@
 <mvc:View controllerName="cbc.co.simulador_costos.controller.DataDefault.Commodities.GridAdminCommodities"
 	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:mvc="sap.ui.core.mvc" displayBlock="true" xmlns="sap.ui.table" xmlns:m="sap.m"
 	xmlns:u="sap.ui.unified" xmlns:c="sap.ui.core" xmlns:f="sap.ui.layout.form" xmlns:tnt="sap.tnt" height="100%" busyIndicatorDelay="0">
-	<!--<m:Toolbar class="sapNocolor">-->
-	<!--<m:Title text="Datos Default - Commodities" level="H2"/>-->
-	<!--	<m:ToolbarSpacer/>-->
-	<!--	<m:Title text="" level="H2"/>-->
-	<!--	<m:ToolbarSpacer/>-->
-	<!--	<m:Button icon="sap-icon://message-information" press=".onOpenDialog" ariaLabelledBy="editButtonLabel"/>-->
-	<!--</m:Toolbar>-->
-	<!--<m:ObjectHeader binding="{/ProductCollection/0}"   condensed="true"
-		number="{ parts:[{path:'Price'},{path:'CurrencyCode'}], type: 'sap.ui.model.type.Currency', formatOptions: {showMeasure: false} }"
-		numberUnit="{CurrencyCode}"></m:ObjectHeader>-->
 	<m:Page showHeader="true" enableScrolling="false" title="{modelView>/title}" busy="{modelView>/busy}" class="sapUiContentPadding" >
 		<m:content>
 			<m:FlexBox height="auto" alignItems="Start" justifyContent="Start">
 				<m:items>
-					<!--<m:Button icon="sap-icon://copy" text="Copiar" tooltip="Copiar version de commoditie" press="showFormCopyVersionCommoditie"/>-->
 					<m:Button icon="sap-icon://save" text="Guardar" tooltip="Guardar version de commoditie" press="saveCommodities"/>
 					<m:Button icon="sap-icon://upload-to-cloud" text="Publicar" tooltip="Publicar version de commoditie" press="PublicVersionCommodities"/>
 				</m:items>
@@ -26,19 +15,25 @@
 					<m:OverflowToolbar>
 						<m:content>
 							<m:Title id="title" text="Commodities"/>
+							<m:ComboBox id="cmbPlant" items="{ path: '/LstSociedades' }" 
+										placeholder="{i18n>Plant}" width="7rem" visible="false">
+								<m:items>
+									<c:ListItem key="{Plant}" text="{Plant}"/>
+								</m:items>
+							</m:ComboBox>
+							<m:ComboBox id="cmbYear" items="{path: 'ModelSimulador>/periodoSet', filters: [{ path: 'GoupYear', operator: 'EQ', value1: 'X' }] }" 
+										width="5rem" placeholder="{i18n>Year}" visible="false">
+								<m:items>
+									<c:ListItem key="{ModelSimulador>Year}" text="{ModelSimulador>Year}"/>
+								</m:items>
+							</m:ComboBox>
+							<m:Button icon="sap-icon://search"  press="onFilterCommodities" visible="false"/>
 							<m:ToolbarSpacer/>
 							<m:Button icon="sap-icon://sys-next-page" text="Exportar" tooltip="Exportar version de commoditie" press="onDataExport" />
-							<!--<m:Button icon="sap-icon://sys-prev-page" text="Importar" tooltip="Importar version de commoditie"/>-->
 							<u:FileUploader id="fileUploader" name="myFileUpload" icon="sap-icon://sys-prev-page" tooltip="Importar version de commoditie"
 								change="handleUpload" sameFilenameAllowed="true" />
 							<m:Button id="btnAdmin" icon="sap-icon://factory" type="Emphasized" text="Administrar Commodities" tooltip="Crear Commodities"
 								press="onGoToIdCommoditieTable"/>
-							<!--	<m:Button-->
-							<!--            type="Emphasized"-->
-							<!--            text="Auto Resize Columns"-->
-							<!--            press=".onAutoResizeColumnsBtnPress"-->
-							<!--          />-->
-							<!--<m:Button icon="sap-icon://edit" type="Emphasized" text="Editar Version Default" tooltip="Version Default" press="showFormEditCommoditie"/>-->
 						</m:content>
 					</m:OverflowToolbar>
 				</extension>
