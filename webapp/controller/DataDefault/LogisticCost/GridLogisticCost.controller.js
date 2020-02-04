@@ -271,14 +271,13 @@ sap.ui.define([
 						items: {
 							path: "ModelSimulador>/monedaMaterialSet",
 							templateShareable: false,
-							template: new sap.ui.core.ListItem({
+							template: new sap.ui.core.Item({
 								key: "{ModelSimulador>Waers}",
-								text: "{ModelSimulador>Waers}",
-								additionalText: "{ModelSimulador>Ktext}"
+								text: "{ModelSimulador>Waers}"
 							})
 						},
-						selectedKey: "{Currency}",
-						showSecondaryValues: true
+						//value: "{LogisticCostValoration>/Currency}",
+						selectedKey: "{Currency}"
 
 					}) : new sap.m.Input(columnName, {
 						value: "{" + columnName + "}",

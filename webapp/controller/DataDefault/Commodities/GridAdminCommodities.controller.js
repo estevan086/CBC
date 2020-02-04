@@ -98,7 +98,37 @@ sap.ui.define([
 			//aFilter.push(new Filter("Fiscyear", FilterOperator.EQ, oData.year));
 			this.fnConsultaDetalleCommodities(version);
 		},
-		fnConsultaDetalleCommodities: function (oVersion, oYear) {
+		
+		onFilterCommodities: function (oEvent) {
+
+			// Create a filter which contains our name and 'publ' filter
+			this.fnConsultaDetalleCommodities(version, this.getFilterYear(), this.getFilterCentro());
+
+		},
+		
+		getFilterCentro: function () {
+			var oCentro = "";
+
+			oCentro = this.getView().byId("cmbPlant").getSelectedKey();
+
+			return oCentro;
+		},
+		getFilterYear: function () {
+			var oYear = "";
+
+			oYear =  this.getView().byId("cmbYear").getSelectedKey();
+
+			return oYear;
+		},
+		clearFilterFields: function () {
+			this.getView().byId("cmbPlant").setSelectedKey("");
+			this.getView().byId("cmbYear").setSelectedKey("");
+		},
+		
+		fnConsultaDetalleCommodities: function (oVersion, oYear, oCentro) {
+
+			var oPanel = this.getView();
+			oPanel.setBusy(true);
 
 			//Url Servicio
 			var oModel = this.getOwnerComponent().getModel("ModelSimulador");
@@ -109,13 +139,16 @@ sap.ui.define([
 
 			//Definir filtro
 			var vFilterversion = "";
-			if (year !== "") {
-				vFilterversion = " and Year eq '" + year + "'";
+			var vFilterCentro  = "";
+			if (oYear !== "" && oYear !== undefined) {
+				vFilterversion = " and Year eq '" + oYear + "'";
 			}
-			var vFilterEntity = "/detailCommoditiesSet?$filter=Version eq '" + oVersion + "'" + vFilterversion;
+			if (oCentro !== "" && oCentro !== undefined) {
+				vFilterCentro = " and Centro eq '" + oCentro + "'";
+			}
+			var vFilterEntity = "/detailCommoditiesSet?$filter=Version eq '" + oVersion + "'" + vFilterversion+vFilterCentro;
 
 			//Leer datos del ERP
-			this.getModel("modelView").setProperty("/busy", true);
 			var oRead = this.fnReadEntity(oModelService, vFilterEntity);
 
 			// oModel.read(vFilterEntity, {
@@ -129,7 +162,6 @@ sap.ui.define([
 			// });
 
 			if (oRead.tipo === "S") {
-				this.getModel("modelView").setProperty("/busy", false);
 				this.oDataDetalleCommodities = oRead.datos.results;
 				var obj = this.oDataDetalleCommodities;
 				//Object.keys(obj).map(k => obj[k] = obj[k].trim());
@@ -169,6 +201,9 @@ sap.ui.define([
 
 			//Obtiene Unidades de Medida
 			this.GetUnidadesMedida();
+
+			oPanel.setBusy(false);
+
 			// // simulate delayed end of operation
 			// setTimeout(function () {
 
@@ -211,8 +246,12 @@ sap.ui.define([
 
 			var oTableCommodities = this.byId("tblCommodities");
 			oTableCommodities.getModel().setProperty("/LstSociedades", this.oDataSociedades);
-			oTableCommodities.getModel().setSizeLimit(400);
 			oTableCommodities.getModel().refresh();
+			
+			
+			var oCentroFilterList = this.byId("cmbPlant");
+			oCentroFilterList.getModel().setProperty("/LstSociedades", this.oDataSociedades);
+			oCentroFilterList.getModel().refresh();
 
 		},
 

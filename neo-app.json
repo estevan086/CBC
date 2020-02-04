@@ -7,7 +7,7 @@
         "type": "service",
         "name": "sapui5",
         "entryPath": "/resources",
-        "version": "1.62.0"
+        "version": "1.60.18"
       },
       "description": "SAPUI5 Resources"
     },
@@ -17,7 +17,7 @@
         "type": "service",
         "name": "sapui5",
         "entryPath": "/test-resources",
-        "version": "1.62.0"
+        "version": "1.60.18"
       },
       "description": "SAPUI5 Test Resources"
     },

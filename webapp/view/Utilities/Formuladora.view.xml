@@ -23,7 +23,7 @@
 					
 					<CalculationBuilder allowStringConstants="true" id="builder" layoutType="{/layoutType}" expression="{/expression}"
 						readOnly="{/readOnly}" allowComparisonOperators="{/allowComparison}" allowLogicalOperators="{/allowLogical}"
-						 title="{/title}" variables="{/variables}">
+						 title="{/title}" variables="{/variables}" >
 						<variables>
 							<CalculationBuilderVariable key="{key}" group="{group}" label="{label}" items="{path:'items', templateShareable:true}">
 								<items>

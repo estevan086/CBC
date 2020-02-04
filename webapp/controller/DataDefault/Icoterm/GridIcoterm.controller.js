@@ -1,13 +1,14 @@
 sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core/routing/History", "sap/ui/core/library",
 	"sap/ui/model/json/JSONModel", "sap/m/MessageToast",
-	"sap/ui/table/RowSettings"
-], function (Controller, History, CoreLibrary, JSONModel, MessageToast, RowSettings) {
+	"sap/ui/table/RowSettings", 'sap/m/MessageBox'
+], function (Controller, History, CoreLibrary, JSONModel, MessageToast, RowSettings, MessageBox) {
 	"use strict";
+	var updatedRecords = [];
 	var that = this;
 	return Controller.extend("cbc.co.simulador_costos.controller.DataDefault.Icoterm.GridIcoterm", {
 
 		onInit: function () {
-			var oModelV = new JSONModel({
+			var oModelV = new JSONModel({ 
 				busy: true,
 				Bezei: ""
 			});
@@ -22,14 +23,6 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 		},
 
 		GetIcoterm: function () {
-			var oModel = this.getOwnerComponent().getModel("ModelSimulador");
-			var sServiceUrl = oModel.sServiceUrl;
-			var oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true);
-			//Definir filtro
-
-			//Leer datos del ERP
-			//var oRead = this.fnReadEntity(oModelService, "/icotermSet", null);
-
 			var oModel = this.getView().getModel("ModelSimulador");
 			oModel.read("/icotermSet", {
 				success: function (oData, response) {
@@ -46,26 +39,6 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 				}
 			});
 			this.getModel("modelView").setProperty("/busy", false);
-			/*	var txtDescGrid = this.byId("txtDescGrid");
-				var GetValueEdited = function (oEvent) {
-					var oEntidad = {};
-					oEntidad.yidAuton = this.getParent().getCells()[0].getText();
-					oEntidad.yicoterm = this.getParent().getCells()[1].getValue();
-
-					var oCreate = that.fnUpdateEntity(oModelService, "/IcotermSet", oEntidad);
-
-					if (oCreate.tipo === "S") {
-						if (oCreate.datos.Msj !== "" && oCreate.datos.Msj !== undefined) {
-							MessageToast.show(oCreate.datos.Msj);
-						}
-					} else {
-						MessageToast.show(this.getView().getModel("i18n").getResourceBundle().getText("NotificacionGuardarOk"));
-						this.getMasterCommodities();
-					}
-				};
-				txtDescGrid.attachBrowserEvent("focusout", GetValueEdited);
-				that = this;
-				this.getModel("modelView").setProperty("/busy", false);*/
 		},
 
 		showFormAddIcoterm: function (oEvent) {
@@ -91,10 +64,7 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 
 				var icotermDetail = {
 					yicoterm: 'ICO_',
-					Recordmode: '',
-					yusuario: '',
-					//Date0: '',
-					yestado: 'X',
+					yestado: '1',
 					txtmd: valDesc
 				};
 
@@ -104,15 +74,25 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 
 				if (oCreate.tipo === "S") {
 					if (oCreate.datos.Msj !== "" && oCreate.datos.Msj !== undefined) {
-						msn = "fail";
+						MessageBox.show(
+							oCreate.msjs, {
+								icon: MessageBox.Icon.ERROR,
+								title: "Error"
+							}
+						);
 					}
 				} else {
-					msn = "fail";
+					MessageBox.show(
+						oCreate.msjs, {
+							icon: MessageBox.Icon.ERROR,
+							title: "Error"
+						}
+					);
 				}
 
 				if (msn == "") {
 					MessageToast.show(this.getView().getModel("i18n").getResourceBundle().getText("NotificacionGuardarOk"));
-					this.GetPeriodos();
+					this.GetIcoterm();
 				} else {
 					MessageToast.show("Fail");
 				}
@@ -123,29 +103,116 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 		},
 
 		handleEditPress: function (oEvent, Data) {
-			var oRowEdited = oEvent.getSource().getParent();
-			oRowEdited.getCells()[1].setProperty("editable", true);
+			var oTable = this.byId("tblIcoterm");
+			for (var j = 0; j < oTable.getModel("Icoterm").getData().CodIcoterm.length; j++) {
+				var oObj = oTable.getModel("Icoterm").getData().CodIcoterm[j];
+				oObj.editable = false;
+				oObj.highlight = "None";
+			}
+			oEvent.getSource().getParent().getCells()[1].setEditable(true);
+			updatedRecords.push(oEvent.getSource().getParent().getIndex());
 		},
 
 		handleDeletePress: function (oEvent, Data) {
-			var oModel = this.getView().getModel("ModelSimulador");
-			oModel.create("/headerCommoditiesUpdate", {
-				IdCommoditie: oEvent.getSource().getParent().getParent().getCells()[0].getText(),
-				Descripcion: oEvent.getSource().getParent().getParent().getCells()[1].getValue(),
-				status: "0"
-			}, {
-				success: function (oData, oResponse) {
-					MessageToast.show(this.getView().getModel("i18n").getResourceBundle().getText("NotificacionGuardarOk"));
-					this.getMasterCommodities();
-				}.bind(this),
-				error: function (oError) {
-					this.showGeneralError({
-						oDataError: oError
-					});
-					this.getModel("modelView").setProperty("/busy", false);
-				}.bind(this)
-			});
+			var oTempRow = oEvent.getSource().getParent().getParent().getCells();
+			var sServiceUrl = this.getView().getModel("ModelSimulador").sServiceUrl,
+				oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true);
+
+			var icoterm = {
+				yicoterm: 'ICO_',
+				Txtmd: '',
+				icotermSet: []
+			};
+
+			var icotermDetail = {
+				yicoterm: oTempRow[0].getText(),
+				yestado: '0',
+				txtmd: oTempRow[1].getValue()
+			};
+
+			icoterm.icotermSet.push(icotermDetail);
+
+			var oCreate = this.fnCreateEntity(oModelService, "/icotermHeaderSet", icoterm);
+
+			if (oCreate.tipo === "S") {
+				if (oCreate.datos.Msj !== "" && oCreate.datos.Msj !== undefined) {
+					MessageBox.show(
+						oCreate.msjs, {
+							icon: MessageBox.Icon.ERROR,
+							title: "Error"
+						}
+					);
+				}
+			} else {
+				MessageBox.show(
+					oCreate.msjs, {
+						icon: MessageBox.Icon.ERROR,
+						title: "Error"
+					}
+				);
+			}
+			this.GetIcoterm();
 		},
+
+		SaveIcoterm: function (oEvent, Data) {
+			var oTable = this.byId("tblIcoterm");
+
+			var sServiceUrl = this.getView().getModel("ModelSimulador").sServiceUrl,
+				oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true),
+				oEntidad = {},
+				oDetail = {};
+
+			oEntidad = {
+				yicoterm: 'ICO_',
+				Txtmd: '',
+				icotermSet: []
+			};
+
+			for (var i = 0; i < updatedRecords.length; i++) {
+
+				var CurrentRow = updatedRecords[i];
+
+				var oTempRow = oTable.getRows()[CurrentRow].getCells();
+
+				oDetail = {
+					yicoterm: oTempRow[0].getText(),
+					yestado: '1',
+					txtmd: oTempRow[1].getValue()
+				};
+
+				oEntidad.icotermSet.push(oDetail);
+			}
+
+			var oCreate = this.fnCreateEntity(oModelService, "/icotermHeaderSet", oEntidad);
+
+			if (oCreate.tipo === 'S') {
+				MessageBox.show(
+					'Datos guardados correctamente', {
+						icon: MessageBox.Icon.SUCCESS,
+						title: "Exito",
+						actions: [MessageBox.Action.OK],
+						onClose: function (oAction) {
+							if (oAction === sap.m.MessageBox.Action.OK) {
+								updatedRecords = [];
+								return;
+							}
+						}
+					}
+				);
+
+			} else if (oCreate.tipo === 'E') {
+
+				MessageBox.show(
+					oCreate.msjs, {
+						icon: MessageBox.Icon.ERROR,
+						title: "Error"
+					}
+				);
+
+			}
+
+			this.GetIcoterm();
+		}
 
 	});
 });

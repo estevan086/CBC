@@ -34,36 +34,18 @@ sap.ui.define([
 
 		},
 		onValidateScene: function (oEvent) {
-			var oModel = this.getModel("viewModel");
-			if (this._validateRequiredInputs()) {
-				oModel.setProperty("/busy", true);
-				var oObject = this._getMatrizObject();
+			if (!this._validateRequiredInputs()) {
+				/*var oObject = this._getMatrizObject();
 				this.getModel("ModelSimulador").create("/escenarioCabSet", oObject, {
-					success: function (oData, oResponse) {
-						sap.m.MessageBox.success("Se creó exitosamente el escenario", {
-							onClose: jQuery.proxy(this.onNavBack, this)
-						});
-						oModel.setProperty("/busy", false);
-					}.bind(this),
-					error: function (oError) {
-						this.showGeneralError({
-							oDataError: oError
-						});
-						oModel.setProperty("/busy", false);
-					}.bind(this)
-				});
+					success: function(oData, oResponse){
+						
+					},
+					error: function(oError){
+						
+					}
+				});*/
 			}
-
-		},
-		onSelectExchangeRate: function (oEvent) {
-			var iIndex = oEvent.getParameter("selectedIndex"),
-				sExchangeRate;
-			if (iIndex === 0) {
-				sExchangeRate = "M";
-			} else {
-				sExchangeRate = "P";
-			}
-			this._bindItemsYear(sExchangeRate);
+			
 		},
 		_onRouteMatched: function (oEvent) {
 			this._onBindInitialView();
@@ -129,21 +111,14 @@ sap.ui.define([
 		},
 		_getMatrizObject: function () {
 			var oViewModel = this.getModel("viewModel"),
-				aScenarios = [],
-				sExchangeRate;
-			if (oViewModel.getProperty("/indexExchangeRateOption") === 0) {
-				sExchangeRate = "M";
-			} else {
-				sExchangeRate = "P";
-			}
+				aScenarios = [];
 			for (var i = 0; i < oViewModel.getProperty("/rows").length; i++) {
 				var oItem = {};
-				oItem.Nombre = oViewModel.getProperty("/scenarioName");
+				oItem.yescenari = oViewModel.getProperty("/scenarioName");
 				oItem.ytipoescn = oViewModel.getProperty("/scenarioType");
 				oItem.ymodulo = oViewModel.getProperty("/rows/" + i + "/tipoVersion");
 				oItem.yestado = "";
-				oItem.yfiscyear = oViewModel.getProperty("/year");
-				oItem.ytipcamb = sExchangeRate;
+				oItem.yfiscyear = new Date().getFullYear().toString();
 				for (var j = 1; j <= 12; j++) {
 					var sMonth = j < 10 ? "0" + j.toString() : j.toString();
 					oItem["yvmes" + sMonth] = oViewModel.getProperty("/rows/" + i + "/" + sMonth + "Id");
@@ -151,6 +126,7 @@ sap.ui.define([
 				aScenarios.push(oItem);
 			}
 			return {
+				yescenari: oViewModel.getProperty("/scenarioName"),
 				Descripcion: oViewModel.getProperty("/scenarioDesc"),
 				Escenarios: aScenarios
 			};
@@ -159,15 +135,11 @@ sap.ui.define([
 			var oErrors = [],
 				oViewModel = this.getModel("viewModel");
 			oViewModel.setProperty("/scenarioType", this.getView().byId("slcScenarioType").getSelectedKey());
-			oViewModel.setProperty("/year", this.getView().byId("cmbAnnoExchangeRate").getSelectedKey());
 			if (!oViewModel.getProperty("/scenarioName")) {
 				oErrors.push(this.getResourceBundle().getText("errMissNameScenarioView"));
 			}
 			if (!oViewModel.getProperty("/scenarioType")) {
 				oErrors.push(this.getResourceBundle().getText("errMissTypeScenarioView"));
-			}
-			if (!oViewModel.getProperty("/year")) {
-				oErrors.push(this.getResourceBundle().getText("errMissYearScenarioView"));
 			}
 			var bErrorsTable = false;
 			for (var i = 0; i < oViewModel.getProperty("/rows").length; i++) {
@@ -189,9 +161,8 @@ sap.ui.define([
 					message: this.getResourceBundle().getText("errMissSummary") + "\n - " + oErrors.join("\n - ")
 				});
 				return false;
-			} else {
-				return true;
 			}
+			return true;
 		},
 		_createSelectDialogOriginVersion: function (sModule, sMonth) {
 			var oSelectDialog = this._oSelectDialog;

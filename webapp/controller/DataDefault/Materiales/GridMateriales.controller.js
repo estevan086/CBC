@@ -52,7 +52,7 @@ sap.ui.define([
 			// this.getView().setModel(json);
 
 			var oMessageManager, oModel, oView;
-			
+
 			var oModelV = new JSONModel({
 				busy: false,
 				title: ""
@@ -131,31 +131,31 @@ sap.ui.define([
 		},
 		onMyRoutePatternMatched: function (event) {
 			version = cDefaultVersion;
-			this.getModel("modelView").setProperty("/title", ( "Materiales: " + cDefaultVersion ).toString() );
+			this.getModel("modelView").setProperty("/title", ("Materiales: " + cDefaultVersion).toString());
 
 			this.loadMaterial("DEFAULT", "PLAN", "");
-			
+
 			//this.getModel("modelView").setProperty("/busy", true);
 		},
 
 		onMyRoutePatternMatchedVersion: function (oEvent) {
-			
+
 			SelectVersion.init(this, "MAT");
-			
+
 			SelectVersion.open();
 		},
 
 		onShowVersion: function (oData) {
 			var aFilter = [];
-			
+
 			version = oData.idVersion;
-			this.getModel("modelView").setProperty("/title", ( "Materiales: " + oData.nameVersion ).toString() );
+			this.getModel("modelView").setProperty("/title", ("Materiales: " + oData.nameVersion).toString());
 
 			aFilter.push(new Filter("Version", FilterOperator.EQ, version));
 			aFilter.push(new Filter("Fiscyear", FilterOperator.EQ, oData.year));
-			
+
 			this.loadMaterial(version, "PLAN", oData.year);
-			
+
 			this.getModel("modelView").setProperty("/busy", true);
 		},
 
@@ -1008,14 +1008,14 @@ sap.ui.define([
 				aListMaterial = [],
 				aFilter = [],
 				vFilterEntity = "";
-				
+
 			// vFilterEntity = "/materialDefatultSet?$filter=yversion eq 'DEFAULT'";
 			vFilterEntity = "/materialDefatultSet?$filter=yversion eq '" + pVersion + "'";
-			
-			if(pYear !== ""){
-			 vFilterEntity = vFilterEntity + " and yfiscyear eq '" + pYear + "'";
+
+			if (pYear !== "") {
+				vFilterEntity = vFilterEntity + " and yfiscyear eq '" + pYear + "'";
 			}
-				
+
 			aFilter.push(new Filter("yversion", FilterOperator.EQ, 'DEFAULT'));
 
 			sServiceUrl = this.getOwnerComponent().getModel("ModelSimulador").sServiceUrl;
@@ -1066,6 +1066,7 @@ sap.ui.define([
 						MDEF_COMMODITIE: value.commodit,
 						MDEF_COMMODITIE_ID: value.commodit,
 						MDEF_COMMODITIE_SELECT: value.commodit,
+						MDEF_COMMODITIE_NAME: value.commodit,
 						MDEF_PRECIOPRODUCTIVO: Number(value.preprodc) === 0 ? '' : Number(value.preprodc),
 						MDEF_COSTOCONVERSION: Number(value.costconv) === 0 ? '' : Number(value.costconv),
 						MDEF_COSTOADICIONAL: Number(value.costadic) === 0 ? '' : Number(value.costadic),
@@ -1303,6 +1304,7 @@ sap.ui.define([
 			var oTableItemObject = oTableItem.getBindingContext().getObject();
 			oTableItemObject.MDEF_COMMODITIE = oUnidadSeleccionada;
 			oTableItemObject.MDEF_COMMODITIE_SELECT = oUnidadSeleccionada;
+			oTableItemObject.MDEF_COMMODITIE_NAME = oItemObject.Descripcion;
 
 			var oCommodite = this.detailCommodite.filter(result => result.IdCommoditie === oTableItemObject.MDEF_COMMODITIE_SELECT && result.Year ===
 				oTableItemObject.MDEF_PERIODO &&
@@ -1584,6 +1586,11 @@ sap.ui.define([
 						content: "{MDEF_COMMODITIE_SELECT}"
 					}
 				}, {
+					name: "Commoditie_Nombre",
+					template: {
+						content: "{MDEF_COMMODITIE_NAME}"
+					}
+				}, {
 					name: "Precio_Productivo",
 					template: {
 						content: "{MDEF_PRECIOPRODUCTIVO}"
@@ -1726,16 +1733,21 @@ sap.ui.define([
 			// does not remove the manually set ValueStateText we set in onValueStatePress():
 			sap.ui.getCore().getMessageManager().removeAllMessages();
 
+			var Run = 0;
 			for (var i = 0; i < JsonValue.length; i++) {
-
+				Run = i;
+				if (Run == 1000) {
+					Run = 0;
+					if (oEntidad.materialDefatultSet.length > 0) {
+						oCreate = this.fnCreateEntity(oModelService, "/materialsaveSet", oEntidad);
+						oEntidad.materialDefatultSet = [];
+					}
+				}
 				var oTempRow = JsonValue[i];
-
 				if (oTempRow.Commoditie === undefined) {
 					continue;
 				}
-
 				this.checkErrorPositionImport(oTempRow);
-
 				oDetail = {
 					// Txtmd: oTempRow.Material,
 					Material: oTempRow.IDMaterial,
@@ -1748,14 +1760,15 @@ sap.ui.define([
 					// Txtsubcat: oTempRow.Subcategoria,
 					// Txtcat: oTempRow.Categoria,
 					// Recordmode: oTempRow.MDEF_IDMATERIAL,
-					catgoria: oTempRow.IDCategoria,
+					/*catgoria: oTempRow.IDCategoria,
 					subcateg: oTempRow.IDSubcategoria,
 					yfamilia: oTempRow.IDFamilia,
-					ysubfamil: oTempRow.IDSubfamilia,
+					ysubfamil: oTempRow.IDSubfamilia,*/
 					Fiscyear: oTempRow.Periodo,
 					// Fiscvarnt: oTempRow.MDEF_IDMATERIAL,
 					Fiscper3: oTempRow.Mes,
-					NetWeight: oTempRow.Peso_Material,
+					yversion: version,
+					NetWeight: Number(oTempRow.Peso_Material).toString(),
 					// UnitOfWt: oTempRow.MDEF_IDMATERIAL,
 					commodit: oTempRow.Commoditie.toString(),
 					Incoterms: oTempRow.Icoterm.toString(),
@@ -1764,18 +1777,17 @@ sap.ui.define([
 					// estado: oTempRow.MDEF_IDMATERIAL,
 					// Date0: oTempRow.MDEF_IDMATERIAL,
 					// usuario: oTempRow.MDEF_IDMATERIAL,
-					preprodc: oTempRow.Precio_Productivo.toString(),
-					costconv: oTempRow.Costo_Conversion.toString(),
-					costadic: oTempRow.Costo_Adicional.toString(),
-					costenv: oTempRow.Costo_Envio.toString(),
-					costmat: oTempRow.Costo_Material.toString(),
-					otrocost: oTempRow.Otros_Costos.toString(),
-					ptransf: oTempRow.PTrasnferencia.toString(),
-					costrans: oTempRow.Costo_Transferencia.toString(),
-					ppremisa: oTempRow.Precio_Premisa.toString()
+					preprodc: Number(oTempRow.Precio_Productivo).toString(),
+					costconv: Number(oTempRow.Costo_Conversion).toString(),
+					costadic: Number(oTempRow.Costo_Adicional).toString(),
+					costenv: Number(oTempRow.Costo_Envio).toString(),
+					//costmat: oTempRow.Costo_Material.toString(),
+					//otrocost: oTempRow.Otros_Costos.toString(),
+					ptransf: Number(oTempRow.PTrasnferencia).toString(),
+					//costrans: oTempRow.Costo_Transferencia.toString(),
+					//ppremisa: oTempRow.Precio_Premisa.toString()
 
 				};
-
 				oEntidad.materialDefatultSet.push(oDetail);
 			}
 
@@ -1880,7 +1892,7 @@ sap.ui.define([
 
 			filtersArray = new Array();
 			filtersArray.push(filterKurst);
-			
+
 			// vFilterEntity = "/detailCommoditiesSet?$filter=Version eq 'DEFAULT'";
 			vFilterEntity = "/detailCommoditiesSet?$filter=Version eq '" + pVersion + "'";
 
@@ -2411,9 +2423,7 @@ sap.ui.define([
 			if (oComboxPlant.getSelectedKey() !== "") {
 				aFilter.push(new Filter("Plant", FilterOperator.EQ, oComboxPlant.getSelectedKey()));
 			}
-			if (oComboxPlant.getSelectedKey() !== "") {
-				aFilter.push(new Filter("yversion", FilterOperator.EQ, "DEFAULT"));
-			}
+			aFilter.push(new Filter("yversion", FilterOperator.EQ, version));
 
 			this.getMaterialFilter(aFilter);
 
@@ -2741,6 +2751,11 @@ sap.ui.define([
 					content: "{MDEF_COMMODITIE_SELECT}"
 				}
 			}, {
+				name: "Commoditie_Nombre",
+				template: {
+					content: "{MDEF_COMMODITIE_NAME}"
+				}
+			}, {
 				name: "Precio_Productivo",
 				template: {
 					content: "{MDEF_PRECIOPRODUCTIVO}"
@@ -2765,32 +2780,27 @@ sap.ui.define([
 				template: {
 					content: "{MDEF_ICOTERM}"
 				}
-			}, 
-			/*{
+			}, {
 				name: "Costo_Material",
 				template: {
 					content: "{MDEF_COSTOMATERIAL}"
 				}
-			},*/
-			{
+			}, {
 				name: "FormulaOtrosCostos",
 				template: {
 					content: "{MDEF_FORMULAOTROSCOSTOS}"
 				}
-			}, 
-			/*{
+			}, {
 				name: "Otros_Costos",
 				template: {
 					content: "{MDEF_OTROSCOSTOS}"
 				}
-			},*/
-			{
+			}, {
 				name: "PTrasnferencia",
 				template: {
 					content: "{MDEF_PCTRANSFERENCIA}"
 				}
-			}, 
-			/*{
+			}, {
 				name: "Costo_Transferencia",
 				template: {
 					content: "{MDEF_COSTOTRANSFERENCIA}"
@@ -2840,8 +2850,7 @@ sap.ui.define([
 				template: {
 					content: "{MDEF_SUBFAMILIA}"
 				}
-			}, */
-			{
+			}, {
 				name: "Periodo",
 				template: {
 					content: "{MDEF_PERIODO}"

@@ -13,11 +13,11 @@
 		"modulo": "Materiales",
 		"tipoVersion": "MAT"
 	},{
-		"modulo": "Costos Logísticos",
-		"tipoVersion": "LOG"
-	},{
 		"modulo": "Volúmenes",
 		"tipoVersion": "VOL"
+	},{
+		"modulo": "Costos Logísticos",
+		"tipoVersion": "LOG"
 	}],
 	"Meses": [{
 		"id": "00",

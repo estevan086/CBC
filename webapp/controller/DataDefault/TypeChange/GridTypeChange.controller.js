@@ -32,6 +32,7 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 		},
 
 		GetTypeChange: function () {
+			var tempData = [];
 			var oModel = this.getView().getModel("ModelSimulador");
 			var filterKurst = new sap.ui.model.Filter({
 				path: "Kurst",
@@ -50,8 +51,14 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 					for (var i = 0; i < oData.results.length; i++) {
 						oData.results[i].Ukurspromedio = Number(oData.results[i].Ukurspromedio);
 						oData.results[i].editable = false;
+						
+						if(oData.results[i].Tcurr === "USD")
+						{
+							tempData.push(oData.results[i]);
+						}
+						
 					}
-					data.setProperty("/CodTipoCambio", oData.results);
+					data.setProperty("/CodTipoCambio", tempData);
 					this.getOwnerComponent().setModel(data, "TipoCambio");
 					this.getModel("modelView").setProperty("/busy", false);
 
@@ -67,6 +74,7 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 		},
 
 		onselectionChange: function (oEvent) {
+			var tempData = [];
 			this.getModel("modelView").setProperty("/busy", true);
 			var oModel = this.getView().getModel("ModelSimulador");
 			var oItem = oEvent.getParameter("selectedItem");
@@ -92,8 +100,12 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 
 					for (var i = 0; i < oData.results.length; i++) {
 						oData.results[i].Ukurspromedio = Number(oData.results[i].Ukurspromedio);
+						if(oData.results[i].Tcurr === "USD")
+						{
+							tempData.push(oData.results[i]);
+						}
 					}
-					data.setProperty("/CodTipoCambio", oData.results);
+					data.setProperty("/CodTipoCambio", tempData);
 					this.getOwnerComponent().setModel(data, "TipoCambio");
 
 					var oTable = this.byId("tblTasaCambio");
@@ -259,6 +271,12 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 
 				for (var i = 0; i < JsonValue.length; i++) {
 					var CurrentRow = JsonValue[i];
+					
+					if(CurrentRow.Moneda_Destino !== "USD")
+					{
+						continue;
+					}
+					
 					oDetail = {
 						Kurst: CurrentRow.Tipo,
 						Fcurr: CurrentRow.Moneda_Local,

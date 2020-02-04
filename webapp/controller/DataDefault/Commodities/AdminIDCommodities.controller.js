@@ -1,58 +1,75 @@
 sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core/routing/History", "sap/ui/core/library",
 	"sap/ui/model/json/JSONModel", "sap/m/MessageToast",
-	"sap/ui/table/RowSettings",
-		"sap/ui/core/message/Message",
-		"sap/ui/core/MessageType"
-], function (Controller, History, CoreLibrary, JSONModel, MessageToast, RowSettings, Message, MessageType) {
+	"sap/ui/table/RowSettings"
+], function (Controller, History, CoreLibrary, JSONModel, MessageToast, RowSettings) {
 	"use strict";
-	var editableRows = [];
+
+	var that = this;
+	var MessageType = CoreLibrary.MessageType;
 
 	return Controller.extend("cbc.co.simulador_costos.controller.DataDefault.Commodities.AdminIDCommodities", {
 		onInit: function () {
-			
-			this.setModel(new JSONModel({
-				busy: true,
-				Bezei: ""
-			}), "modelView");
-			
 			var myRoute = this.getOwnerComponent().getRouter().getRoute("rtChIDCommodities");
 			myRoute.attachPatternMatched(this.onMyRoutePatternMatched, this);
 		},
 
 		onMyRoutePatternMatched: function (event) {
-			editableRows = [];
-			var oTableCommodities = this.byId("tblCommodities");
-			
-				oTableCommodities.getRows().forEach( function(oValue,i) {
-					oValue.getCells()[1].setProperty("editable",false);	
-				});
-				
 			this.getMasterCommodities();
 		},
 
 		getMasterCommodities: function () {
-			var oModel = this.getView().getModel("ModelSimulador");
-			
-			this.getModel("modelView").setProperty("/busy", true);
-			
+			var oModel = this.getView().getModel("ModelSimulador"),
+				oModelLocal = this.getView().getModel("Commodities");
+			//	data = oModelLocal.getProperty("/");
+
 			oModel.read("/headerCommoditiesSet", {
 				success: function (oData, response) {
-					var dataModel = new sap.ui.model.json.JSONModel(),
-						oTableCommodities = this.byId("tblCommodities");
-					
-					this.getModel("modelView").setProperty("/busy", false);
-					
+					var dataModel = new sap.ui.model.json.JSONModel();
 					dataModel.setProperty("/CodCommodities", oData.results);
 					this.getOwnerComponent().setModel(dataModel, "Commodities");
-					oTableCommodities.setModel(this.getModel("Commodities"));
 				}.bind(this),
 				error: function (oError) {
-					this.getModel("modelView").setProperty("/busy", false);
 					this.showGeneralError({
 						oDataError: oError
 					});
+					this.getModel("modelView").setProperty("/busy", false);
 				}
 			});
+
+			var txtDescGrid = this.byId("txtDescGrid");
+			var GetValueEdited = function (oEvent) {
+
+				var oEntry = {
+					IdCommoditie: "COM_0003",
+					Descripcion: "Test line 43"
+				};
+				var sObjectPath = oModel.createKey("headerCommoditiesSet", {
+					IdCommoditie: 'COM_0003'
+				});
+				oModel.update("/" + sObjectPath, oEntry, {
+					refreshAfterChange: false,
+					success: function (oData, oResponse) {
+						MessageToast.show(this.getView().getModel("i18n").getResourceBundle().getText("NotificacionGuardarOk"));
+					}.bind(this),
+					error: function (oError) {
+						MessageToast.show(oError.responseText);
+					}.bind(this)
+				});
+
+				/*	oModel.update("/headerCommoditiesSet", {
+						IdCommoditie: "COM_0003",
+						Descripcion: "Test line 43"
+					}, {
+						success: function (oData, oResponse) {
+							MessageToast.show(this.getView().getModel("i18n").getResourceBundle().getText("NotificacionGuardarOk"));
+							this.getMasterCommodities();
+						}.bind(this),
+						error: function (oError) {
+							MessageToast.show(oError.responseText);
+						}.bind(this)
+					});*/
+			}.bind(this);
+			txtDescGrid.attachBrowserEvent("focusout", GetValueEdited);
 		},
 
 		onBack: function () {
@@ -87,93 +104,29 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 
 			this.fnCloseFragment(oEvent);
 		},
-		updateCommoditie: function (oDataCom, pLast) {
-			var oModel = this.getView().getModel("ModelSimulador");
-			
-			this.getModel("modelView").setProperty("/busy", true);
-			//Crea el Commoditie
-			oModel.update("/headerCommoditiesSet(IdCommoditie='" + oDataCom.IdCommoditie + "')", oDataCom, {
-				success: function (oData, oResponse) {
-					if (pLast === true) {
-						this.getModel("modelView").setProperty("/busy", false);
-						MessageToast.show(this.getView().getModel("i18n").getResourceBundle().getText("NotificacionGuardarOk"));
-						this.getMasterCommodities();
-					} else {
-						this.onUpdateCommoditie(true);
-					}
-				}.bind(this),
-				error: function (oError) {
-					this.getModel("modelView").setProperty("/busy", false);
-					this.showGeneralError({
-						oDataError: oError
-					});
-				}.bind(this)
-			});
-		},
+
 		handleEditPress: function (oEvent, Data) {
 			var oRowEdited = oEvent.getSource().getParent();
 			oRowEdited.getCells()[1].setProperty("editable", true);
-			editableRows.push(oEvent.getSource().getParent().getIndex());
 		},
 
 		handleDeletePress: function (oEvent, Data) {
 			var oModel = this.getView().getModel("ModelSimulador");
-			
-			this.getModel("modelView").setProperty("/busy", true);
-			
-			oModel.remove("/headerCommoditiesSet('"+oEvent.getSource().getParent().getParent().getCells()[0].getText()+"')",
-			 {
+			var status = "0";
+			oModel.update("/headerCommoditiesSet", {
+				IdCommoditie: oEvent.getSource().getParent().getParent().getCells()[0].getText(),
+				Descripcion: oEvent.getSource().getParent().getParent().getCells()[1].getValue(),
+				status: status
+			}, {
 				success: function (oData, oResponse) {
-					if (oResponse !== undefined) {
-
-						this.getModel("modelView").setProperty("/busy", false);
-						var oMessage = JSON.parse(oResponse.headers["sap-message"]);
-
-						if (oMessage.severity === "error") {
-							this.showGeneralError({
-								message: oMessage.message,
-								title: this.getResourceBundle().getText("ErrorBorrado")
-							});
-							this.addMessage(new Message({
-								message: oMessage.message,
-								type: MessageType.Error
-							}));
-						} else {
-							this.addMessage(new Message({
-								message: oMessage.message,
-								type: MessageType.Success
-							}));
-							MessageToast.show(oMessage.message);
-							this.getLogisticCostData();
-						}
-					}
+					MessageToast.show(this.getView().getModel("i18n").getResourceBundle().getText("NotificacionGuardarOk"));
+					//	this.getMasterCommodities();
 				}.bind(this),
 				error: function (oError) {
-					this.getModel("modelView").setProperty("/busy", false);
-					this.showGeneralError({
-						oDataError: oError
-					});
+					MessageToast.show(oError.responseText);
 				}.bind(this)
 			});
 		},
-		onUpdateCommoditie: function (pRec = false) {
-			var oTableCommodities = this.byId("tblCommodities"),
-				oModelLocal = oTableCommodities.getModel().getProperty("/CodCommodities");
-
-			editableRows = [...new Set(editableRows)];
-
-			if (editableRows.length >= 1) {
-				this.updateCommoditie({
-						IdCommoditie: oModelLocal[editableRows[0]].IdCommoditie,
-						Descripcion: oModelLocal[editableRows[0]].Descripcion
-					},
-					editableRows.length === 1 ? true : false);
-				oTableCommodities.getRows()[editableRows[0]].getCells()[1].setProperty("editable",false);
-				editableRows.shift();
-			}else if(pRec !== true){
-				MessageToast.show(this.getView().getModel("i18n").getResourceBundle().getText("Norowsforupdate"));
-			}
-		}
 
 	});
 

@@ -51,12 +51,16 @@ sap.ui.define([
 			this._oSelectDialog.open();
 		},
 		onSearchOriginVersion: function (oEvent) {
-			var sValue = oEvent.getParameter("value");
-			var aFilter = [new Filter("Modulo", FilterOperator.EQ, this._sValueFilter),
-				new Filter("Version", FilterOperator.Contains, sValue)
-			];
 			var oBinding = oEvent.getSource().getBinding("items");
+			var sValue = oEvent.getParameter("value");
+			oBinding.filter([]);
+			oBinding.filter().aApplicationFilters = [];
+
+			var aFilter = [new Filter("Modulo", FilterOperator.EQ, this._sValueFilter),
+				new Filter("Nombre", FilterOperator.Contains, sValue)
+			];
 			oBinding.filter(aFilter);
+			oBinding.refresh();
 		},
 		onConfirmOriginVersion: function (oEvent) {
 			var oSelectedItem = oEvent.getParameter("selectedItem");
@@ -65,14 +69,12 @@ sap.ui.define([
 				var oSelectedVersion = this._oView.getModel("ModelSimulador").getProperty(oSelectedItem.getBindingContextPath());
 				oModel.setProperty("/version/" + this._sProperty, oSelectedVersion.Nombre);
 				oModel.setProperty("/version/" + this._sProperty + "Desc", oSelectedVersion.Txtmd);
-				oModel.setProperty("/version/" + this._sProperty + "Name", oSelectedVersion.Nombre);
 				oModel.setProperty("/version/" + this._sProperty + "Id", oSelectedVersion.Version);
 				oModel.setProperty("/version/" + this._sProperty + "Year", oSelectedVersion.FiscYear);
 			}
 			if (!oSelectedItem) {
 				oModel.setProperty("/version/" + this._sProperty, "");
 				oModel.setProperty("/version/" + this._sProperty + "Desc", "");
-				oModel.setProperty("/version/" + this._sProperty + "Name", "");
 				oModel.setProperty("/version/" + this._sProperty + "Id", "");
 				oModel.setProperty("/version/" + this._sProperty + "Year", "");
 			}
@@ -139,7 +141,7 @@ sap.ui.define([
 			this.close();
 			this.getModel("versionModel").setProperty("/version/idVersion", this.getModel("versionModel").getProperty("/version/versionForEditId"));
 			this.getModel("versionModel").setProperty("/version/nameVersion", this.getModel("versionModel").getProperty(
-				"/version/versionForEditName"));
+				"/version/versionForEditDesc"));
 			if (this._oView.getController().onShowVersion) {
 				this._oView.getController().onShowVersion(this.getModel("versionModel").getProperty("/version"));
 			}
@@ -163,7 +165,6 @@ sap.ui.define([
 		_createSelectDialogOriginVersion: function (sValueFilter, sProperty) {
 			var oSelectDialog = this._oSelectDialog,
 				editable = "";
-
 			if (!this._oSelectDialog) {
 				oSelectDialog = new sap.m.SelectDialog(this._oView.createId("SelectDialogVersion"), {
 					noDataText: this._oContext.getResourceBundle().getText("notVersionsFoundVersionFragment"),
@@ -183,7 +184,7 @@ sap.ui.define([
 			this._sValueFilter = sValueFilter;
 			var oTemplate = new sap.m.StandardListItem({
 				title: "{ModelSimulador>Nombre}",
-				description: "{ModelSimulador>Txtmd}",
+				description: "{ModelSimulador>TipoVersionVolumen} {ModelSimulador>Txtmd}",
 				info: "{ModelSimulador>FiscYear}",
 				type: "Active"
 			});
@@ -195,7 +196,7 @@ sap.ui.define([
 				new Filter(
 					"Editable",
 					FilterOperator.EQ,
-					editable.toString()
+					editable
 				)
 			];
 			var oVersion = this.getModel("versionModel").getProperty("/version");

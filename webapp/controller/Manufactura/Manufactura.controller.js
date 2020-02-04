@@ -21,16 +21,35 @@ sap.ui.define([
 		},
 
 		onMyRoutePatternMatched: function (event) {
-			this.GetData();
+			this.GetData("");
 		},
 
-		GetData: function () {
+		getRadio: function (oEvent) {
+			var ValueSelect = oEvent.getSource().getSelectedButton().getText();
+			if (ValueSelect === "Volumen") {
+				this.GetData("");
+			} else {
+				this.GetData("X");
+			}
+
+		},
+
+		GetData: function (val) {
 			var oModel = this.getModel("ModelSimulador");
 			var sServiceUrl = oModel.sServiceUrl;
 			var oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true);
 
+			var filterCompCode = new sap.ui.model.Filter({
+				path: "FlagMatPre",
+				operator: sap.ui.model.FilterOperator.EQ,
+				value1: val
+			});
+
+			var filtersArray = new Array();
+			filtersArray.push(filterCompCode);
+
 			//Get volumen
-			var oRead = this.fnReadEntity(oModelService, "/versionVolumenBWSet", null);
+			var oRead = this.fnReadEntity(oModelService, "/versionVolumenBWSet", filtersArray);
 			var oVBW = [];
 
 			if (oRead.tipo === "S") {
@@ -134,15 +153,15 @@ sap.ui.define([
 					oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true);
 
 				var oObject = {
-					Modulo: "VOL",
+					Modulo: this.byId("rbtnOption").getSelectedIndex() === 0 ? "VOL" : "MAT",
 					Nombre: this.byId("iptName").getValue(),
 					FiscYear: this.byId("cbxPeriodo").getValue(),
-					VelVol: this.byId("cbxVersionSistema").getValue(),
-					TipoVersionVolumen: this.byId("cbxTypeFile").getValue()
+					VelVol: this.byId("cbxTypeFile").getValue() === "Real" ? "R000" : this.byId("cbxVersionSistema").getValue(),
+					TipoVersionVolumen: this.byId("cbxTypeFile").getValue(),
+					Estado: "1"
 				};
 
 				var oCreate = this.fnCreateEntity(oModelService, "/versionSet", oObject);
-
 				if (oCreate.tipo === "S") {
 					MessageBox.show(
 						'Datos guardados correctamente', {
@@ -158,21 +177,12 @@ sap.ui.define([
 					);
 				} else {
 					MessageBox.show(
-						"Fail", {
+						oCreate.msjs, {
 							icon: MessageBox.Icon.ERROR,
 							title: "Error"
 						}
 					);
 				}
-
-				/*this.getModel("ModelSimulador").create("/versionSet", oObject, {
-					success: function (oData, oResponse) {
-						
-					},
-					error: function (oError) {
-						
-					}
-				});*/
 
 			}
 		}

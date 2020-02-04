@@ -1,5 +1,6 @@
-<mvc:View xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:f="sap.ui.layout.form" xmlns:t="sap.ui.table" controllerName="cbc.co.simulador_costos.controller.Escenarios.MatrizEsc.AddEsc">
-	<Page title="{viewModel>/title}" busy="{viewModel>/busy}" navButtonPress="onNavBack" showNavButton="true">
+<mvc:View controllerName="cbc.co.simulador_costos.controller.Escenarios.MatrizEsc.AddEsc" xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core"
+	xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:f="sap.ui.layout.form" xmlns:t="sap.ui.table">
+	<Page title="{viewModel>/titleCreateEscenarioView}" busy="{viewModel>/busy}">
 		<content>
 			<f:Form editable="true">
 				<f:formContainers>
