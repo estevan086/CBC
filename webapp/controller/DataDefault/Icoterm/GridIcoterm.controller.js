@@ -8,7 +8,7 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 	return Controller.extend("cbc.co.simulador_costos.controller.DataDefault.Icoterm.GridIcoterm", {
 
 		onInit: function () {
-			var oModelV = new JSONModel({
+			var oModelV = new JSONModel({ 
 				busy: true,
 				Bezei: ""
 			});
