@@ -183,7 +183,7 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 				oEntidad.icotermSet.push(oDetail);
 			}
 
-			var oCreate = this.fnCreateEntity(oModelService, "/tipoCambioCabSet", oEntidad);
+			var oCreate = this.fnCreateEntity(oModelService, "/icotermHeaderSet", oEntidad);
 
 			if (oCreate.tipo === 'S') {
 				MessageBox.show(
