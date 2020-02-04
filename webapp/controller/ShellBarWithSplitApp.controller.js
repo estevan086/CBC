@@ -125,8 +125,8 @@ sap.ui.define([
 					"title": "Escenarios",
 					"icon": "sap-icon://simulate",
 					"expanded": false,
-					"key": "rtNone",
-					"items": [{
+					"key": "rtChMatrizEs"
+					/*"items": [{
 							"title": "Matriz de Escenarios",
 							"key": "rtChMatrizEs"
 						},
@@ -138,7 +138,7 @@ sap.ui.define([
 							"title": "Administracion Escenarios",
 							"key": "rtChAdmonEs"
 						}
-					]
+					]*/
 				}, {
 					"title": "COGS",
 					"icon": "sap-icon://provision",
