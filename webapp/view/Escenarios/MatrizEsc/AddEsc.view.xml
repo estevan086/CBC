@@ -7,12 +7,12 @@
 						<f:formElements>
 							<f:FormElement label="Nombre Escenario">
 								<f:fields>
-									<Input required="true" value="{viewModel>/scenarioName}" maxLength="30"/>
+									<Input required="true" value="{viewModel>/scenarioName}" maxLength="30" enabled="{viewModel>/modeEdit}"/>
 								</f:fields>
 							</f:FormElement>
 							<f:FormElement label="Descripción Escenario">
 								<f:fields>
-									<TextArea rows="2" value="{viewModel>/scenarioDesc}" maxLength="40"/>
+									<TextArea rows="2" value="{viewModel>/scenarioDesc}" maxLength="40" enabled="{viewModel>/modeEdit}"/>
 								</f:fields>
 							</f:FormElement>
 							<f:FormElement>
@@ -20,14 +20,14 @@
 									<Label text="Tipo" required="true"/>
 								</f:label>
 								<f:fields>
-									<Select id="slcScenarioType" items="{Escenarios>/Tipos}">
+									<Select id="slcScenarioType" items="{Escenarios>/Tipos}" enabled="{viewModel>/modeEdit}">
 										<core:Item key="{Escenarios>key}" text="{Escenarios>value}"/>
 									</Select>
 								</f:fields>
 							</f:FormElement>
 							<f:FormElement label="{i18n>exchangeRateScenario}">
 								<f:fields>
-									<RadioButtonGroup id="rbtnExchangeRateOption" columns="2" selectedIndex="{versionModel>/indexExchangeRateOption}" select=".onSelectExchangeRate">
+									<RadioButtonGroup id="rbtnExchangeRateOption" columns="2" selectedIndex="{viewModel>/indexExchangeRateOption}" select=".onSelectExchangeRate" enabled="{viewModel>/modeEdit}">
 										<buttons>
 											<RadioButton id="R" text="{i18n>Real}"/>
 											<RadioButton id="P" text="{i18n>Plan}"/>
@@ -37,7 +37,7 @@
 							</f:FormElement>
 							<f:FormElement label="{i18n>annoScenarioView}">
 								<f:fields>
-									<ComboBox id="cmbAnnoExchangeRate" selectedKey="{versionModel>/year}" required="true">
+									<ComboBox id="cmbAnnoExchangeRate" selectedKey="{viewModel>/year}" required="true" enabled="{viewModel>/modeEdit}">
 									</ComboBox>
 								</f:fields>
 							</f:FormElement>
@@ -63,7 +63,7 @@
 		<footer>
 			<OverflowToolbar>
 				<ToolbarSpacer/>
-				<Button type="Accept" text="Validar escenario" icon="sap-icon://add" tooltip="Validar escenario" press="onValidateScene"/>
+				<Button type="Accept" text="Validar escenario" icon="sap-icon://add" tooltip="Validar escenario" press="onValidateScene" visible="{= ['C'].includes(${viewModel>/viewMode}) }"/>
 			</OverflowToolbar>
 		</footer>
 	</Page>

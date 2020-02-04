@@ -17,7 +17,8 @@ sap.ui.define([], function () {
 						value: "{viewModel>" + oContext.getObject().id + "}",
 						showValueHelp: true,
 						valueHelpOnly: true,
-						valueState: "{viewModel>" + oContext.getObject().id + "ValueState}"
+						valueState: "{viewModel>" + oContext.getObject().id + "ValueState}",
+						enabled: "{viewModel>/modeEdit}"
 					}).attachValueHelpRequest(function(oEvent){
 						this._oSelectDialog = this._createSelectDialogOriginVersion(oEvent.getSource().data("row"), oEvent.getSource().data("mes"));
 						this._oSelectDialog.open();

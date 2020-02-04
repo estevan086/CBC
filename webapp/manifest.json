@@ -196,6 +196,10 @@
 					"pattern": "MatrizEscenarios/Nuevo",
 					"target": "rtChMatrizEsNewTarget"
 				},
+				"rtChMatrizEsEdit": {
+					"pattern": "MatrizEscenarios/View/{id_escenario}",
+					"target": "rtChMatrizEsEditTarget"
+				},
 				"rtChAdmonEs": {
 					"pattern": "rtChAdmonEs",
 					"target": "rtHomeTarget"
@@ -364,9 +368,9 @@
 					"controlId": "parentNavContainer",
 					"transition": "slide"
 				},
-				"rtChAdmonEsTarget": {
-					"viewPath": "cbc.co.simulador_costos.view.Escenarios",
-					"viewName": "AdmonEsc",
+				"rtChMatrizEsEditTarget": {
+					"viewPath": "cbc.co.simulador_costos.view.Escenarios.MatrizEsc",
+					"viewName": "AddEsc",
 					"parent": "parentTarget",
 					"controlId": "parentNavContainer",
 					"transition": "slide"

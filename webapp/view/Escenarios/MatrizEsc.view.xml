@@ -1,18 +1,18 @@
-<mvc:View controllerName="cbc.co.simulador_costos.controller.Escenarios.MatrizEsc" height="100%" xmlns:l="sap.ui.layout"
-	xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m">
-	<Page title="{i18n>titleScenarioView}">
+<mvc:View xmlns:l="sap.ui.layout" xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" controllerName="cbc.co.simulador_costos.controller.Escenarios.MatrizEsc" height="100%">
+	<Page title="{i18n>titleScenarioView}" showFooter="false">
 		<content>
-			<Table id="tblScenarios" noDataText="{i18n>scenarioNoDataFound}" busyIndicatorDelay="{viewModel>/delay}" growing="true" growingThreshold="30"
-				updateFinished=".onUpdateFinished" items="{ModelSimulador>/escenarioCabSet}">
+			<Table id="tblScenarios" noDataText="{i18n>scenarioNoDataFound}" busyIndicatorDelay="{viewModel>/delay}" growing="true" growingThreshold="30" updateFinished=".onUpdateFinished" items="{ModelSimulador>/escenarioCabSet}">
 				<headerToolbar>
 					<OverflowToolbar>
 						<content>
 							<Title text="{viewModel>/tableTitle}"/>
+							<ToolbarSpacer id="spacer1"/>
+							<Button type="Accept" text="{i18n>Crear}" icon="sap-icon://add" tooltip="{i18n>createScenario}" press="onAddScene"/>
 						</content>
 					</OverflowToolbar>
 				</headerToolbar>
 				<items>
-					<ColumnListItem type="Navigation">
+					<ColumnListItem type="Navigation" press=".onNavDetail">
 						<cells>
 							<Text text="{ModelSimulador>yescenari}"/>
 							<Text text="{ModelSimulador>Nombre}"/>
@@ -51,11 +51,5 @@
 				</columns>
 			</Table>
 		</content>
-		<footer>
-			<OverflowToolbar>
-				<ToolbarSpacer/>
-				<Button type="Accept" text="{i18n>Crear}" icon="sap-icon://add" tooltip="{i18n>createScenario}" press="onAddScene"/>
-			</OverflowToolbar>
-		</footer>
 	</Page>
 </mvc:View>

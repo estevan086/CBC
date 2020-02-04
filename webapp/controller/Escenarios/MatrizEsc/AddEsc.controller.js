@@ -10,6 +10,7 @@ sap.ui.define([
 		onInit: function () {
 			this._oTableMatrix = this.byId("tblMatrixScene");
 			this.getRouter().getRoute("rtChMatrizEsNew").attachPatternMatched(this._onRouteMatched, this);
+			this.getRouter().getRoute("rtChMatrizEsEdit").attachPatternMatched(this._onRouteMatchedView, this);
 		},
 		onConfirmVersion: function (oEvent) {
 			var oSelectedItem = oEvent.getParameter("selectedItem");
@@ -65,6 +66,26 @@ sap.ui.define([
 			this._bindItemsYear(sExchangeRate);
 		},
 		_onRouteMatched: function (oEvent) {
+			this._onBindInitialView();
+			var oModel = this.getModel("viewModel");
+			oModel.setProperty("/viewMode", "C");
+			oModel.setProperty("/modeEdit", true);
+		},
+		_onRouteMatchedView: function (oEvent) {
+			this._onBindInitialView();
+			var oModel = this.getModel("viewModel");
+			oModel.setProperty("/busy", true);
+			oModel.setProperty("/viewMode", "V");
+			oModel.setProperty("/modeEdit", false);
+			var sIdEscenario = oEvent.getParameter("arguments").id_escenario;
+			this.getModel("ModelSimulador").metadataLoaded().then(function () {
+				var sObjectPath = this.getModel("ModelSimulador").createKey("escenarioCabSet", {
+					yescenari: sIdEscenario
+				});
+				this._bindView("/" + sObjectPath);
+			}.bind(this));
+		},
+		_onBindInitialView: function () {
 			this._createViewModel();
 			this._oTableMatrix.bindColumns({
 				path: "/columns",
@@ -73,7 +94,22 @@ sap.ui.define([
 			});
 			this._bindItemsYear("M");
 		},
-		_bindItemsYear: function(sExchangeRate){
+		_bindView: function (sPath) {
+			var oModel = this.getModel("viewModel");
+			this.getModel("ModelSimulador").read(sPath, {
+				urlParameters: {
+					"$expand": "Escenarios"
+				},
+				success: jQuery.proxy(this._setValuesPage, this),
+				error: function (oError) {
+					this.showGeneralError({
+						oDataError: oError
+					});
+					oModel.setProperty("/busy", false);
+				}.bind(this)
+			});
+		},
+		_bindItemsYear: function (sExchangeRate) {
 			var oAnnoExchangeRate = this.byId("cmbAnnoExchangeRate");
 			var aFilter = [new Filter(
 				"Kurst",
@@ -173,7 +209,7 @@ sap.ui.define([
 			this._sMonth = sMonth;
 			var oTemplate = new sap.m.StandardListItem({
 				title: "{ModelSimulador>Nombre}",
-				description: "{ModelSimulador>Txtmd}",
+				description: "{ModelSimulador>TipoVersionVolumen} {ModelSimulador>Txtmd}",
 				info: "{ModelSimulador>FiscYear}",
 				type: "Active"
 			});
@@ -190,17 +226,54 @@ sap.ui.define([
 			});
 			return oSelectDialog;
 		},
+		_setValuesPage: function (oData) {
+			var oModel = this.getModel("viewModel");
+			oModel.setProperty("/scenarioId", oData.yescenari);
+			oModel.setProperty("/scenarioName", oData.Nombre);
+			oModel.setProperty("/scenarioDesc", oData.Descripcion);
+			oModel.setProperty("/scenarioType", oData.ytipoescn);
+			oModel.setProperty("/indexExchangeRateOption", oData.ytipcamb === "M" ? 0 : 1);
+			oModel.setProperty("/year", oData.yfiscyear);
+			if (oData && oData.Escenarios && oData.Escenarios.results)
+				for (var i = 0; i < oData.Escenarios.results.length; i++) {
+					var sModulo = oData.Escenarios.results[i].ymodulo;
+					for (var j = 0; j < oModel.getProperty("/rows").length; j++) {
+						if (oModel.getProperty("/rows")[j].tipoVersion === sModulo) {
+							for (var k = 1; k <= 12; k++) {
+								var sMonth = k < 10 ? "0" + k.toString() : k.toString();
+								oModel.setProperty("/rows/" + j + "/" + sMonth, oData.Escenarios.results[i]["yvmes" + sMonth + "Name"]);
+								oModel.setProperty("/rows/" + j + "/" + sMonth + "Id", oData.Escenarios.results[i]["yvmes" + sMonth]);
+							}
+
+						}
+					}
+				}
+			oModel.setProperty("/busy", false);
+		},
 		_createViewModel: function () {
+			var aRows = [{
+				"modulo": "Materiales",
+				"tipoVersion": "MAT"
+			}, {
+				"modulo": "Costos Logísticos",
+				"tipoVersion": "LOG"
+			}, {
+				"modulo": "Volúmenes",
+				"tipoVersion": "VOL"
+			}];
 			var oModel = new JSONModel({
 				columns: this.getModel("Escenarios").getProperty("/Meses"),
-				rows: this.getModel("Escenarios").getProperty("/Matriz"),
+				rows: aRows,
 				title: this.getResourceBundle().getText("titleCreateScenarioView"),
 				busy: false,
+				scenarioId: "",
 				scenarioName: "",
 				scenarioDesc: "",
 				scenarioType: "",
 				indexExchangeRateOption: 0,
-				year: ""
+				year: "",
+				modeEdit: false,
+				viewMode: "C"
 			});
 			this.setModel(oModel, "viewModel");
 			return oModel;
