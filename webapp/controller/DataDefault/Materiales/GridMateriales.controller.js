@@ -1767,6 +1767,7 @@ sap.ui.define([
 					Fiscyear: oTempRow.Periodo,
 					// Fiscvarnt: oTempRow.MDEF_IDMATERIAL,
 					Fiscper3: oTempRow.Mes,
+					yversion: version,
 					NetWeight: Number(oTempRow.Peso_Material).toString(),
 					// UnitOfWt: oTempRow.MDEF_IDMATERIAL,
 					commodit: oTempRow.Commoditie.toString(),
