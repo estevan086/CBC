@@ -49,6 +49,13 @@ sap.ui.define([
 
 			var oBuilder = this.getView().byId("builder");
 			oBuilder.setShowInputToolbar(true);
+			oBuilder.destroyFunctions();
+			oBuilder.removeAllFunctions();
+			oBuilder.allowFunction("ABS", false);
+			oBuilder.allowFunction("Round", false);
+			oBuilder.allowFunction("RoundUp", false);
+			oBuilder.allowFunction("RoundDown", false);
+			oBuilder.allowFunction("SQRT", false);
 			
 			this.oIdCommoditie = event.getParameter("arguments").oIdCommoditie;
 			this.oSociedad = event.getParameter("arguments").oSociedad;
