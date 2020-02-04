@@ -123,6 +123,7 @@ sap.ui.define([
 			var oErrors = [],
 				oViewModel = this.getModel("viewModel");
 			oViewModel.setProperty("/scenarioType", this.getView().byId("slcScenarioType").getSelectedKey());
+			oViewModel.setProperty("/year", this.getView().byId("cmbAnnoExchangeRate").getSelectedKey());
 			if (!oViewModel.getProperty("/scenarioName")) {
 				oErrors.push(this.getResourceBundle().getText("errMissNameScenarioView"));
 			}
