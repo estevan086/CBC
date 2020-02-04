@@ -157,7 +157,8 @@ sap.ui.define([
 					Nombre: this.byId("iptName").getValue(),
 					FiscYear: this.byId("cbxPeriodo").getValue(),
 					VelVol: this.byId("cbxTypeFile").getValue() === "Real" ? "R000" : this.byId("cbxVersionSistema").getValue(),
-					TipoVersionVolumen: this.byId("cbxTypeFile").getValue()
+					TipoVersionVolumen: this.byId("cbxTypeFile").getValue(),
+					Estado: "1"
 				};
 
 				var oCreate = this.fnCreateEntity(oModelService, "/versionSet", oObject);
