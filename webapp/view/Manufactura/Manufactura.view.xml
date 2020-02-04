@@ -12,6 +12,13 @@
 							items="{ path: '/LstSociedades', sorter: { path: 'CompCodePlant' } }">
 							<core:ListItem key="{CompCodePlant}" text="{DescCompCodePlant}" additionalText="{CompCodePlant}"/>
 						</ComboBox>-->
+						<Label text="Tipo"/>
+						<RadioButtonGroup id="rbtnOption" columns="2" select="getRadio">
+										<buttons>
+											<RadioButton text="Volumen"/>
+											<RadioButton text="Materiales"/>
+										</buttons>
+									</RadioButtonGroup>
 						<Label text="Version"/>
 						<ComboBox id="cbxVersionSistema" selectionChange="onChangeVersionSistema"
 							items="{ path: '/LstVersionSistema', sorter: { path: 'Fiscyear' } }">
@@ -21,9 +28,8 @@
 						<ComboBox id="cbxTypeFile" selectionChange="onChangeTypeFile">
 							<items>
 								<core:ListItem text="Real" key="0"/>
-								<core:ListItem text="AOP" key="1"/>
+								<core:ListItem text="Plan" key="1"/>
 								<core:ListItem text="Forecast" key="2"/>
-								<core:ListItem text="Plan" key="2"/>
 							</items>
 						</ComboBox>
 						<Label text="Nombre de version"/>
