@@ -1738,8 +1738,7 @@ sap.ui.define([
 				Run = i;
 				if (Run == 1000) {
 					Run = 0;
-					if (oEntidad.materialDefatultSet.length > 0)
-					{
+					if (oEntidad.materialDefatultSet.length > 0) {
 						oCreate = this.fnCreateEntity(oModelService, "/materialsaveSet", oEntidad);
 						oEntidad.materialDefatultSet = [];
 					}
@@ -2423,9 +2422,7 @@ sap.ui.define([
 			if (oComboxPlant.getSelectedKey() !== "") {
 				aFilter.push(new Filter("Plant", FilterOperator.EQ, oComboxPlant.getSelectedKey()));
 			}
-			if (oComboxPlant.getSelectedKey() !== "") {
-				aFilter.push(new Filter("yversion", FilterOperator.EQ, "DEFAULT"));
-			}
+			aFilter.push(new Filter("yversion", FilterOperator.EQ, version));
 
 			this.getMaterialFilter(aFilter);
 
