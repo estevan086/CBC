@@ -149,7 +149,7 @@
 							<m:ComboBox id="idComboBoxIcoterm" showSecondaryValues="true" filterSecondaryValues="true" value="{MDEF_ICOTERM}"
 								selectedKey="{MDEF_ICOTERM_ID}" items="{ path: '/LstIcoterm', sorter: { path: 'yicoterm' } }" editable="false"
 								selectionChange="onChangeIcoterm">
-								<c:ListItem key="{yidAuton}" text="{yicoterm}" additionalText="{yidAuton}"/>
+								<c:ListItem key="{txtmd}" text="{yicoterm}" additionalText="{txtmd}"/>
 							</m:ComboBox>
 						</template>
 					</Column>
