@@ -1965,7 +1965,7 @@ sap.ui.define([
 			oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true);
 
 			//Leer datos del ERP
-			var oRead = this.fnReadEntity(oModelService, "/IcotermSet", null);
+			var oRead = this.fnReadEntity(oModelService, "/icotermSet", null);
 
 			if (oRead.tipo === "S") {
 				aListData = oRead.datos.results;
@@ -2006,6 +2006,7 @@ sap.ui.define([
 			var oTableItem = oEvent.getSource().getParent();
 			var oTableItemObject = oTableItem.getBindingContext().getObject();
 			oTableItemObject.MDEF_ICOTERM = oUnidadSeleccionada;
+			oTableItemObject.MDEF_ICOTERM_ID = oUnidadSeleccionada;
 
 			oTableCommodities.getModel().refresh();
 
@@ -2471,7 +2472,7 @@ sap.ui.define([
 			this.loadModel(pVersion, pYear);
 			this.loadModelCommoditie();
 			this.loadModelCommoditieDetail(pVersion);
-			// this.loadModelIcoterm();
+			this.loadModelIcoterm();
 			this.loadModelUnidaMedida();
 			this.loadModelMoneda();
 			this.loadModelTipoCambio(pTipoCambio);
