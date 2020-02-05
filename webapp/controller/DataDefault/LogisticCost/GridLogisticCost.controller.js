@@ -276,9 +276,9 @@ sap.ui.define([
 								text: "{ModelSimulador>Waers}"
 							})
 						},
-						//value: "{LogisticCostValoration>/Currency}",
+						additionalText: "{Ktext}",
+						showSecondaryValues: true,
 						selectedKey: "{Currency}"
-
 					}) : new sap.m.Input(columnName, {
 						value: "{" + columnName + "}",
 						enabled: oContext.getObject().enabled

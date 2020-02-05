@@ -134,8 +134,7 @@ sap.ui.define([
 			this.getModel("modelView").setProperty("/title", ("Materiales: " + cDefaultVersion).toString());
 
 			this.loadMaterial("DEFAULT", "PLAN", "");
-
-			//this.getModel("modelView").setProperty("/busy", true);
+			
 		},
 
 		onMyRoutePatternMatchedVersion: function (oEvent) {
@@ -155,8 +154,6 @@ sap.ui.define([
 			aFilter.push(new Filter("Fiscyear", FilterOperator.EQ, oData.year));
 
 			this.loadMaterial(version, "PLAN", oData.year);
-
-			this.getModel("modelView").setProperty("/busy", true);
 		},
 
 		onInitCalculation: function () {
@@ -1023,8 +1020,9 @@ sap.ui.define([
 
 			//Leer datos del ERP
 			// var oRead = this.fnReadEntity(oModelService, "/materialDefatultSet", aFilter);
+			this.getModel("modelView").setProperty("/busy", true);
 			var oRead = this.fnReadEntity(oModelService, vFilterEntity, aFilter);
-
+			this.getModel("modelView").setProperty("/busy", false);
 			if (oRead.tipo === "S") {
 				aListMaterial = oRead.datos.results;
 			} else {

@@ -98,14 +98,14 @@ sap.ui.define([
 			//aFilter.push(new Filter("Fiscyear", FilterOperator.EQ, oData.year));
 			this.fnConsultaDetalleCommodities(version);
 		},
-		
+
 		onFilterCommodities: function (oEvent) {
 
 			// Create a filter which contains our name and 'publ' filter
 			this.fnConsultaDetalleCommodities(version, this.getFilterYear(), this.getFilterCentro());
 
 		},
-		
+
 		getFilterCentro: function () {
 			var oCentro = "";
 
@@ -116,7 +116,7 @@ sap.ui.define([
 		getFilterYear: function () {
 			var oYear = "";
 
-			oYear =  this.getView().byId("cmbYear").getSelectedKey();
+			oYear = this.getView().byId("cmbYear").getSelectedKey();
 
 			return oYear;
 		},
@@ -138,14 +138,14 @@ sap.ui.define([
 
 			//Definir filtro
 			var vFilterversion = "";
-			var vFilterCentro  = "";
+			var vFilterCentro = "";
 			if (oYear !== "" && oYear !== undefined) {
 				vFilterversion = " and Year eq '" + oYear + "'";
 			}
 			if (oCentro !== "" && oCentro !== undefined) {
 				vFilterCentro = " and Centro eq '" + oCentro + "'";
 			}
-			var vFilterEntity = "/detailCommoditiesSet?$filter=Version eq '" + oVersion + "'" + vFilterversion+vFilterCentro;
+			var vFilterEntity = "/detailCommoditiesSet?$filter=Version eq '" + oVersion + "'" + vFilterversion + vFilterCentro;
 
 			//Leer datos del ERP
 			var oRead = this.fnReadEntity(oModelService, vFilterEntity);
@@ -252,14 +252,14 @@ sap.ui.define([
 		GetMonedas: function () {
 
 			//Url Servicio
-			var oModel = this.getOwnerComponent().getModel("ModelSimulador");
-			var sServiceUrl = oModel.sServiceUrl;
+			//var oModel = this.getOwnerComponent().getModel("ModelSimulador");
+			//var sServiceUrl = oModel.sServiceUrl;
 
 			//Definir modelo del servicio web
-			var oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true);
+			//var oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true);
 			//Definir filtro
 
-			//Leer datos del ERP
+			/*//Leer datos del ERP
 			var oRead = this.fnReadEntity(oModelService, "/monedasSet", null);
 
 			if (oRead.tipo === "S") {
@@ -268,12 +268,12 @@ sap.ui.define([
 
 			} else {
 				MessageBox.error(oRead.msjs, null, "Mensaje del sistema", "OK", null);
-			}
+			}*/
 
 			var oTableCommodities = this.byId("tblCommodities");
-			oTableCommodities.getModel().setProperty("/LstMonedas", this.oDataMonedas);
+			// oTableCommodities.getModel().setProperty("/LstMonedas", this.oDataMonedas);
 			oTableCommodities.getModel().refresh();
-			
+
 			var oCentroFilterList = this.byId("cmbPlant");
 			oCentroFilterList.getModel().setProperty("/LstSociedades", this.oDataSociedades);
 			oCentroFilterList.getModel().refresh();
@@ -302,6 +302,7 @@ sap.ui.define([
 			}
 
 			var oTableCommodities = this.byId("tblCommodities");
+			oTableCommodities.getModel().setSizeLimit(400);
 			oTableCommodities.getModel().setProperty("/LstUnidadesMedida", this.oDataUnidadesMedida);
 			oTableCommodities.getModel().refresh();
 
@@ -344,7 +345,7 @@ sap.ui.define([
 			var oItem = oEvent.getParameter("selectedItem");
 			var oTableCommodities = this.byId("tblCommodities");
 			var oItemObject = oItem.getBindingContext().getObject();
-			var oMonedaSeleccionada = oItemObject.Waers;
+			var oMonedaSeleccionada = oItemObject.Moneda;
 			var oTableItem = oEvent.getSource().getParent();
 			var oTableItemObject = oTableItem.getBindingContext().getObject();
 			oTableItemObject.Moneda = oMonedaSeleccionada;
@@ -356,11 +357,14 @@ sap.ui.define([
 
 			var oItem = oEvent.getParameter("selectedItem");
 			var oTableCommodities = this.byId("tblCommodities");
-			var oItemObject = oItem.getBindingContext().getObject();
-			var oUnidadSeleccionada = oItemObject.Msehi;
-			var oTableItem = oEvent.getSource().getParent();
-			var oTableItemObject = oTableItem.getBindingContext().getObject();
-			oTableItemObject.UnidadMedida = oUnidadSeleccionada;
+			
+			if (oItem !== null) {
+				var oItemObject = oItem.getBindingContext().getObject();
+				var oUnidadSeleccionada = oItemObject.Msehi;
+				var oTableItem = oEvent.getSource().getParent();
+				var oTableItemObject = oTableItem.getBindingContext().getObject();
+				oTableItemObject.UnidadMedida = oUnidadSeleccionada;
+			}
 			oTableCommodities.getModel().refresh();
 
 		},
