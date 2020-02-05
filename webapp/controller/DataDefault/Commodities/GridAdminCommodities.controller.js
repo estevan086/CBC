@@ -723,6 +723,7 @@ sap.ui.define([
 					if (oValue.getName() !== "") {
 						oDetail[oValue.getName().toString()] = CurrentRow[oValue.getLabel().getText().toString()];
 						oDetail.Version = version;
+						oDetail.Mensaje = "";
 					}
 				});
 

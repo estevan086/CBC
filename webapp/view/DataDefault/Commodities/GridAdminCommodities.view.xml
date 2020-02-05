@@ -160,6 +160,12 @@
 							<m:Text text="{CDEF_EDIT_FLAG}" wrapping="false"/>
 						</template>
 					</Column>
+					<Column visible="false">
+						<m:Label text="CDEF_MENSAJE"/>
+						<template>
+							<m:Text text="{Mensaje}" wrapping="false"/>
+						</template>
+					</Column>
 				</columns>
 				<rowActionTemplate>
 					<RowAction>
