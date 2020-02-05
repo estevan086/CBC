@@ -144,7 +144,7 @@ sap.ui.define(["cbc/co/simulador_costos/controller/BaseController", "sap/ui/core
 								type: MessageType.Success
 							}));
 							MessageToast.show(oMessage.message);
-							this.getLogisticCostData();
+							this.getMasterCommodities();
 						}
 					}
 				}.bind(this),
