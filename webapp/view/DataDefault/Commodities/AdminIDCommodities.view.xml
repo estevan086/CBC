@@ -1,6 +1,6 @@
 <mvc:View xmlns="sap.m" xmlns:layout="sap.ui.layout" xmlns:mvc="sap.ui.core.mvc" xmlns:ui="sap.ui.table"
 	controllerName="cbc.co.simulador_costos.controller.DataDefault.Commodities.AdminIDCommodities">
-	<Page showHeader="true" enableScrolling="false" class="sapUiContentPadding" showNavButton="true" navButtonPress="onBack">
+	<Page showHeader="true" enableScrolling="false" class="sapUiContentPadding" showNavButton="true" navButtonPress="onBack" busy="{modelView>/busy}" >
 		<content>
 			<ui:Table id="tblCommodities" rows="{Commodities>/CodCommodities}" selectionMode="None" visibleRowCount="10" rowActionCount="2">
 				<ui:extension>
@@ -9,7 +9,7 @@
 							<Title id="title" text="Commodities"/>
 							<ToolbarSpacer/>
 							<Button icon="sap-icon://factory" type="Emphasized" text="Crear Commodities" tooltip="Crear Commodities" press="showFormAddCommoditie"/>
-							<!--<Button icon="sap-icon://save" type="Emphasized" text="Guardar Commodities" tooltip="Guardar Commodities" press="saveCommodities"/>-->
+							<Button icon="sap-icon://save" type="Emphasized" text="Guardar Commodities" tooltip="Guardar Commodities" press="onUpdateCommoditie"/>
 						</content>
 					</OverflowToolbar>
 				</ui:extension>

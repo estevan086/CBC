@@ -124,7 +124,6 @@ sap.ui.define([
 			this.getView().byId("cmbPlant").setSelectedKey("");
 			this.getView().byId("cmbYear").setSelectedKey("");
 		},
-		
 		fnConsultaDetalleCommodities: function (oVersion, oYear, oCentro) {
 
 			var oPanel = this.getView();
@@ -247,11 +246,6 @@ sap.ui.define([
 			var oTableCommodities = this.byId("tblCommodities");
 			oTableCommodities.getModel().setProperty("/LstSociedades", this.oDataSociedades);
 			oTableCommodities.getModel().refresh();
-			
-			
-			var oCentroFilterList = this.byId("cmbPlant");
-			oCentroFilterList.getModel().setProperty("/LstSociedades", this.oDataSociedades);
-			oCentroFilterList.getModel().refresh();
 
 		},
 
@@ -279,6 +273,10 @@ sap.ui.define([
 			var oTableCommodities = this.byId("tblCommodities");
 			oTableCommodities.getModel().setProperty("/LstMonedas", this.oDataMonedas);
 			oTableCommodities.getModel().refresh();
+			
+			var oCentroFilterList = this.byId("cmbPlant");
+			oCentroFilterList.getModel().setProperty("/LstSociedades", this.oDataSociedades);
+			oCentroFilterList.getModel().refresh();
 
 		},
 
