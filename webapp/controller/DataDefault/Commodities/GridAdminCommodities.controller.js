@@ -697,14 +697,27 @@ sap.ui.define([
 				headers = lines[0].split(separator);
 			}
 			for (var i = 1; i < lines.length; i++) {
+				if (!lines[i]) { continue; }
 				var obj = {};
 				var currentline = lines[i].split(separator);
 				for (var j = 0; j < headers.length; j++) {
 					obj[headers[j]] = currentline[j];
+					obj[headers[j]] = obj[headers[j]].replace(/"/g, '');
+					if (headers[j] === "Precio"){
+						obj[headers[j]] = obj[headers[j]].replace(/,/g, '');
+						obj[headers[j]] = obj[headers[j]].replace(/\./g, ',');
+					}
+					if (headers[j] === "Otros Costos"){
+						obj[headers[j]] = obj[headers[j]].replace(/,/g, '');
+						obj[headers[j]] = obj[headers[j]].replace(/\./g, ',');
+					}
 				}
+				
 				result.push(obj);
 			}
 			var oStringResult = JSON.stringify(result);
+		//oStringResult = oStringResult.replace(/,/g, '');
+		//	oStringResult = oStringResult.replace(/\./g, ',');
 			var oFinalResult = JSON.parse(oStringResult.replace(/\\r/g, "")); //OBJETO JSON para guardar
 			//MessageToast.show(oStringResult);
 			this.CargaMasiva(oFinalResult);
