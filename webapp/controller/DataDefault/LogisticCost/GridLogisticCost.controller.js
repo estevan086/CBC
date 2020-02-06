@@ -273,10 +273,10 @@ sap.ui.define([
 							templateShareable: false,
 							template: new sap.ui.core.Item({
 								key: "{ModelSimulador>Waers}",
-								text: "{ModelSimulador>Waers}"
+								text: "{ModelSimulador>Waers}",
+								additionalText: "{ModelSimulador>Ktext}"
 							})
 						},
-						additionalText: "{Ktext}",
 						showSecondaryValues: true,
 						selectedKey: "{Currency}"
 					}) : new sap.m.Input(columnName, {
@@ -373,10 +373,6 @@ sap.ui.define([
 			});
 
 			this.cvsDataExport(oModel, columns);
-			this.getView().getModel("DataExport").setProperty("/LogisticCostValoration", []);
-			/*} else {
-				this.getLogisticCostValoration(this.getFilters(), true);
-			}*/
 
 		},
 		onImportCvsFile: function (oEvent) {
@@ -403,7 +399,20 @@ sap.ui.define([
 							oLogistiCostLine[oColumn.columnName] = that.isInitialNum(oClValues[j]) !== undefined ? oClValues[j].toString().replace(".",
 								",") : cDefaultNumValue;
 						});
-						oLogistiCost.push(oLogistiCostLine);
+						if (oLogistiCost.find(x => x.Material === oLogistiCostLine.Material) === undefined || oLogistiCost.find(x => x.Plant ===
+								oLogistiCostLine.Plant) ===
+							undefined || oLogistiCost.find(x => x.Fiscyear === oLogistiCostLine.Fiscyear) === undefined ||
+							oLogistiCost.find(x => x.Fiscper3 === oLogistiCostLine.Fiscper3) === undefined ||
+							oLogistiCost.find(x => x.CompCode === oLogistiCostLine.CompCode) === undefined) {
+
+							oLogistiCost.push(oLogistiCostLine);
+
+						} else {
+							this.addMessage(new Message({
+								message: this.getResourceBundle().getText("DuplicateMat"),
+								type: MessageType.Error
+							}));
+						}
 					});
 					//Actualiza modelo
 					that.getView().getModel("LogisticCost").setProperty("/LogisticCostValoration", oLogistiCost);

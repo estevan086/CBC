@@ -130,11 +130,11 @@ sap.ui.define([
 			var oViewModel = this.getModel("viewModel"),
 				aScenarios = [],
 				sExchangeRate;
-			if (oViewModel.getProperty("/indexExchangeRateOption") === 0) {
+			/*if (oViewModel.getProperty("/indexExchangeRateOption") === 0) {
 				sExchangeRate = "M";
 			} else {
 				sExchangeRate = "P";
-			}
+			}*/
 			for (var i = 0; i < oViewModel.getProperty("/rows").length; i++) {
 				var oItem = {};
 				oItem.Nombre = oViewModel.getProperty("/scenarioName");
@@ -145,7 +145,11 @@ sap.ui.define([
 				oItem.ytipcamb = sExchangeRate;
 				for (var j = 1; j <= 12; j++) {
 					var sMonth = j < 10 ? "0" + j.toString() : j.toString();
-					oItem["yvmes" + sMonth] = oViewModel.getProperty("/rows/" + i + "/" + sMonth + "Id");
+					if (oViewModel.getProperty("/rows/" + i + "/tipoVersion") !== "TC") {
+						oItem["yvmes" + sMonth] = oViewModel.getProperty("/rows/" + i + "/" + sMonth + "Id");
+					} else {
+						oItem["yvmes" + sMonth] = oViewModel.getProperty("/rows/" + i + "/" + sMonth + "TC");
+					}
 				}
 				aScenarios.push(oItem);
 			}
@@ -172,11 +176,20 @@ sap.ui.define([
 			for (var i = 0; i < oViewModel.getProperty("/rows").length; i++) {
 				for (var j = 1; j <= 12; j++) {
 					var sMonth = j < 10 ? "0" + j.toString() : j.toString();
-					if (!oViewModel.getProperty("/rows/" + i + "/" + sMonth) || !oViewModel.getProperty("/rows/" + i + "/" + sMonth + "Id")) {
-						oViewModel.setProperty("/rows/" + i + "/" + sMonth + "ValueState", "Error");
-						bErrorsTable = true;
+					if (oViewModel.getProperty("/rows/" + i + "/tipoVersion") !== "TC") {
+						if (!oViewModel.getProperty("/rows/" + i + "/" + sMonth) || !oViewModel.getProperty("/rows/" + i + "/" + sMonth + "Id")) {
+							oViewModel.setProperty("/rows/" + i + "/" + sMonth + "ValueState", "Error");
+							bErrorsTable = true;
+						} else {
+							oViewModel.setProperty("/rows/" + i + "/" + sMonth + "ValueState", "None");
+						}
 					} else {
-						oViewModel.setProperty("/rows/" + i + "/" + sMonth + "ValueState", "None");
+						if (!oViewModel.getProperty("/rows/" + i + "/" + sMonth + "TC")) {
+							oViewModel.setProperty("/rows/" + i + "/" + sMonth + "ValueState", "Error");
+							bErrorsTable = true;
+						} else {
+							oViewModel.setProperty("/rows/" + i + "/" + sMonth + "ValueState", "None");
+						}
 					}
 				}
 			}
@@ -231,8 +244,9 @@ sap.ui.define([
 			oModel.setProperty("/scenarioName", oData.Nombre);
 			oModel.setProperty("/scenarioDesc", oData.Descripcion);
 			oModel.setProperty("/scenarioType", oData.ytipoescn);
-			oModel.setProperty("/indexExchangeRateOption", oData.ytipcamb === "M" ? 0 : 1);
+			//oModel.setProperty("/indexExchangeRateOption", oData.ytipcamb === "M" ? 0 : 1);
 			oModel.setProperty("/year", oData.yfiscyear);
+			oModel.setProperty("/title", this.getResourceBundle().getText("titleViewScenarioView", [oData.Nombre]));
 			if (oData && oData.Escenarios && oData.Escenarios.results)
 				for (var i = 0; i < oData.Escenarios.results.length; i++) {
 					var sModulo = oData.Escenarios.results[i].ymodulo;
@@ -240,8 +254,12 @@ sap.ui.define([
 						if (oModel.getProperty("/rows")[j].tipoVersion === sModulo) {
 							for (var k = 1; k <= 12; k++) {
 								var sMonth = k < 10 ? "0" + k.toString() : k.toString();
-								oModel.setProperty("/rows/" + j + "/" + sMonth, oData.Escenarios.results[i]["yvmes" + sMonth + "Name"]);
-								oModel.setProperty("/rows/" + j + "/" + sMonth + "Id", oData.Escenarios.results[i]["yvmes" + sMonth]);
+								if (oModel.getProperty("/rows")[j].tipoVersion !== "TC") {
+									oModel.setProperty("/rows/" + j + "/" + sMonth, oData.Escenarios.results[i]["yvmes" + sMonth + "Name"]);
+									oModel.setProperty("/rows/" + j + "/" + sMonth + "Id", oData.Escenarios.results[i]["yvmes" + sMonth]);
+								} else {
+									oModel.setProperty("/rows/" + j + "/" + sMonth + "TC", oData.Escenarios.results[i]["yvmes" + sMonth]);
+								}
 							}
 
 						}
@@ -252,13 +270,24 @@ sap.ui.define([
 		_createViewModel: function () {
 			var aRows = [{
 				"modulo": "Materiales",
-				"tipoVersion": "MAT"
+				"tipoVersion": "MAT",
+				"visibleInput": true,
+				"visibleCombo": false
 			}, {
 				"modulo": "Costos Logísticos",
-				"tipoVersion": "LOG"
+				"tipoVersion": "LOG",
+				"visibleInput": true,
+				"visibleCombo": false
 			}, {
 				"modulo": "Volúmenes",
-				"tipoVersion": "VOL"
+				"tipoVersion": "VOL",
+				"visibleInput": true,
+				"visibleCombo": false
+			}, {
+				"modulo": "Tipo de cambio",
+				"tipoVersion": "TC",
+				"visibleInput": false,
+				"visibleCombo": true
 			}];
 			var oModel = new JSONModel({
 				columns: this.getModel("Escenarios").getProperty("/Meses"),
@@ -269,7 +298,6 @@ sap.ui.define([
 				scenarioName: "",
 				scenarioDesc: "",
 				scenarioType: "",
-				indexExchangeRateOption: 0,
 				year: "",
 				modeEdit: false,
 				viewMode: "C"

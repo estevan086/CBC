@@ -1,5 +1,17 @@
-<mvc:View xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:f="sap.ui.layout.form" xmlns:t="sap.ui.table" controllerName="cbc.co.simulador_costos.controller.Escenarios.MatrizEsc.AddEsc">
-	<Page title="{viewModel>/title}" busy="{viewModel>/busy}" navButtonPress="onNavBack" showNavButton="true">
+<mvc:View xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:f="sap.ui.layout.form"
+	xmlns:t="sap.ui.table" controllerName="cbc.co.simulador_costos.controller.Escenarios.MatrizEsc.AddEsc">
+	<Page title="{viewModel>/title}" busy="{viewModel>/busy}" navButtonPress="onNavBack" showNavButton="true" showFooter="false">
+		<subHeader>
+			<OverflowToolbar>
+				<content>
+					<ToolbarSpacer id="spacer1"/>
+					<Button type="Accept" text="Validar" icon="sap-icon://validate" tooltip="Validar escenario" press="onValidateScene"
+						visible="{= ['C'].includes(${viewModel>/viewMode}) }"/>
+					<Button type="Emphasized" text="Editar" icon="sap-icon://edit" tooltip="Editar escenario" press="onEditScene"
+						visible="{= ['V'].includes(${viewModel>/viewMode}) }"/>
+				</content>
+			</OverflowToolbar>
+		</subHeader>
 		<content>
 			<f:Form editable="true">
 				<f:formContainers>
@@ -25,20 +37,20 @@
 									</Select>
 								</f:fields>
 							</f:FormElement>
-							<f:FormElement label="{i18n>exchangeRateScenario}">
+							<!--<f:FormElement label="{i18n>exchangeRateScenario}">
 								<f:fields>
-									<RadioButtonGroup id="rbtnExchangeRateOption" columns="2" selectedIndex="{viewModel>/indexExchangeRateOption}" select=".onSelectExchangeRate" enabled="{viewModel>/modeEdit}">
+									<RadioButtonGroup id="rbtnExchangeRateOption" columns="2" selectedIndex="{viewModel>/indexExchangeRateOption}"
+										select=".onSelectExchangeRate" enabled="{viewModel>/modeEdit}">
 										<buttons>
 											<RadioButton id="R" text="{i18n>Real}"/>
 											<RadioButton id="P" text="{i18n>Plan}"/>
 										</buttons>
 									</RadioButtonGroup>
 								</f:fields>
-							</f:FormElement>
+							</f:FormElement>-->
 							<f:FormElement label="{i18n>annoScenarioView}">
 								<f:fields>
-									<ComboBox id="cmbAnnoExchangeRate" selectedKey="{viewModel>/year}" required="true" enabled="{viewModel>/modeEdit}">
-									</ComboBox>
+									<ComboBox id="cmbAnnoExchangeRate" selectedKey="{viewModel>/year}" required="true" enabled="{viewModel>/modeEdit}"></ComboBox>
 								</f:fields>
 							</f:FormElement>
 						</f:formElements>
@@ -50,7 +62,7 @@
 			</f:Form>
 			<Panel>
 				<content>
-					<t:Table id="tblMatrixScene" rows="{viewModel>/rows}" selectionMode="None" visibleRowCount="3">
+					<t:Table id="tblMatrixScene" rows="{viewModel>/rows}" selectionMode="None" visibleRowCount="4">
 						<t:extension>
 							<OverflowToolbar>
 								<Title text="Matriz de escenarios"/>
@@ -60,11 +72,5 @@
 				</content>
 			</Panel>
 		</content>
-		<footer>
-			<OverflowToolbar>
-				<ToolbarSpacer/>
-				<Button type="Accept" text="Validar escenario" icon="sap-icon://add" tooltip="Validar escenario" press="onValidateScene" visible="{= ['C'].includes(${viewModel>/viewMode}) }"/>
-			</OverflowToolbar>
-		</footer>
 	</Page>
 </mvc:View>
