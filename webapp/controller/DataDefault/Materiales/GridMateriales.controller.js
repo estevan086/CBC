@@ -55,6 +55,7 @@ sap.ui.define([
 
 			var oModelV = new JSONModel({
 				busy: false,
+				processId: "",
 				title: ""
 			});
 			this.setModel(oModelV, "modelView");
@@ -134,7 +135,7 @@ sap.ui.define([
 			this.getModel("modelView").setProperty("/title", ("Materiales: " + cDefaultVersion).toString());
 
 			this.loadMaterial("DEFAULT", "PLAN", "");
-			
+
 		},
 
 		onMyRoutePatternMatchedVersion: function (oEvent) {
@@ -1703,7 +1704,6 @@ sap.ui.define([
 				oExport.destroy();
 			});
 		},
-
 		/**
 		 * Upload data file
 		 * @function
@@ -1712,35 +1712,29 @@ sap.ui.define([
 		 */
 		cargaMasiva: function (JsonValue) {
 
-			var sServiceUrl = this.getView().getModel("ModelSimulador").sServiceUrl,
-				oModelService = new sap.ui.model.odata.ODataModel(sServiceUrl, true),
-				oEntidad = {},
+			var oEntidad = {},
 				oDetail = {},
-				oCreate = {},
 				oPanel = {};
+
+			that = this;
 
 			oPanel = this.getView();
 			oPanel.setBusy(true);
 
+			this.getModel("modelView").setProperty("/processId", this.uuidv4());
+
 			oEntidad = {
 				Material: '1111',
 				Descrip: 'Save',
+				IdProceso: this.getModel("modelView").getProperty("/processId"),
 				materialDefatultSet: []
 			};
 
 			// does not remove the manually set ValueStateText we set in onValueStatePress():
 			sap.ui.getCore().getMessageManager().removeAllMessages();
 
-			var Run = 0;
 			for (var i = 0; i < JsonValue.length; i++) {
-				Run = i;
-				if (Run == 1000) {
-					Run = 0;
-					if (oEntidad.materialDefatultSet.length > 0) {
-						oCreate = this.fnCreateEntity(oModelService, "/materialsaveSet", oEntidad);
-						oEntidad.materialDefatultSet = [];
-					}
-				}
+
 				var oTempRow = JsonValue[i];
 				if (oTempRow.Commoditie === undefined) {
 					continue;
@@ -1790,24 +1784,18 @@ sap.ui.define([
 			}
 
 			if (oEntidad.materialDefatultSet.length === 0) {
-
 				oPanel.setBusy(false);
 
 				MessageBox.show(
 					"No se cargo el archivo", {
 						icon: MessageBox.Icon.ERROR,
 						title: "Error"
-							// actions: [MessageBox.Action.YES, MessageBox.Action.NO],
-							// onClose: function (oAction) {
-							// 	/ * do something * /
-							// }
 					}
 				);
-
 				return;
 			}
 
-			if (sap.ui.getCore().getMessageManager().getMessageModel().getData().filter(result => result.type === "Error").length > 0) {
+			/*if (sap.ui.getCore().getMessageManager().getMessageModel().getData().filter(result => result.type === "Error").length > 0) {
 
 				oPanel.setBusy(false);
 
@@ -1815,54 +1803,33 @@ sap.ui.define([
 					"Existen campos por validar", {
 						icon: MessageBox.Icon.ERROR,
 						title: "Error"
-							// actions: [MessageBox.Action.YES, MessageBox.Action.NO],
-							// onClose: function (oAction) {
-							// 	/ * do something * /
-							// }
 					}
 				);
-
 				return;
+			}*/
 
-			}
+			var oModel = this.getView().getModel("ModelSimulador");
 
-			oCreate = this.fnCreateEntity(oModelService, "/materialsaveSet", oEntidad);
+			oModel.create("/materialsaveSet", oEntidad, {
+				success: function (oData, oResponse) {},
+				error: function (oError) {
+					this.getModel("modelView").setProperty("/busy", false);
+				}.bind(this)
+			});
 
-			that = this;
-			if (oCreate.tipo === 'S') {
-
-				MessageBox.show(
-					'Datos importados correctamente', {
-						icon: MessageBox.Icon.SUCCESS,
-						title: "Exito",
-						actions: [MessageBox.Action.OK],
-						onClose: function (oAction) {
-							if (oAction === sap.m.MessageBox.Action.OK) {
-								that.loadMaterial("DEFAULT", "PLAN", "");
-								oPanel.setBusy(false);
-								return;
-							}
+			MessageBox.show(
+				"Su solicitud de carga se esta procesando en fondo, espere un momento mientras finaliza", {
+					icon: MessageBox.Icon.SUCCESS,
+					title: "Exito",
+					actions: [MessageBox.Action.OK],
+					onClose: function (oAction) {
+						if (oAction === sap.m.MessageBox.Action.OK) {
+							that.startProcessConsult(that.getModel("modelView").getProperty("/processId"), "MAT");
+							return;
 						}
 					}
-				);
-
-			} else if (oCreate.tipo === 'E') {
-
-				oPanel.setBusy(false);
-
-				MessageBox.show(
-					oCreate.msjs, {
-						icon: MessageBox.Icon.ERROR,
-						title: "Error"
-							// actions: [MessageBox.Action.YES, MessageBox.Action.NO],
-							// onClose: function (oAction) {
-							// 	/ * do something * /
-							// }
-					}
-				);
-
-			}
-
+				}
+			);
 		},
 
 		/**
@@ -2479,7 +2446,7 @@ sap.ui.define([
 			this.loadModel(pVersion, pYear);
 			this.loadModelCommoditie();
 			this.loadModelCommoditieDetail(pVersion);
-		    this.loadModelIcoterm();
+			this.loadModelIcoterm();
 			this.loadModelUnidaMedida();
 			this.loadModelMoneda();
 			this.loadModelTipoCambio(pTipoCambio);
@@ -2871,8 +2838,7 @@ sap.ui.define([
 		 */
 		checkErrorPositionImport: function (oPosition) {
 			var vMessage = "",
-				oMessage = {},
-				vMessageField = "";
+				oMessageStr = [];
 
 			vMessage = "Material: " + oPosition.IDMaterial +
 				" Sociedad: " + oPosition.Sociedad +
@@ -2881,94 +2847,40 @@ sap.ui.define([
 				" Periodo: " + oPosition.Mes;
 
 			if (oPosition.Precio_Productivo.toString() === "") {
-				vMessageField = "Precio Productivo es vac\u00EDo y no n\u00FAmerico";
-
-				oMessage = new Message({
-					message: vMessage,
-					type: MessageType.Error,
-					target: "/Dummy",
-					additionalText: vMessageField,
-					description: vMessageField, //"Campo Precio Productivo",
-					processor: this.getView().getModel()
-				});
-				sap.ui.getCore().getMessageManager().addMessages(oMessage);
-
+				oMessageStr.push("Precio Productivo es vac\u00EDo y no n\u00FAmerico");
 			}
 
 			if (oPosition.Peso_Material.toString() === "") {
-				vMessageField = "Peso material es vac\u00EDo y no n\u00FAmerico";
-
-				oMessage = new Message({
-					message: vMessage,
-					type: MessageType.Error,
-					target: "/Dummy",
-					additionalText: vMessageField,
-					description: vMessageField, //"Campo Precio Productivo",
-					processor: this.getView().getModel()
-				});
-				sap.ui.getCore().getMessageManager().addMessages(oMessage);
-
+				oMessageStr.push("Peso material es vac\u00EDo y no n\u00FAmerico");
 			}
 
 			if (oPosition.Costo_Conversion.toString() === "") {
-				vMessageField = "Costo conversi\u00F3n es vac\u00EDo y no n\u00FAmerico";
-
-				oMessage = new Message({
-					message: vMessage,
-					type: MessageType.Error,
-					target: "/Dummy",
-					additionalText: vMessageField,
-					description: vMessageField, //"Campo Precio Productivo",
-					processor: this.getView().getModel()
-				});
-				sap.ui.getCore().getMessageManager().addMessages(oMessage);
-
+				oMessageStr.push("Costo conversi\u00F3n es vac\u00EDo y no n\u00FAmerico");
 			}
 
 			if (oPosition.Costo_Adicional.toString() === "") {
-				vMessageField = "Costo adicional es vac\u00EDo y no n\u00FAmerico";
-
-				oMessage = new Message({
-					message: vMessage,
-					type: MessageType.Error,
-					target: "/Dummy",
-					additionalText: vMessageField,
-					description: vMessageField, //"Campo Precio Productivo",
-					processor: this.getView().getModel()
-				});
-				sap.ui.getCore().getMessageManager().addMessages(oMessage);
-
+				oMessageStr.push("Costo adicional es vac\u00EDo y no n\u00FAmerico");
 			}
 
 			if (oPosition.Costo_Envio.toString() === "") {
-				vMessageField = "Costo env\u00EDo es vac\u00EDo y no n\u00FAmerico";
-
-				oMessage = new Message({
-					message: vMessage,
-					type: MessageType.Error,
-					target: "/Dummy",
-					additionalText: vMessageField,
-					description: vMessageField, //"Campo Precio Productivo",
-					processor: this.getView().getModel()
-				});
-				sap.ui.getCore().getMessageManager().addMessages(oMessage);
-
+				oMessageStr.push("Costo env\u00EDo es vac\u00EDo y no n\u00FAmerico");
 			}
 
 			if (oPosition.Otros_Costos.toString() === "") {
-				vMessageField = "Otros costos es vac\u00EDo y no n\u00FAmerico";
-
-				oMessage = new Message({
-					message: vMessage,
-					type: MessageType.Error,
-					target: "/Dummy",
-					additionalText: vMessageField,
-					description: vMessageField, //"Campo Precio Productivo",
-					processor: this.getView().getModel()
-				});
-				sap.ui.getCore().getMessageManager().addMessages(oMessage);
-
+				oMessageStr.push("Otros costos es vac\u00EDo y no n\u00FAmerico");
 			}
+
+			var oMessage = new Message({
+				message: vMessage,
+				type: MessageType.Error,
+				target: "/Dummy",
+				//	additionalText: vMessageField,
+				description: oMessageStr.join("\n"),
+				processor: this.getView().getModel()
+			});
+
+			sap.ui.getCore().getMessageManager().addMessages(oMessage);
+
 		}
 
 	});

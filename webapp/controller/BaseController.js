@@ -11,8 +11,11 @@ sap.ui.define([
 	"sap/ui/core/util/Export",
 	"sap/ui/core/util/ExportTypeCSV",
 	"sap/ui/core/message/Message",
-	"sap/ui/core/MessageType"
-], function (Controller, History, Dialog, Button, MessageToast, Text, MessageBox, Export, ExportTypeCSV, Message, MessageType ) {
+	"sap/ui/core/MessageType",
+	"sap/ui/model/Filter",
+	"sap/ui/model/FilterOperator"
+], function (Controller, History, Dialog, Button, MessageToast, Text, MessageBox, Export, ExportTypeCSV, Message, MessageType, Filter,
+	FilterOperator) {
 	"use strict";
 	var oMessageManager;
 	return Controller.extend("cbc.co.simulador_costos.controller.BaseController", {
@@ -462,17 +465,17 @@ sap.ui.define([
 			});
 		},
 		isInitialNum: function (pNumber, pDecSeparator = ".") {
-			if ( pNumber !== undefined ) {
-				 pNumber = pNumber.replace(pDecSeparator, "").replace(new RegExp("0", "g"), "").trim();
+			if (pNumber !== undefined) {
+				pNumber = pNumber.replace(pDecSeparator, "").replace(new RegExp("0", "g"), "").trim();
 			}
-			
+
 			return pNumber;
 		},
 		csv_to_Json: function (pCsv, pSeparator) {
 			var lines = pCsv.split("\n");
 			var result = [];
 			var headers = lines[0].split(pSeparator);
-			for (var i = 1; i < ( lines.length - 1 ); i++) {
+			for (var i = 1; i < (lines.length - 1); i++) {
 				var obj = {};
 				var currentline = lines[i].split(pSeparator);
 				for (var j = 0; j < headers.length; j++) {
@@ -486,17 +489,17 @@ sap.ui.define([
 			return oFinalResult;
 		},
 		//################ Private APIs ###################
-		initMessageManager(){
+		initMessageManager() {
 			this.oMessageManager = sap.ui.getCore().getMessageManager();
 			this.setModel(this.oMessageManager.getMessageModel(), "message");
 			this.oMessageManager.registerObject(this.getView(), true);
 		},
-		addMessage(oMessage){
-			
+		addMessage(oMessage) {
+
 			sap.ui.getCore().getMessageManager().removeAllMessages();
 			oMessage.target = "/Dummy";
 			oMessage.processor = this.getView().getModel();
-			sap.ui.getCore().getMessageManager().addMessages(oMessage);	
+			sap.ui.getCore().getMessageManager().addMessages(oMessage);
 		},
 		onMessagePopoverPress: function (oEvent) {
 			this._getMessagePopover().openBy(oEvent.getSource());
@@ -509,7 +512,51 @@ sap.ui.define([
 				this.getView().addDependent(this._oMessagePopover);
 			}
 			return this._oMessagePopover;
+		},
+		startProcessConsult: function (pProcessId, pModule) {
+			if (pProcessId !== "") {
+				setTimeout(this.getProcessStatus, 3000, pProcessId, pModule);
+			}
+		},
+		getProcessStatus: function (pProcessId, pModule) {
+			var oModel = this.getView().getModel("ModelSimulador");
+			var aFilter = [];
+
+			if (pProcessId !== "") {
+				aFilter.push(new Filter("IdProceso", FilterOperator.EQ, pProcessId));
+				aFilter.push(new Filter("Modulo", FilterOperator.EQ, pModule));
+
+				this.getModel("modelView").setProperty("/busy", true);
+
+				oModel.read("/procesoImportSet", {
+					filters: aFilter,
+					success: function (oData, response) {
+						this.addMessage(new Message({
+							message: "Import finalizado con exito",
+							type: MessageType.Success
+						}));
+						this.getModel("modelView").setProperty("/processId", "");
+						this.getModel("modelView").setProperty("/busy", false);
+					}.bind(this),
+					error: function (oError) {
+						this.addMessage(new Message({
+							message: "Import finalizado con errores",
+							type: MessageType.Success
+						}));
+						this.getModel("modelView").setProperty("/processId", "");
+						this.getModel("modelView").setProperty("/busy", false);
+					}.bind(this)
+				});
+			}
+		},
+		uuidv4: function () {
+			return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+				var r = Math.random() * 16 | 0,
+					v = c === "x" ? r : (r & 0x3 | 0x8);
+				return v.toString(16);
+			});
 		}
+
 	});
 
 });

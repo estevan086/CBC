@@ -2,8 +2,8 @@ sap.ui.define([
 	"sap/ui/core/UIComponent",
 	"sap/ui/model/json/JSONModel",
 	"sap/ui/model/resource/ResourceModel",
-	"./controller/Utilities/HelloDialog"
-], function (UIComponent, JSONModel, ResourceModel, HelloDialog) {
+    "cbc/co/simulador_costos/libs/pako.min"
+], function (UIComponent, JSONModel, ResourceModel) {
 	"use strict";
 
 	return UIComponent.extend("cbc.co.simulador_costos.Component", {

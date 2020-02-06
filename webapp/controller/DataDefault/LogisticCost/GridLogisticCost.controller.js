@@ -1,3 +1,7 @@
+/* global JSZip:true */
+/* global LZString:true */
+/* global pako:true */
+
 sap.ui.define([
 	"cbc/co/simulador_costos/controller/BaseController",
 	"sap/ui/model/json/JSONModel",
@@ -271,7 +275,7 @@ sap.ui.define([
 						items: {
 							path: "ModelSimulador>/monedaMaterialSet",
 							templateShareable: false,
-							template: new sap.ui.core.Item({
+							template: new sap.ui.core.ListItem({
 								key: "{ModelSimulador>Waers}",
 								text: "{ModelSimulador>Waers}",
 								additionalText: "{ModelSimulador>Ktext}"
@@ -296,9 +300,9 @@ sap.ui.define([
 				costValorationTable = oModelLocal.getProperty("/LogisticCostValoration"),
 				costData = oModelLocal.getProperty("/CodLogisticCost"),
 				modelStructure = {},
+				that = this,
 				data = [];
 
-			this.getModel("modelView").setProperty("/busy", true);
 			this.clearFilterFields();
 			//Convertir columnas de costos logistico en filas para ser almacenadas
 			costValorationTable.forEach(function (oValue, i) {
@@ -326,8 +330,28 @@ sap.ui.define([
 					data.push(modelStructure);
 				});
 			});
-			var oCstosLogisticos = costData[1];
-			oCstosLogisticos.costoslogisticos = data;
+			var oCstosLogisticos = costData[0];
+			oCstosLogisticos.costoslogisticos = []; //data;
+			var str = JSON.stringify(data); //this.lzw_encode( JSON.stringify(data) );
+			var data_s = ("Hola Mundo");
+		
+			var resultAsUint8Array = pako.deflate(data_s);
+			var resultAsBinString = pako.deflate(data_s, {
+				to: 'string'
+			});
+			var arrstr = resultAsUint8Array.join("");
+			var compressedJSON = JSON.stringify(data); //LZString.compress(str);
+			//var zip = new JSZip();
+
+			compressedJSON = btoa(compressedJSON);
+			//zip.file("json_data", compressedJSON);
+
+			/*zip.generateAsync({
+				type: "binarystring"
+			}).then(function (content) {*/
+
+			oCstosLogisticos.Base64 = arrstr;
+			this.getModel("modelView").setProperty("/busy", true);
 			//Crea el vercion costo logistico
 			oModel.create("/codigocostologisticoSet", oCstosLogisticos, {
 				success: function (oData, oResponse) {
@@ -342,6 +366,42 @@ sap.ui.define([
 				}.bind(this)
 			});
 
+			//	});
+			//}
+
+		},
+		convert: function (sData) {
+			var output = "";
+
+			for (var i = 0; i < sData.length; i++) {
+				output += sData[i].charCodeAt(0).toString(2) + " ";
+			}
+
+			return output;
+		},
+		lzw_encode: function (s) {
+			var dict = {};
+			var data = (s + "").split("");
+			var out = [];
+			var currChar;
+			var phrase = data[0];
+			var code = 256;
+			for (var i = 1; i < data.length; i++) {
+				currChar = data[i];
+				if (dict[phrase + currChar] != null) {
+					phrase += currChar;
+				} else {
+					out.push(phrase.length > 1 ? dict[phrase] : phrase.charCodeAt(0));
+					dict[phrase + currChar] = code;
+					code++;
+					phrase = currChar;
+				}
+			}
+			out.push(phrase.length > 1 ? dict[phrase] : phrase.charCodeAt(0));
+			for (var i = 0; i < out.length; i++) {
+				out[i] = String.fromCharCode(out[i]);
+			}
+			return out.join("");
 		},
 		onGotoadminlc: function (oEvent) {
 
@@ -384,10 +444,11 @@ sap.ui.define([
 
 			if (oFile && window.FileReader) {
 				var reader = new FileReader();
+
 				reader.onload = function (evt) {
-					var strCSV = evt.target.result,
-						oClValues = {},
-						oImportData = that.csv_to_Json(strCSV, ";"),
+					that.strCSV = evt.target.result;
+					var oClValues = {},
+						oImportData = that.csv_to_Json(that.strCSV, ";"),
 						oLogistiCost = [],
 						oLogistiCostLine = {};
 
@@ -399,20 +460,20 @@ sap.ui.define([
 							oLogistiCostLine[oColumn.columnName] = that.isInitialNum(oClValues[j]) !== undefined ? oClValues[j].toString().replace(".",
 								",") : cDefaultNumValue;
 						});
-						if (oLogistiCost.find(x => x.Material === oLogistiCostLine.Material) === undefined || oLogistiCost.find(x => x.Plant ===
-								oLogistiCostLine.Plant) ===
-							undefined || oLogistiCost.find(x => x.Fiscyear === oLogistiCostLine.Fiscyear) === undefined ||
-							oLogistiCost.find(x => x.Fiscper3 === oLogistiCostLine.Fiscper3) === undefined ||
-							oLogistiCost.find(x => x.CompCode === oLogistiCostLine.CompCode) === undefined) {
+						/*	if (oLogistiCost.find(x => x.Material === oLogistiCostLine.Material) === undefined || oLogistiCost.find(x => x.Plant ===
+									oLogistiCostLine.Plant) ===
+								undefined || oLogistiCost.find(x => x.Fiscyear === oLogistiCostLine.Fiscyear) === undefined ||
+								oLogistiCost.find(x => x.Fiscper3 === oLogistiCostLine.Fiscper3) === undefined ||
+								oLogistiCost.find(x => x.CompCode === oLogistiCostLine.CompCode) === undefined) {*/
 
-							oLogistiCost.push(oLogistiCostLine);
+						oLogistiCost.push(oLogistiCostLine);
 
-						} else {
-							this.addMessage(new Message({
-								message: this.getResourceBundle().getText("DuplicateMat"),
+						/*} else {
+							that.addMessage(new Message({
+								message: that.getResourceBundle().getText("DuplicateMat") +":"+ oLogistiCostLine.Material,
 								type: MessageType.Error
 							}));
-						}
+						}*/
 					});
 					//Actualiza modelo
 					that.getView().getModel("LogisticCost").setProperty("/LogisticCostValoration", oLogistiCost);
