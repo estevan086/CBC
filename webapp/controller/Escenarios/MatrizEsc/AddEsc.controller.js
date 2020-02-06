@@ -30,6 +30,28 @@ sap.ui.define([
 			});
 			oViewModel.refresh();
 		},
+		onEditScene: function (oEvent) {
+			var oViewModel = this.getModel("viewModel");
+			oViewModel.setProperty("/viewMode", "E");
+			oViewModel.setProperty("/modeEdit", true);
+		},
+		onSaveScene: function (oEvent) {
+			sap.m.MessageBox.success("Se actualizó exitosamente el escenario", {
+				onClose: jQuery.proxy(this.onNavBack, this)
+			});
+		},
+		onCancelScene: function (oEvent) {
+			var oViewModel = this.getModel("viewModel");
+			oViewModel.setProperty("/viewMode", "V");
+			oViewModel.setProperty("/modeEdit", false);
+			var sIdEscenario = oViewModel.getProperty("/scenarioId");
+			this.getModel("ModelSimulador").metadataLoaded().then(function () {
+				var sObjectPath = this.getModel("ModelSimulador").createKey("escenarioCabSet", {
+					yescenari: sIdEscenario
+				});
+				this._bindView("/" + sObjectPath);
+			}.bind(this));
+		},
 		onSearchVersion: function (oEvent) {
 
 		},
@@ -53,16 +75,6 @@ sap.ui.define([
 					}.bind(this)
 				});
 			}
-		},
-		onSelectExchangeRate: function (oEvent) {
-			var iIndex = oEvent.getParameter("selectedIndex"),
-				sExchangeRate;
-			if (iIndex === 0) {
-				sExchangeRate = "M";
-			} else {
-				sExchangeRate = "P";
-			}
-			this._bindItemsYear(sExchangeRate);
 		},
 		_onRouteMatched: function (oEvent) {
 			this._onBindInitialView();
@@ -91,7 +103,7 @@ sap.ui.define([
 				model: "viewModel",
 				factory: jQuery.proxy(Factory.factoryColumnsScenes, this)
 			});
-			this._bindItemsYear("M");
+			this._bindItemsYear();
 		},
 		_bindView: function (sPath) {
 			var oModel = this.getModel("viewModel");
@@ -108,13 +120,8 @@ sap.ui.define([
 				}.bind(this)
 			});
 		},
-		_bindItemsYear: function (sExchangeRate) {
+		_bindItemsYear: function () {
 			var oAnnoExchangeRate = this.byId("cmbAnnoExchangeRate");
-			var aFilter = [new Filter(
-				"Kurst",
-				FilterOperator.EQ,
-				sExchangeRate
-			)];
 			var oTemplate = new sap.ui.core.Item({
 				key: "{ModelSimulador>Fiscyear}",
 				text: "{ModelSimulador>Fiscyear}"
@@ -122,8 +129,7 @@ sap.ui.define([
 			oAnnoExchangeRate.bindItems({
 				path: "/annoTipoCambioSet",
 				model: "ModelSimulador",
-				template: oTemplate,
-				filters: aFilter
+				template: oTemplate
 			});
 		},
 		_getMatrizObject: function () {
