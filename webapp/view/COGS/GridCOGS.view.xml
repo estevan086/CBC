@@ -5,45 +5,9 @@
 		<m:pages>
 			<m:Page showHeader="false" enableScrolling="false" class="sapUiContentPadding">
 				<m:content>
-					<Table id="tblMasterSap" rows="{/ProductCollection}" selectionMode="Single" visibleRowCount="12">
-						<!--<toolbar>-->
-						<!--	<m:OverflowToolbar>-->
-						<!--		<m:content>-->
-						<!--			<m:Title id="title" text="COGS"/>-->
-						<!--			<m:ToolbarSpacer/>-->
-						<!--			<m:Button icon="sap-icon://sort" tooltip="Sort Categories" press="sortCategories"/>-->
-						<!--			<m:Button icon="sap-icon://decline" tooltip="Clear all sortings" press="clearAllSortings"/>-->
-						<!--			<m:SearchField placeholder="Filter" value="{ui>/globalFilter}" search="filterGlobally" width="15rem"/>-->
-						<!--		</m:content>-->
-						<!--	</m:OverflowToolbar>-->
-						<!--</toolbar>-->
-						<columns>
-							<Column width="11rem">
-								<m:Label text="Pais"/>
-								<template>
-									<m:Text text="{Name}" wrapping="false"/>
-								</template>
-							</Column>
-							<Column id="categories" width="11rem" showSortMenuEntry="false" sortProperty="Category">
-								<m:Label text="Sociedad-Centro"/>
-								<template>
-									<m:Text text="{Category}" wrapping="false"/>
-								</template>
-							</Column>
-							<!--<Column id="quantity" width="6rem" hAlign="End" sortProperty="Quantity">-->
-							<!--	<m:Label text="Moneda"/>-->
-							<!--	<template>-->
-							<!--		<m:Label text="{ path: 'Quantity', type: 'sap.ui.model.type.Integer' }"/>-->
-							<!--	</template>-->
-							<!--</Column>-->
-							<Column width="11rem">
-								<m:Label text="Unidad Medida"/>
-								<template>
-									<m:Text text="{ProductId}" wrapping="false"/>
-								</template>
-							</Column>
-						</columns>
-					</Table>
+					<m:Link id="lnk" text="Open SAP Homepage" target="_blank" href="https://gspmpappd.gt.cabcorp.com:44300" visible="false"/>
+					<m:Link id="lnk2" text="Open SAP Homepage" target="_blank" href="https://gspmpappd.gt.cabcorp.com:44300" visible="false"/>
+					<html:iframe width="100%" height="100%" id="ifrCogs" src="" frameborder="0" allowfullscreen="true"/>
 				</m:content>
 			</m:Page>
 		</m:pages>

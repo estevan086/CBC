@@ -5,10 +5,14 @@
 			<OverflowToolbar>
 				<content>
 					<ToolbarSpacer id="spacer1"/>
-					<Button type="Accept" text="Validar" icon="sap-icon://validate" tooltip="Validar escenario" press="onValidateScene"
+					<Button type="Accept" text="Validar" icon="sap-icon://validate" tooltip="Validar escenario" press=".onValidateScene"
 						visible="{= ['C'].includes(${viewModel>/viewMode}) }"/>
-					<Button type="Emphasized" text="Editar" icon="sap-icon://edit" tooltip="Editar escenario" press="onEditScene"
+					<Button type="Emphasized" text="Editar" icon="sap-icon://edit" tooltip="Editar escenario" press=".onEditScene"
 						visible="{= ['V'].includes(${viewModel>/viewMode}) }"/>
+					<Button type="Accept" text="Guardar" icon="sap-icon://save" tooltip="Guardar escenario" press=".onSaveScene"
+						visible="{= ['E'].includes(${viewModel>/viewMode}) }"/>
+					<Button type="Default" text="Cancelar" icon="sap-icon://cancel" tooltip="Cancelar edición" press=".onCancelScene"
+						visible="{= ['E'].includes(${viewModel>/viewMode}) }"/>
 				</content>
 			</OverflowToolbar>
 		</subHeader>
