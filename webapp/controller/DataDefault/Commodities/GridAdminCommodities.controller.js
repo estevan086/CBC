@@ -23,9 +23,10 @@ sap.ui.define([
 	"sap/ui/table/RowSettings",
 	"sap/ui/core/library",
 	"sap/ui/core/EventBus",
-	"cbc/co/simulador_costos/controller/Versiones/SelectVersion"
+	"cbc/co/simulador_costos/controller/Versiones/SelectVersion",
+	"sap/ui/core/message/Message"
 ], function (Controller, JSONModel, MessageToast, Fragment, DateFormat, library, Filter, FilterOperator, Button, Dialog, List,
-	StandardListItem, ButtonType, MessageBox, RowSettings, CoreLibrary, EventBus, SelectVersion) {
+	StandardListItem, ButtonType, MessageBox, RowSettings, CoreLibrary, EventBus, SelectVersion, Message) {
 	"use strict";
 
 	const cDefaultVersion = "DEFAULT";
@@ -46,6 +47,16 @@ sap.ui.define([
 				title: ""
 			});
 			this.setModel(oModelV, "modelView");
+
+			var oMessageManager, oView;
+			oView = this.getView();
+
+			// set message model
+			oMessageManager = sap.ui.getCore().getMessageManager();
+			oView.setModel(oMessageManager.getMessageModel(), "message");
+
+			// or just do it for the whole view
+			oMessageManager.registerObject(oView, true);
 
 			var oUploader = this.getView().byId("fileUploader");
 			oUploader.oBrowse.setText("Importar");
@@ -357,7 +368,7 @@ sap.ui.define([
 
 			var oItem = oEvent.getParameter("selectedItem");
 			var oTableCommodities = this.byId("tblCommodities");
-			
+
 			if (oItem !== null) {
 				var oItemObject = oItem.getBindingContext().getObject();
 				var oUnidadSeleccionada = oItemObject.Msehi;
@@ -661,6 +672,8 @@ sap.ui.define([
 		},
 
 		handleUpload: function (oEvent) {
+			
+			sap.ui.getCore().getMessageManager().removeAllMessages();
 			var that = this;
 			var oFile = oEvent.getParameter("files")[0];
 			if (oFile && window.FileReader) {
@@ -735,7 +748,7 @@ sap.ui.define([
 			var oCreate = this.fnCreateEntity(oModelService, "/headerCommoditiesSet", oEntidad);
 			that = this;
 			if (oCreate.tipo === 'S') {
-
+				this.setMessages(oCreate);
 				MessageBox.show(
 					'Datos importados correctamente', {
 						icon: MessageBox.Icon.SUCCESS,
@@ -765,6 +778,41 @@ sap.ui.define([
 				);
 
 			}
+
+		},
+
+		/**
+		 * check error position
+		 * @function
+		 * @param 
+		 * @private
+		 */
+		setMessages: function (oCreate) {
+			var vMessage = "",
+				oMessage = {},
+				vMessageField = "";
+
+			oCreate.datos.detailCommoditiesSet.results.forEach(function (oValue, i) {
+
+				vMessage = "Commoditie: " + oValue.IdCommoditie +
+					" Sociedad: " + oValue.Sociedad +
+					" Centro: " + oValue.Centro +
+					" A\u00F1o: " + oValue.Year +
+					" Periodo: " + oValue.Mes +
+					" Version: " + oValue.Version;
+
+				vMessageField = oValue.Mensaje;
+
+				oMessage = new Message({
+					message: vMessage,
+					type: MessageType.Error,
+					target: "/Dummy",
+					additionalText: vMessageField,
+					description: vMessageField, //"Campo Precio Productivo",
+					processor: this.getView().getModel()
+				});
+				sap.ui.getCore().getMessageManager().addMessages(oMessage);
+			});
 
 		},
 
