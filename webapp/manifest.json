@@ -206,7 +206,7 @@
 				},
 				"rtCCOGS": {
 					"pattern": "rtCCOGS",
-					"target": "rtHomeTarget"
+					"target": "rtCCOGSTarget"
 				},
 				"rtChVisualizacion": {
 					"pattern": "rtChVisualizacion",
@@ -377,7 +377,7 @@
 				},
 				"rtCCOGSTarget": {
 					"viewPath": "cbc.co.simulador_costos.view.COGS",
-					"viewName": "COGS",
+					"viewName": "GridCOGS",
 					"parent": "parentTarget",
 					"controlId": "parentNavContainer",
 					"transition": "slide"

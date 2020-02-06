@@ -68,7 +68,7 @@ sap.ui.define([
 						"title": "Tipo de Cambio",
 						"key": "rtChTypeChange"
 					}, {
-						"title": "Icoterm",
+						"title": "Incoterm",
 						"key": "rtChCreateIcoterm"
 					}, 
 					/*{
@@ -143,11 +143,7 @@ sap.ui.define([
 					"title": "COGS",
 					"icon": "sap-icon://provision",
 					"expanded": false,
-					"key": "rtNone",
-					"items": [{
-						"title": "Calculo de COGS",
-						"key": "rtCCOGS"
-					}]
+					"key": "rtCCOGS"
 				}]
 			});
 			//this.oModel.loadData(sap.ui.require.toUrl("sap/f/sample/ShellBarWithSplitApp/model") + "/model.json", null, false);

@@ -40,6 +40,8 @@
 							</m:ComboBox>
 							<m:Button icon="sap-icon://search"  press="onFilterCommodities" visible="true"/>
 							<m:ToolbarSpacer/>
+							<m:Button icon="sap-icon://alert" text="{= ${message>/}.length }" visible="{= ${message>/}.length > 0 }" type="Emphasized"
+								press="onMessagePopoverPress"/>
 							<m:Button icon="sap-icon://sys-next-page" text="Exportar" tooltip="Exportar version de commoditie" press="onDataExport" />
 							<!--<m:Button icon="sap-icon://sys-prev-page" text="Importar" tooltip="Importar version de commoditie"/>-->
 							<u:FileUploader id="fileUploader" name="myFileUpload" icon="sap-icon://sys-prev-page" tooltip="Importar version de commoditie"
@@ -160,6 +162,12 @@
 							<m:Text text="{CDEF_EDIT_FLAG}" wrapping="false"/>
 						</template>
 					</Column>
+					<Column visible="false">
+						<m:Label text="CDEF_MENSAJE"/>
+						<template>
+							<m:Text text="{Mensaje}" wrapping="false"/>
+						</template>
+					</Column>
 				</columns>
 				<rowActionTemplate>
 					<RowAction>
@@ -175,9 +183,9 @@
 		</m:content>
 		<m:footer>
 			<m:OverflowToolbar>
-				<m:Button id="messagePopoverBtn" icon="sap-icon://message-popup" type="Emphasized" visible="{=!!${message>/}.length}"
-					press="handleMessagePopoverPress"/>
-				<m:ToolbarSpacer/>
+				<!--<m:Button id="messagePopoverBtn" icon="sap-icon://message-popup" type="Emphasized" visible="{=!!${message>/}.length}"-->
+				<!--	press="handleMessagePopoverPress"/>-->
+				<!--<m:ToolbarSpacer/>-->
 				<!--<m:Button type="Emphasized" text="Guardar" tooltip="Guardar version de commoditie" press="saveCommodities"/>-->
 				<!--<Button text="Cancel"/>-->
 			</m:OverflowToolbar>
